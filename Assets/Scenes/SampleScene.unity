@@ -848,6 +848,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1194077477}
     m_Modifications:
+    - target: {fileID: 116783593954571927, guid: a235c5174ea1e2d499ec4eb071d208ef, type: 3}
+      propertyPath: m_Inertia
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 116783593954571927, guid: a235c5174ea1e2d499ec4eb071d208ef, type: 3}
+      propertyPath: m_Elasticity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 116783593954571927, guid: a235c5174ea1e2d499ec4eb071d208ef, type: 3}
+      propertyPath: m_MovementType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 116783593954571927, guid: a235c5174ea1e2d499ec4eb071d208ef, type: 3}
+      propertyPath: m_DecelerationRate
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 1269670451033453707, guid: a235c5174ea1e2d499ec4eb071d208ef, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
