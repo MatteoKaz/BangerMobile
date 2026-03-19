@@ -41,13 +41,12 @@ public class PaperMove : MonoBehaviour
     }
     public void MoveRightTuyaux()
     {
-        if (OnPile == true || Launch ==true)
+        if (OnPile == true)
         {
             return;
         }
         else
         {
-            Launch = true;
             StartCoroutine(MoveToTuyaux(Tuyauxright.transform.position, Tuyauxright));
             if (Tuyauxright.tuyauxType == paperType)
             {
@@ -65,13 +64,12 @@ public class PaperMove : MonoBehaviour
 
     public void MoveUpTuyaux()
     {
-        if (OnPile == true || Launch == true)
+        if (OnPile == true)
         {
             return;
         }
         else
         {
-            Launch = true;
             StartCoroutine(MoveToTuyaux(Tuyauxup.transform.position, Tuyauxup));
             if (Tuyauxup.tuyauxType == paperType)
             {
@@ -87,13 +85,12 @@ public class PaperMove : MonoBehaviour
 
     public void MoveLeftTuyaux()
     {
-        if (OnPile == true || Launch == true)
+        if (OnPile == true)
         {
             return;
         }
         else
         {
-            Launch = true;
             StartCoroutine(MoveToTuyaux(Tuyauxleft.transform.position, Tuyauxleft));
             if (Tuyauxleft.tuyauxType == paperType)
             {
@@ -110,7 +107,7 @@ public class PaperMove : MonoBehaviour
     public void MoveToPile()
     {
 
-        if (OnPile == false || Launch == false)
+        if (OnPile == false)
         {
             Debug.Log("Pile");
             switch (paperType)
@@ -128,7 +125,6 @@ public class PaperMove : MonoBehaviour
                     pileTarget = PileBlue.transform.position;
                      break;
             }
-
             OnPile = true;
             StartCoroutine(MoveToPileCo(pileTarget, pileRef));
         }
