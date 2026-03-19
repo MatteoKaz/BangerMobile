@@ -57,17 +57,18 @@ public class InputPlayerManagerCustom : MonoBehaviour
         float dotUp = Vector3.Dot(delta, straightUp);
         float dotRight = Vector3.Dot(delta, Vector3.right);
         bool HasCall = false;
-
-        if (dotdiagRight > 0.78f)
+        
+        if (dotUp > 0.95f)
         {
            
-                if (paperRef != null && HasCall == false)
-                {
-                    HasCall = true;
-                    paperRef.MoveRightTuyaux();
-                }
+            if (paperRef != null && HasCall == false)
+            {
+                HasCall = true;
+                paperRef.MoveUpTuyaux();
+            }
             
         }
+        
         if (dotdiagLeft > 0.7f)
         {
           
@@ -78,16 +79,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
                 }
            
         }
-        if (dotUp > 0.85f)
-        {
-           
-                if (paperRef != null && HasCall == false)
-                {
-                    HasCall = true;
-                    paperRef.MoveUpTuyaux();
-                }
-            
-        }
+        
         if(Math.Abs(dotRight) > 0.8f)
         {
             if (paperRef != null && HasCall ==false)
@@ -100,6 +92,17 @@ public class InputPlayerManagerCustom : MonoBehaviour
             }
           
         }
+        if (dotdiagRight > 0.90f)
+        {
+           
+            if (paperRef != null && HasCall == false)
+            {
+                HasCall = true;
+                paperRef.MoveRightTuyaux();
+            }
+            
+        }
+        
     }
 
 
