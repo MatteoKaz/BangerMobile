@@ -78,7 +78,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
                 }
            
         }
-        if (dotUp > 0.93f)
+        if (dotUp > 0.85f)
         {
            
                 if (paperRef != null && HasCall == false)
