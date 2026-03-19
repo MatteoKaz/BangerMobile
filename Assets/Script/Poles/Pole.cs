@@ -1,10 +1,12 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class Pole : MonoBehaviour
 {
     public int localQuotat;
+    public int localAdvencement = 0;    
     [Header("PoleType")]
     public PoleType type;
 
@@ -18,8 +20,9 @@ public class Pole : MonoBehaviour
     public int totalPaper = 0;
     public int waitingPaper = 0;
     public int activepaper = 0;
+    public int paperValue = 10;
 
-
+    [SerializeField] public GameObject contentparent;
     [SerializeField] Tuyaux myTuyaux;
 
 
@@ -34,14 +37,46 @@ public class Pole : MonoBehaviour
 
     public void AddPaper()
     {
-       totalPaper += 1;
+       
+        totalPaper += 1;
+        LaunchWorker();
+        
+        waitingPaper = totalPaper - activepaper;
+       
+        
     }
 
     public void DecrementPaper()
     {
-        totalPaper -= 1;
+
+        totalPaper = Mathf.Clamp(totalPaper -1, 0, totalPaper);
+        localAdvencement += paperValue;
         waitingPaper = totalPaper - activepaper ;
+        LaunchWorker();
+
 
     }
+
+
+    public void LaunchWorker()
+    {
+        foreach (Employe employe in employeList)
+        {
+            if (employe.iamWorking == false)
+            {
+                employe.Working();
+            }
+        }
+    }
+
+
+    public void ResetAllValue()
+    {
+        totalPaper = 0;
+        waitingPaper = 0;
+        activepaper = 0;
+        localQuotat = 0;    
+    }
+
 
 }

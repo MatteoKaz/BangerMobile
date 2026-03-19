@@ -20,10 +20,11 @@ public class EmployeData
     public float errorPercent;
     public int timeInEntreprise;
 
+
     public Sprite icone;
 }
 
-[CreateAssetMenu(fileName = "EmployeData", menuName = "Scriptable Objects/EmployeObject")]
+[CreateAssetMenu(fileName = "Employes", menuName = "Scriptable Objects/EmployeObject")]
 public class EmployeObject : ScriptableObject
 {
     public List<EmployeData> allEmploye;
