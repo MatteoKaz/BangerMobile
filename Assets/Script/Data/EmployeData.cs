@@ -14,9 +14,12 @@ public class EmployeData
 {
     public string EmployeName;
     public string description;
+    public string fireDescription;
     public TypeOfEmploye type;
     public float workRythme;      // RythmeDeTravail
-    public float errorPercent;   
+    public float errorPercent;
+    public int timeInEntreprise;
+
     public Sprite icone;
 }
 

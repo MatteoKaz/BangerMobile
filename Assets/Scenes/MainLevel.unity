@@ -1077,6 +1077,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InputPlayerManagerCustom
   _tapDuration: 1
   mainCamera: {fileID: 1515562388}
+  swipeStartTime: 0.3
+  maxswipeTime: 0.3
 --- !u!4 &1498863915
 Transform:
   m_ObjectHideFlags: 0

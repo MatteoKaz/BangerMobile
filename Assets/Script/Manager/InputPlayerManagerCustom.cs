@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -23,7 +24,11 @@ public class InputPlayerManagerCustom : MonoBehaviour
     private Vector2 endPosition;
     [SerializeField] private Camera mainCamera;
     private PaperMove paperRef;
-   
+    [SerializeField] public float swipeStartTime = 0.3f;
+    [SerializeField] public float maxswipeTime = 0.3f;
+    bool hasRemove = false;
+
+
 
     void Awake()
     {
@@ -48,61 +53,81 @@ public class InputPlayerManagerCustom : MonoBehaviour
     private void OnSwipe()
     {
         Vector2 delta = endPosition - startPosition;
+        float distance = delta.magnitude;
         delta = delta.normalized;
         Vector2 diagonalUpRight = (Vector3.up + Vector3.right).normalized;
         Vector2 diagonalUpLeft = (Vector3.up + Vector3.left).normalized;
+        Vector2 diagonalLowLeft = (Vector3.down + Vector3.left).normalized;
         Vector2 straightUp = Vector3.up;
         float dotdiagRight = Vector3.Dot(delta, diagonalUpRight);
         float dotdiagLeft = Vector3.Dot(delta, diagonalUpLeft);
+        float dotDiagLowLeft = Vector3.Dot(delta, diagonalLowLeft);
+
         float dotUp = Vector3.Dot(delta, straightUp);
-        float dotRight = Vector3.Dot(delta, Vector3.right);
+        float dotLeft = Vector3.Dot(delta, Vector3.left);
         bool HasCall = false;
-        
-        if (dotUp > 0.95f)
+        if (hasRemove == false)
         {
-           
-            if (paperRef != null && HasCall == false)
+            if (dotUp > 0.95f)
             {
-                HasCall = true;
-                paperRef.MoveUpTuyaux();
-            }
-            
-        }
-        
-        if (dotdiagLeft > 0.7f)
-        {
-          
+
                 if (paperRef != null && HasCall == false)
                 {
-                     HasCall = true;
+                    HasCall = true;
+                    paperRef.MoveUpTuyaux();
+                }
+
+            }
+            if (dotdiagRight > 0.7f)
+            {
+
+                if (paperRef != null && HasCall == false)
+                {
+                    HasCall = true;
+                    paperRef.MoveRightTuyaux();
+                }
+
+            }
+
+            if (dotDiagLowLeft > 0.7)
+            {
+                if (paperRef != null && HasCall == false)
+                {
+                    HasCall = true;
+                    paperRef.MoveToPile();
+                }
+            }
+
+
+            if (dotLeft > 0.8f)
+            {
+                if (paperRef != null && HasCall == false)
+                {
+                   
+                    HasCall = true;
+
+                    paperRef.MoveToPile();
+
+
+                }
+
+            }
+           
+
+            if (dotdiagLeft > 0.9f)
+            {
+
+                if (paperRef != null && HasCall == false)
+                {
+                    HasCall = true;
                     paperRef.MoveLeftTuyaux();
                 }
-           
-        }
-        
-        if(Math.Abs(dotRight) > 0.8f)
-        {
-            if (paperRef != null && HasCall ==false)
-            {
-                HasCall = true;
-                if (dotRight > 0)
-                    paperRef.MoveToPile();
-                else
-                    paperRef.RemoveFromPile();
+
             }
-          
+
         }
-        if (dotdiagRight > 0.90f)
-        {
-           
-            if (paperRef != null && HasCall == false)
-            {
-                HasCall = true;
-                paperRef.MoveRightTuyaux();
-            }
-            
-        }
-        
+
+
     }
 
 
@@ -110,6 +135,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
 
     private void Update()
     {
+        
 
         if (Touchscreen.current == null) return;
         if (Touch.activeTouches.Count == 0)
@@ -120,9 +146,10 @@ public class InputPlayerManagerCustom : MonoBehaviour
 
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(touch.screenPosition);
         Vector2 touchPos2D = new Vector2(worldPos.x, worldPos.y);
-
+        
         if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
         {
+            
             startPosition = touch.screenPosition;
             debugText = "Touches: " + Touch.activeTouches.Count;
             Debug.Log("Start");
@@ -134,6 +161,16 @@ public class InputPlayerManagerCustom : MonoBehaviour
                 if (paper != null)
                 {
                     paperRef = paper;
+                    if (paperRef.OnPile == true)
+                    {
+                        paperRef.RemoveFromPile();
+                        hasRemove = true;
+
+
+                    }
+                   
+
+
 
                 }
             }
@@ -143,7 +180,11 @@ public class InputPlayerManagerCustom : MonoBehaviour
         if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended)
         {
             endPosition = touch.screenPosition;
+            float swipeDuration = Time.time - swipeStartTime;
             OnSwipe();
+            hasRemove = false;
+
+
             debugText = "Touchesend: " + Touch.activeTouches.Count;
             Debug.Log("end");
             paperRef = null;

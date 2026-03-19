@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+   public int playerMoney = 0;
+   public int playerQuotat = 0;
+   public int quotatWave = 0;
+
+
+    public void CalculateMoney()
     {
-        
+       playerMoney = playerQuotat - quotatWave; 
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

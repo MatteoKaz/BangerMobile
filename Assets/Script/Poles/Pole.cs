@@ -27,9 +27,21 @@ public class Pole : MonoBehaviour
     {
         myTuyaux.AddPaper += AddPaper;
     }
+    public void OnDisable()
+    {
+        myTuyaux.AddPaper -= AddPaper;  
+    }
 
     public void AddPaper()
     {
        totalPaper += 1;
     }
+
+    public void DecrementPaper()
+    {
+        totalPaper -= 1;
+        waitingPaper = totalPaper - activepaper ;
+
+    }
+
 }

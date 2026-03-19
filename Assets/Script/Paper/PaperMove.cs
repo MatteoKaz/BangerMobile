@@ -20,7 +20,7 @@ public class PaperMove : MonoBehaviour
     [Header("Reste")]
     [SerializeField] public Vector3 spawnPos;
     bool validPaper = false;
-    bool OnPile = false;
+     public bool OnPile = false;
     bool Launch = false;
 
     public PaperType paperType;
@@ -129,8 +129,8 @@ public class PaperMove : MonoBehaviour
             StartCoroutine(MoveToPileCo(pileTarget, pileRef));
         }
     }
-      public void RemoveFromPile()
-        {
+    public void RemoveFromPile()
+    {
             if (OnPile == true)
             {
                 switch (paperType)
@@ -147,7 +147,7 @@ public class PaperMove : MonoBehaviour
                 }
                 StartCoroutine(SpawnPosition());
             }
-        }
+     }
 
        
      
