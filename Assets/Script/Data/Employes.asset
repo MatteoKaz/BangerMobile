@@ -12,4 +12,84 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: Employes
   m_EditorClassIdentifier: Assembly-CSharp::EmployeObject
-  allEmploye: []
+  allEmploye:
+  - EmployeName: Draquicon
+    description: dddddd
+    fireDescription: dd
+    type: 0
+    workRythme: 4
+    errorPercent: 0.7
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Roucoul
+    description: dddddd
+    fireDescription: dd
+    type: 1
+    workRythme: 6
+    errorPercent: 0.9
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Baggy
+    description: dddddd
+    fireDescription: dd
+    type: 2
+    workRythme: 5
+    errorPercent: 0.8
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Octave
+    description: dddddd
+    fireDescription: dd
+    type: 0
+    workRythme: 4
+    errorPercent: 0.7
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Hector
+    description: dddddd
+    fireDescription: dd
+    type: 1
+    workRythme: 6
+    errorPercent: 0.9
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Pippin
+    description: dddddd
+    fireDescription: dd
+    type: 2
+    workRythme: 5
+    errorPercent: 0.8
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Radhan
+    description: dddddd
+    fireDescription: dd
+    type: 0
+    workRythme: 4
+    errorPercent: 0.7
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Guts
+    description: dddddd
+    fireDescription: dd
+    type: 1
+    workRythme: 6
+    errorPercent: 0.9
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Leto
+    description: dddddd
+    fireDescription: dd
+    type: 2
+    workRythme: 5
+    errorPercent: 0.8
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Gwyn
+    description: dddddd
+    fireDescription: dd
+    type: 0
+    workRythme: 4
+    errorPercent: 0.7
+    timeInEntreprise: 0
+    icone: {fileID: 0}

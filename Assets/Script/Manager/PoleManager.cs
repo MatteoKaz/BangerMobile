@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,17 +11,24 @@ public class PoleManager : MonoBehaviour
     public int EndGamePlayerQuotat;
     public List<int> TakenEmployeIndex;
     [SerializeField] List<Employe> employes;
+
+    [Header("Ref")]
     [SerializeField] private ScoreManager scoreManager; 
     [SerializeField] QuotatManager quotatManager;
+    [SerializeField] DayManager dayManager;
+
+    
 
     private void OnEnable()
     {
         quotatManager.QuotatChosen += InitializedDay;
+        dayManager.FirstDayInitialization += InitializePole;
     }
 
     public void InitializedDay()
     {
         QuotaGiver(quotatManager.DayQuotat);
+        
     }
     public void QuotaGiver(int quota)
     {
@@ -29,25 +37,43 @@ public class PoleManager : MonoBehaviour
             poles[i].localQuotat = quota / 3;
 
         }
+       
+        
     }
     
 
 
     public void InitializePole()
     {
+        Debug.Log("InitializePole");
         int i = 0;
-        int numberOftimes = 0;    
         foreach (Employe employe in employes)
         {
-            if (numberOftimes == 2 || numberOftimes == 4)
+            if ( i < poles.Length )
             {
-                i++;
+                if (poles[i].employeList.Count < 2)
+                {
 
+                    poles[i].employeList.Add(employe);
+                    employe.mypole = poles[i];
+                    employe.InitialSetIdentity();
+                    
+
+                }
+                else
+                {
+                    i++;
+                    poles[i].employeList.Add(employe);
+                    employe.mypole = poles[i];
+                    employe.InitialSetIdentity();
+
+                }
             }
-            poles[i].employeList.Add(employe);
-            employe.mypole = poles[i];
-            employe.InitialSetIdentity();
-            numberOftimes++;
+            else
+            {
+                Debug.Log(i);
+                return;
+            }
 
         }
         

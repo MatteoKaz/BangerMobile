@@ -43,6 +43,7 @@ public class Employe : MonoBehaviour
     // premier set d'identité
     public void InitialSetIdentity()
     {
+        Debug.Log("EmployeSetUp");
         if (employeObject == null || employeObject.allEmploye == null || employeObject.allEmploye.Count == 0)
             return;
 
@@ -89,20 +90,24 @@ public class Employe : MonoBehaviour
 
         if (addToTaken && polemanager != null && polemanager.TakenEmployeIndex != null && !polemanager.TakenEmployeIndex.Contains(employeIndex))
             polemanager.TakenEmployeIndex.Add(employeIndex);
+
+        Debug.Log("SetEmploye");
     }
 
 
     // fonction à lancer lorsqu'il commence a work 
     public void Working()
     {
-        if (mypole.waitingPaper > 0)
+        if (mypole.waitingPaper > 0 && iamWorking == false)
         {
             StartCoroutine(Work());
+           
         }
         
         else
         {
             iamWorking = false;
+            
         }
     }
 
@@ -115,16 +120,21 @@ public class Employe : MonoBehaviour
         {
             t += Time.deltaTime / employeWorkRate;
             workAdvancement.value = Mathf.Lerp(0, 1, t);
-
+            yield return null;
 
         }
         float Succeed = Random.Range(0f, 1f);
         if (errorPercent > Succeed)
-        mypole.DecrementPaper();
+            mypole.WinMoney();
 
+       
+        workAdvancement.value = 0;
         Debug.Log("workDone");
-        yield return new WaitForSeconds(timeBeetwennWork); 
-        Working();  
+        yield return new WaitForSeconds(timeBeetwennWork);
+        mypole.DecrementPaper();
+        iamWorking = false;
+        Working();
+
 
     }
 

@@ -6,12 +6,18 @@ public class DayManager : MonoBehaviour
 {
     private int currentDay = 1;
     public string DayName;
-    private int currentWeek = 0;
+    private int currentWeek = 1;
 
     public event Action DayBegin;
     public event Action DayEnd;
+    public event Action FirstDayInitialization;
 
 
+    void Start()
+    {
+        LaunchNewDay();
+        IsFirstGame();
+    }
     public void LaunchNewDay()
     {
         DayBegin?.Invoke();
@@ -27,8 +33,11 @@ public class DayManager : MonoBehaviour
             DayNameChange();
         }  
 
+
+
     }
     
+
     public void DayOver()
     {
         DayEnd?.Invoke();
@@ -56,5 +65,16 @@ public class DayManager : MonoBehaviour
 
                  
         }
+    }
+
+    public void IsFirstGame()
+    {
+        if ( currentDay == 1 && currentWeek == 1)
+        {
+            FirstDayInitialization?.Invoke();
+            Debug.Log("Initialisation premier jour");
+        }
+        FirstDayInitialization?.Invoke();
+
     }
 }

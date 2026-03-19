@@ -25,9 +25,10 @@ public class PaperSpawner : MonoBehaviour
 
 
     public float spawnDelay = 1.5f;
-    
+    public float DelayBeforeStart = 2f;
 
     [Header("Quota")]
+    [SerializeField] QuotatManager quotatManager;
     public int redQuota = 10;
     public int blueQuota = 15;
     public int greenQuota = 5;
@@ -41,17 +42,25 @@ public class PaperSpawner : MonoBehaviour
 
 
 
-    public void Start()
+    public void OnEnable()
     {
-        StartSpawn();
+        quotatManager.QuotatChosen += StartSpawn;
     }
-
-
-    public void StartSpawn()
+    void OnDisable()
     {
+        quotatManager.QuotatChosen -= StartSpawn;
+    }
+    public IEnumerator SpawnStart()
+    {
+        yield return new WaitForSeconds(DelayBeforeStart);
         RandomAssignation();
         QuotatSetup();
         StartCoroutine(Spawn());
+        Debug.Log("ddd");
+    }
+    public void StartSpawn()
+    {
+        StartCoroutine(SpawnStart());
     }
 
 

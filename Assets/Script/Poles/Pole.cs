@@ -39,22 +39,33 @@ public class Pole : MonoBehaviour
     {
        
         totalPaper += 1;
-        LaunchWorker();
         
         waitingPaper = totalPaper - activepaper;
-       
+        waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
+
+        LaunchWorker();
         
+
+
     }
 
     public void DecrementPaper()
     {
+        totalPaper -= 1;
+        totalPaper = Mathf.Clamp(totalPaper , 0, totalPaper);
+        activepaper--;
+        activepaper = Mathf.Clamp(activepaper, 0, activepaper);
 
-        totalPaper = Mathf.Clamp(totalPaper -1, 0, totalPaper);
+        LaunchWorker() ;
+        
+       
+
+
+    }
+
+    public void WinMoney()
+    {
         localAdvencement += paperValue;
-        waitingPaper = totalPaper - activepaper ;
-        LaunchWorker();
-
-
     }
 
 
@@ -62,9 +73,15 @@ public class Pole : MonoBehaviour
     {
         foreach (Employe employe in employeList)
         {
-            if (employe.iamWorking == false)
+            if (employe.iamWorking == false && waitingPaper >0 )
             {
+               
                 employe.Working();
+                activepaper++;
+                waitingPaper = .totalPaper - activepaper;
+                waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
+
+
             }
         }
     }
