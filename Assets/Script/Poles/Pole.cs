@@ -78,7 +78,7 @@ public class Pole : MonoBehaviour
                
                 employe.Working();
                 activepaper++;
-                waitingPaper = .totalPaper - activepaper;
+                waitingPaper = totalPaper - activepaper;
                 waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
 
 
