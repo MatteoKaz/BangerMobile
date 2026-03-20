@@ -250,6 +250,8 @@ public class PaperMove : MonoBehaviour
 
     public IEnumerator SpawnPosition()
     {
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        sprite.color = Color.white;
         Vector3 start = transform.position;
         float t = 0f;
         float duration = 0.3f;//Speed de l'anim
@@ -338,6 +340,8 @@ public class PaperMove : MonoBehaviour
             transform.rotation = targetRot;
         }
 
+        SpriteRenderer  sprite = GetComponent< SpriteRenderer > ();
+        sprite.color = new Color(0f, 0f, 0f, 0f);
        
 
         
