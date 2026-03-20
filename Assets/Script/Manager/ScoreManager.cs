@@ -19,6 +19,7 @@ public class ScoreManager : MonoBehaviour
     public void CalculateMoney()
     {
        playerMoney += playerQuotat - quotatOfTheDay;
+        playerMoney = Mathf.Clamp(playerMoney, 0, playerMoney);
         StartCoroutine(AnimLauncher());
     }
 

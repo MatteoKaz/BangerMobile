@@ -23,7 +23,7 @@ public class UIDay : MonoBehaviour
     public void SetUpDayWeek()
     {
         day.text = $"{dayManager.DayName}";
-        week.text = $"Semaine :{dayManager.currentWeek}";
+        week.text = $"Semaine: {dayManager.currentWeek}";
         StartCoroutine(TimeAtScreen());
 
     }

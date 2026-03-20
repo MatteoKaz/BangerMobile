@@ -388,7 +388,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &108442173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,6 +403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIScore
   uiManager: {fileID: 1498863922}
   UiScore: {fileID: 1776355306}
+  Uimoney: {fileID: 1104522233}
   scoreManager: {fileID: 1498863917}
 --- !u!114 &108442175
 MonoBehaviour:
@@ -3067,7 +3068,7 @@ GameObject:
   - component: {fileID: 1104522234}
   - component: {fileID: 1104522233}
   m_Layer: 0
-  m_Name: Quotat
+  m_Name: Argent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6293,7 +6294,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: /800
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

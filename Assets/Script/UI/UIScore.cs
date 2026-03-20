@@ -7,7 +7,10 @@ public class UIScore : MonoBehaviour
 {
     [SerializeField] UiManager uiManager;
     [SerializeField] TextMeshProUGUI UiScore;
+    [SerializeField] TextMeshProUGUI Uimoney;
     [SerializeField] ScoreManager scoreManager;
+
+    
 
 
     private void OnEnable()
@@ -27,21 +30,47 @@ public class UIScore : MonoBehaviour
 
     public IEnumerator ScoreAnim()
     {
-        int displayScore = 0;
+        yield return new WaitForSeconds(1.5f);
+        float duration = 1f; // durée totale de l’anim
+        float t = 0f;
+
         int score = scoreManager.playerQuotat;
-        while (displayScore < score)
+
+        while (t < duration)
         {
-            int step = Mathf.Clamp(displayScore / 100, 1, 300);
-            displayScore += step;
+            t += Time.deltaTime;
+            float normalized = t / duration;
+
+            int displayScore = Mathf.RoundToInt(Mathf.Lerp(0, score, normalized));
 
             if (displayScore > score) displayScore = score;
 
             UiScore.text = $"{displayScore.ToString()}/{scoreManager.quotatOfTheDay}";
-            if (displayScore % 25 <= step)
+            //if (displayScore % 25 <= step)
                // MicroShakeCam?.Invoke();
 
             yield return null;
         }
+
+        yield return new WaitForSeconds(0.5f);
+         t = 0f;
+         score = scoreManager.playerMoney;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float normalized = t / duration;
+
+            int displayScore = Mathf.RoundToInt(Mathf.Lerp(0, score, normalized));
+
+            if (displayScore > score) displayScore = score;
+
+            Uimoney.text = $"Argent: {displayScore.ToString()}";
+            //if (displayScore % 25 <= step)
+            // MicroShakeCam?.Invoke();
+
+            yield return null;
+        }
+
     }
    
 
