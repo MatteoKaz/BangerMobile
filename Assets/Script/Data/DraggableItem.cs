@@ -6,10 +6,14 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Hold-to-grab avec animation de scale dès le hold validé,
-/// et ghost placeholder dans la drop zone cible.
+/// ghost placeholder dans le premier slot libre de la drop zone cible.
 /// </summary>
-public class DraggableItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
-                                            IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DraggableItem : MonoBehaviour,
+    IPointerDownHandler,
+    IPointerUpHandler,
+    IBeginDragHandler,
+    IDragHandler,
+    IEndDragHandler
 {
     private const float HoldDuration = 0.3f;
     private const float PickupScaleMultiplier = 1.15f;
@@ -19,17 +23,12 @@ public class DraggableItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     private Canvas _canvas;
     private CanvasGroup _canvasGroup;
     private RectTransform _rectTransform;
-    private ScrollRect _activeScrollRect;
 
-    private Transform _originalParent;
-    private Vector2 _originalAnchoredPosition;
+    private ContentSlot _originalSlot;
     private Vector3 _originalLocalScale;
 
     private bool _dragActivated;
-    private bool _isDraggingForScroll;
     private bool _dropWasAccepted;
-    private bool _dragStarted;
-    private bool _dragBegin;
 
     private Coroutine _holdCoroutine;
     private Coroutine _scaleCoroutine;
@@ -41,6 +40,7 @@ public class DraggableItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+
         _canvasGroup = GetComponent<CanvasGroup>();
         if (_canvasGroup == null)
             _canvasGroup = gameObject.AddComponent<CanvasGroup>();
@@ -48,13 +48,23 @@ public class DraggableItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         _canvas = GetComponentInParent<Canvas>();
     }
 
+    private void Update()
+    {
+        // Failsafe : item perdu dans le Canvas sans drag actif
+        if (!_dragActivated && transform.parent == _canvas.transform)
+            ForceReset();
+    }
+
+    private void OnDisable()
+    {
+        ForceReset();
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
-        _dragStarted = false;
         _dragActivated = false;
-        _isDraggingForScroll = false;
         _dropWasAccepted = false;
-        _dragStarted = true; 
+
         CancelHold();
         _holdCoroutine = StartCoroutine(HoldRoutine());
     }
@@ -62,26 +72,20 @@ public class DraggableItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     public void OnPointerUp(PointerEventData eventData)
     {
         CancelHold();
-        _dragStarted = false; 
+
+        if (!_dragActivated && transform.parent == _canvas.transform)
+            ForceReset();
     }
 
     private IEnumerator HoldRoutine()
     {
-        
-        if (_dragBegin == true )
-        {
-            yield return new WaitForSeconds(HoldDuration);
-            if (_dragBegin == true)
-                StopCoroutine(HoldRoutine());
-        }
+        yield return new WaitForSeconds(HoldDuration);
+
         _dragActivated = true;
         _holdCoroutine = null;
-        Debug.Log("CoroutineLancé");
-        
-    
+
         _originalLocalScale = _rectTransform.localScale;
         AnimateScale(_originalLocalScale * PickupScaleMultiplier, PickupAnimDuration);
-        // return new WaitForSeconds(0.01f);
     }
 
     private void CancelHold()
@@ -119,23 +123,15 @@ public class DraggableItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _dragStarted = true;
+        if (!_dragActivated) return;
+
         _dropWasAccepted = false;
-        Debug.Log("Drag Commencé");
 
-        if (!_dragActivated)
-        {
-            CancelHold();
-            _isDraggingForScroll = true;
-            _activeScrollRect = GetComponentInParent<ScrollRect>();
-            if (_activeScrollRect != null)
-                ExecuteEvents.Execute(_activeScrollRect.gameObject, eventData, ExecuteEvents.beginDragHandler);
-            return;
-        }
+        // Sauvegarde et libère le slot d'origine
+        _originalSlot = transform.parent.GetComponent<ContentSlot>();
+        _originalSlot?.Release();
 
-        _isDraggingForScroll = false;
-        _originalParent = transform.parent;
-        _originalAnchoredPosition = _rectTransform.anchoredPosition;
+        _originalLocalScale = _rectTransform.localScale;
 
         if (_scaleCoroutine != null) { StopCoroutine(_scaleCoroutine); _scaleCoroutine = null; }
 
@@ -149,13 +145,6 @@ public class DraggableItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (_isDraggingForScroll)
-        {
-            if (_activeScrollRect != null)
-                ExecuteEvents.Execute(_activeScrollRect.gameObject, eventData, ExecuteEvents.dragHandler);
-            return;
-        }
-
         if (!_dragActivated) return;
 
         _rectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
@@ -164,14 +153,7 @@ public class DraggableItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (_isDraggingForScroll)
-        {
-            _isDraggingForScroll = false;
-            if (_activeScrollRect != null)
-                ExecuteEvents.Execute(_activeScrollRect.gameObject, eventData, ExecuteEvents.endDragHandler);
-            _activeScrollRect = null;
-            return;
-        }
+        if (!_dragActivated && !_dropWasAccepted) return;
 
         _canvasGroup.alpha = 1f;
         _canvasGroup.blocksRaycasts = true;
@@ -179,26 +161,61 @@ public class DraggableItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         DestroyGhost();
 
         if (!_dropWasAccepted && transform.parent == _canvas.transform)
-        {
-            transform.SetParent(_originalParent, true);
-            _rectTransform.anchoredPosition = _originalAnchoredPosition;
-            AnimateScale(_originalLocalScale, DropAnimDuration);
-        }
+            ReturnToOriginalSlot();
     }
 
-    /// <summary>
-    /// Called by ScrollDropZone when the item is successfully dropped.
-    /// OnEndDrag handles visual cleanup after this.
-    /// </summary>
-    public void OnDropAccepted(Transform newParent)
+    /// <summary>Called by ScrollDropZone when the item is successfully dropped into a slot.</summary>
+    public void OnDropAccepted(ContentSlot slot)
     {
         _dropWasAccepted = true;
         DestroyGhost();
-        transform.SetParent(newParent, true);
+
+        Vector3 worldScale = _rectTransform.lossyScale;
+        slot.PlaceItem(this);
+
+        Vector3 slotWorld = slot.transform.lossyScale;
+        _rectTransform.localScale = new Vector3(
+            worldScale.x / slotWorld.x,
+            worldScale.y / slotWorld.y,
+            worldScale.z / slotWorld.z
+        );
+
         AnimateScale(_originalLocalScale, DropAnimDuration);
     }
 
-    // ─── Ghost ────────────────────────────────────────────────────────────────
+    private void ReturnToOriginalSlot()
+    {
+        if (_originalSlot == null) return;
+
+        Vector3 worldScale = _rectTransform.lossyScale;
+        _originalSlot.PlaceItem(this);
+
+        Vector3 slotWorld = _originalSlot.transform.lossyScale;
+        _rectTransform.localScale = new Vector3(
+            worldScale.x / slotWorld.x,
+            worldScale.y / slotWorld.y,
+            worldScale.z / slotWorld.z
+        );
+
+        AnimateScale(_originalLocalScale, DropAnimDuration);
+    }
+
+    private void ForceReset()
+    {
+        DestroyGhost();
+        CancelHold();
+
+        if (_originalSlot != null)
+        {
+            _originalSlot.PlaceItem(this);
+            _rectTransform.localScale = _originalLocalScale;
+        }
+
+        _canvasGroup.alpha = 1f;
+        _canvasGroup.blocksRaycasts = true;
+    }
+
+    // ───────── GHOST ─────────
 
     private void CreateGhost()
     {
@@ -206,14 +223,12 @@ public class DraggableItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
         _ghost = Instantiate(gameObject, _canvas.transform, false);
 
-        // Désactive immédiatement pour bloquer tout event avant la fin du frame
         if (_ghost.TryGetComponent<DraggableItem>(out var ghostDraggable))
         {
             ghostDraggable.enabled = false;
             Destroy(ghostDraggable);
         }
 
-        // Stoppe toutes les coroutines sur le clone pour éviter tout HoldRoutine parasite
         foreach (var mono in _ghost.GetComponents<MonoBehaviour>())
         {
             if (mono != null && mono.enabled)
@@ -236,21 +251,29 @@ public class DraggableItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
         ScrollDropZone hoveredZone = FindHoveredDropZone(eventData);
 
-        if (hoveredZone != null && hoveredZone.TargetContent != null)
+        if (hoveredZone != null)
         {
-            if (_currentHoveredZone != hoveredZone)
+            ContentSlot emptySlot = hoveredZone.GetFirstEmptySlot();
+
+            if (emptySlot != null)
             {
                 _currentHoveredZone = hoveredZone;
-                _ghost.transform.SetParent(hoveredZone.TargetContent, false);
-                _ghost.GetComponent<RectTransform>().localScale = _originalLocalScale;
+                _ghost.transform.SetParent(emptySlot.transform, false);
+
+                RectTransform ghostRect = _ghost.GetComponent<RectTransform>();
+                ghostRect.anchorMin = Vector2.zero;
+                ghostRect.anchorMax = Vector2.one;
+                ghostRect.offsetMin = Vector2.zero;
+                ghostRect.offsetMax = Vector2.zero;
+                ghostRect.localScale = _originalLocalScale;
+
+                _ghost.SetActive(true);
+                return;
             }
-            _ghost.SetActive(true);
         }
-        else
-        {
-            _currentHoveredZone = null;
-            _ghost.SetActive(false);
-        }
+
+        _currentHoveredZone = null;
+        _ghost.SetActive(false);
     }
 
     private void DestroyGhost()
