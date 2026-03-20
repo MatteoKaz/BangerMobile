@@ -113,3 +113,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63dcb0894b6000c4884c46744367ce90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  highlightColor: {r: 0.71160156, g: 0.84211636, b: 0.8805031, a: 1}
