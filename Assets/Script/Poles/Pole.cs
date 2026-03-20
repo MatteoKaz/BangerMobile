@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.WSA;
@@ -25,6 +26,7 @@ public class Pole : MonoBehaviour
     [SerializeField] public GameObject contentparent;
     [SerializeField] Tuyaux myTuyaux;
 
+    public event Action eventWinMoney;
 
     public void OnEnable()
     {
@@ -55,7 +57,8 @@ public class Pole : MonoBehaviour
         totalPaper = Mathf.Clamp(totalPaper , 0, totalPaper);
         activepaper--;
         activepaper = Mathf.Clamp(activepaper, 0, activepaper);
-
+        waitingPaper = totalPaper - activepaper;
+        waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
         LaunchWorker() ;
         
        
@@ -66,9 +69,13 @@ public class Pole : MonoBehaviour
     public void WinMoney()
     {
         localAdvencement += paperValue;
+        eventWinMoney?.Invoke();
     }
 
-
+    public void UpdateUI()
+    {
+        eventWinMoney?.Invoke();
+    }
     public void LaunchWorker()
     {
         foreach (Employe employe in employeList)
@@ -77,7 +84,7 @@ public class Pole : MonoBehaviour
             {
                
                 employe.Working();
-                activepaper++;
+                
                 waitingPaper = totalPaper - activepaper;
                 waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
 

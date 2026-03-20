@@ -23,18 +23,25 @@ public class PoleManager : MonoBehaviour
     {
         quotatManager.QuotatChosen += InitializedDay;
         dayManager.FirstDayInitialization += InitializePole;
+        dayManager.DayEnd += QuotatAssemble;
     }
 
     public void InitializedDay()
     {
+        
         QuotaGiver(quotatManager.DayQuotat);
+
         
     }
     public void QuotaGiver(int quota)
     {
-        for (int i = 0; i < poles.Length - 1; i++)
+        for (int i = 0; i < poles.Length; i++)
         {
-            poles[i].localQuotat = quota / 3;
+
+            poles[i].localQuotat = Mathf.RoundToInt(quota / poles.Length);
+            Debug.Log($"{ poles[i].localQuotat}");
+            poles[i].UpdateUI();
+           
 
         }
        

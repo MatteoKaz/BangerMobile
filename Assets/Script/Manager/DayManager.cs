@@ -1,18 +1,27 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class DayManager : MonoBehaviour
 {
-    private int currentDay = 1;
+    private int currentDay = 0;
     public string DayName;
-    private int currentWeek = 1;
+    public int currentWeek = 1;
+
+    public float transitionDuration = 1f;
 
     public event Action DayBegin;
     public event Action DayEnd;
     public event Action FirstDayInitialization;
+    public event Action DayTransition;
 
+    [SerializeField] private TimeManager timeManager; 
 
+    public void OnEnable()
+    {
+        timeManager.TimerEnded += DayOver;
+    }
     void Start()
     {
         LaunchNewDay();
@@ -20,7 +29,7 @@ public class DayManager : MonoBehaviour
     }
     public void LaunchNewDay()
     {
-        DayBegin?.Invoke();
+        
         if (currentDay <5)
         {
             currentDay += 1;
@@ -31,8 +40,8 @@ public class DayManager : MonoBehaviour
             currentWeek += 1;
             currentDay = 1;
             DayNameChange();
-        }  
-
+        }
+        DayBegin?.Invoke();
 
 
     }
@@ -74,7 +83,15 @@ public class DayManager : MonoBehaviour
             FirstDayInitialization?.Invoke();
             Debug.Log("Initialisation premier jour");
         }
-        FirstDayInitialization?.Invoke();
+       
 
+    }
+
+
+
+    public IEnumerator EndDayFade()
+    {
+        yield return new WaitForSeconds(transitionDuration);
+        DayTransition?.Invoke();
     }
 }

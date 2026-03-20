@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class QuotatManager : MonoBehaviour
 {
-    public int WeekQuotat = 150;
-    public int DayQuotat;
+    public int WeekQuotat = 500;
+    public int DayQuotat ;
     [SerializeField] DayManager dayManager;
     public event Action QuotatChosen;
     public int quotatEasy;
@@ -15,6 +15,8 @@ public class QuotatManager : MonoBehaviour
     [SerializeField] PaperSpawner paperSpawner;
     public float multToBalance = 2f;
 
+    public event Action QuotatIsSet;
+    public event Action CalculQuotat;
     
     public void OnEnable()
     {
@@ -38,9 +40,26 @@ public class QuotatManager : MonoBehaviour
         quotatEasy = Mathf.RoundToInt(DayQuotat * 0.75f);
         quotatMid = Mathf.RoundToInt(DayQuotat * 1f);
         quotatHard = Mathf.RoundToInt(DayQuotat * 1.25f);
-        ChosenQuotat(quotatEasy);
-       
-
+        
+        Debug.Log($"QuotatPerDay {DayQuotat}");
+        CalculQuotat?.Invoke();
+    }
+    public void SelectQuotat(int difficultySelect)
+    {
+        switch (difficultySelect)
+        {
+            case 0:
+                DayQuotat = quotatEasy;
+                break;
+            case 1: 
+                DayQuotat = quotatMid;
+                break;
+           case 2:
+                DayQuotat = quotatHard;
+                break;
+        }
+        QuotatIsSet?.Invoke();
+        ChosenQuotat(DayQuotat);
     }
 
     public void ChosenQuotat(int quotatChosen)
@@ -50,7 +69,7 @@ public class QuotatManager : MonoBehaviour
         paperSpawner.totalPapers = Mathf.RoundToInt(multToBalance * valueToSpawn) ;
 
         QuotatChosen?.Invoke();
-        Debug.Log("ddd");
+        Debug.Log($"Quotat manager {DayQuotat}");
     }
 
     

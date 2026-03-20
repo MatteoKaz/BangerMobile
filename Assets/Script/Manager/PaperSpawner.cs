@@ -41,10 +41,14 @@ public class PaperSpawner : MonoBehaviour
     public int typesCount = 3; //NombreDeType
 
 
+    [SerializeField] DayManager dayManager;
+    private bool canSpawn = true;
+
 
     public void OnEnable()
     {
         quotatManager.QuotatChosen += StartSpawn;
+        dayManager.DayEnd += StopSpawn;
     }
     void OnDisable()
     {
@@ -60,10 +64,16 @@ public class PaperSpawner : MonoBehaviour
     }
     public void StartSpawn()
     {
+        canSpawn = true;
         StartCoroutine(SpawnStart());
     }
 
+    public void StopSpawn()
+    {
+        StopCoroutine(Spawn());
+        canSpawn = false;
 
+    }
     private void QuotatSetup()
     {
         spawnList.Clear();
@@ -99,6 +109,8 @@ public class PaperSpawner : MonoBehaviour
     {
         while (spawnList.Count > 0)
         {
+            if (!canSpawn)
+                break;
             float spawntiming = Random.Range(spawnDelay, spawnDelay + 2f);
             GameObject prefab = spawnList[0];
             spawnList.RemoveAt(0);
@@ -109,7 +121,10 @@ public class PaperSpawner : MonoBehaviour
 
             GameObject paperSpawn = Instantiate(prefab, pointToSpawn.position, Quaternion.identity, parentTransform);
             PaperMove pm = paperSpawn.GetComponent<PaperMove>();
+            pm.dayManager = dayManager;
+            pm.Subscribe();
             paperSpawn.transform.SetAsLastSibling();
+           
             pm.spawnPos = pointToGo.position;
             pm.Tuyauxleft = tuyauxRed;
             pm.Tuyauxup = tuyauxBlue;
@@ -126,7 +141,7 @@ public class PaperSpawner : MonoBehaviour
     //Generation de quota
     public int[] GenerateRandomQuotas()
     {
-        minPerType = totalPapers/5;
+        minPerType = totalPapers/4;
         int[] quotas = new int[typesCount];
 
         int remaining = totalPapers;
@@ -182,4 +197,6 @@ public class PaperSpawner : MonoBehaviour
             }
         }
     }
+
+
 }

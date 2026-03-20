@@ -28,10 +28,21 @@ public class PaperMove : MonoBehaviour
 
     public Vector3 pileTarget;
     public Pile pileRef;
+    [SerializeField] public DayManager dayManager;
+    private bool CanThrow = true;
     public void Awake()
     {
         
        
+    }
+    public void Subscribe()
+    {
+        if (dayManager != null)   
+        dayManager.DayEnd += DisableThrow;
+    }
+    public void OnDisable()
+    {
+        dayManager.DayEnd -= DisableThrow;
     }
 
     public void SetInitialPose()
@@ -39,8 +50,14 @@ public class PaperMove : MonoBehaviour
         myself = this.gameObject;
         StartCoroutine(SpawnPosition());
     }
+    public void DisableThrow()
+    {
+        CanThrow = false;
+    }
     public void MoveRightTuyaux()
     {
+        if (!CanThrow)
+            return;
         if (OnPile == true)
         {
             return;
@@ -64,6 +81,9 @@ public class PaperMove : MonoBehaviour
 
     public void MoveUpTuyaux()
     {
+
+        if (!CanThrow)
+            return;
         if (OnPile == true)
         {
             return;
@@ -85,6 +105,8 @@ public class PaperMove : MonoBehaviour
 
     public void MoveLeftTuyaux()
     {
+        if (!CanThrow)
+            return;
         if (OnPile == true)
         {
             return;
@@ -106,7 +128,8 @@ public class PaperMove : MonoBehaviour
     }
     public void MoveToPile()
     {
-
+        if (!CanThrow)
+            return;
         if (OnPile == false)
         {
             Debug.Log("Pile");
@@ -131,7 +154,9 @@ public class PaperMove : MonoBehaviour
     }
     public void RemoveFromPile()
     {
-            if (OnPile == true)
+        if (!CanThrow)
+            return;
+        if (OnPile == true)
             {
                 switch (paperType)
                 {

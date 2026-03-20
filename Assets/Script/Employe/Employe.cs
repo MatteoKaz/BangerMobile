@@ -40,17 +40,16 @@ public class Employe : MonoBehaviour
 
 
 
-    // premier set d'identité
     public void InitialSetIdentity()
     {
         Debug.Log("EmployeSetUp");
+
         if (employeObject == null || employeObject.allEmploye == null || employeObject.allEmploye.Count == 0)
             return;
 
         if (polemanager == null || polemanager.TakenEmployeIndex == null)
             return;
 
-        // Empêche boucle infinie
         if (polemanager.TakenEmployeIndex.Count >= employeObject.allEmploye.Count)
         {
             Debug.LogWarning("Tous les employés ont déjà été pris !");
@@ -60,24 +59,23 @@ public class Employe : MonoBehaviour
         do
         {
             employeIndex = Random.Range(0, employeObject.allEmploye.Count);
-        } while (polemanager.TakenEmployeIndex.Contains(employeIndex));
+        }
+        while (polemanager.TakenEmployeIndex.Contains(employeIndex));
 
-        polemanager.TakenEmployeIndex.Add(employeIndex);
-
-        SetIdentity(employeIndex, addToTaken: false);
+        SetIdentity(employeIndex);
     }
 
-
-    // Second set d'identité lorsqu'on ameliore le gars
-    public void SetIdentity(int index, bool addToTaken = true)
+    public void SetIdentity(int index)
     {
         if (employeObject == null || employeObject.allEmploye == null || index < 0 || index >= employeObject.allEmploye.Count)
             return;
 
-        if (polemanager != null && polemanager.TakenEmployeIndex != null && employeIndex>=0)
+        // Retire l'ancien si valide
+        if (polemanager != null && polemanager.TakenEmployeIndex != null && employeIndex >= 0)
             polemanager.TakenEmployeIndex.Remove(employeIndex);
 
         employeIndex = index;
+
         var employe = employeObject.allEmploye[employeIndex];
 
         employeType = employe.type;
@@ -88,7 +86,8 @@ public class Employe : MonoBehaviour
         errorPercent = employe.errorPercent;
         timeInEntreprise = employe.timeInEntreprise;
 
-        if (addToTaken && polemanager != null && polemanager.TakenEmployeIndex != null && !polemanager.TakenEmployeIndex.Contains(employeIndex))
+        // Ajoute le nouveau
+        if (polemanager != null && polemanager.TakenEmployeIndex != null)
             polemanager.TakenEmployeIndex.Add(employeIndex);
 
         Debug.Log("SetEmploye");
@@ -100,8 +99,9 @@ public class Employe : MonoBehaviour
     {
         if (mypole.waitingPaper > 0 && iamWorking == false)
         {
+            mypole.activepaper++;
             StartCoroutine(Work());
-           
+            
         }
         
         else
@@ -125,7 +125,10 @@ public class Employe : MonoBehaviour
         }
         float Succeed = Random.Range(0f, 1f);
         if (errorPercent > Succeed)
+        {
             mypole.WinMoney();
+        }
+            
 
        
         workAdvancement.value = 0;
