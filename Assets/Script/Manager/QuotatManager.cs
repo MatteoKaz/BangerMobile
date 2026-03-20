@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Globalization;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,7 +14,15 @@ public class QuotatManager : MonoBehaviour
     public int quotatMid;
     public int quotatHard;
     [SerializeField] PaperSpawner paperSpawner;
+    [SerializeField] ScoreManager scoreManager;
+
+    [Header("BalanceSpawnValue")]
     public float multToBalance = 2f;
+
+
+    [Header("TimeBeforeLaunchSpawner")]
+    public float waitTimeBeforLaunch = 1f;
+
 
     public event Action QuotatIsSet;
     public event Action CalculQuotat;
@@ -61,16 +70,23 @@ public class QuotatManager : MonoBehaviour
         QuotatIsSet?.Invoke();
         ChosenQuotat(DayQuotat);
     }
-
+  
     public void ChosenQuotat(int quotatChosen)
     {
         DayQuotat = quotatChosen;
+        scoreManager.quotatOfTheDay = quotatChosen;
         int valueToSpawn = DayQuotat / 10;
         paperSpawner.totalPapers = Mathf.RoundToInt(multToBalance * valueToSpawn) ;
-
-        QuotatChosen?.Invoke();
+        StartCoroutine(StartWave());
+        
         Debug.Log($"Quotat manager {DayQuotat}");
     }
+    public IEnumerator StartWave()
+    {
+        yield return new WaitForSeconds(waitTimeBeforLaunch);
+        QuotatChosen?.Invoke();
+    }
 
-    
+  
+
 }

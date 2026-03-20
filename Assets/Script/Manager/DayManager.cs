@@ -50,6 +50,7 @@ public class DayManager : MonoBehaviour
     public void DayOver()
     {
         DayEnd?.Invoke();
+        StartCoroutine(EndDayFade());
     }
 
     public void DayNameChange()
@@ -91,6 +92,7 @@ public class DayManager : MonoBehaviour
 
     public IEnumerator EndDayFade()
     {
+        //Lancer IciFadeIn
         yield return new WaitForSeconds(transitionDuration);
         DayTransition?.Invoke();
     }

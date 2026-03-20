@@ -1,4 +1,6 @@
-using Unity.VisualScripting;
+using System;
+using System.Collections;
+
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -8,6 +10,7 @@ public class ScoreManager : MonoBehaviour
    public int quotatOfTheDay = 0;
     public int WeekMedianQuotat = 0;
     [SerializeField] DayManager dayManager;
+    public event Action LaunchScoreAnim;
 
     public void OnEnable()
     {
@@ -15,9 +18,20 @@ public class ScoreManager : MonoBehaviour
     }
     public void CalculateMoney()
     {
-       playerMoney += playerQuotat - quotatOfTheDay; 
+       playerMoney += playerQuotat - quotatOfTheDay;
+        StartCoroutine(AnimLauncher());
+    }
+
+    public IEnumerator AnimLauncher()
+    {
+        yield return new WaitForSeconds(1f);
+            LaunchScoreAnim?.Invoke();
 
     }
+
+    
+
+   
 
 
 

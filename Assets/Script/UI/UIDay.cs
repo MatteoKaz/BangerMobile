@@ -1,16 +1,17 @@
-using UnityEngine;
-using TMPro;
-using System.Data;
-using System.Collections;
 using System;
+using System.Collections;
+using System.Data;
+using TMPro;
+
+using UnityEngine;
 public class UIDay : MonoBehaviour
 {
     [SerializeField] DayManager dayManager;
     [SerializeField] TextMeshProUGUI day;
     [SerializeField] TextMeshProUGUI week;
-
+    [SerializeField] float timeAtScreenValue = 3f;
     public event Action EndShowing;
-
+    public event Action LaunchFade;
     private void OnEnable()
     {
         dayManager.DayBegin += SetUpDayWeek;
@@ -29,7 +30,9 @@ public class UIDay : MonoBehaviour
 
     public IEnumerator TimeAtScreen()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(timeAtScreenValue);
+        LaunchFade?.Invoke();
+        yield return new WaitForSeconds(4f);
         EndShowing?.Invoke();
 
     }
