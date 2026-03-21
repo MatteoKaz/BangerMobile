@@ -24,6 +24,7 @@ public class UiManager : MonoBehaviour
     public event Action DifficultyShownAnim;
     public event Action ScoreAnim;
     public event Action LaunchDayAnim;
+    public event Action dayResetOpacity;
 
     private void OnEnable()
     {
@@ -59,14 +60,22 @@ public class UiManager : MonoBehaviour
 
     public void EnableDay()
     {
-       
+
         Day.SetActive(true);
-        LaunchDayAnim?.Invoke();
         Difficulty.SetActive(true);
-        DifficultyShownAnim?.Invoke();
+        dayResetOpacity?.Invoke();
+        LaunchDayAnim?.Invoke();
+        StartCoroutine(waitToShowDifficulty());
+        
 
     }
+    public IEnumerator waitToShowDifficulty()
+    {
 
+        yield return new WaitForSeconds(0.5f);
+        
+        DifficultyShownAnim?.Invoke();
+    }
     public void DisableDay()
     {
         Day.SetActive(false);
@@ -75,7 +84,11 @@ public class UiManager : MonoBehaviour
     public void EnableScore()
     {
         Score.SetActive(true);
+        DifficultyChoice.SetActive(true);
+        Day.SetActive(true);
+        
         ScoreAnim?.Invoke();
+        dayResetOpacity?.Invoke();
     }
     public void DisableScore()
     {

@@ -56,6 +56,8 @@ public class ChosenQuotatAnim : MonoBehaviour
             yield return null;
         }
 
+        
+
 
     }
 

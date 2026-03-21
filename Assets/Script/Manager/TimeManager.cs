@@ -24,6 +24,7 @@ public class TimeManager : MonoBehaviour
     }
     public IEnumerator DayTimer()
     {
+        yield return new WaitForSeconds(2f);
         DayDurationToShow = DayDuration;
         float T = 0;
         while (T < DayDuration)

@@ -6,7 +6,7 @@ public class PoleCounterUI : MonoBehaviour
 {
     public Pole pole;
     public TextMeshProUGUI counterText;
-
+    [SerializeField] DayManager dayManager;
     private float baseSize;
     private Coroutine animRoutine;
 
@@ -14,6 +14,7 @@ public class PoleCounterUI : MonoBehaviour
     {
         
         pole.eventWinMoney += UpdateCounter;
+        
     }
     public void Start()
     {

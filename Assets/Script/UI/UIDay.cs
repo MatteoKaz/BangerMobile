@@ -4,20 +4,24 @@ using System.Data;
 using TMPro;
 
 using UnityEngine;
+using UnityEngine.UI;
 public class UIDay : MonoBehaviour
 {
     [SerializeField] UiManager UiManager;
     [SerializeField] DayManager dayManager;
     [SerializeField] TextMeshProUGUI day;
     [SerializeField] TextMeshProUGUI week;
+    [SerializeField] Image dayFond;
     [SerializeField] float timeAtScreenValue = 3f;
     public event Action EndShowing;
     public event Action LaunchFade;
     public event Action LaunchFadeIN;
+
     private void OnEnable()
     {
         //Ici le bug Lance a la suite le fade 
         UiManager.LaunchDayAnim += SetUpDayWeek;
+        UiManager.dayResetOpacity += ResetOpacity;
     }
     private void OnDisable()
     {
@@ -31,7 +35,10 @@ public class UIDay : MonoBehaviour
         StartCoroutine(TimeAtScreen());
 
     }
-
+    public void ResetOpacity()
+    {
+        dayFond.color = new Color(dayFond.color.r, dayFond.color.g, dayFond.color.b, 1f);
+    }
     public IEnumerator TimeAtScreen()
     {
 

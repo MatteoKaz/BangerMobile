@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Fade : MonoBehaviour
+public class FadeDifficulty : MonoBehaviour
 {
     [Header("EffectValue")]
     [SerializeField] float fadeDuration = 1.0f;
@@ -12,28 +12,24 @@ public class Fade : MonoBehaviour
 
     [Header("ref")]
     [SerializeField] DayManager dayManager;
+    [SerializeField] UiManager uiManager;
     [SerializeField] UIDay uIDay;
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI textMeshPro;
+
+    //For TestOnly
+    [SerializeField] GameObject textParent;
     private void OnEnable()
     {
-        dayManager.DayBegin += LaunchFadeIn;
-        if(uIDay !=null)
-        {
-            uIDay.LaunchFade += LaunchFade;
-            uIDay.LaunchFadeIN += LaunchFadeIn;
-            
-        }
+        uiManager.DifficultyChosenAnim += LaunchFade;
+        uiManager.dayResetOpacity += LaunchFadeIn;
+
+
     }
     private void OnDisable()
     {
-        dayManager.DayBegin -= LaunchFadeIn;
-        if (uIDay != null)
-        {
-            uIDay.LaunchFade -= LaunchFade;
-            uIDay.LaunchFadeIN -= LaunchFadeIn;
-           
-        }
+        uiManager.DifficultyChosenAnim -= LaunchFade;
+        uiManager.dayResetOpacity -= LaunchFadeIn;
     }
     public void LaunchFade()
     {
@@ -56,12 +52,11 @@ public class Fade : MonoBehaviour
         if (image != null)
         {
             StartCoroutine(FadeInImage());
-            
 
         }
         if (textMeshPro != null)
         {
-            Debug.Log("FADE");
+
             StartCoroutine(FadeInText());
         }
 
@@ -91,9 +86,7 @@ public class Fade : MonoBehaviour
         float t = 0f;
         Color startColor = image.color;
         Color targetColor = new Color(startColor.r, startColor.g, startColor.b, 1f); // alpha = 0
-        if (startColor == image.color)
-            yield break;
-        while (t < fadeDuration)
+         while (t < fadeDuration)
             {
                 t += Time.deltaTime;
 
@@ -105,6 +98,8 @@ public class Fade : MonoBehaviour
             }
         
     }
+
+
     public IEnumerator Fadetext()
     {
         float t = 0f;
@@ -143,4 +138,5 @@ public class Fade : MonoBehaviour
             }
         
     }
+
 }

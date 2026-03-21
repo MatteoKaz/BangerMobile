@@ -49,9 +49,16 @@ public class QuotatManager : MonoBehaviour
         quotatEasy = Mathf.RoundToInt(DayQuotat * 0.75f);
         quotatMid = Mathf.RoundToInt(DayQuotat * 1f);
         quotatHard = Mathf.RoundToInt(DayQuotat * 1.25f);
-        
+        StartCoroutine(WaitForActive());
         Debug.Log($"QuotatPerDay {DayQuotat}");
+        
+    }
+
+    public IEnumerator WaitForActive()
+    {
+        yield return new WaitForSeconds(0.1f);
         CalculQuotat?.Invoke();
+
     }
     public void SelectQuotat(int difficultySelect)
     {

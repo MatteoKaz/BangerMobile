@@ -93,9 +93,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -2088031127
+  m_SortingLayer: 1
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -126,10 +126,12 @@ MonoBehaviour:
   PileBlue: {fileID: 0}
   PileGreen: {fileID: 0}
   spawnPos: {x: 0, y: 0, z: 0}
+  OnPile: 0
   paperType: 0
   myself: {fileID: 0}
   pileTarget: {x: 0, y: 0, z: 0}
   pileRef: {fileID: 0}
+  dayManager: {fileID: 0}
 --- !u!50 &1979289199806458779
 Rigidbody2D:
   serializedVersion: 5
