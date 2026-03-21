@@ -7,9 +7,11 @@ public class UiManager : MonoBehaviour
     [SerializeField] DayManager dayManager;
     [SerializeField] QuotatManager quotatManager;
     [ SerializeField] ScoreManager scoreManager;
+    
 
     [SerializeField] GameObject Day;
     [SerializeField] GameObject Score;
+    [SerializeField] GameObject Difficulty;
 
     [SerializeField] UIDay dayScript;
 
@@ -21,6 +23,7 @@ public class UiManager : MonoBehaviour
     public event Action DifficultyChosenAnim;
     public event Action DifficultyShownAnim;
     public event Action ScoreAnim;
+    public event Action LaunchDayAnim;
 
     private void OnEnable()
     {
@@ -58,7 +61,8 @@ public class UiManager : MonoBehaviour
     {
        
         Day.SetActive(true);
-
+        LaunchDayAnim?.Invoke();
+        Difficulty.SetActive(true);
         DifficultyShownAnim?.Invoke();
 
     }

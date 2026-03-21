@@ -4136,7 +4136,7 @@ MonoBehaviour:
   fadeImageDelay: 0.5
   dayManager: {fileID: 1498863919}
   uIDay: {fileID: 1218462547}
-  image: {fileID: 0}
+  image: {fileID: 960871311}
   textMeshPro: {fileID: 461405383}
 --- !u!1 &482980620
 GameObject:
@@ -5871,7 +5871,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &726402468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8401,7 +8401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1509434, g: 0.12744749, b: 0.12744749, a: 1}
+  m_Color: {r: 0.1509434, g: 0.12744749, b: 0.12744749, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11300,7 +11300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1218462543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11398,6 +11398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a781b064a75fa704d9cfb5efc9f2b279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIDay
+  UiManager: {fileID: 1498863922}
   dayManager: {fileID: 1498863919}
   day: {fileID: 1570600297}
   week: {fileID: 461405383}
@@ -13735,6 +13736,7 @@ MonoBehaviour:
   scoreManager: {fileID: 1498863917}
   Day: {fileID: 1218462542}
   Score: {fileID: 108442172}
+  Difficulty: {fileID: 726402467}
   dayScript: {fileID: 1218462547}
   waitTimeBeforeCloseDifficulty: 0.5
   DifficultyChoice: {fileID: 726402467}

@@ -21,6 +21,7 @@ public class Fade : MonoBehaviour
         if(uIDay !=null)
         {
             uIDay.LaunchFade += LaunchFade;
+            uIDay.LaunchFadeIN += LaunchFadeIn;
         }
     }
     private void OnDisable()
@@ -29,6 +30,7 @@ public class Fade : MonoBehaviour
         if (uIDay != null)
         {
             uIDay.LaunchFade -= LaunchFade;
+            uIDay.LaunchFadeIN -= LaunchFadeIn;
         }
     }
     public void LaunchFade()
