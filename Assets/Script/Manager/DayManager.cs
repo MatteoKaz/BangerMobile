@@ -11,6 +11,7 @@ public class DayManager : MonoBehaviour
 
     public float transitionDuration = 1f;
 
+    public event Action ResetValueBeforeNextDay;
     public event Action DayBegin;
     public event Action DayEnd;
     public event Action FirstDayInitialization;
@@ -45,7 +46,19 @@ public class DayManager : MonoBehaviour
 
 
     }
-    
+    public void NewDaySetUp()
+    {
+        StartCoroutine(NextDaySetup());
+
+    }
+
+    public IEnumerator NextDaySetup()
+    {
+        
+        ResetValueBeforeNextDay?.Invoke();
+        yield return new WaitForSeconds(1f);
+        LaunchNewDay();
+    }
 
     public void DayOver()
     {

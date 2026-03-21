@@ -34,13 +34,14 @@ public class PaperSpawner : MonoBehaviour
     public int greenQuota = 5;
 
     private List<GameObject> spawnList = new List<GameObject>();
+    private List<GameObject> spawnnedList = new List<GameObject>();
 
     [Header("QuotaDistribution")]
     public int totalPapers = 50;//NombreMax
     public int minPerType = 18; // quota min 
     public int typesCount = 3; //NombreDeType
 
-
+    private Coroutine spawnRoutine;
     [SerializeField] DayManager dayManager;
     private bool canSpawn = true;
 
@@ -48,29 +49,32 @@ public class PaperSpawner : MonoBehaviour
     public void OnEnable()
     {
         quotatManager.QuotatChosen += StartSpawn;
+        
         dayManager.DayEnd += StopSpawn;
+        dayManager.DayTransition += DestroyEverything;
     }
     void OnDisable()
     {
         quotatManager.QuotatChosen -= StartSpawn;
+        dayManager.DayTransition -= DestroyEverything;
     }
     public IEnumerator SpawnStart()
     {
         yield return new WaitForSeconds(DelayBeforeStart);
         RandomAssignation();
         QuotatSetup();
-        StartCoroutine(Spawn());
+        spawnRoutine = StartCoroutine(Spawn());
         Debug.Log("ddd");
     }
     public void StartSpawn()
     {
         canSpawn = true;
-        StartCoroutine(SpawnStart());
+         StartCoroutine(SpawnStart());
     }
 
     public void StopSpawn()
     {
-        StopCoroutine(Spawn());
+        StopCoroutine(spawnRoutine);
         canSpawn = false;
 
     }
@@ -120,6 +124,7 @@ public class PaperSpawner : MonoBehaviour
 
 
             GameObject paperSpawn = Instantiate(prefab, pointToSpawn.position, Quaternion.identity, parentTransform);
+            spawnnedList.Add(paperSpawn);
             PaperMove pm = paperSpawn.GetComponent<PaperMove>();
             pm.dayManager = dayManager;
             pm.Subscribe();
@@ -198,5 +203,14 @@ public class PaperSpawner : MonoBehaviour
         }
     }
 
+    public void DestroyEverything()
+    {
+        for(int i = 0; i< spawnnedList.Count; i++)
+        {
+            Destroy(spawnnedList[i].gameObject);
 
+        }
+        spawnnedList.Clear();
+        spawnList.Clear();
+    }
 }

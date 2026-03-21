@@ -47,44 +47,31 @@ public class PoleManager : MonoBehaviour
        
         
     }
-    
+
 
 
     public void InitializePole()
     {
         Debug.Log("InitializePole");
         int i = 0;
+
         foreach (Employe employe in employes)
         {
-            if ( i < poles.Length )
+            // Boucle jusqu'à trouver un pole qui n'a pas 2 employés
+            while (i < poles.Length && poles[i].employeList.Count >= 2)
+                i++;
+
+            if (i >= poles.Length)
             {
-                if (poles[i].employeList.Count < 2)
-                {
-
-                    poles[i].employeList.Add(employe);
-                    employe.mypole = poles[i];
-                    employe.InitialSetIdentity();
-                    
-
-                }
-                else
-                {
-                    i++;
-                    poles[i].employeList.Add(employe);
-                    employe.mypole = poles[i];
-                    employe.InitialSetIdentity();
-
-                }
-            }
-            else
-            {
-                Debug.Log(i);
-                return;
+                Debug.Log("Plus de place pour les employés restants");
+                break;
             }
 
+            // Assignation
+            poles[i].employeList.Add(employe);
+            employe.mypole = poles[i];
+            employe.InitialSetIdentity();
         }
-        
-
     }
 
     public void QuotatAssemble()

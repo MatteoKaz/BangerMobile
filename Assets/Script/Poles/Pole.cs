@@ -6,6 +6,8 @@ using UnityEngine.WSA;
 
 public class Pole : MonoBehaviour
 {
+
+    [SerializeField] DayManager dayManager; 
     public int localQuotat;
     public int localAdvencement = 0;    
     [Header("PoleType")]
@@ -22,25 +24,31 @@ public class Pole : MonoBehaviour
     public int waitingPaper = 0;
     public int activepaper = 0;
     public int paperValue = 10;
+    public int papertoadd = 5;
 
     [SerializeField] public GameObject contentparent;
     [SerializeField] Tuyaux myTuyaux;
 
+    [SerializeField] public string PoleName;
+
     public event Action eventWinMoney;
+    
 
     public void OnEnable()
     {
         myTuyaux.AddPaper += AddPaper;
+        dayManager.ResetValueBeforeNextDay += ResetAllValue;
     }
     public void OnDisable()
     {
-        myTuyaux.AddPaper -= AddPaper;  
+        myTuyaux.AddPaper -= AddPaper;
+        dayManager.ResetValueBeforeNextDay -= ResetAllValue;
     }
 
     public void AddPaper()
     {
        
-        totalPaper += 1;
+        totalPaper += papertoadd;
         
         waitingPaper = totalPaper - activepaper;
         waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
@@ -99,7 +107,13 @@ public class Pole : MonoBehaviour
         totalPaper = 0;
         waitingPaper = 0;
         activepaper = 0;
-        localQuotat = 0;    
+        localQuotat = 0; 
+        localAdvencement = 0;
+        foreach(Employe emp in  employeList)
+        {
+            emp.EndDayResetStat();
+        }
+        
     }
 
 

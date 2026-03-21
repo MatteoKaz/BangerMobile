@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum TypeOfEmploye
 {
@@ -16,12 +17,13 @@ public class EmployeData
     public string description;
     public string fireDescription;
     public TypeOfEmploye type;
+    public string TypeText;
     public float workRythme;      // RythmeDeTravail
     public float errorPercent;
     public int timeInEntreprise;
 
 
-    public Sprite icone;
+    public Image icone;
 }
 
 [CreateAssetMenu(fileName = "Employes", menuName = "Scriptable Objects/EmployeObject")]

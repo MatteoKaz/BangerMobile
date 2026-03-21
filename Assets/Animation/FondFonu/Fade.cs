@@ -52,6 +52,7 @@ public class Fade : MonoBehaviour
         if (image != null)
         {
             StartCoroutine(FadeInImage());
+            Debug.Log("FADE");
 
         }
         if (textMeshPro != null)

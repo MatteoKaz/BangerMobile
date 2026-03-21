@@ -28,6 +28,7 @@ public class UiManager : MonoBehaviour
         dayManager.DayBegin += EnableDay;
         dayScript.EndShowing += DisableDay;
         scoreManager.LaunchScoreAnim += EnableScore;
+        dayManager.DayBegin += DisableScore;
     }
     private void OnDisable()
     {
@@ -35,6 +36,7 @@ public class UiManager : MonoBehaviour
         dayManager.DayBegin -= EnableDay;
         dayScript.EndShowing -= DisableDay;
         scoreManager.LaunchScoreAnim -= EnableScore;
+        dayManager.DayBegin -= DisableScore;
     }
 
 
@@ -56,6 +58,7 @@ public class UiManager : MonoBehaviour
     {
        
         Day.SetActive(true);
+
         DifficultyShownAnim?.Invoke();
 
     }

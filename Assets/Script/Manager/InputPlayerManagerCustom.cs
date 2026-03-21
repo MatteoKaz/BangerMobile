@@ -28,7 +28,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
     [SerializeField] public float maxswipeTime = 0.3f;
     bool hasRemove = false;
 
-
+    
 
     void Awake()
     {
@@ -124,13 +124,31 @@ public class InputPlayerManagerCustom : MonoBehaviour
                 }
 
             }
-
+         
         }
 
 
     }
 
+    public void SwipeForMenu()
+    {
+        Vector2 delta = endPosition - startPosition;
+        float distance = delta.magnitude;
+        delta = delta.normalized;
+        float dotLeft = Vector3.Dot(delta, Vector3.left);
 
+        if (Math.Abs(dotLeft) > 0.7f)
+        {
+            if (dotLeft > 0)
+            {
+                OnMoveLeft?.Invoke();
+            }
+            else
+            {
+                OnMoveRight?.Invoke();
+            }
+        }
+    }
 
 
     private void Update()
@@ -182,6 +200,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
             endPosition = touch.screenPosition;
             float swipeDuration = Time.time - swipeStartTime;
             OnSwipe();
+            SwipeForMenu();
             hasRemove = false;
 
 

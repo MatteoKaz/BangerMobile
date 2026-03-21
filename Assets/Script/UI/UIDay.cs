@@ -12,8 +12,10 @@ public class UIDay : MonoBehaviour
     [SerializeField] float timeAtScreenValue = 3f;
     public event Action EndShowing;
     public event Action LaunchFade;
+
     private void OnEnable()
     {
+        //Ici le bug Lance a la suite le fade 
         dayManager.DayBegin += SetUpDayWeek;
     }
     private void OnDisable()
@@ -24,15 +26,17 @@ public class UIDay : MonoBehaviour
     {
         day.text = $"{dayManager.DayName}";
         week.text = $"Semaine: {dayManager.currentWeek}";
+
         StartCoroutine(TimeAtScreen());
 
     }
 
     public IEnumerator TimeAtScreen()
     {
+
         yield return new WaitForSeconds(timeAtScreenValue);
         LaunchFade?.Invoke();
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2.5f);
         EndShowing?.Invoke();
 
     }
