@@ -16,13 +16,20 @@ public class UIScore : MonoBehaviour
     private void OnEnable()
     {
         uiManager.ScoreAnim += LaunchAnim;
+        uiManager.ScoreReset += ResetScore;
     }
 
     private void OnDisable()
     {
         uiManager.ScoreAnim -= LaunchAnim;
+        uiManager.ScoreReset -= ResetScore;
     }
+    public void ResetScore()
+    {
+        UiScore.text = null;
+        Uimoney.text = "Argent:";    
 
+    }
     public void LaunchAnim()
     {
         StartCoroutine(ScoreAnim());

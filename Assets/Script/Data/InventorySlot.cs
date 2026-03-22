@@ -51,6 +51,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         {
             newPole.RebuildEmployeList();
             oldPole.RebuildEmployeList();
+            newPole.UpdatePaperUI();
+            oldPole.activepaper--;
+            oldPole.UpdatePaperUI();
+
 
             employe.SwitchPole(newPole);
         }

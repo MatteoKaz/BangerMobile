@@ -16,9 +16,10 @@ public class DayManager : MonoBehaviour
     public event Action DayEnd;
     public event Action FirstDayInitialization;
     public event Action DayTransition;
-
-    [SerializeField] private TimeManager timeManager; 
-
+    public event Action RankingDay;
+    public event Action NewWeekReset;
+    [SerializeField] private TimeManager timeManager;
+    [SerializeField] RankingManager rankingManager;
     public void OnEnable()
     {
         timeManager.TimerEnded += DayOver;
@@ -48,10 +49,25 @@ public class DayManager : MonoBehaviour
     }
     public void NewDaySetUp()
     {
-        StartCoroutine(NextDaySetup());
+        if (currentDay < 5)
+        {
+
+            StartCoroutine(NextDaySetup());
+        }
+        else
+        {
+            ResetValueBeforeNextDay?.Invoke();
+            rankingManager.rankingFolder.SetActive(true);
+            RankingDay?.Invoke();
+        }
 
     }
-
+    public void NewWeek()
+    {
+        rankingManager.rankingFolder.SetActive(false);
+        NewWeekReset?.Invoke();
+        StartCoroutine(NextDaySetup());
+    }
     public IEnumerator NextDaySetup()
     {
         

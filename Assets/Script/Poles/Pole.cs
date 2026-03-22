@@ -41,6 +41,9 @@ public class Pole : MonoBehaviour
     [SerializeField] Slider surchargeProgress;
     public float sliderSpeed = 10f;
 
+
+
+    
     public event Action UpdatePaperCount;
 
     public enum TypeOfMalus
@@ -65,13 +68,21 @@ public class Pole : MonoBehaviour
     {
         myTuyaux.AddPaper += AddPaper;
         dayManager.ResetValueBeforeNextDay += ResetAllValue;
+        dayManager.NewWeekReset += EndWeekReset;
     }
     public void OnDisable()
     {
         myTuyaux.AddPaper -= AddPaper;
         dayManager.ResetValueBeforeNextDay -= ResetAllValue;
+        dayManager.NewWeekReset -= EndWeekReset;
     }
-
+    public void EndWeekReset()
+    {
+        foreach(Employe emp in employeList)
+        {
+            emp.EndWeekReset();
+        }
+    }
     public void AddPaper()
     {
        
@@ -95,9 +106,9 @@ public class Pole : MonoBehaviour
         waitingPaper = totalPaper - activepaper;
         waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
         LaunchWorker() ;
-       
         UpdatePaperCount?.Invoke();
 
+        BeginSurcharge();
 
 
 
@@ -112,9 +123,15 @@ public class Pole : MonoBehaviour
     public void UpdateUI()
     {
         eventWinMoney?.Invoke();
+        
+    }
+    public void UpdatePaperUI()
+    {
+        UpdatePaperCount?.Invoke();
     }
     public void LaunchWorker()
     {
+   
         foreach (Employe employe in employeList)
         {
             if (employe.iamWorking == false && waitingPaper >0 )
@@ -122,11 +139,14 @@ public class Pole : MonoBehaviour
                 
                 employe.Working();
                 waitingPaper = Mathf.Max(0, totalPaper - activepaper);
-
+                BeginSurcharge();
+                
 
 
             }
+            
         }
+        UpdatePaperCount?.Invoke();
     }
 
 
@@ -173,7 +193,7 @@ public class Pole : MonoBehaviour
 
     public void BeginSurcharge()
     {
-        if (waitingPaper>0)
+        if (waitingPaper>0 && employeList.Count > 0)
         {
             Debug.Log("SurchargeBegin");
             if (SurchargeRef == null)
@@ -268,6 +288,7 @@ public class Pole : MonoBehaviour
     {
         surchargeValue = 0f;
         nextThresholdIndex = 0;
+        surchargeProgress.value = 0f;
         if (SurchargeRef != null)
         {
             StopCoroutine(SurchargeRef);

@@ -320,6 +320,9 @@ MonoBehaviour:
   employeWorkRateBonus: 0
   employeErrorPercenBonus: 0
   StressBonus: 0
+  errorPercentMalus: 0
+  employeWorkRateMalus: 0
+  isStunned: 0
   workAdvancement: {fileID: 5497755870595051536}
   numberOfPaperDone: 0
   succeedPaper: 0
@@ -329,6 +332,7 @@ MonoBehaviour:
   WeekmoneyMake: 0
   timeBeetwennWork: 0.2
   iamWorking: 0
+  Name: {fileID: 7991343296810344480}
 --- !u!114 &2700297029104301821
 MonoBehaviour:
   m_ObjectHideFlags: 0

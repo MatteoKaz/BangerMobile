@@ -44,5 +44,8 @@ TagManager:
   - name: Paper
     uniqueID: 2206936169
     locked: 0
+  - name: Ranking
+    uniqueID: 3374664179
+    locked: 0
   m_RenderingLayers:
   - Default

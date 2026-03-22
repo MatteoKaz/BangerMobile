@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using NUnit.Framework;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Pole;
@@ -54,6 +55,8 @@ public class Employe : MonoBehaviour
     public bool iamWorking = false;
     private Coroutine WorkRoutine;
 
+    [Header("Ui")]
+    [SerializeField] TextMeshProUGUI Name;
 
 
     public void InitialSetIdentity()
@@ -103,7 +106,7 @@ public class Employe : MonoBehaviour
         timeInEntreprise = employe.timeInEntreprise;
         employeTypeText = employe.TypeText;
         employeImage = employe.icone;
-
+        Name.text = employe.EmployeName;
         // Ajoute le nouveau
         if (polemanager != null && polemanager.TakenEmployeIndex != null)
             polemanager.TakenEmployeIndex.Add(employeIndex);
@@ -119,6 +122,7 @@ public class Employe : MonoBehaviour
         {
             iamWorking = true;
             mypole.activepaper++;
+            mypole.UpdatePaperUI();
             WorkRoutine = StartCoroutine(Work());
             
         }
@@ -228,6 +232,12 @@ public class Employe : MonoBehaviour
         succeedPaper = 0;
         moneyMake = 0;
         numberOfPaperDone = 0;
+    }
+    public void EndWeekReset()
+    {
+        WeekmoneyMake = 0;
+        WeeknumberOfPaperDone += 0;
+        WeeksucceedPaper += 0;
     }
 
 }

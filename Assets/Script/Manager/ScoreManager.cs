@@ -15,6 +15,7 @@ public class ScoreManager : MonoBehaviour
     public void OnEnable()
     {
         dayManager.DayTransition += CalculateMoney;
+        dayManager.DayBegin += ResetDay;
     }
     public void CalculateMoney()
     {
@@ -30,7 +31,10 @@ public class ScoreManager : MonoBehaviour
 
     }
 
-    
+    public void ResetDay()
+    {
+        playerQuotat = 0;
+    }
 
    
 

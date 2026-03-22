@@ -25,6 +25,7 @@ public class UiManager : MonoBehaviour
     public event Action ScoreAnim;
     public event Action LaunchDayAnim;
     public event Action dayResetOpacity;
+    public event Action ScoreReset;
 
     private void OnEnable()
     {
@@ -92,6 +93,7 @@ public class UiManager : MonoBehaviour
     }
     public void DisableScore()
     {
+        ScoreReset?.Invoke();
         Score.SetActive(false);
     }
 }
