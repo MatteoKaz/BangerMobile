@@ -115,6 +115,30 @@ public class Pole : MonoBehaviour
         }
         
     }
+    public void RebuildEmployeList()
+    {
+        employeList.Clear();
 
+        List<InventorySlot> slots = new List<InventorySlot>();
+
+        foreach (Transform child in contentparent.transform)
+        {
+            var slot = child.GetComponent<InventorySlot>();
+            if (slot != null)
+                slots.Add(slot);
+        }
+
+        // tri explicite
+        slots.Sort((a, b) => a.slotIndex.CompareTo(b.slotIndex));
+
+        foreach (var slot in slots)
+        {
+            var draggable = slot.GetComponentInChildren<DraggableItems>();
+            if (draggable != null)
+            {
+                employeList.Add(draggable.linkedEmploye);
+            }
+        }
+    }
 
 }

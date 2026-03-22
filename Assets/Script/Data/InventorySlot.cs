@@ -8,7 +8,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
 
     private Image _image;
     private Color _originalColor;
-
+    public Pole linkedPole;
+    public int slotIndex;
     private void Awake()
     {
         _image = GetComponent<Image>();
@@ -27,8 +28,15 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         DraggableItems draggable = dropped.GetComponent<DraggableItems>();
         if (draggable == null) return;
 
+        Employe employe = draggable.linkedEmploye;
+        if (employe == null) return;
+
+        Pole oldPole = employe.mypole;
+        Pole newPole = linkedPole;
         DraggableItems occupant = GetOccupant();
 
+        draggable.transform.SetParent(transform, false);
+        draggable.transform.localPosition = Vector3.zero;
         if (occupant != null)
         {
             occupant.parentAfterDrag = draggable.originalParent;
@@ -37,6 +45,21 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         }
 
         draggable.parentAfterDrag = transform;
+
+        // LOGIQUE GAMEPLAY
+        if (oldPole != newPole)
+        {
+            newPole.RebuildEmployeList();
+            oldPole.RebuildEmployeList();
+
+            employe.SwitchPole(newPole);
+        }
+        else
+        {
+
+            newPole.RebuildEmployeList();
+         
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)

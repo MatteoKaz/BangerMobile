@@ -21,6 +21,7 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     private CanvasGroup _canvasGroup;
     private Vector3 _originalWorldScale;
     private Coroutine _scaleCoroutine;
+    public Employe linkedEmploye;
 
     private void Awake()
     {

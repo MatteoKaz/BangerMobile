@@ -223,8 +223,8 @@ GameObject:
   - component: {fileID: 2163014998647787348}
   - component: {fileID: 3841692242779051512}
   - component: {fileID: 7831634923215323437}
-  - component: {fileID: 6189770309047599800}
   - component: {fileID: 5534161824411419701}
+  - component: {fileID: 2700297029104301821}
   m_Layer: 5
   m_Name: Enemis
   m_TagString: Untagged
@@ -292,18 +292,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6189770309047599800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5430678283621816018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db4eeaf9d79732a4e95536f6514ff89c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DraggableItem
 --- !u!114 &5534161824411419701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,20 +308,43 @@ MonoBehaviour:
   polemanager: {fileID: 0}
   mypole: {fileID: 0}
   employeType: 0
+  employeTypeText: 
   employeName: 
   employeDescription: 
   employeFireDescription: 
   employeWorkRate: 0
   errorPercent: 0
   timeInEntreprise: 0
-  employeSprite: {fileID: 0}
+  employeImage: {fileID: 0}
   employeIndex: 0
   employeWorkRateBonus: 0
   employeErrorPercenBonus: 0
   StressBonus: 0
   workAdvancement: {fileID: 5497755870595051536}
+  numberOfPaperDone: 0
+  succeedPaper: 0
+  moneyMake: 0
+  WeeknumberOfPaperDone: 0
+  WeeksucceedPaper: 0
+  WeekmoneyMake: 0
   timeBeetwennWork: 0.2
   iamWorking: 0
+--- !u!114 &2700297029104301821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5430678283621816018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9214283e96851749bf949a833e6ccf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DraggableItems
+  image: {fileID: 7831634923215323437}
+  originalParent: {fileID: 0}
+  parentAfterDrag: {fileID: 0}
+  linkedEmploye: {fileID: 5534161824411419701}
 --- !u!1 &5932464094987548455
 GameObject:
   m_ObjectHideFlags: 0

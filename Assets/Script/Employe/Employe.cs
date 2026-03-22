@@ -161,8 +161,10 @@ public class Employe : MonoBehaviour
     public void SwitchPole(Pole pole)
     {
         iamWorking = false;
+        workAdvancement.value = 0f;
         mypole = pole;
-        StopCoroutine(WorkRoutine);
+        if (WorkRoutine != null)
+            StopCoroutine(WorkRoutine);
 
         Working();
     }
@@ -177,7 +179,10 @@ public class Employe : MonoBehaviour
     public void EndDayResetStat()
     {
         iamWorking = false;
+        if (WorkRoutine != null)
         StopCoroutine(WorkRoutine);
+
+
         timeInEntreprise += 1;
         workAdvancement.value = 0;
         WeekmoneyMake += moneyMake;
