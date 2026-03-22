@@ -20,6 +20,30 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.020272732
       objectReference: {fileID: 0}
+    - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.w
+      value: 0.049999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.x
+      value: 0.049999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.y
+      value: 0.049999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.z
+      value: 0.049999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.16
+      objectReference: {fileID: 0}
     - target: {fileID: 3956954722674572427, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
       propertyPath: paperType
       value: 2
