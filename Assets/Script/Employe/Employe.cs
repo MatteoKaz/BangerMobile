@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using static Pole;
 
 public class Employe : MonoBehaviour
 {
@@ -30,7 +31,10 @@ public class Employe : MonoBehaviour
     public float employeErrorPercenBonus;
     public float StressBonus;
 
-
+    [Header("Malus")]
+    public float errorPercentMalus = 0f;
+    public float employeWorkRateMalus = 0f;
+    public bool isStunned =false ;
     [Header("Ui")]
     [SerializeField] Slider workAdvancement;
 
@@ -113,6 +117,7 @@ public class Employe : MonoBehaviour
     {
         if (mypole.waitingPaper > 0 && iamWorking == false)
         {
+            iamWorking = true;
             mypole.activepaper++;
             WorkRoutine = StartCoroutine(Work());
             
@@ -127,18 +132,21 @@ public class Employe : MonoBehaviour
 
     public IEnumerator Work()
     {
-        iamWorking = true;
+        
         float t = 0f;
        
         while (t < 1)
         {
-            t += Time.deltaTime / employeWorkRate;
-            workAdvancement.value = Mathf.Lerp(0, 1, t);
+            if (!isStunned) // empêche l'avancement pendant le stun
+            {
+                t += Time.deltaTime / (employeWorkRate + employeWorkRateMalus);
+                workAdvancement.value = Mathf.Lerp(0, 1, t);
+            }
             yield return null;
 
         }
         float Succeed = Random.Range(0f, 1f);
-        if (errorPercent > Succeed)
+        if ((errorPercent - errorPercentMalus) > Succeed)
         {
             mypole.WinMoney();
             moneyMake += mypole.paperValue;
@@ -146,14 +154,15 @@ public class Employe : MonoBehaviour
 
         }
 
-
+       
         numberOfPaperDone += 1;
         workAdvancement.value = 0;
         Debug.Log("workDone");
         yield return new WaitForSeconds(timeBeetwennWork);
-        mypole.DecrementPaper();
         iamWorking = false;
-        Working();
+        mypole.DecrementPaper();
+        
+        
 
 
     }
@@ -162,6 +171,9 @@ public class Employe : MonoBehaviour
     {
         iamWorking = false;
         workAdvancement.value = 0f;
+        employeWorkRateMalus = 0f;
+        errorPercentMalus = 0f;
+
         mypole = pole;
         if (WorkRoutine != null)
             StopCoroutine(WorkRoutine);
@@ -170,11 +182,34 @@ public class Employe : MonoBehaviour
     }
 
 
-    public void Malus()
+    public void Malus(TypeOfMalus malusType, float value)
     {
+        switch (malusType)
+        {
+            case TypeOfMalus.WorkRate:
+                employeWorkRateMalus = value;   // augmente le temps de travail
+                break;
+            case TypeOfMalus.ErrorPercent:
+                errorPercentMalus = value;      // augmente les chances d'erreur
+                break;
+            case TypeOfMalus.Stun:
+                StartCoroutine(StunCoroutine(value)); // empêche temporairement de travailler
+                break;
+
+        }
 
     }
-
+    public void ResetMalus()
+    {
+        employeWorkRateMalus = 0f;
+        errorPercentMalus = 0f;
+    }
+    public IEnumerator StunCoroutine(float duration)
+    {
+        isStunned = true;
+        yield return new WaitForSeconds(duration);
+        isStunned = false;
+    }
 
     public void EndDayResetStat()
     {
@@ -182,7 +217,9 @@ public class Employe : MonoBehaviour
         if (WorkRoutine != null)
         StopCoroutine(WorkRoutine);
 
-
+        isStunned = false;
+        employeWorkRateMalus = 0f;
+        errorPercentMalus = 0f;
         timeInEntreprise += 1;
         workAdvancement.value = 0;
         WeekmoneyMake += moneyMake;

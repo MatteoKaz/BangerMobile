@@ -9,40 +9,44 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 940524250724159639, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -9195663438911847084, guid: ad9bc8b1efc7392448ee8424343d54d5, type: 3}
+    - target: {fileID: 940524250724159639, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 940524250724159639, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
       propertyPath: m_Color.g
-      value: 0.24072933
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 940524250724159639, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
       propertyPath: m_SpriteTilingProperty.border.w
-      value: 0.049999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
       propertyPath: m_SpriteTilingProperty.border.x
-      value: 0.049999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
       propertyPath: m_SpriteTilingProperty.border.y
-      value: 0.049999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
       propertyPath: m_SpriteTilingProperty.border.z
-      value: 0.049999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.16
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 2828716020587894908, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 0.16
+      value: 2.19
       objectReference: {fileID: 0}
     - target: {fileID: 3956954722674572427, guid: 9eac83b786d9b7344b88233a9fea7733, type: 3}
       propertyPath: paperType
