@@ -53,6 +53,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
             oldPole.RebuildEmployeList();
             newPole.UpdatePaperUI();
             oldPole.activepaper--;
+            oldPole.activepaper = Mathf.Max(oldPole.activepaper, 0);
             oldPole.UpdatePaperUI();
 
 

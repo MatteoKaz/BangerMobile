@@ -8115,7 +8115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0975d565c814234fb41ccd7d85f2aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeManager
-  DayDuration: 60
+  DayDuration: 7
   DayDurationToShow: 180
   QuotatManager: {fileID: 641038302}
 --- !u!4 &641038308
@@ -29094,7 +29094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7929656335040964237, guid: 6c181f94e8e81fe4e8dd58ef986a7fd7, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29115,7 +29115,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4443295201744791979, guid: b39e7daca973d794093e52fca4e88303, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5763871404554388274, guid: b39e7daca973d794093e52fca4e88303, type: 3}
       propertyPath: VelocityModule.x.scalar
