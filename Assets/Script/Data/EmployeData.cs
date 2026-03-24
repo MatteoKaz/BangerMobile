@@ -26,7 +26,7 @@ public class EmployeData
     public Image icone;
 }
 
-[CreateAssetMenu(fileName = "Employes", menuName = "Scriptable Objects/EmployeObject")]
+
 public class EmployeObject : ScriptableObject
 {
     public List<EmployeData> allEmploye;

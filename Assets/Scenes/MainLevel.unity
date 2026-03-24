@@ -2843,6 +2843,10 @@ PrefabInstance:
       propertyPath: polemanager
       value: 
       objectReference: {fileID: 641038301}
+    - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: employeObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 04a5c98eb46fb064eaea80aeee9b8e5f, type: 2}
     - target: {fileID: 7831634923215323437, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -7657,6 +7661,10 @@ PrefabInstance:
       propertyPath: polemanager
       value: 
       objectReference: {fileID: 641038301}
+    - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: employeObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 04a5c98eb46fb064eaea80aeee9b8e5f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10681,6 +10689,10 @@ PrefabInstance:
       propertyPath: polemanager
       value: 
       objectReference: {fileID: 641038301}
+    - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: employeObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 04a5c98eb46fb064eaea80aeee9b8e5f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14787,6 +14799,10 @@ PrefabInstance:
       propertyPath: polemanager
       value: 
       objectReference: {fileID: 641038301}
+    - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: employeObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 04a5c98eb46fb064eaea80aeee9b8e5f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16753,6 +16769,10 @@ PrefabInstance:
       propertyPath: polemanager
       value: 
       objectReference: {fileID: 641038301}
+    - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: employeObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 04a5c98eb46fb064eaea80aeee9b8e5f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19433,6 +19453,10 @@ PrefabInstance:
       propertyPath: polemanager
       value: 
       objectReference: {fileID: 641038301}
+    - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: employeObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 04a5c98eb46fb064eaea80aeee9b8e5f, type: 2}
     - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
       propertyPath: workAdvancement
       value: 

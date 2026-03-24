@@ -8,13 +8,14 @@ using static Pole;
 
 public class Employe : MonoBehaviour
 {
-    public EmployeObject employeObject;
+    
+    [SerializeField] public EmployeObject employeObject;
     [SerializeField] private PoleManager polemanager;
     [SerializeField] public Pole mypole;
 
 
 
-    [Header("IdentitéPersoValue")]
+    [Header("Identitï¿½PersoValue")]
     public TypeOfEmploye employeType;
     public string employeTypeText;
     public string employeName;
@@ -71,7 +72,7 @@ public class Employe : MonoBehaviour
 
         if (polemanager.TakenEmployeIndex.Count >= employeObject.allEmploye.Count)
         {
-            Debug.LogWarning("Tous les employés ont déjà été pris !");
+            Debug.LogWarning("Tous les employï¿½s ont dï¿½jï¿½ ï¿½tï¿½ pris !");
             return;
         }
 
@@ -115,7 +116,7 @@ public class Employe : MonoBehaviour
     }
 
 
-    // fonction à lancer lorsqu'il commence a work 
+    // fonction ï¿½ lancer lorsqu'il commence a work 
     public void Working()
     {
         if (mypole.waitingPaper > 0 && iamWorking == false)
@@ -141,7 +142,7 @@ public class Employe : MonoBehaviour
        
         while (t < 1)
         {
-            if (!isStunned) // empêche l'avancement pendant le stun
+            if (!isStunned) // empï¿½che l'avancement pendant le stun
             {
                 t += Time.deltaTime / (employeWorkRate + employeWorkRateMalus);
                 workAdvancement.value = Mathf.Lerp(0, 1, t);
@@ -197,7 +198,7 @@ public class Employe : MonoBehaviour
                 errorPercentMalus = value;      // augmente les chances d'erreur
                 break;
             case TypeOfMalus.Stun:
-                StartCoroutine(StunCoroutine(value)); // empêche temporairement de travailler
+                StartCoroutine(StunCoroutine(value)); // empï¿½che temporairement de travailler
                 break;
 
         }

@@ -13,42 +13,38 @@ public class PoleManager : MonoBehaviour
     [SerializeField] List<Employe> employes;
 
     [Header("Ref")]
-    [SerializeField] private ScoreManager scoreManager; 
+    [SerializeField] private ScoreManager scoreManager;
     [SerializeField] QuotatManager quotatManager;
     [SerializeField] DayManager dayManager;
 
-    
-
-    private void OnEnable()
+    private void Awake()
     {
         quotatManager.QuotatChosen += InitializedDay;
         dayManager.FirstDayInitialization += InitializePole;
         dayManager.DayEnd += QuotatAssemble;
     }
 
+    private void OnDisable()
+    {
+        quotatManager.QuotatChosen -= InitializedDay;
+        dayManager.FirstDayInitialization -= InitializePole;
+        dayManager.DayEnd -= QuotatAssemble;
+    }
+
     public void InitializedDay()
     {
-        
         QuotaGiver(quotatManager.DayQuotat);
-
-        
     }
+
     public void QuotaGiver(int quota)
     {
         for (int i = 0; i < poles.Length; i++)
         {
-
             poles[i].localQuotat = Mathf.RoundToInt(quota / poles.Length);
             Debug.Log($"{ poles[i].localQuotat}");
             poles[i].UpdateUI();
-           
-
         }
-       
-        
     }
-
-
 
     public void InitializePole()
     {
@@ -57,13 +53,13 @@ public class PoleManager : MonoBehaviour
 
         foreach (Employe employe in employes)
         {
-            // Boucle jusqu'à trouver un pole qui n'a pas 2 employés
+            // Boucle jusqu'Ã  trouver un pole qui n'a pas 2 employÃ©s
             while (i < poles.Length && poles[i].employeList.Count >= 2)
                 i++;
 
             if (i >= poles.Length)
             {
-                Debug.Log("Plus de place pour les employés restants");
+                Debug.Log("Plus de place pour les employÃ©s restants");
                 break;
             }
 
@@ -76,7 +72,7 @@ public class PoleManager : MonoBehaviour
 
     public void QuotatAssemble()
     {
-        foreach(Pole pole in poles)
+        foreach (Pole pole in poles)
         {
             scoreManager.playerQuotat += pole.localAdvencement;
         }

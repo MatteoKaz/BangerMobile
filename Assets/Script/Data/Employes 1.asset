@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Employes 1
+  m_EditorClassIdentifier: Assembly-CSharp::EmployeObject
+  allEmploye:
+  - EmployeName: Pat
+    description: 
+    fireDescription: 
+    type: 0
+    TypeText: 
+    workRythme: 4
+    errorPercent: 0.7
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Catarina
+    description: 
+    fireDescription: 
+    type: 1
+    TypeText: 
+    workRythme: 6
+    errorPercent: 0.9
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: "Andr\xE9"
+    description: 
+    fireDescription: 
+    type: 2
+    TypeText: 
+    workRythme: 5
+    errorPercent: 0.8
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Artorias
+    description: 
+    fireDescription: 
+    type: 1
+    TypeText: 
+    workRythme: 6
+    errorPercent: 0.9
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Sif
+    description: 
+    fireDescription: 
+    type: 0
+    TypeText: 
+    workRythme: 4
+    errorPercent: 0.7
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: Manus
+    description: 
+    fireDescription: 
+    type: 2
+    TypeText: 
+    workRythme: 5
+    errorPercent: 0.8
+    timeInEntreprise: 0
+    icone: {fileID: 0}
