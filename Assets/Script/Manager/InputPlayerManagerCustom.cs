@@ -173,6 +173,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
             Debug.Log("Start");
 
             RaycastHit2D hit = Physics2D.Raycast(touchPos2D, Vector2.zero);
+            Debug.DrawRay(touchPos2D, Vector2.zero);
             if (hit.collider != null)
             {
                 PaperMove paper = hit.collider.GetComponent<PaperMove>();
