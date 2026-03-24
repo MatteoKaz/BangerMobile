@@ -1,11 +1,10 @@
-using JetBrains.Annotations;
-using NUnit.Framework;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.WSA;
+
 
 public class Pole : MonoBehaviour
 {
@@ -276,7 +275,7 @@ public class Pole : MonoBehaviour
                 case 7: emp.Malus(TypeOfMalus.WorkRate, 2f); break; // palier 70
                 case 8: emp.Malus(TypeOfMalus.ErrorPercent, 10f); break; // palier 80
                 case 9: emp.Malus(TypeOfMalus.WorkRate, 3f); break; // palier 90
-                case 10: emp.Malus(TypeOfMalus.Stun, 5f);ResetSurcharge(); break; // palier 10
+                case 10: emp.Malus(TypeOfMalus.Stun, 5f);Debug.Log("LastsTEP"); ResetSurcharge(); break; // palier 100
 
             }
            
@@ -286,6 +285,7 @@ public class Pole : MonoBehaviour
 
     public void ResetSurcharge()
     {
+        Debug.Log("ResetSurcharge");
         surchargeValue = 0f;
         nextThresholdIndex = 0;
         surchargeProgress.value = 0f;
