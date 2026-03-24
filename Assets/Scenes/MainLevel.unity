@@ -29110,7 +29110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2044475474780343316, guid: 6c181f94e8e81fe4e8dd58ef986a7fd7, type: 3}
       propertyPath: lengthInSec
-      value: 0.49
+      value: 0.48
       objectReference: {fileID: 0}
     - target: {fileID: 2044475474780343316, guid: 6c181f94e8e81fe4e8dd58ef986a7fd7, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].time

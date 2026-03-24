@@ -3,7 +3,8 @@ using System.IO;
 using UnityEngine;
 
 /// <summary>
-/// Sauvegarde à chaque nouveau jour. Poles et employés découverts automatiquement.
+/// Sauvegarde et charge l'état du jeu à chaque début de nouvelle journée.
+/// Poles et employés découverts automatiquement dans la scène.
 /// </summary>
 public class SaveManager : MonoBehaviour
 {
@@ -22,10 +23,9 @@ public class SaveManager : MonoBehaviour
     {
         GatherReferences();
 
-        // Pose le flag avant que DayManager.Start() ne s'exécute
-        // Tous les Awake() tournent avant tous les Start() en Unity
         if (HasSave())
             dayManager.skipFirstLaunch = true;
+        // Pas de save → skipFirstLaunch reste false → DayManager lance LaunchNewDay() normalement
     }
 
     private void OnEnable()
@@ -41,9 +41,28 @@ public class SaveManager : MonoBehaviour
     private void Start()
     {
         if (HasSave())
+        {
+            Debug.Log("[SaveManager] Save trouvée → chargement.");
             LoadGame();
+        }
+        else
+        {
+            Debug.Log("[SaveManager] Aucune save → nouvelle partie.");
+            InitNewGame();
+        }
 
-        _initialized = true; // toute save avant ce point est ignorée
+        _initialized = true;
+    }
+
+    // ── Initialisation ───────────────────────────────────────────────────────
+
+    /// <summary>Initialise une toute nouvelle partie sans save.</summary>
+    private void InitNewGame()
+    {
+        scoreManager.playerMoney = 0;
+        dayManager.currentDay = 0;
+        dayManager.currentWeek = 1;
+        // DayManager.Start() a déjà appelé LaunchNewDay() normalement
     }
 
     /// <summary>Découvre automatiquement tous les Pole et Employe de la scène.</summary>
@@ -62,16 +81,18 @@ public class SaveManager : MonoBehaviour
         Debug.Log($"[SaveManager] {_poles.Length} poles, {_employes.Length} employés trouvés.");
     }
 
-    /// <summary>Sauvegarde l'état complet du jeu.</summary>
+    // ── Save ─────────────────────────────────────────────────────────────────
+
+    /// <summary>Sauvegarde l'état complet du jeu dans un fichier JSON.</summary>
     public void SaveGame()
     {
         if (!_initialized) return; // ignore les DayBegin du chargement initial
 
         SaveData data = new SaveData
         {
-            currentDay   = dayManager.currentDay,
-            currentWeek  = dayManager.currentWeek,
-            playerMoney  = scoreManager.playerMoney
+            currentDay  = dayManager.currentDay,
+            currentWeek = dayManager.currentWeek,
+            playerMoney = scoreManager.playerMoney
         };
 
         for (int i = 0; i < _employes.Length; i++)
@@ -98,37 +119,45 @@ public class SaveManager : MonoBehaviour
         }
 
         File.WriteAllText(SavePath, JsonUtility.ToJson(data, true));
-        Debug.Log($"[SaveManager] Sauvegarde : Jour {data.currentDay} Semaine {data.currentWeek}");
+        Debug.Log($"[SaveManager] Sauvegarde : Jour {data.currentDay} — Semaine {data.currentWeek}");
     }
 
-    /// <summary>Charge la sauvegarde et restaure l'état du jeu.</summary>
+    // ── Load ─────────────────────────────────────────────────────────────────
+
+    /// <summary>Charge la sauvegarde et restaure l'état complet du jeu.</summary>
     public void LoadGame()
     {
         if (!HasSave()) return;
 
         SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(SavePath));
 
-        // Restaure le jour sans incrémenter via RestoreDay()
         dayManager.RestoreDay(data.currentDay, data.currentWeek);
         scoreManager.playerMoney = data.playerMoney;
 
         foreach (EmployeSaveData empData in data.employes)
         {
+            Debug.Log("Lancement sans save");
             if (empData.sceneEmployeIndex < 0 || empData.sceneEmployeIndex >= _employes.Length)
                 continue;
 
             Employe emp = _employes[empData.sceneEmployeIndex];
             if (emp == null) continue;
 
+            // Identité
             emp.SetIdentity(empData.employeIndex);
-            emp.timeInEntreprise      = empData.timeInEntreprise;
+            emp.timeInEntreprise = empData.timeInEntreprise;
+
+            // Stats semaine
             emp.WeeknumberOfPaperDone = empData.weekNumberOfPaperDone;
             emp.WeeksucceedPaper      = empData.weekSucceedPaper;
             emp.WeekmoneyMake         = empData.weekMoneyMake;
+
+            // Upgrades
             emp.employeWorkRateBonus    = empData.workRateBonus;
             emp.employeErrorPercenBonus = empData.errorPercentBonus;
             emp.StressBonus             = empData.stressBonus;
 
+            // Reparente le DraggableItems dans le bon slot
             InventorySlot targetSlot = FindSlot(empData.poleType, empData.slotIndex);
             if (targetSlot == null) continue;
 
@@ -149,14 +178,22 @@ public class SaveManager : MonoBehaviour
         Debug.Log("[SaveManager] Chargement terminé.");
     }
 
+    // ── Utilitaires publics ──────────────────────────────────────────────────
+
+    /// <summary>Supprime le fichier de sauvegarde.</summary>
     public void DeleteSave()
     {
-        if (HasSave()) File.Delete(SavePath);
+        if (HasSave())
+        {
+            File.Delete(SavePath);
+            Debug.Log("[SaveManager] Save supprimée.");
+        }
     }
 
+    /// <summary>Retourne true si un fichier de sauvegarde existe.</summary>
     public bool HasSave() => File.Exists(SavePath);
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
+    // ── Helpers privés ───────────────────────────────────────────────────────
 
     private InventorySlot FindSlotOfEmploye(Employe emp)
     {
@@ -178,6 +215,7 @@ public class SaveManager : MonoBehaviour
         foreach (Pole pole in _poles)
         {
             if (pole.type != poleType || pole.contentparent == null) continue;
+
             foreach (Transform child in pole.contentparent.transform)
             {
                 InventorySlot slot = child.GetComponent<InventorySlot>();
@@ -191,7 +229,11 @@ public class SaveManager : MonoBehaviour
     private string GetScenePath(Transform t)
     {
         string path = t.name;
-        while (t.parent != null) { t = t.parent; path = t.name + "/" + path; }
+        while (t.parent != null)
+        {
+            t = t.parent;
+            path = t.name + "/" + path;
+        }
         return path;
     }
 }

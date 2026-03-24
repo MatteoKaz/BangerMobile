@@ -28,11 +28,13 @@ public class DayManager : MonoBehaviour
     }
     void Start()
     {
-        if (!skipFirstLaunch)
+        LaunchNewDay();
+        IsFirstGame();
+        /*if (!skipFirstLaunch)
         {
             LaunchNewDay();
             IsFirstGame();
-        }
+        }*/
     }
     public void LaunchNewDay()
     {
@@ -122,14 +124,18 @@ public class DayManager : MonoBehaviour
     {
         if ( currentDay == 1 && currentWeek == 1)
         {
-            FirstDayInitialization?.Invoke();
+            StartCoroutine(LaunchFirstDayInit());
             Debug.Log("Initialisation premier jour");
         }
        
 
     }
 
-
+    public IEnumerator LaunchFirstDayInit()
+    {
+        yield return new WaitForSeconds(0.1f);
+        FirstDayInitialization?.Invoke();
+    }
 
     public IEnumerator EndDayFade()
     {
