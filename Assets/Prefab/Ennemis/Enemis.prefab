@@ -315,7 +315,7 @@ MonoBehaviour:
   employeWorkRate: 0
   errorPercent: 0
   timeInEntreprise: 0
-  employeImage: {fileID: 0}
+  employeImage: {fileID: 7112390082609121258}
   employeIndex: 0
   employeWorkRateBonus: 0
   employeErrorPercenBonus: 0

@@ -106,7 +106,7 @@ public class Employe : MonoBehaviour
         errorPercent = employe.errorPercent;
         timeInEntreprise = employe.timeInEntreprise;
         employeTypeText = employe.TypeText;
-        employeImage = employe.icone;
+        employeImage.sprite = employe.icone;
         Name.text = employe.EmployeName;
         // Ajoute le nouveau
         if (polemanager != null && polemanager.TakenEmployeIndex != null)

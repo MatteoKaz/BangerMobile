@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public enum TypeOfEmploye
 {
@@ -22,8 +21,9 @@ public class EmployeData
     public float errorPercent;
     public int timeInEntreprise;
 
+    
 
-    public Image icone;
+    public Sprite icone;
 }
 
 

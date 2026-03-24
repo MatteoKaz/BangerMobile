@@ -13,57 +13,66 @@ MonoBehaviour:
   m_Name: Employes 1
   m_EditorClassIdentifier: Assembly-CSharp::EmployeObject
   allEmploye:
-  - EmployeName: Pat
+  - EmployeName: Malenia
     description: 
     fireDescription: 
     type: 0
     TypeText: 
-    workRythme: 4
-    errorPercent: 0.7
+    workRythme: 0
+    errorPercent: 0
     timeInEntreprise: 0
     icone: {fileID: 0}
-  - EmployeName: Catarina
-    description: 
-    fireDescription: 
-    type: 1
-    TypeText: 
-    workRythme: 6
-    errorPercent: 0.9
-    timeInEntreprise: 0
-    icone: {fileID: 0}
-  - EmployeName: "Andr\xE9"
-    description: 
-    fireDescription: 
-    type: 2
-    TypeText: 
-    workRythme: 5
-    errorPercent: 0.8
-    timeInEntreprise: 0
-    icone: {fileID: 0}
-  - EmployeName: Artorias
-    description: 
-    fireDescription: 
-    type: 1
-    TypeText: 
-    workRythme: 6
-    errorPercent: 0.9
-    timeInEntreprise: 0
-    icone: {fileID: 0}
-  - EmployeName: Sif
+  - EmployeName: 
     description: 
     fireDescription: 
     type: 0
     TypeText: 
-    workRythme: 4
-    errorPercent: 0.7
+    workRythme: 0
+    errorPercent: 0
     timeInEntreprise: 0
     icone: {fileID: 0}
-  - EmployeName: Manus
+  - EmployeName: 
     description: 
     fireDescription: 
-    type: 2
+    type: 0
     TypeText: 
-    workRythme: 5
-    errorPercent: 0.8
+    workRythme: 0
+    errorPercent: 0
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: 
+    description: 
+    fireDescription: 
+    type: 0
+    TypeText: 
+    workRythme: 0
+    errorPercent: 0
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: 
+    description: 
+    fireDescription: 
+    type: 0
+    TypeText: 
+    workRythme: 0
+    errorPercent: 0
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: 
+    description: 
+    fireDescription: 
+    type: 0
+    TypeText: 
+    workRythme: 0
+    errorPercent: 0
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: 
+    description: 
+    fireDescription: 
+    type: 0
+    TypeText: 
+    workRythme: 0
+    errorPercent: 0
     timeInEntreprise: 0
     icone: {fileID: 0}
