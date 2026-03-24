@@ -28,13 +28,12 @@ public class DayManager : MonoBehaviour
     }
     void Start()
     {
-        LaunchNewDay();
-        IsFirstGame();
-        /*if (!skipFirstLaunch)
+      
+       if (!skipFirstLaunch)
         {
             LaunchNewDay();
             IsFirstGame();
-        }*/
+        }
     }
     public void LaunchNewDay()
     {

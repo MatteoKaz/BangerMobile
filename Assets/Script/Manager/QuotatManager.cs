@@ -7,6 +7,8 @@ using UnityEngine;
 public class QuotatManager : MonoBehaviour
 {
     public int WeekQuotat = 500;
+    public int BaseQuotat = 250;
+    public float exposant = 1.5f;
     public int DayQuotat ;
     [SerializeField] DayManager dayManager;
     public event Action QuotatChosen;
@@ -30,15 +32,17 @@ public class QuotatManager : MonoBehaviour
     public void OnEnable()
     {
         dayManager.DayBegin += QuotatPerDay;
+        dayManager.NewWeekReset += QuotatCroissance;
     }
     void OnDisable()
     {
         dayManager.DayBegin -= QuotatPerDay;
+        dayManager.NewWeekReset -= QuotatCroissance;
     }
 
     public void QuotatCroissance()
     {
-
+        WeekQuotat = (int)Math.Round(BaseQuotat * Math.Pow(dayManager.currentWeek, exposant - 1));
     }
 
     //Temporaire
