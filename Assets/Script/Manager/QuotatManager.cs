@@ -48,6 +48,26 @@ public class QuotatManager : MonoBehaviour
     //Temporaire
     public void QuotatPerDay()
     {
+        switch (dayManager.currentDay)
+        {
+            case 1:
+                WeekQuotat *= (int)Math.Round(0.75f);
+                break;
+            case 2:
+                WeekQuotat *= (int)Math.Round(1f);
+                break;
+            case 3:
+                WeekQuotat *= (int)Math.Round(1.1f);
+                break;
+            case 4:
+                WeekQuotat *= (int)Math.Round(0.8f);
+                break;
+            case 5:
+                WeekQuotat *= (int)Math.Round(1.25f);
+                break;
+
+
+        }
         //TemporairePourTest
         DayQuotat = WeekQuotat;
         quotatEasy = Mathf.RoundToInt(DayQuotat * 0.75f);

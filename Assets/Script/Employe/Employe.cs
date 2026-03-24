@@ -142,7 +142,7 @@ public class Employe : MonoBehaviour
        
         while (t < 1)
         {
-            if (!isStunned) // emp�che l'avancement pendant le stun
+            if (isStunned == false) // emp�che l'avancement pendant le stun
             {
                 t += Time.deltaTime / (employeWorkRate + employeWorkRateMalus);
                 workAdvancement.value = Mathf.Lerp(0, 1, t);

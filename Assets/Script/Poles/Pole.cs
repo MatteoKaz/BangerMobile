@@ -289,6 +289,7 @@ public class Pole : MonoBehaviour
         surchargeValue = 0f;
         nextThresholdIndex = 0;
         surchargeProgress.value = 0f;
+
         if (SurchargeRef != null)
         {
             StopCoroutine(SurchargeRef);
