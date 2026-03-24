@@ -276,7 +276,7 @@ public class Pole : MonoBehaviour
                 case 7: emp.Malus(TypeOfMalus.WorkRate, 2f); break; // palier 70
                 case 8: emp.Malus(TypeOfMalus.ErrorPercent, 10f); break; // palier 80
                 case 9: emp.Malus(TypeOfMalus.WorkRate, 3f); break; // palier 90
-                case 10: emp.Malus(TypeOfMalus.Stun, 3f);  break; // palier 10
+                case 10: emp.Malus(TypeOfMalus.Stun, 5f);ResetSurcharge(); break; // palier 10
 
             }
            
