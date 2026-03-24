@@ -8101,6 +8101,7 @@ MonoBehaviour:
   currentDay: 0
   DayName: 
   currentWeek: 1
+  skipFirstLaunch: 0
   transitionDuration: 1
   timeManager: {fileID: 641038307}
   rankingManager: {fileID: 641038309}
@@ -21707,11 +21708,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SaveManager
   dayManager: {fileID: 641038306}
   scoreManager: {fileID: 641038303}
-  poles:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  employes: []
 --- !u!4 &1573853485
 Transform:
   m_ObjectHideFlags: 0

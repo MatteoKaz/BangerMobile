@@ -3,8 +3,7 @@ using System.IO;
 using UnityEngine;
 
 /// <summary>
-/// Sauvegarde et charge l'état du jeu à chaque début de nouvelle journée.
-/// Les poles et employés sont découverts automatiquement dans la scène.
+/// Sauvegarde à chaque nouveau jour. Poles et employés découverts automatiquement.
 /// </summary>
 public class SaveManager : MonoBehaviour
 {
@@ -15,12 +14,18 @@ public class SaveManager : MonoBehaviour
 
     private Pole[] _poles;
     private Employe[] _employes;
+    private bool _initialized = false;
 
     private string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
     private void Awake()
     {
         GatherReferences();
+
+        // Pose le flag avant que DayManager.Start() ne s'exécute
+        // Tous les Awake() tournent avant tous les Start() en Unity
+        if (HasSave())
+            dayManager.skipFirstLaunch = true;
     }
 
     private void OnEnable()
@@ -37,12 +42,13 @@ public class SaveManager : MonoBehaviour
     {
         if (HasSave())
             LoadGame();
+
+        _initialized = true; // toute save avant ce point est ignorée
     }
 
     /// <summary>Découvre automatiquement tous les Pole et Employe de la scène.</summary>
     private void GatherReferences()
     {
-        // Trie par chemin de scène pour garantir un ordre stable entre les sessions
         Pole[] foundPoles = FindObjectsByType<Pole>(FindObjectsSortMode.None);
         System.Array.Sort(foundPoles, (a, b) =>
             string.Compare(GetScenePath(a.transform), GetScenePath(b.transform)));
@@ -53,12 +59,14 @@ public class SaveManager : MonoBehaviour
             string.Compare(GetScenePath(a.transform), GetScenePath(b.transform)));
         _employes = foundEmployes;
 
-        Debug.Log($"[SaveManager] {_poles.Length} poles et {_employes.Length} employés trouvés.");
+        Debug.Log($"[SaveManager] {_poles.Length} poles, {_employes.Length} employés trouvés.");
     }
 
-    /// <summary>Sauvegarde l'état complet du jeu dans un fichier JSON.</summary>
+    /// <summary>Sauvegarde l'état complet du jeu.</summary>
     public void SaveGame()
     {
+        if (!_initialized) return; // ignore les DayBegin du chargement initial
+
         SaveData data = new SaveData
         {
             currentDay   = dayManager.currentDay,
@@ -93,17 +101,16 @@ public class SaveManager : MonoBehaviour
         Debug.Log($"[SaveManager] Sauvegarde : Jour {data.currentDay} Semaine {data.currentWeek}");
     }
 
-    /// <summary>Charge la sauvegarde et restaure l'état complet du jeu.</summary>
+    /// <summary>Charge la sauvegarde et restaure l'état du jeu.</summary>
     public void LoadGame()
     {
         if (!HasSave()) return;
 
         SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(SavePath));
 
-        dayManager.currentDay   = data.currentDay;
-        dayManager.currentWeek  = data.currentWeek;
+        // Restaure le jour sans incrémenter via RestoreDay()
+        dayManager.RestoreDay(data.currentDay, data.currentWeek);
         scoreManager.playerMoney = data.playerMoney;
-        dayManager.DayNameChange();
 
         foreach (EmployeSaveData empData in data.employes)
         {
@@ -113,21 +120,15 @@ public class SaveManager : MonoBehaviour
             Employe emp = _employes[empData.sceneEmployeIndex];
             if (emp == null) continue;
 
-            // Identité
             emp.SetIdentity(empData.employeIndex);
-            emp.timeInEntreprise = empData.timeInEntreprise;
-
-            // Stats semaine
+            emp.timeInEntreprise      = empData.timeInEntreprise;
             emp.WeeknumberOfPaperDone = empData.weekNumberOfPaperDone;
             emp.WeeksucceedPaper      = empData.weekSucceedPaper;
             emp.WeekmoneyMake         = empData.weekMoneyMake;
-
-            // Upgrades
             emp.employeWorkRateBonus    = empData.workRateBonus;
             emp.employeErrorPercenBonus = empData.errorPercentBonus;
             emp.StressBonus             = empData.stressBonus;
 
-            // Reparente le DraggableItems dans le bon slot
             InventorySlot targetSlot = FindSlot(empData.poleType, empData.slotIndex);
             if (targetSlot == null) continue;
 
@@ -142,18 +143,15 @@ public class SaveManager : MonoBehaviour
                 emp.mypole = targetSlot.linkedPole;
         }
 
-        // Reconstruit les listes d'employés de chaque pole après reparenting
         foreach (Pole pole in _poles)
             pole.RebuildEmployeList();
 
         Debug.Log("[SaveManager] Chargement terminé.");
     }
 
-    /// <summary>Supprime le fichier de sauvegarde.</summary>
     public void DeleteSave()
     {
-        if (HasSave())
-            File.Delete(SavePath);
+        if (HasSave()) File.Delete(SavePath);
     }
 
     public bool HasSave() => File.Exists(SavePath);
@@ -171,9 +169,7 @@ public class SaveManager : MonoBehaviour
     {
         DraggableItems[] all = FindObjectsByType<DraggableItems>(FindObjectsSortMode.None);
         foreach (DraggableItems d in all)
-        {
             if (d.linkedEmploye == emp) return d;
-        }
         return null;
     }
 
@@ -182,7 +178,6 @@ public class SaveManager : MonoBehaviour
         foreach (Pole pole in _poles)
         {
             if (pole.type != poleType || pole.contentparent == null) continue;
-
             foreach (Transform child in pole.contentparent.transform)
             {
                 InventorySlot slot = child.GetComponent<InventorySlot>();
@@ -193,15 +188,10 @@ public class SaveManager : MonoBehaviour
         return null;
     }
 
-    /// <summary>Construit le chemin complet d'un Transform dans la hiérarchie de scène.</summary>
     private string GetScenePath(Transform t)
     {
         string path = t.name;
-        while (t.parent != null)
-        {
-            t = t.parent;
-            path = t.name + "/" + path;
-        }
+        while (t.parent != null) { t = t.parent; path = t.name + "/" + path; }
         return path;
     }
 }

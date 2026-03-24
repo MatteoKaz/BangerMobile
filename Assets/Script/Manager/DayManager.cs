@@ -8,6 +8,8 @@ public class DayManager : MonoBehaviour
     public int currentDay = 0;
     public string DayName;
     public int currentWeek = 1;
+    
+    [HideInInspector] public bool skipFirstLaunch = false;
 
     public float transitionDuration = 1f;
 
@@ -26,8 +28,11 @@ public class DayManager : MonoBehaviour
     }
     void Start()
     {
-        LaunchNewDay();
-        IsFirstGame();
+        if (!skipFirstLaunch)
+        {
+            LaunchNewDay();
+            IsFirstGame();
+        }
     }
     public void LaunchNewDay()
     {
@@ -46,6 +51,13 @@ public class DayManager : MonoBehaviour
         DayBegin?.Invoke();
 
 
+    }
+    public void RestoreDay(int day, int week)
+    {
+        currentDay  = day;
+        currentWeek = week;
+        DayNameChange();
+        DayBegin?.Invoke();
     }
     public void NewDaySetUp()
     {
