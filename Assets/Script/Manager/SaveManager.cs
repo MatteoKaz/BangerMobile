@@ -60,8 +60,6 @@ public class SaveManager : MonoBehaviour
     private void InitNewGame()
     {
         scoreManager.playerMoney = 0;
-        dayManager.currentDay = 0;
-        dayManager.currentWeek = 1;
         // DayManager.Start() a déjà appelé LaunchNewDay() normalement
     }
 
