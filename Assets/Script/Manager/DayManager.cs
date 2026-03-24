@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 public class DayManager : MonoBehaviour
 {
-    private int currentDay = 0;
+    public int currentDay = 0;
     public string DayName;
     public int currentWeek = 1;
 
