@@ -304,7 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d84f8b1abc450db4aafcc4245589bd1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Employe
-  employeObject: {fileID: 11400000, guid: 599f382b2b0cf1444a9d537dc0c045c7, type: 2}
+  employeObject: {fileID: 11400000, guid: 04a5c98eb46fb064eaea80aeee9b8e5f, type: 2}
   polemanager: {fileID: 0}
   mypole: {fileID: 0}
   employeType: 0
@@ -333,6 +333,7 @@ MonoBehaviour:
   timeBeetwennWork: 0.2
   iamWorking: 0
   Name: {fileID: 7991343296810344480}
+  image: {fileID: 7112390082609121258}
 --- !u!114 &2700297029104301821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,7 +608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

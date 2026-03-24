@@ -1,10 +1,7 @@
-using JetBrains.Annotations;
-using NUnit.Framework;
 using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
+
 
 public class PaperMove : MonoBehaviour
 {

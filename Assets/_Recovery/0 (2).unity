@@ -1805,7 +1805,7 @@ MonoBehaviour:
   maxSurcharge: 100
   surchargeStep: 1
   baseDelay: 0.5
-  surchargeThresholds: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
+  surchargeThresholds: 0a000000140000001e000000
   decayRate: 5
   surchargeProgress: {fileID: 1472176941}
   sliderSpeed: 15
@@ -8022,7 +8022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 595d8714713c9f54baa9bb630d029819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuotatManager
-  WeekQuotat: 500
+  WeekQuotat: 250
   BaseQuotat: 250
   exposant: 1.5
   DayQuotat: 0
@@ -13397,7 +13397,7 @@ MonoBehaviour:
   maxSurcharge: 100
   surchargeStep: 1
   baseDelay: 0.5
-  surchargeThresholds: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
+  surchargeThresholds: 0a000000140000001e000000
   decayRate: 5
   surchargeProgress: {fileID: 1928201354}
   sliderSpeed: 15
@@ -26717,7 +26717,7 @@ MonoBehaviour:
   maxSurcharge: 100
   surchargeStep: 1
   baseDelay: 0.5
-  surchargeThresholds: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
+  surchargeThresholds: 0a000000140000001e000000
   decayRate: 5
   surchargeProgress: {fileID: 868995111}
   sliderSpeed: 15

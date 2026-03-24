@@ -1,4 +1,4 @@
-using JetBrains.Annotations;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,6 +57,7 @@ public class PaperSpawner : MonoBehaviour
     {
         quotatManager.QuotatChosen -= StartSpawn;
         dayManager.DayTransition -= DestroyEverything;
+        dayManager.DayEnd -= StopSpawn;
     }
     public IEnumerator SpawnStart()
     {
@@ -74,8 +75,11 @@ public class PaperSpawner : MonoBehaviour
 
     public void StopSpawn()
     {
-        StopCoroutine(spawnRoutine);
-        canSpawn = false;
+        if (spawnRoutine != null)
+        {
+            StopCoroutine(spawnRoutine);
+            spawnRoutine = null;
+        }
 
     }
     private void QuotatSetup()

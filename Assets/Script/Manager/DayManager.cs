@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
+
 
 public class DayManager : MonoBehaviour
 {
@@ -132,10 +132,9 @@ public class DayManager : MonoBehaviour
 
     public IEnumerator LaunchFirstDayInit()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForEndOfFrame();
         FirstDayInitialization?.Invoke();
     }
-
     public IEnumerator EndDayFade()
     {
         //Lancer IciFadeIn

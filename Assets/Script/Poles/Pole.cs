@@ -33,7 +33,7 @@ public class Pole : MonoBehaviour
     public float maxSurcharge = 100f;        // Surcharge maximale
     public float surchargeStep = 1f;         // Valeur ajoutée à chaque incrément
     public float baseDelay = 0.5f;           // Délai initial entre incréments
-    public int[] surchargeThresholds = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110 }; // Paliers pour déclencher malus
+    public int[] surchargeThresholds = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }; // Paliers pour déclencher malus
     private int nextThresholdIndex = 0;      // Pour savoir quel palier est le prochain
     public Coroutine SurchargeRef;      // Pour gérer la coroutine
     public float decayRate = 5f;
@@ -192,13 +192,14 @@ public class Pole : MonoBehaviour
 
     public void BeginSurcharge()
     {
-        if (waitingPaper>0 && employeList.Count > 0)
+
+
+        if (waitingPaper > 0 && employeList.Count > 0)
         {
-            Debug.Log("SurchargeBegin");
             if (SurchargeRef == null)
                 SurchargeRef = StartCoroutine(Surcharge());
         }
-        else if (SurchargeRef != null)
+        else if (SurchargeRef != null && surchargeValue <= 0)
         {
             StopCoroutine(SurchargeRef);
             SurchargeRef = null;
@@ -211,18 +212,19 @@ public class Pole : MonoBehaviour
         {
             if (waitingPaper > 0)
             {
-                Debug.Log("Doing");
+                
                 // Augmentation progressive
                 surchargeValue += surchargeStep;
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                 surchargeProgress.value = surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
-                // Vérifie les paliers
+                Debug.Log($"surcharge={surchargeValue} | nextIndex={nextThresholdIndex} | length={surchargeThresholds.Length}");
                 if (nextThresholdIndex < surchargeThresholds.Length && surchargeValue >= surchargeThresholds[nextThresholdIndex])
                 {
+                    Debug.Log($"PALIER ATTEINT index={nextThresholdIndex}");
                     ApplyMalus(nextThresholdIndex);
                     nextThresholdIndex++;
-                  
-                    
+                    Debug.Log($"nextThresholdIndex après increment = {nextThresholdIndex}");
+
                 }
 
                 // Délai dynamique selon charge
@@ -231,63 +233,48 @@ public class Pole : MonoBehaviour
             }
             else if (surchargeValue > 0)
             {
-                // Décroissance progressive quand pas de papier
                 surchargeValue -= decayRate * Time.deltaTime;
                 surchargeValue = Mathf.Max(surchargeValue, 0f);
 
-                // Réinitialise les paliers si on redescend sous un seuil
                 while (nextThresholdIndex > 0 && surchargeValue < surchargeThresholds[nextThresholdIndex - 1])
                 {
                     nextThresholdIndex--;
                     ApplyMalus(nextThresholdIndex);
                     yield return null;
                 }
-                surchargeProgress.value = surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
-                yield return null; // mise à jour chaque frame
+                surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
+                yield return null;
             }
-            else if (surchargeValue == 0)
+            else // surchargeValue == 0 et waitingPaper == 0
             {
-                nextThresholdIndex = 0;
-                ApplyMalus(nextThresholdIndex);
-                if (nextThresholdIndex == 0) yield break;
+                ApplyMalus(-1);
+                yield break; // on sort proprement
             }
-                
-            else
-            {
-                yield return null; // rien à faire, attend la frame suivante
-            }
-           
-            
+
         }
     }
 
     private void ApplyMalus(int i)
     {
-        
+        Debug.Log($"ApplyMalus appelé avec i={i} | nextThresholdIndex={nextThresholdIndex}");
         foreach (Employe emp in employeList)
         {
             switch (i)
             {
-                case 0: emp.ResetMalus(); break;
-                case 1: emp.Malus(TypeOfMalus.WorkRate, 0.25f); break; // palier 10
-                case 2: emp.Malus(TypeOfMalus.ErrorPercent, 0.5f); break; // palier 20
-                case 3: emp.Malus(TypeOfMalus.WorkRate, 0.5f); break; // palier 30
-                case 4: emp.Malus(TypeOfMalus.ErrorPercent, 1f); break; // palier 40
-                case 5: emp.Malus(TypeOfMalus.WorkRate, 1f); break; // palier 50
-                case 6: emp.Malus(TypeOfMalus.ErrorPercent, 5f); break; // palier 60
-                case 7: emp.Malus(TypeOfMalus.WorkRate, 2f); break; // palier 70
-                case 8: emp.Malus(TypeOfMalus.ErrorPercent, 10f); break; // palier 80
-                case 9: emp.Malus(TypeOfMalus.WorkRate, 3f); break; // palier 90
-                case 10: emp.Malus(TypeOfMalus.Stun, 5f);Debug.Log("LastsTEP");  break; // palier 100
-
+                case -1: emp.ResetMalus(); break;                          // reset explicite
+                case 0: emp.Malus(TypeOfMalus.WorkRate, 0.25f); break;    // palier 10
+                case 1: emp.Malus(TypeOfMalus.ErrorPercent, 0.5f); break; // palier 20
+                case 2: emp.Malus(TypeOfMalus.WorkRate, 0.5f); break;     // palier 30
+                case 3: emp.Malus(TypeOfMalus.ErrorPercent, 1f); break;   // palier 40
+                case 4: emp.Malus(TypeOfMalus.WorkRate, 1f); break;       // palier 50
+                case 5: emp.Malus(TypeOfMalus.ErrorPercent, 5f); break;   // palier 60
+                case 6: emp.Malus(TypeOfMalus.WorkRate, 2f); break;       // palier 70
+                case 7: emp.Malus(TypeOfMalus.ErrorPercent, 10f); break;  // palier 80
+                case 8: emp.Malus(TypeOfMalus.WorkRate, 3f); break;       // palier 90
+                case 9: emp.Malus(TypeOfMalus.Stun, 5f); break;           // palier 100
             }
-           
         }
-        if (i == 10)
-        {
-            Debug.Log("LastStep");
-            ResetSurcharge();
-        }
+        if (i == 9) ResetSurcharge();
     }
 
 
@@ -297,7 +284,11 @@ public class Pole : MonoBehaviour
         surchargeValue = 0f;
         nextThresholdIndex = 0;
         surchargeProgress.value = 0f;
+        if (SurchargeRef != null)      
+        {
+            StopCoroutine(SurchargeRef);
+            SurchargeRef = null;
+        }
 
-       
     }
 }

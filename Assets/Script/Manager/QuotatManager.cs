@@ -1,12 +1,11 @@
 using System;
 using System.Collections;
-using System.Globalization;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 public class QuotatManager : MonoBehaviour
 {
-    public int WeekQuotat = 500;
+    public int WeekQuotat = 250;
     public int BaseQuotat = 250;
     public float exposant = 1.5f;
     public int DayQuotat ;
@@ -51,20 +50,15 @@ public class QuotatManager : MonoBehaviour
         switch (dayManager.currentDay)
         {
             case 1:
-                WeekQuotat *= (int)Math.Round(0.75f);
-                break;
+                DayQuotat = Mathf.RoundToInt(WeekQuotat * 0.75f); break;
             case 2:
-                WeekQuotat *= (int)Math.Round(1f);
-                break;
+                DayQuotat = Mathf.RoundToInt(WeekQuotat * 1f); break;
             case 3:
-                WeekQuotat *= (int)Math.Round(1.1f);
-                break;
+                DayQuotat = Mathf.RoundToInt(WeekQuotat * 1.1f); break;
             case 4:
-                WeekQuotat *= (int)Math.Round(0.8f);
-                break;
+                DayQuotat = Mathf.RoundToInt(WeekQuotat * 0.8f); break;
             case 5:
-                WeekQuotat *= (int)Math.Round(1.25f);
-                break;
+                DayQuotat = Mathf.RoundToInt(WeekQuotat * 1.25f); break;
 
 
         }
@@ -80,9 +74,8 @@ public class QuotatManager : MonoBehaviour
 
     public IEnumerator WaitForActive()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForEndOfFrame();
         CalculQuotat?.Invoke();
-
     }
     public void SelectQuotat(int difficultySelect)
     {

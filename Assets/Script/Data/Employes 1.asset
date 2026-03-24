@@ -9,70 +9,70 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 7607cb61f2949904a92fbce6593881ba, type: 3}
   m_Name: Employes 1
   m_EditorClassIdentifier: Assembly-CSharp::EmployeObject
   allEmploye:
-  - EmployeName: Malenia
+  - EmployeName: 445555
     description: 
     fireDescription: 
     type: 0
     TypeText: 
-    workRythme: 0
-    errorPercent: 0
+    workRythme: 4
+    errorPercent: 0.8
     timeInEntreprise: 0
     icone: {fileID: 0}
-  - EmployeName: 
+  - EmployeName: 4444
     description: 
     fireDescription: 
     type: 0
     TypeText: 
-    workRythme: 0
-    errorPercent: 0
+    workRythme: 5
+    errorPercent: 0.7
     timeInEntreprise: 0
     icone: {fileID: 0}
-  - EmployeName: 
+  - EmployeName: 444455
     description: 
     fireDescription: 
     type: 0
     TypeText: 
-    workRythme: 0
-    errorPercent: 0
+    workRythme: 5
+    errorPercent: 0.7
     timeInEntreprise: 0
     icone: {fileID: 0}
-  - EmployeName: 
+  - EmployeName: 45523
     description: 
     fireDescription: 
     type: 0
     TypeText: 
-    workRythme: 0
-    errorPercent: 0
+    workRythme: 6
+    errorPercent: 0.8
     timeInEntreprise: 0
     icone: {fileID: 0}
-  - EmployeName: 
+  - EmployeName: 557132
     description: 
     fireDescription: 
     type: 0
     TypeText: 
-    workRythme: 0
-    errorPercent: 0
+    workRythme: 5
+    errorPercent: 0.7
     timeInEntreprise: 0
     icone: {fileID: 0}
-  - EmployeName: 
+  - EmployeName: 1155
     description: 
     fireDescription: 
     type: 0
     TypeText: 
-    workRythme: 0
-    errorPercent: 0
+    workRythme: 5
+    errorPercent: 0.8
     timeInEntreprise: 0
     icone: {fileID: 0}
-  - EmployeName: 
+  - EmployeName: 2252
     description: 
     fireDescription: 
     type: 0
     TypeText: 
-    workRythme: 0
-    errorPercent: 0
+    workRythme: 6
+    errorPercent: 0.7
     timeInEntreprise: 0
     icone: {fileID: 0}

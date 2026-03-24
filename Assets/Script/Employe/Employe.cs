@@ -1,5 +1,4 @@
-using JetBrains.Annotations;
-using NUnit.Framework;
+
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -9,7 +8,7 @@ using static Pole;
 public class Employe : MonoBehaviour
 {
     
-    [SerializeField] public EmployeObject employeObject;
+    [SerializeField] public DataEmploye employeObject;
     [SerializeField] private PoleManager polemanager;
     [SerializeField] public Pole mypole;
 
@@ -55,10 +54,10 @@ public class Employe : MonoBehaviour
 
     public bool iamWorking = false;
     private Coroutine WorkRoutine;
-
+    private Coroutine StunRef;
     [Header("Ui")]
     [SerializeField] TextMeshProUGUI Name;
-
+    [SerializeField] Image image;
 
     public void InitialSetIdentity()
     {
@@ -107,7 +106,9 @@ public class Employe : MonoBehaviour
         timeInEntreprise = employe.timeInEntreprise;
         employeTypeText = employe.TypeText;
         employeImage.sprite = employe.icone;
+
         Name.text = employe.EmployeName;
+        image.sprite = employeImage.sprite;
         // Ajoute le nouveau
         if (polemanager != null && polemanager.TakenEmployeIndex != null)
             polemanager.TakenEmployeIndex.Add(employeIndex);
@@ -142,9 +143,11 @@ public class Employe : MonoBehaviour
        
         while (t < 1)
         {
-            if (isStunned == false) // emp�che l'avancement pendant le stun
+            if (isStunned == false) // 
             {
-                t += Time.deltaTime / (employeWorkRate + employeWorkRateMalus);
+                float dt = Mathf.Min(Time.deltaTime, 0.05f); // max 50ms par frame
+                float rate = Mathf.Max(0.01f, employeWorkRate + employeWorkRateMalus);
+                t += dt / rate;
                 workAdvancement.value = Mathf.Lerp(0, 1, t);
             }
             yield return null;
@@ -174,15 +177,16 @@ public class Employe : MonoBehaviour
 
     public void SwitchPole(Pole pole)
     {
-        iamWorking = false;
+        if (WorkRoutine != null)
+        {
+            StopCoroutine(WorkRoutine);
+            WorkRoutine = null;
+        }
+        iamWorking = false;        
         workAdvancement.value = 0f;
         employeWorkRateMalus = 0f;
         errorPercentMalus = 0f;
-
         mypole = pole;
-        if (WorkRoutine != null)
-            StopCoroutine(WorkRoutine);
-
         Working();
     }
 
@@ -198,8 +202,11 @@ public class Employe : MonoBehaviour
                 errorPercentMalus = value;      // augmente les chances d'erreur
                 break;
             case TypeOfMalus.Stun:
-                StartCoroutine(StunCoroutine(value)); // emp�che temporairement de travailler
+                
+                if (StunRef != null) StopCoroutine(StunRef);
+                StunRef = StartCoroutine(StunCoroutine(value));
                 break;
+                
 
         }
 
@@ -216,11 +223,15 @@ public class Employe : MonoBehaviour
         isStunned = false;
     }
 
+    
     public void EndDayResetStat()
     {
         iamWorking = false;
         if (WorkRoutine != null)
-        StopCoroutine(WorkRoutine);
+        {
+            StopCoroutine(WorkRoutine);
+            WorkRoutine = null;
+        } // ← accolade manquante ici !
 
         isStunned = false;
         employeWorkRateMalus = 0f;
@@ -233,12 +244,18 @@ public class Employe : MonoBehaviour
         succeedPaper = 0;
         moneyMake = 0;
         numberOfPaperDone = 0;
+        if (StunRef != null)
+        {
+            StopCoroutine(StunRef);
+            StunRef = null;
+        }
+        isStunned = false;
     }
     public void EndWeekReset()
     {
         WeekmoneyMake = 0;
-        WeeknumberOfPaperDone += 0;
-        WeeksucceedPaper += 0;
+        WeeknumberOfPaperDone = 0;
+        WeeksucceedPaper = 0;
     }
 
 }
