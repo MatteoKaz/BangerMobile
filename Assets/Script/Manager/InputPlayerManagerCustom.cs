@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -172,26 +173,34 @@ public class InputPlayerManagerCustom : MonoBehaviour
             debugText = "Touches: " + Touch.activeTouches.Count;
             Debug.Log("Start");
 
-            RaycastHit2D hit = Physics2D.Raycast(touchPos2D, Vector2.zero);
+            // RaycastHit2D hit = Physics2D.Raycast(touchPos2D, Vector2.zero);
+            Collider2D hit = Physics2D.OverlapPoint(touchPos2D);
             Debug.DrawRay(touchPos2D, Vector2.zero);
-            if (hit.collider != null)
+            if (hit != null)
             {
-                PaperMove paper = hit.collider.GetComponent<PaperMove>();
+                Collider2D[] hits = Physics2D.OverlapPointAll(touchPos2D);
+
+                PaperMove paper = hits
+                    .Select(h => h.GetComponent<PaperMove>())
+                    .Where(p => p != null)
+                    .OrderByDescending(p => p.GetComponent<SpriteRenderer>().sortingOrder)
+                    .FirstOrDefault();
+
                 if (paper != null)
                 {
                     paperRef = paper;
-                    if (paperRef.OnPile == true)
+
+                    if (paperRef.OnPile)
                     {
                         paperRef.RemoveFromPile();
                         hasRemove = true;
-
-
                     }
-                   
-
-
-
                 }
+
+
+
+
+            
             }
             
 

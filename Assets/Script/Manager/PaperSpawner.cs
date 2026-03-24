@@ -111,6 +111,7 @@ public class PaperSpawner : MonoBehaviour
    
     public IEnumerator Spawn()
     {
+        int globalSorting = 2;
         while (spawnList.Count > 0)
         {
             if (!canSpawn)
@@ -137,7 +138,11 @@ public class PaperSpawner : MonoBehaviour
             pm.PileRed = RefPileRed;
             pm.PileGreen = RefPileGreen;
             pm.PileBlue = RefPileBlue;
+            GameObject parentObj = paperSpawn;
+            SpriteRenderer spriteRenderer = parentObj.GetComponent<SpriteRenderer>();
+            spriteRenderer.sortingOrder = globalSorting--;
             pm.SetInitialPose();
+            
             yield return new WaitForSeconds(spawntiming);
         }
 
