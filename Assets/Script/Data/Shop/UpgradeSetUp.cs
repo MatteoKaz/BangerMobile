@@ -17,6 +17,11 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] ScoreManager scoreManager;
 
 
+    [SerializeField] TextMeshProUGUI PopUPdescriptionPole;
+    [SerializeField] Image PopUPiconPole;
+    [SerializeField] Pole poleRef;
+    
+
     public void Start()
     {
 
@@ -35,6 +40,7 @@ public class UpgradeSetUp : MonoBehaviour
             refitem.iconeRef = shopUpgrade.allUpgrade[i].icone;
             refitem.inflation = shopUpgrade.allUpgrade[i].inflation;
             refitem.description = shopUpgrade.allUpgrade[i].Description;
+            refitem.categoryUpgrade = shopUpgrade.allUpgrade[i].category;
         }
     }
 
@@ -52,17 +58,35 @@ public class UpgradeSetUp : MonoBehaviour
 
     public void chosenEmploye(EmployeLink employeLinkRef)
     {
-        emp = employeLinkRef.myemp;
+        if (employeLinkRef!= null)
+            emp = employeLinkRef.myemp;
     }
 
+
+    public void chosenPole(Pole pole)
+    {
+        if (pole != null)
+        poleRef = pole;
+    }
 
     public void Buy(RefOfItem roi)
     {
         if(roi.priceOfItem <=scoreManager.playerMoney)
         {
             scoreManager.playerMoney-=roi.priceOfItem;
-            
+            switch(roi.type)
+            {
+                case TypeOfUpgrade.BoostErrorRate:
+                    emp.employeErrorPercenBonus += roi.upgradeValue;
+                    break;
+                case TypeOfUpgrade.BoostSpeed:
+                    emp.employeWorkRateBonus += roi.upgradeValue; break;
+                case TypeOfUpgrade.BoostSurchargeResistance:
+                    emp.StressBonus += roi.upgradeValue; break;
+
+            }
         }
+       
     }
 
 }

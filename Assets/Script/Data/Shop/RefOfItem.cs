@@ -11,11 +11,11 @@ public class RefOfItem : MonoBehaviour
     public int priceOfItem;
     public string UpgradeName;
     public TypeOfUpgrade type;
-    public string upgradeValue;
+    public int upgradeValue;
     public Sprite iconeRef;
     public int inflation;
     public string description;
-
+    public CategoryUpgrade categoryUpgrade;
 
 
     public void OpenPopUP()
