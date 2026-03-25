@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Sauvegarde et charge l'état du jeu à chaque début de nouvelle journée.
 /// Poles et employés découverts automatiquement dans la scène.
+/// Les options audio sont gérées indépendamment par AudioManager.
 /// </summary>
 public class SaveManager : MonoBehaviour
 {
@@ -13,9 +14,9 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private DayManager dayManager;
     [SerializeField] private ScoreManager scoreManager;
 
-    private Pole[] _poles;
+    private Pole[]    _poles;
     private Employe[] _employes;
-    private bool _initialized = false;
+    private bool      _initialized = false;
 
     private string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
@@ -25,7 +26,6 @@ public class SaveManager : MonoBehaviour
 
         if (HasSave())
             dayManager.skipFirstLaunch = true;
-        // Pas de save → skipFirstLaunch reste false → DayManager lance LaunchNewDay() normalement
     }
 
     private void OnEnable()
@@ -54,13 +54,12 @@ public class SaveManager : MonoBehaviour
         _initialized = true;
     }
 
-    // ── Initialisation ───────────────────────────────────────────────────────
+    // ── Initialisation ────────────────────────────────────────────────────────
 
     /// <summary>Initialise une toute nouvelle partie sans save.</summary>
     private void InitNewGame()
     {
         scoreManager.playerMoney = 0;
-        // DayManager.Start() a déjà appelé LaunchNewDay() normalement
     }
 
     /// <summary>Découvre automatiquement tous les Pole et Employe de la scène.</summary>
@@ -79,12 +78,12 @@ public class SaveManager : MonoBehaviour
         Debug.Log($"[SaveManager] {_poles.Length} poles, {_employes.Length} employés trouvés.");
     }
 
-    // ── Save ─────────────────────────────────────────────────────────────────
+    // ── Save ──────────────────────────────────────────────────────────────────
 
     /// <summary>Sauvegarde l'état complet du jeu dans un fichier JSON.</summary>
     public void SaveGame()
     {
-        if (!_initialized) return; // ignore les DayBegin du chargement initial
+        if (!_initialized) return;
 
         SaveData data = new SaveData
         {
@@ -93,6 +92,7 @@ public class SaveManager : MonoBehaviour
             playerMoney = scoreManager.playerMoney
         };
 
+        // Employés
         for (int i = 0; i < _employes.Length; i++)
         {
             Employe emp = _employes[i];
@@ -120,7 +120,7 @@ public class SaveManager : MonoBehaviour
         Debug.Log($"[SaveManager] Sauvegarde : Jour {data.currentDay} — Semaine {data.currentWeek}");
     }
 
-    // ── Load ─────────────────────────────────────────────────────────────────
+    // ── Load ──────────────────────────────────────────────────────────────────
 
     /// <summary>Charge la sauvegarde et restaure l'état complet du jeu.</summary>
     public void LoadGame()
@@ -132,30 +132,26 @@ public class SaveManager : MonoBehaviour
         dayManager.RestoreDay(data.currentDay, data.currentWeek);
         scoreManager.playerMoney = data.playerMoney;
 
+        // Employés
         foreach (EmployeSaveData empData in data.employes)
         {
-            Debug.Log("Lancement sans save");
             if (empData.sceneEmployeIndex < 0 || empData.sceneEmployeIndex >= _employes.Length)
                 continue;
 
             Employe emp = _employes[empData.sceneEmployeIndex];
             if (emp == null) continue;
 
-            // Identité
             emp.SetIdentity(empData.employeIndex);
             emp.timeInEntreprise = empData.timeInEntreprise;
 
-            // Stats semaine
             emp.WeeknumberOfPaperDone = empData.weekNumberOfPaperDone;
             emp.WeeksucceedPaper      = empData.weekSucceedPaper;
             emp.WeekmoneyMake         = empData.weekMoneyMake;
 
-            // Upgrades
             emp.employeWorkRateBonus    = empData.workRateBonus;
             emp.employeErrorPercenBonus = empData.errorPercentBonus;
             emp.StressBonus             = empData.stressBonus;
 
-            // Reparente le DraggableItems dans le bon slot
             InventorySlot targetSlot = FindSlot(empData.poleType, empData.slotIndex);
             if (targetSlot == null) continue;
 
@@ -164,7 +160,7 @@ public class SaveManager : MonoBehaviour
 
             draggable.transform.SetParent(targetSlot.transform, false);
             draggable.transform.localPosition = Vector3.zero;
-            draggable.parentAfterDrag = targetSlot.transform;
+            draggable.parentAfterDrag         = targetSlot.transform;
 
             if (targetSlot.linkedPole != null)
                 emp.mypole = targetSlot.linkedPole;
@@ -176,7 +172,7 @@ public class SaveManager : MonoBehaviour
         Debug.Log("[SaveManager] Chargement terminé.");
     }
 
-    // ── Utilitaires publics ──────────────────────────────────────────────────
+    // ── Utilitaires publics ───────────────────────────────────────────────────
 
     /// <summary>Supprime le fichier de sauvegarde.</summary>
     public void DeleteSave()
@@ -191,7 +187,7 @@ public class SaveManager : MonoBehaviour
     /// <summary>Retourne true si un fichier de sauvegarde existe.</summary>
     public bool HasSave() => File.Exists(SavePath);
 
-    // ── Helpers privés ───────────────────────────────────────────────────────
+    // ── Helpers privés ────────────────────────────────────────────────────────
 
     private InventorySlot FindSlotOfEmploye(Employe emp)
     {
@@ -229,7 +225,7 @@ public class SaveManager : MonoBehaviour
         string path = t.name;
         while (t.parent != null)
         {
-            t = t.parent;
+            t    = t.parent;
             path = t.name + "/" + path;
         }
         return path;

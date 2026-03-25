@@ -1,17 +1,16 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
 /// Gère le volume global du jeu via AudioListener.
-/// Persiste entre les scènes et sauvegarde les préférences dans PlayerPrefs.
+/// Les options audio sont sauvegardées automatiquement dans un fichier dédié à chaque changement.
 /// </summary>
 public class AudioManager : MonoBehaviour
 {
-    private const string VolumeKey = "MasterVolume";
-    private const string MuteKey   = "IsMuted";
-
-    private const float ThresholdHigh   = 0.6f;
-    private const float ThresholdMedium = 0.2f;
+    private const float ThresholdHigh     = 0.6f;
+    private const float ThresholdMedium   = 0.2f;
+    private const string AudioSaveFileName = "audio_options.json";
 
     [Header("UI")]
     [SerializeField] private Slider volumeSlider;
@@ -28,9 +27,18 @@ public class AudioManager : MonoBehaviour
 
     private Image _muteButtonImage;
     private float _volumeBeforeMute = 1f;
-    private bool _isMuted;
+    private bool  _isMuted;
 
     private static AudioManager _instance;
+
+    private string AudioSavePath => Path.Combine(Application.persistentDataPath, AudioSaveFileName);
+
+    // ── Propriétés publiques ──────────────────────────────────────────────────
+
+    public float CurrentVolume  => _volumeBeforeMute;
+    public bool  CurrentIsMuted => _isMuted;
+
+    // ── Lifecycle ─────────────────────────────────────────────────────────────
 
     private void Awake()
     {
@@ -42,7 +50,8 @@ public class AudioManager : MonoBehaviour
 
         _instance = this;
         DontDestroyOnLoad(gameObject);
-        LoadPreferences();
+
+        LoadAudioOptions();
     }
 
     private void Start()
@@ -51,7 +60,7 @@ public class AudioManager : MonoBehaviour
         ApplyVolume();
     }
 
-    // ── UI ───────────────────────────────────────────────────────────────────
+    // ── UI ────────────────────────────────────────────────────────────────────
 
     private void InitUI()
     {
@@ -59,7 +68,7 @@ public class AudioManager : MonoBehaviour
         {
             volumeSlider.minValue = 0f;
             volumeSlider.maxValue = 1f;
-            volumeSlider.value = _volumeBeforeMute;
+            volumeSlider.value    = _volumeBeforeMute;
             volumeSlider.onValueChanged.AddListener(SetVolume);
         }
 
@@ -77,16 +86,15 @@ public class AudioManager : MonoBehaviour
     /// <summary>Appelé par le slider OnValueChanged.</summary>
     public void SetVolume(float value)
     {
-        // Bouger le slider désactive le mute bouton
-        _isMuted = false;
+        _isMuted          = false;
         _volumeBeforeMute = value;
 
         ApplyVolume();
         RefreshMuteButtonSprite();
-        SavePreferences();
+        SaveAudioOptions();
     }
 
-    /// <summary>Appelé par le bouton mute OnClick. Ne touche pas au slider.</summary>
+    /// <summary>Appelé par le bouton mute OnClick.</summary>
     public void ToggleMute()
     {
         _isMuted = !_isMuted;
@@ -96,7 +104,34 @@ public class AudioManager : MonoBehaviour
 
         ApplyVolume();
         RefreshMuteButtonSprite();
-        SavePreferences();
+        SaveAudioOptions();
+    }
+
+    // ── Persistance audio ─────────────────────────────────────────────────────
+
+    /// <summary>Sauvegarde les options audio dans un fichier dédié.</summary>
+    private void SaveAudioOptions()
+    {
+        AudioSaveData data = new AudioSaveData
+        {
+            audioVolume  = _volumeBeforeMute,
+            audioIsMuted = _isMuted
+        };
+
+        File.WriteAllText(AudioSavePath, JsonUtility.ToJson(data, true));
+        Debug.Log("[AudioManager] Options audio sauvegardées.");
+    }
+
+    /// <summary>Charge les options audio depuis le fichier dédié.</summary>
+    private void LoadAudioOptions()
+    {
+        if (!File.Exists(AudioSavePath)) return;
+
+        AudioSaveData data = JsonUtility.FromJson<AudioSaveData>(File.ReadAllText(AudioSavePath));
+        _volumeBeforeMute = data.audioVolume;
+        _isMuted          = data.audioIsMuted;
+
+        Debug.Log("[AudioManager] Options audio chargées.");
     }
 
     // ── Interne ───────────────────────────────────────────────────────────────
@@ -106,11 +141,15 @@ public class AudioManager : MonoBehaviour
         AudioListener.volume = _isMuted ? 0f : _volumeBeforeMute;
     }
 
-    /// <summary>
-    /// Priorité : mute bouton actif → spriteMutedButton.
-    /// Sinon, suit la valeur du slider :
-    /// ≥ 60 % → High | ≥ 20 % → Medium | > 0 % → Low | 0 % → MutedSlider
-    /// </summary>
+    private void SyncSlider()
+    {
+        if (volumeSlider == null) return;
+
+        volumeSlider.onValueChanged.RemoveListener(SetVolume);
+        volumeSlider.value = _volumeBeforeMute;
+        volumeSlider.onValueChanged.AddListener(SetVolume);
+    }
+
     private void RefreshMuteButtonSprite()
     {
         if (_muteButtonImage == null) return;
@@ -128,18 +167,5 @@ public class AudioManager : MonoBehaviour
             > 0f               => spriteLow,
             _                  => spriteMutedSlider
         };
-    }
-
-    private void SavePreferences()
-    {
-        PlayerPrefs.SetFloat(VolumeKey, _volumeBeforeMute);
-        PlayerPrefs.SetInt(MuteKey, _isMuted ? 1 : 0);
-        PlayerPrefs.Save();
-    }
-
-    private void LoadPreferences()
-    {
-        _volumeBeforeMute = PlayerPrefs.GetFloat(VolumeKey, 1f);
-        _isMuted          = PlayerPrefs.GetInt(MuteKey, 0) == 1;
     }
 }
