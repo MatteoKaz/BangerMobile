@@ -1,0 +1,546 @@
+fileFormatVersion: 2
+guid: 92d7264990ac5f942b1ff06c2dcf972e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -430563400373954102
+    second: Iconesound_0
+  - first:
+      213: 7100954399154328733
+    second: Iconesound_1
+  - first:
+      213: -24753542485616439
+    second: Iconesound_2
+  - first:
+      213: 7097740295800471892
+    second: Iconesound_3
+  - first:
+      213: 8182568954200900310
+    second: Iconesound_4
+  - first:
+      213: -1826209790594234559
+    second: Iconesound_5
+  - first:
+      213: 8750126953926474734
+    second: Iconesound_6
+  - first:
+      213: 1267049628447681675
+    second: Iconesound_7
+  - first:
+      213: 4127552348518044307
+    second: Iconesound_8
+  - first:
+      213: 5205555643490293147
+    second: Iconesound_9
+  - first:
+      213: -4174417638003214009
+    second: Iconesound_10
+  - first:
+      213: 2369642277598839701
+    second: Iconesound_11
+  - first:
+      213: 6057620801620126797
+    second: Iconesound_12
+  - first:
+      213: -4393060395860690107
+    second: Iconesound_13
+  - first:
+      213: 8130483024269862914
+    second: Iconesound_14
+  - first:
+      213: 2667410402430905709
+    second: Iconesound_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Iconesound_0
+      rect:
+        serializedVersion: 2
+        x: 497
+        y: 1871
+        width: 400
+        height: 360
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac91d6b5ed4560af0800000000000000
+      internalID: -430563400373954102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_1
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 1973
+        width: 50
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9457df4768ab8260800000000000000
+      internalID: 7100954399154328733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_2
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 1871
+        width: 400
+        height: 360
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c85635c8ce08aff0800000000000000
+      internalID: -24753542485616439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_3
+      rect:
+        serializedVersion: 2
+        x: 1245
+        y: 1973
+        width: 50
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 451c92f813d308260800000000000000
+      internalID: 7097740295800471892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_4
+      rect:
+        serializedVersion: 2
+        x: 1284
+        y: 1933
+        width: 67
+        height: 213
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d2c8495c135e8170800000000000000
+      internalID: 8182568954200900310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_5
+      rect:
+        serializedVersion: 2
+        x: 1531
+        y: 1871
+        width: 400
+        height: 360
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1474a420fdff7a6e0800000000000000
+      internalID: -1826209790594234559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_6
+      rect:
+        serializedVersion: 2
+        x: 1772
+        y: 1973
+        width: 50
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eebbb5cba12be6970800000000000000
+      internalID: 8750126953926474734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_7
+      rect:
+        serializedVersion: 2
+        x: 1812
+        y: 1933
+        width: 66
+        height: 213
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8c2a688ce6759110800000000000000
+      internalID: 1267049628447681675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_8
+      rect:
+        serializedVersion: 2
+        x: 1850
+        y: 1894
+        width: 84
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3925f350ef2084930800000000000000
+      internalID: 4127552348518044307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_9
+      rect:
+        serializedVersion: 2
+        x: 497
+        y: 1383
+        width: 400
+        height: 360
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b95d4cc0749dd3840800000000000000
+      internalID: 5205555643490293147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_10
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 1491
+        width: 121
+        height: 121
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74971b6764d7116c0800000000000000
+      internalID: -4174417638003214009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_11
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 1383
+        width: 400
+        height: 360
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 593c609b819a2e020800000000000000
+      internalID: 2369642277598839701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_12
+      rect:
+        serializedVersion: 2
+        x: 1246
+        y: 1465
+        width: 173
+        height: 173
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4ca590460ef01450800000000000000
+      internalID: 6057620801620126797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_13
+      rect:
+        serializedVersion: 2
+        x: 1531
+        y: 1383
+        width: 400
+        height: 360
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54bf2eb68d6b803c0800000000000000
+      internalID: -4393060395860690107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_14
+      rect:
+        serializedVersion: 2
+        x: 1662
+        y: 1590
+        width: 91
+        height: 131
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 208e2f1cb3745d070800000000000000
+      internalID: 8130483024269862914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iconesound_15
+      rect:
+        serializedVersion: 2
+        x: 1851
+        y: 1473
+        width: 83
+        height: 224
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6d6313e0ab840520800000000000000
+      internalID: 2667410402430905709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 7fb51022f5bfe3c40ab777efdf103df5
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Iconesound_0: -430563400373954102
+      Iconesound_1: 7100954399154328733
+      Iconesound_10: -4174417638003214009
+      Iconesound_11: 2369642277598839701
+      Iconesound_12: 6057620801620126797
+      Iconesound_13: -4393060395860690107
+      Iconesound_14: 8130483024269862914
+      Iconesound_15: 2667410402430905709
+      Iconesound_2: -24753542485616439
+      Iconesound_3: 7097740295800471892
+      Iconesound_4: 8182568954200900310
+      Iconesound_5: -1826209790594234559
+      Iconesound_6: 8750126953926474734
+      Iconesound_7: 1267049628447681675
+      Iconesound_8: 4127552348518044307
+      Iconesound_9: 5205555643490293147
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
