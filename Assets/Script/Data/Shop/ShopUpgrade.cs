@@ -3,9 +3,10 @@ using UnityEngine;
 
 public enum TypeOfUpgrade
 {
-    SpeedRunner,
-    Perfectionist,
-    Basic,
+    BoostSpeed,
+    BoostEfficiency,
+    BoostSurchargeResistance,
+    
 
 }
 
@@ -18,6 +19,7 @@ public class UpgradeData
     public string upgradeValue;
     public Sprite icone;
     public int inflation;
+    public string Description;
 }
 
 [CreateAssetMenu(fileName = "Upgrades", menuName = "Scriptable Objects/ShopUpgrade")]
