@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbeca67d70f4abb4faabbac00c6b6c21, type: 3}
+  m_Name: Upgrades
+  m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
+  allUpgrade:
+  - UpgradeName: BoostSpeed
+    price: 150
+    type: 0
+    upgradeValue: 
+    icone: {fileID: 0}
+    inflation: 0

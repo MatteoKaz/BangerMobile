@@ -15,7 +15,7 @@ public class Employe : MonoBehaviour
 
 
     [Header("Identit�PersoValue")]
-    public TypeOfEmploye employeType;
+    public TypeOfEmployez employeType;
     public string employeTypeText;
     public string employeName;
     public string employeDescription;

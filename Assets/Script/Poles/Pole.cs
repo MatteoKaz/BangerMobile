@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 
 public class Pole : MonoBehaviour
@@ -217,13 +218,13 @@ public class Pole : MonoBehaviour
                 surchargeValue += surchargeStep;
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                 surchargeProgress.value = surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
-                Debug.Log($"surcharge={surchargeValue} | nextIndex={nextThresholdIndex} | length={surchargeThresholds.Length}");
+                
                 if (nextThresholdIndex < surchargeThresholds.Length && surchargeValue >= surchargeThresholds[nextThresholdIndex])
                 {
-                    Debug.Log($"PALIER ATTEINT index={nextThresholdIndex}");
+                    
                     ApplyMalus(nextThresholdIndex);
                     nextThresholdIndex++;
-                    Debug.Log($"nextThresholdIndex après increment = {nextThresholdIndex}");
+                    
 
                 }
 
@@ -263,13 +264,13 @@ public class Pole : MonoBehaviour
             {
                 case -1: emp.ResetMalus(); break;                          // reset explicite
                 case 0: emp.Malus(TypeOfMalus.WorkRate, 0.25f); break;    // palier 10
-                case 1: emp.Malus(TypeOfMalus.ErrorPercent, 0.5f); break; // palier 20
+                case 1: emp.Malus(TypeOfMalus.ErrorPercent, 0.05f); break; // palier 20
                 case 2: emp.Malus(TypeOfMalus.WorkRate, 0.5f); break;     // palier 30
-                case 3: emp.Malus(TypeOfMalus.ErrorPercent, 1f); break;   // palier 40
+                case 3: emp.Malus(TypeOfMalus.ErrorPercent, 0.1f); break;   // palier 40
                 case 4: emp.Malus(TypeOfMalus.WorkRate, 1f); break;       // palier 50
-                case 5: emp.Malus(TypeOfMalus.ErrorPercent, 5f); break;   // palier 60
+                case 5: emp.Malus(TypeOfMalus.ErrorPercent, 0.15f); break;   // palier 60
                 case 6: emp.Malus(TypeOfMalus.WorkRate, 2f); break;       // palier 70
-                case 7: emp.Malus(TypeOfMalus.ErrorPercent, 10f); break;  // palier 80
+                case 7: emp.Malus(TypeOfMalus.ErrorPercent, 0.25f); break;  // palier 80
                 case 8: emp.Malus(TypeOfMalus.WorkRate, 3f); break;       // palier 90
                 case 9: emp.Malus(TypeOfMalus.Stun, 5f); break;           // palier 100
             }
@@ -284,6 +285,10 @@ public class Pole : MonoBehaviour
         surchargeValue = 0f;
         nextThresholdIndex = 0;
         surchargeProgress.value = 0f;
+        foreach (Employe emp in employeList)
+        {
+            emp.ResetMalus();
+        }
         if (SurchargeRef != null)      
         {
             StopCoroutine(SurchargeRef);

@@ -264,8 +264,8 @@ public class PaperMove : MonoBehaviour
 
 
         // --- Randomisation ---
-        float arcHeight = Random.Range(0.3f, 0.7f);          // hauteur de l'arc
-        float rotationAmplitude = Random.Range(5f, 15f);     // amplitude de rotation
+        float arcHeight = Random.Range(-0.5f, 0.9f);          // hauteur de l'arc
+        float rotationAmplitude = Random.Range(-15f, 25f);     // amplitude de rotation
         float oscillationSpeed = Random.Range(3f, 6f);       // vitesse d'oscillation
 
         while (t < 1f)
@@ -287,7 +287,7 @@ public class PaperMove : MonoBehaviour
         );
             yield return null;
             transform.position = spawnPos;
-            transform.rotation = targetRot;
+            //transform.rotation = targetRot;
             OnPile = false;
         }
         

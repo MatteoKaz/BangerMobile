@@ -15,7 +15,7 @@ public class EmployeDataz
     public string EmployeName;
     public string description;
     public string fireDescription;
-    public TypeOfEmploye type;
+    public TypeOfEmployez type;
     public string TypeText;
     public float workRythme;      // RythmeDeTravail
     public float errorPercent;
