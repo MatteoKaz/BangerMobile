@@ -5,11 +5,12 @@ using UnityEngine.UI;
 /// <summary>
 /// Gère le volume global du jeu via AudioListener.
 /// Les options audio sont sauvegardées automatiquement dans un fichier dédié à chaque changement.
+/// Singleton persistant entre les scènes — appeler BindUI() depuis le panel options à l'ouverture.
 /// </summary>
 public class AudioManager : MonoBehaviour
 {
-    private const float ThresholdHigh     = 0.6f;
-    private const float ThresholdMedium   = 0.2f;
+    private const float ThresholdHigh      = 0.6f;
+    private const float ThresholdMedium    = 0.2f;
     private const string AudioSaveFileName = "audio_options.json";
 
     [Header("UI")]
@@ -34,6 +35,8 @@ public class AudioManager : MonoBehaviour
     private string AudioSavePath => Path.Combine(Application.persistentDataPath, AudioSaveFileName);
 
     // ── Propriétés publiques ──────────────────────────────────────────────────
+
+    public static AudioManager Instance => _instance;
 
     public float CurrentVolume  => _volumeBeforeMute;
     public bool  CurrentIsMuted => _isMuted;
@@ -64,6 +67,24 @@ public class AudioManager : MonoBehaviour
 
     private void InitUI()
     {
+        BindUI(volumeSlider, muteButton);
+    }
+
+    /// <summary>
+    /// Relie les références UI à l'AudioManager persistant.
+    /// À appeler depuis le panel options quand il s'ouvre dans une nouvelle scène.
+    /// </summary>
+    public void BindUI(Slider slider, Button mute)
+    {
+        if (volumeSlider != null)
+            volumeSlider.onValueChanged.RemoveListener(SetVolume);
+
+        if (muteButton != null)
+            muteButton.onClick.RemoveListener(ToggleMute);
+
+        volumeSlider = slider;
+        muteButton   = mute;
+
         if (volumeSlider != null)
         {
             volumeSlider.minValue = 0f;

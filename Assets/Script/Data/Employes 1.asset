@@ -76,3 +76,21 @@ MonoBehaviour:
     errorPercent: 0.7
     timeInEntreprise: 0
     icone: {fileID: 0}
+  - EmployeName: 66666
+    description: 
+    fireDescription: 
+    type: 0
+    TypeText: 
+    workRythme: 6
+    errorPercent: 0.7
+    timeInEntreprise: 0
+    icone: {fileID: 0}
+  - EmployeName: 556554
+    description: 
+    fireDescription: 
+    type: 0
+    TypeText: 
+    workRythme: 6
+    errorPercent: 0.7
+    timeInEntreprise: 0
+    icone: {fileID: 0}
