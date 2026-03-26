@@ -168,8 +168,9 @@ public class InputPlayerManagerCustom : MonoBehaviour
         
         if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
         {
-            
+            if (paperRef != null) return;
             startPosition = touch.screenPosition;
+            swipeStartTime = Time.time;
             debugText = "Touches: " + Touch.activeTouches.Count;
             Debug.Log("Start");
 
@@ -209,10 +210,13 @@ public class InputPlayerManagerCustom : MonoBehaviour
         {
             endPosition = touch.screenPosition;
             float swipeDuration = Time.time - swipeStartTime;
-            OnSwipe();
-            SwipeForMenu();
+            if (swipeDuration > 0.085f) 
+            {
+                OnSwipe();
+                SwipeForMenu();
+            }
             hasRemove = false;
-
+            paperRef = null;
 
             debugText = "Touchesend: " + Touch.activeTouches.Count;
             Debug.Log("end");

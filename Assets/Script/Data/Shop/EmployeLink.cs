@@ -32,7 +32,7 @@ public class EmployeLink : MonoBehaviour
         nameUi.text = MyName;
         myTypeUi.text = $"Type:{myType}";
         myCase.sprite = myemp.employeImage.sprite;
-
+        MySlot.color = Color.gray;
 
     }
     public void OnClick()

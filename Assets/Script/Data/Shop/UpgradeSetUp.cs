@@ -4,6 +4,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class UpgradeSetUp : MonoBehaviour
 {
@@ -11,11 +12,15 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] GameObject itemToBuy;
     [SerializeField] GameObject parentUpgrade;
     [SerializeField] GameObject Popup;
+
+    [Header("PopUp")]
     [SerializeField] TextMeshProUGUI Popupname;
     [SerializeField] TextMeshProUGUI PopUPdescription;
     [SerializeField] Image PopUPicon;
     [SerializeField] Employe emp;
     [SerializeField] ScoreManager scoreManager;
+    [SerializeField] GameObject ScrollEmploye;
+    [SerializeField] GameObject scrollPole;
 
     [SerializeField] TextMeshProUGUI popUPPrice;
     [SerializeField] Image buttonBuy;
@@ -23,6 +28,8 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] Image PopUPiconPole;
     [SerializeField] Pole poleRef;
     RefOfItem currentRefOfItem;
+
+    
 
     public event Action EmployeSet;
 
@@ -35,7 +42,7 @@ public class UpgradeSetUp : MonoBehaviour
             RefOfItem refitem = item.GetComponent<RefOfItem>();
             refitem.upgradeSetUp = this;
             refitem.priceOfItem = shopUpgrade.allUpgrade[i].price;
-            refitem.priceText.text = $"{shopUpgrade.allUpgrade[i].price}";
+            refitem.priceText.text = $"{shopUpgrade.allUpgrade[i].price}$";
             refitem.numberText.text = $"{i+1}";
             refitem.type = shopUpgrade.allUpgrade[i].type;
             refitem.UpgradeName = shopUpgrade.allUpgrade[i].UpgradeName;
@@ -45,21 +52,37 @@ public class UpgradeSetUp : MonoBehaviour
             refitem.inflation = shopUpgrade.allUpgrade[i].inflation;
             refitem.description = shopUpgrade.allUpgrade[i].Description;
             refitem.categoryUpgrade = shopUpgrade.allUpgrade[i].category;
+            refitem.NameUI.text = shopUpgrade.allUpgrade[i].UpgradeName;
         }
     }
 
 
     public void SetPopUp(RefOfItem roi)
     {
+        
+            Popup.SetActive(true);
+            
+            Popupname.text = roi.UpgradeName;
+            PopUPdescription.text = roi.description;
+            PopUPicon.sprite = roi.iconeRef;
+            popUPPrice.text = roi.priceText.text;
+            currentRefOfItem = roi;
+            buttonBuy.color = Color.grey;
+        if (roi.categoryUpgrade == CategoryUpgrade.Employe)
+        {
+            
+            ScrollEmploye.SetActive(true);
+                scrollPole.SetActive(false);
+            EmployeSet?.Invoke();
+        }
+        if (roi.categoryUpgrade == CategoryUpgrade.Pole)
+        {
+            
+            scrollPole.SetActive(true);
+            ScrollEmploye.SetActive(false);
+        }
 
-        Popup.SetActive(true);
-        EmployeSet?.Invoke();
-        Popupname.text = roi.UpgradeName;
-        PopUPdescription.text = roi.description;
-        PopUPicon.sprite = roi.iconeRef;
-        popUPPrice.text = roi.priceText.text;
-        currentRefOfItem = roi;
-        buttonBuy.color = Color.grey;
+
 
 
     }
@@ -70,21 +93,29 @@ public class UpgradeSetUp : MonoBehaviour
         currentRefOfItem = null;
         emp = null;
         buttonBuy.color = Color.grey;
+        scrollPole.SetActive(false);
+        ScrollEmploye.SetActive(false);
+        poleRef = null;
     }
 
     public void chosenEmploye(EmployeLink employeLinkRef)
     {
         if (employeLinkRef!= null)
             emp = employeLinkRef.myemp;
-        buttonBuy.color = Color.green;
+        RefOfItem roi = currentRefOfItem;
+        if (roi.priceOfItem <= scoreManager.playerMoney)
+            buttonBuy.color = Color.green;
     }
 
 
     public void chosenPole(Pole pole)
     {
+
         if (pole != null)
         poleRef = pole;
-        buttonBuy.color = Color.green;
+        RefOfItem roi = currentRefOfItem;
+        if (roi.priceOfItem <= scoreManager.playerMoney)
+            buttonBuy.color = Color.green;
         
     }
 
@@ -110,6 +141,7 @@ public class UpgradeSetUp : MonoBehaviour
                     return;
                 }
                 scoreManager.playerMoney -= roi.priceOfItem;
+                scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
                 switch (roi.type)
                 {
                     case TypeOfUpgrade.BoostErrorRate:
@@ -130,11 +162,14 @@ public class UpgradeSetUp : MonoBehaviour
         {
             if (roi.priceOfItem <= scoreManager.playerMoney)
             {
+
                 if (poleRef == null)
                 {
                     buttonBuy.color = Color.grey;
                     return;
                 }
+                scoreManager.playerMoney -= roi.priceOfItem;
+                scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
                 scoreManager.playerMoney -= roi.priceOfItem;
                 switch (roi.type)
                 {
@@ -151,6 +186,7 @@ public class UpgradeSetUp : MonoBehaviour
                 }
             }
         }
+        
 
 
 

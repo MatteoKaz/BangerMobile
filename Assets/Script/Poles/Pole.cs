@@ -43,7 +43,7 @@ public class Pole : MonoBehaviour
 
     [Header("Bonus")]
 
-    public float BonusRevenus;
+    public float BonusRevenus =1f;
     public float BoostEmployeSpeed;
     public float BoostEmployeError;
     public float BoostTimeForSurcharge;
@@ -123,6 +123,7 @@ public class Pole : MonoBehaviour
     public void WinMoney()
     {
         localAdvencement += paperValue * Mathf.RoundToInt(BonusRevenus);
+        Debug.Log($"PaperValue {paperValue * Mathf.RoundToInt(BonusRevenus)}");
         eventWinMoney?.Invoke();
     }
 

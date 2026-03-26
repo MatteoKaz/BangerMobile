@@ -21,7 +21,7 @@ MonoBehaviour:
     workRythme: 4
     errorPercent: 0.8
     timeInEntreprise: 0
-    icone: {fileID: 0}
+    icone: {fileID: -7399951015408003080, guid: dbfeab2fa0028e448a8c7dfe3cb452b5, type: 3}
   - EmployeName: 4444
     description: 
     fireDescription: 
@@ -30,7 +30,7 @@ MonoBehaviour:
     workRythme: 5
     errorPercent: 0.7
     timeInEntreprise: 0
-    icone: {fileID: 0}
+    icone: {fileID: -7399951015408003080, guid: dbfeab2fa0028e448a8c7dfe3cb452b5, type: 3}
   - EmployeName: 444455
     description: 
     fireDescription: 
@@ -39,7 +39,7 @@ MonoBehaviour:
     workRythme: 5
     errorPercent: 0.7
     timeInEntreprise: 0
-    icone: {fileID: 0}
+    icone: {fileID: -7399951015408003080, guid: dbfeab2fa0028e448a8c7dfe3cb452b5, type: 3}
   - EmployeName: 45523
     description: 
     fireDescription: 
@@ -48,7 +48,7 @@ MonoBehaviour:
     workRythme: 6
     errorPercent: 0.8
     timeInEntreprise: 0
-    icone: {fileID: 0}
+    icone: {fileID: -7399951015408003080, guid: dbfeab2fa0028e448a8c7dfe3cb452b5, type: 3}
   - EmployeName: 557132
     description: 
     fireDescription: 
@@ -57,7 +57,7 @@ MonoBehaviour:
     workRythme: 5
     errorPercent: 0.7
     timeInEntreprise: 0
-    icone: {fileID: 0}
+    icone: {fileID: -7399951015408003080, guid: dbfeab2fa0028e448a8c7dfe3cb452b5, type: 3}
   - EmployeName: 1155
     description: 
     fireDescription: 
@@ -66,7 +66,7 @@ MonoBehaviour:
     workRythme: 5
     errorPercent: 0.8
     timeInEntreprise: 0
-    icone: {fileID: 0}
+    icone: {fileID: -7399951015408003080, guid: dbfeab2fa0028e448a8c7dfe3cb452b5, type: 3}
   - EmployeName: 2252
     description: 
     fireDescription: 
@@ -75,7 +75,7 @@ MonoBehaviour:
     workRythme: 6
     errorPercent: 0.7
     timeInEntreprise: 0
-    icone: {fileID: 0}
+    icone: {fileID: -7399951015408003080, guid: dbfeab2fa0028e448a8c7dfe3cb452b5, type: 3}
   - EmployeName: 66666
     description: 
     fireDescription: 
@@ -84,7 +84,7 @@ MonoBehaviour:
     workRythme: 6
     errorPercent: 0.7
     timeInEntreprise: 0
-    icone: {fileID: 0}
+    icone: {fileID: -7399951015408003080, guid: dbfeab2fa0028e448a8c7dfe3cb452b5, type: 3}
   - EmployeName: 556554
     description: 
     fireDescription: 
@@ -93,4 +93,4 @@ MonoBehaviour:
     workRythme: 6
     errorPercent: 0.7
     timeInEntreprise: 0
-    icone: {fileID: 0}
+    icone: {fileID: -7399951015408003080, guid: dbfeab2fa0028e448a8c7dfe3cb452b5, type: 3}
