@@ -49,7 +49,7 @@ public class EmployeFicheInfo : MonoBehaviour
             employeRendement.text = $"Papier: {employe.succeedPaper}/{employe.numberOfPaperDone}, 1/{employe.employeWorkRate}s";
             employeMoney.text = $"Apport: {employe.moneyMake} $ ";
             tempsinEntreprise.text = $"Temps : {employe.timeInEntreprise}";
-            Image = employe.employeImage;
+            Image.sprite = employe.employeImage.sprite;
             pole.text = $"Pole: {employe.mypole.PoleName}";
             Debug.Log("Je set");
         }

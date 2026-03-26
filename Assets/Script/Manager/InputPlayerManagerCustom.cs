@@ -210,7 +210,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
         {
             endPosition = touch.screenPosition;
             float swipeDuration = Time.time - swipeStartTime;
-            if (swipeDuration > 0.085f) 
+            if (swipeDuration > 0.1f) 
             {
                 OnSwipe();
                 SwipeForMenu();

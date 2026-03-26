@@ -50,7 +50,9 @@ public class Employe : MonoBehaviour
     public int WeeksucceedPaper;
     public int WeekmoneyMake;
 
-
+    [Header("Feedback")]
+    [SerializeField] Image fond;
+   
     public float timeBeetwennWork = 0.2f;
 
     public bool iamWorking = false;
@@ -128,6 +130,7 @@ public class Employe : MonoBehaviour
             mypole.UpdatePaperUI();
             WorkRoutine = StartCoroutine(Work());
             
+            fond.color = new Color(0x0E / 255f, 0x0E / 255f, 0x0E / 255f, 0f);
         }
         
         else
@@ -169,6 +172,7 @@ public class Employe : MonoBehaviour
         Debug.Log("workDone");
         yield return new WaitForSeconds(timeBeetwennWork);
         iamWorking = false;
+        fond.color = new Color(0x0E / 255f, 0x0E / 255f, 0x0E / 255f, 0.62f);
         mypole.DecrementPaper();
         
         
