@@ -16,6 +16,7 @@ public class RefOfItem : MonoBehaviour
     public int inflation;
     public string description;
     public CategoryUpgrade categoryUpgrade;
+    public string nameEncadre;
 
 
     public void OpenPopUP()

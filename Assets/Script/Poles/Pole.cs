@@ -44,6 +44,9 @@ public class Pole : MonoBehaviour
     [Header("Bonus")]
 
     public float BonusRevenus;
+    public float BoostEmployeSpeed;
+    public float BoostEmployeError;
+    public float BoostTimeForSurcharge;
     
 
 
@@ -119,7 +122,7 @@ public class Pole : MonoBehaviour
 
     public void WinMoney()
     {
-        localAdvencement += paperValue + Mathf.RoundToInt(BonusRevenus);
+        localAdvencement += paperValue * Mathf.RoundToInt(BonusRevenus);
         eventWinMoney?.Invoke();
     }
 
@@ -218,7 +221,7 @@ public class Pole : MonoBehaviour
             {
                 
                 // Augmentation progressive
-                surchargeValue += surchargeStep;
+                surchargeValue += surchargeStep /(1f + BoostTimeForSurcharge);
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                 surchargeProgress.value = surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
                 

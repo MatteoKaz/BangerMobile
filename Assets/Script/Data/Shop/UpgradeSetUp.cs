@@ -96,37 +96,66 @@ public class UpgradeSetUp : MonoBehaviour
             return;
         }
            
-        if (emp == null)
-        {
-            buttonBuy.color = Color.grey;
-            return;
-        }
+       
        
 
         RefOfItem roi = currentRefOfItem;
-        if (roi.priceOfItem <=scoreManager.playerMoney)
+        if (roi.categoryUpgrade == CategoryUpgrade.Employe)
         {
-            scoreManager.playerMoney-=roi.priceOfItem;
-            switch(roi.type)
+            if (roi.priceOfItem <= scoreManager.playerMoney)
             {
-                case TypeOfUpgrade.BoostErrorRate:
-                    emp.employeErrorPercenBonus += roi.upgradeValue; Debug.Log($"upgradeValue: {roi.upgradeValue}"); 
-                    break;
-                case TypeOfUpgrade.BoostSpeed:
-                    emp.employeWorkRateBonus += roi.upgradeValue; break;
-                case TypeOfUpgrade.BoostSurchargeResistance:
-                    emp.StressBonus += roi.upgradeValue; break;
-                case TypeOfUpgrade.DoublePaperDone:
-                    emp.BonusPaperDone  = roi.upgradeValue; break;
-                //case TypeOfUpgrade.PrimePole:
-                   // poleRef.
+                if (emp == null)
+                {
+                    buttonBuy.color = Color.grey;
+                    return;
+                }
+                scoreManager.playerMoney -= roi.priceOfItem;
+                switch (roi.type)
+                {
+                    case TypeOfUpgrade.BoostErrorRate:
+                        emp.employeErrorPercenBonus += roi.upgradeValue; Debug.Log($"upgradeValue: {roi.upgradeValue}");
+                        break;
+                    case TypeOfUpgrade.BoostSpeed:
+                        emp.employeWorkRateBonus += roi.upgradeValue; break;
+                    case TypeOfUpgrade.BoostSurchargeResistance:
+                        emp.StressBonus += roi.upgradeValue; break;
+                    case TypeOfUpgrade.DoublePaperDone:
+                        emp.BonusPaperDone = roi.upgradeValue; break;
+                    
+                        
+                }
             }
         }
-        else
+        if (roi.categoryUpgrade == CategoryUpgrade.Pole)
         {
-            Debug.Log("NoMoney");
+            if (roi.priceOfItem <= scoreManager.playerMoney)
+            {
+                if (poleRef == null)
+                {
+                    buttonBuy.color = Color.grey;
+                    return;
+                }
+                scoreManager.playerMoney -= roi.priceOfItem;
+                switch (roi.type)
+                {
+                    case TypeOfUpgrade.BoostSpeedPole:
+                        poleRef.BoostEmployeSpeed += roi.upgradeValue; 
+                        break;
+                    case TypeOfUpgrade.BoostErrorPole:
+                        poleRef.BoostEmployeError += roi.upgradeValue; break;
+                    case TypeOfUpgrade.PrimePole:
+                        poleRef.BonusRevenus += roi.upgradeValue; break;
+                    case TypeOfUpgrade.CigarettePole:
+                        poleRef.BoostTimeForSurcharge += roi.upgradeValue; break;
+
+                }
+            }
         }
-       
+
+
+
+
+
     }
 
 }

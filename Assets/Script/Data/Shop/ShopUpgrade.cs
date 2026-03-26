@@ -9,6 +9,9 @@ public enum TypeOfUpgrade
     DoublePaperDone,
     PrimePole,
     CigarettePole,
+    BoostSpeedPole,
+    BoostErrorPole,
+    Swat
     
 
 }

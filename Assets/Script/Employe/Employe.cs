@@ -28,10 +28,10 @@ public class Employe : MonoBehaviour
     
 
     [Header("Upgrade modifier")]
-    public float employeWorkRateBonus;
-    public float employeErrorPercenBonus;
-    public float StressBonus;
-    public float BonusPaperDone;
+    public float employeWorkRateBonus = 0f;
+    public float employeErrorPercenBonus = 0f;
+    public float StressBonus = 0f;
+    public float BonusPaperDone = 0f;
 
     [Header("Malus")]
     public float errorPercentMalus = 0f;
@@ -147,7 +147,7 @@ public class Employe : MonoBehaviour
             if (isStunned == false) // 
             {
                 float dt = Mathf.Min(Time.deltaTime, 0.05f); // max 50ms par frame
-                float rate = Mathf.Max(0.01f, employeWorkRate + employeWorkRateMalus);
+                float rate = Mathf.Max(0.01f, (employeWorkRate + employeWorkRateMalus) - (mypole.BoostEmployeSpeed + employeWorkRateBonus));
                 t += dt / rate;
                 workAdvancement.value = Mathf.Lerp(0, 1, t);
             }
@@ -155,16 +155,16 @@ public class Employe : MonoBehaviour
 
         }
         float Succeed = Random.Range(0f, 1f);
-        if ((errorPercent - errorPercentMalus) > Succeed)
+        if (((errorPercent + employeErrorPercenBonus + mypole.BoostEmployeError) - errorPercentMalus) > Succeed)
         {
             mypole.WinMoney();
             moneyMake += mypole.paperValue;
-            succeedPaper += 1 ;
+            succeedPaper += 1 + Mathf.RoundToInt(BonusPaperDone);
 
         }
 
        
-        numberOfPaperDone += 1 ;
+        numberOfPaperDone += 1 + Mathf.RoundToInt(BonusPaperDone);
         workAdvancement.value = 0;
         Debug.Log("workDone");
         yield return new WaitForSeconds(timeBeetwennWork);
@@ -197,7 +197,7 @@ public class Employe : MonoBehaviour
         switch (malusType)
         {
             case TypeOfMalus.WorkRate:
-                employeWorkRateMalus = value;   // augmente le temps de travail
+                employeWorkRateMalus = value - StressBonus;   // augmente le temps de travail
                 break;
             case TypeOfMalus.ErrorPercent:
                 errorPercentMalus = value;      // augmente les chances d'erreur

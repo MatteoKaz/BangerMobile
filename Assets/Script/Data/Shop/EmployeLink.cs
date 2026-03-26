@@ -26,17 +26,18 @@ public class EmployeLink : MonoBehaviour
     }
     public void MyIdentity()
     {
-        myCase.sprite = myemp.employeImage.sprite ;
+        
         myType = myemp.employeType;
         MyName = myemp.employeName;
         nameUi.text = MyName;
         myTypeUi.text = $"Type:{myType}";
+        myCase.sprite = myemp.employeImage.sprite;
 
 
     }
     public void OnClick()
     {
-        
+        myCase.sprite = myemp.employeImage.sprite;
         foreach (var image in allempImage)
         {
             image.color = Color.gray;
