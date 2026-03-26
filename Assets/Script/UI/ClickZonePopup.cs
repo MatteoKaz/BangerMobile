@@ -77,6 +77,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
         if (_actionCoroutine != null)
         {
+            Debug.Log("BlablaTouch");
             StopCoroutine(_actionCoroutine);
             _actionCoroutine = null;
             popup.gameObject.SetActive(false);
