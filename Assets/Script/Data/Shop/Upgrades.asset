@@ -13,9 +13,30 @@ MonoBehaviour:
   m_Name: Upgrades
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   allUpgrade:
-  - UpgradeName: BoostSpeed
+  - UpgradeName: Performance max
     price: 150
     type: 0
-    upgradeValue: 
-    icone: {fileID: 0}
+    category: 0
+    upgradeValue: 0.25
+    icone: {fileID: 21300000, guid: 169917a2e533e984e998659099da0d0f, type: 3}
     inflation: 0
+    Description: 
+    duration: 0
+  - UpgradeName: BoostError
+    price: 150
+    type: 1
+    category: 0
+    upgradeValue: 0.05
+    icone: {fileID: -2813997961669826638, guid: 5651727e67a5f944c91a5a42de5169ad, type: 3}
+    inflation: 0
+    Description: 
+    duration: 0
+  - UpgradeName: SurchargeRes
+    price: 150
+    type: 2
+    category: 0
+    upgradeValue: 0.25
+    icone: {fileID: 21300000, guid: 169917a2e533e984e998659099da0d0f, type: 3}
+    inflation: 0
+    Description: ddddd
+    duration: 0

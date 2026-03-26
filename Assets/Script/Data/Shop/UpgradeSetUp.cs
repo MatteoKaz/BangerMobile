@@ -1,5 +1,6 @@
-using NUnit.Framework;
-using System.Collections.Generic;
+
+using System;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,11 +17,14 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] Employe emp;
     [SerializeField] ScoreManager scoreManager;
 
-
+    [SerializeField] TextMeshProUGUI popUPPrice;
+    [SerializeField] Image buttonBuy;
     [SerializeField] TextMeshProUGUI PopUPdescriptionPole;
     [SerializeField] Image PopUPiconPole;
     [SerializeField] Pole poleRef;
-    
+    RefOfItem currentRefOfItem;
+
+    public event Action EmployeSet;
 
     public void Start()
     {
@@ -32,7 +36,7 @@ public class UpgradeSetUp : MonoBehaviour
             refitem.upgradeSetUp = this;
             refitem.priceOfItem = shopUpgrade.allUpgrade[i].price;
             refitem.priceText.text = $"{shopUpgrade.allUpgrade[i].price}";
-            refitem.numberText.text = $"{i}";
+            refitem.numberText.text = $"{i+1}";
             refitem.type = shopUpgrade.allUpgrade[i].type;
             refitem.UpgradeName = shopUpgrade.allUpgrade[i].UpgradeName;
             refitem.upgradeValue = shopUpgrade.allUpgrade[i].upgradeValue;
@@ -47,19 +51,32 @@ public class UpgradeSetUp : MonoBehaviour
 
     public void SetPopUp(RefOfItem roi)
     {
+
         Popup.SetActive(true);
+        EmployeSet?.Invoke();
         Popupname.text = roi.UpgradeName;
         PopUPdescription.text = roi.description;
         PopUPicon.sprite = roi.iconeRef;
-        
+        popUPPrice.text = roi.priceText.text;
+        currentRefOfItem = roi;
+        buttonBuy.color = Color.grey;
+
 
     }
+    public void ClosePopUp()
+    {
 
+        Popup.SetActive(false);
+        currentRefOfItem = null;
+        emp = null;
+        buttonBuy.color = Color.grey;
+    }
 
     public void chosenEmploye(EmployeLink employeLinkRef)
     {
         if (employeLinkRef!= null)
             emp = employeLinkRef.myemp;
+        buttonBuy.color = Color.green;
     }
 
 
@@ -67,24 +84,45 @@ public class UpgradeSetUp : MonoBehaviour
     {
         if (pole != null)
         poleRef = pole;
+        buttonBuy.color = Color.green;
+        
     }
 
-    public void Buy(RefOfItem roi)
+    public void Buy()
     {
-        if(roi.priceOfItem <=scoreManager.playerMoney)
+        if (currentRefOfItem == null)
+        {
+            buttonBuy.color = Color.grey;
+            return;
+        }
+           
+        if (emp == null)
+        {
+            buttonBuy.color = Color.grey;
+            return;
+        }
+       
+
+        RefOfItem roi = currentRefOfItem;
+        if (roi.priceOfItem <=scoreManager.playerMoney)
         {
             scoreManager.playerMoney-=roi.priceOfItem;
             switch(roi.type)
             {
                 case TypeOfUpgrade.BoostErrorRate:
-                    emp.employeErrorPercenBonus += roi.upgradeValue;
+                    emp.employeErrorPercenBonus += roi.upgradeValue; Debug.Log($"upgradeValue: {roi.upgradeValue}"); 
                     break;
                 case TypeOfUpgrade.BoostSpeed:
                     emp.employeWorkRateBonus += roi.upgradeValue; break;
                 case TypeOfUpgrade.BoostSurchargeResistance:
                     emp.StressBonus += roi.upgradeValue; break;
-
+                //case TypeOfUpgrade.PrimePole:
+                   // poleRef.
             }
+        }
+        else
+        {
+            Debug.Log("NoMoney");
         }
        
     }

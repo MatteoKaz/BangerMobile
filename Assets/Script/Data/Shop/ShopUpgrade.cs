@@ -25,7 +25,7 @@ public class UpgradeData
     public int price ;
     public TypeOfUpgrade type;
     public CategoryUpgrade category;
-    public int upgradeValue;
+    public float upgradeValue;
     public Sprite icone;
     public int inflation;
     public string Description;

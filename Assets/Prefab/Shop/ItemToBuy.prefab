@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1369435339439739287}
   - component: {fileID: 7032504131980684284}
   - component: {fileID: 1622989218731007990}
+  - component: {fileID: 8575603569147528697}
   m_Layer: 0
   m_Name: ItemToBuy
   m_TagString: Untagged
@@ -123,7 +124,43 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7032504131980684284}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8575603569147528697}
+        m_TargetAssemblyTypeName: RefOfItem, Assembly-CSharp
+        m_MethodName: OpenPopUP
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8575603569147528697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2719902544021337413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab20fa4b870e17341996bc49ffb290e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RefOfItem
+  upgradeSetUp: {fileID: 0}
+  priceText: {fileID: 440137284711322117}
+  numberText: {fileID: 8038351919201292926}
+  icone: {fileID: 7032504131980684284}
+  priceOfItem: 0
+  UpgradeName: 
+  type: 0
+  upgradeValue: 0
+  iconeRef: {fileID: 0}
+  inflation: 0
+  description: 
+  categoryUpgrade: 0
 --- !u!1 &2888973061125679621
 GameObject:
   m_ObjectHideFlags: 0

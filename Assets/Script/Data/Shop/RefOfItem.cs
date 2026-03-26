@@ -11,7 +11,7 @@ public class RefOfItem : MonoBehaviour
     public int priceOfItem;
     public string UpgradeName;
     public TypeOfUpgrade type;
-    public int upgradeValue;
+    public float upgradeValue;
     public Sprite iconeRef;
     public int inflation;
     public string description;
@@ -23,7 +23,7 @@ public class RefOfItem : MonoBehaviour
       //Effet
       upgradeSetUp.SetPopUp(this);
     }
-
+   
 
     public void Buy()
     {
