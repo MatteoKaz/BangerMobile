@@ -6,6 +6,7 @@ public enum TypeOfUpgrade
     BoostSpeed,
     BoostErrorRate,
     BoostSurchargeResistance,
+    DoublePaperDone,
     PrimePole,
     CigarettePole,
     

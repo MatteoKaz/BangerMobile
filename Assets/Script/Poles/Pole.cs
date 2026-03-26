@@ -41,9 +41,12 @@ public class Pole : MonoBehaviour
     [SerializeField] Slider surchargeProgress;
     public float sliderSpeed = 10f;
 
+    [Header("Bonus")]
 
-
+    public float BonusRevenus;
     
+
+
     public event Action UpdatePaperCount;
 
     public enum TypeOfMalus
@@ -116,7 +119,7 @@ public class Pole : MonoBehaviour
 
     public void WinMoney()
     {
-        localAdvencement += paperValue;
+        localAdvencement += paperValue + Mathf.RoundToInt(BonusRevenus);
         eventWinMoney?.Invoke();
     }
 

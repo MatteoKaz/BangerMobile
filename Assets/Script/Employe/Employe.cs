@@ -25,12 +25,13 @@ public class Employe : MonoBehaviour
     public int timeInEntreprise;
     public Image employeImage;
     public int employeIndex;
-
+    
 
     [Header("Upgrade modifier")]
     public float employeWorkRateBonus;
     public float employeErrorPercenBonus;
     public float StressBonus;
+    public float BonusPaperDone;
 
     [Header("Malus")]
     public float errorPercentMalus = 0f;
@@ -158,12 +159,12 @@ public class Employe : MonoBehaviour
         {
             mypole.WinMoney();
             moneyMake += mypole.paperValue;
-            succeedPaper += 1;
+            succeedPaper += 1 ;
 
         }
 
        
-        numberOfPaperDone += 1;
+        numberOfPaperDone += 1 ;
         workAdvancement.value = 0;
         Debug.Log("workDone");
         yield return new WaitForSeconds(timeBeetwennWork);

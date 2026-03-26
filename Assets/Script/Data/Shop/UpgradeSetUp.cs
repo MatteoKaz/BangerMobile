@@ -116,6 +116,8 @@ public class UpgradeSetUp : MonoBehaviour
                     emp.employeWorkRateBonus += roi.upgradeValue; break;
                 case TypeOfUpgrade.BoostSurchargeResistance:
                     emp.StressBonus += roi.upgradeValue; break;
+                case TypeOfUpgrade.DoublePaperDone:
+                    emp.BonusPaperDone  = roi.upgradeValue; break;
                 //case TypeOfUpgrade.PrimePole:
                    // poleRef.
             }
