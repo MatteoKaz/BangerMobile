@@ -1,5 +1,6 @@
 
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,6 +33,9 @@ public class Employe : MonoBehaviour
     public float employeErrorPercenBonus = 0f;
     public float StressBonus = 0f;
     public float BonusPaperDone = 0f;
+
+    public List<Sprite> upgradesImages = new List<Sprite>();
+
 
     [Header("Malus")]
     public float errorPercentMalus = 0f;

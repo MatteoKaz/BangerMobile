@@ -18,7 +18,7 @@ MonoBehaviour:
     type: 0
     category: 0
     upgradeValue: 0.25
-    icone: {fileID: 21300000, guid: 169917a2e533e984e998659099da0d0f, type: 3}
+    icone: {fileID: 96908642303273329, guid: 59df50d6d9266164589cf8f9f3ee54ad, type: 3}
     inflation: 25
     Description: "Permet d'augmenter la rapidit\xE9 d\u2019ex\xE9cution des t\xE2ches
       d'un employ\xE9"
@@ -28,7 +28,7 @@ MonoBehaviour:
     type: 1
     category: 0
     upgradeValue: 0.05
-    icone: {fileID: -2813997961669826638, guid: 5651727e67a5f944c91a5a42de5169ad, type: 3}
+    icone: {fileID: -7579573730639302618, guid: af62950e1d12f364fb7beeae1537d12a, type: 3}
     inflation: 25
     Description: "Permet de baisser le pourcentage d'erreurs d'un employ\xE9."
     duration: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
     type: 2
     category: 0
     upgradeValue: 0.25
-    icone: {fileID: 21300000, guid: 169917a2e533e984e998659099da0d0f, type: 3}
+    icone: {fileID: 335612472354862126, guid: e179679e8b54f2a42a28831def0e2756, type: 3}
     inflation: 25
     Description: "Permet de surveiller un employ\xE9, lorsque ce dernier ne travaille
       pas, et le force \xE0 se remettre au travail temporairement."
@@ -47,7 +47,7 @@ MonoBehaviour:
     type: 3
     category: 0
     upgradeValue: 1
-    icone: {fileID: 21300000, guid: 169917a2e533e984e998659099da0d0f, type: 3}
+    icone: {fileID: 2010721960083764029, guid: 3c9a1105abcedb44b879d643330694bf, type: 3}
     inflation: 25
     Description: "Permet \xE0 un employ\xE9 de traiter 2 dossier \xE0 la fois."
     duration: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
     type: 5
     category: 1
     upgradeValue: 0.25
-    icone: {fileID: 21300000, guid: 169917a2e533e984e998659099da0d0f, type: 3}
+    icone: {fileID: 321834868762923055, guid: d67a6f6faf72ae046ab4c594f60b7aea, type: 3}
     inflation: 25
     Description: "Permet d'apaiser les employ\xE9s, et ainsi de repousser la surcharge
       d'un p\xF4le."

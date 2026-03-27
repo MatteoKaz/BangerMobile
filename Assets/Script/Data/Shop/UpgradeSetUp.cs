@@ -28,7 +28,7 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] Image PopUPiconPole;
     [SerializeField] Pole poleRef;
     RefOfItem currentRefOfItem;
-
+    public EmployeLink empLink;
 
     private bool open = false;
 
@@ -110,6 +110,7 @@ public class UpgradeSetUp : MonoBehaviour
     {
         if (employeLinkRef!= null)
             emp = employeLinkRef.myemp;
+        empLink = employeLinkRef;
         RefOfItem roi = currentRefOfItem;
         if (roi.priceOfItem <= scoreManager.playerMoney)
             buttonBuy.color = Color.green;
@@ -153,6 +154,21 @@ public class UpgradeSetUp : MonoBehaviour
                 roi.priceOfItem += roi.inflation;
               
                 popUPPrice.text = $"{roi.priceOfItem}$";
+                if (empLink != null)
+                {
+                    if (!emp.upgradesImages.Contains(roi.iconeRef))
+                    {
+                        emp.upgradesImages.Add(roi.iconeRef);
+                        
+                        empLink.upgradesImages.Add(roi.iconeRef);
+                        empLink.SetIcone();
+                    }
+                }
+                else
+                {
+                    
+                }
+
                 switch (roi.type)
                 {
                     case TypeOfUpgrade.BoostErrorRate:
