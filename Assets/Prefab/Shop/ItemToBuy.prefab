@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7032504131980684284}
   - component: {fileID: 1622989218731007990}
   - component: {fileID: 8575603569147528697}
+  - component: {fileID: 3523390624745739593}
   m_Layer: 0
   m_Name: ItemToBuy
   m_TagString: Untagged
@@ -165,6 +166,28 @@ MonoBehaviour:
   description: 
   categoryUpgrade: 0
   nameEncadre: 
+--- !u!95 &3523390624745739593
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2719902544021337413}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c627ebc18050fbb4fb19fb5739e3f144, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2888973061125679621
 GameObject:
   m_ObjectHideFlags: 0

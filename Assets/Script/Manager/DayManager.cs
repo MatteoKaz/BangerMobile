@@ -60,6 +60,8 @@ public class DayManager : MonoBehaviour
         DayNameChange();
         DayBegin?.Invoke();
     }
+
+    
     public void NewDaySetUp()
     {
         if (currentDay < 5)

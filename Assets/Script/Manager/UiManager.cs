@@ -102,4 +102,6 @@ public class UiManager : MonoBehaviour
     {
         shop.SetActive(true);
     }
+
+    
 }
