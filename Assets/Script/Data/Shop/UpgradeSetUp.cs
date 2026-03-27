@@ -29,7 +29,10 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] Pole poleRef;
     RefOfItem currentRefOfItem;
 
-    
+
+    private bool open = false;
+
+
 
     public event Action EmployeSet;
 
@@ -68,6 +71,7 @@ public class UpgradeSetUp : MonoBehaviour
             popUPPrice.text = roi.priceText.text;
             currentRefOfItem = roi;
             buttonBuy.color = Color.grey;
+            open = true;
         if (roi.categoryUpgrade == CategoryUpgrade.Employe)
         {
             
@@ -90,12 +94,16 @@ public class UpgradeSetUp : MonoBehaviour
     {
 
         Popup.SetActive(false);
+        open = false;
+        currentRefOfItem.priceText.text = $"{currentRefOfItem.priceOfItem}$"; 
         currentRefOfItem = null;
+
         emp = null;
         buttonBuy.color = Color.grey;
         scrollPole.SetActive(false);
         ScrollEmploye.SetActive(false);
         poleRef = null;
+
     }
 
     public void chosenEmploye(EmployeLink employeLinkRef)
@@ -142,6 +150,9 @@ public class UpgradeSetUp : MonoBehaviour
                 }
                 scoreManager.playerMoney -= roi.priceOfItem;
                 scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
+                roi.priceOfItem += roi.inflation;
+              
+                popUPPrice.text = $"{roi.priceOfItem}$";
                 switch (roi.type)
                 {
                     case TypeOfUpgrade.BoostErrorRate:
@@ -156,6 +167,7 @@ public class UpgradeSetUp : MonoBehaviour
                     
                         
                 }
+               
             }
         }
         if (roi.categoryUpgrade == CategoryUpgrade.Pole)
@@ -170,7 +182,8 @@ public class UpgradeSetUp : MonoBehaviour
                 }
                 scoreManager.playerMoney -= roi.priceOfItem;
                 scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
-                scoreManager.playerMoney -= roi.priceOfItem;
+                roi.priceOfItem += roi.inflation;
+                popUPPrice.text = $"{roi.priceOfItem}$";
                 switch (roi.type)
                 {
                     case TypeOfUpgrade.BoostSpeedPole:
@@ -184,6 +197,8 @@ public class UpgradeSetUp : MonoBehaviour
                         poleRef.BoostTimeForSurcharge += roi.upgradeValue; break;
 
                 }
+               
+                
             }
         }
         
@@ -193,5 +208,21 @@ public class UpgradeSetUp : MonoBehaviour
 
 
     }
+    public void Update()
+    {
+        if(open)
+        {
+            if (currentRefOfItem.priceOfItem > scoreManager.playerMoney)
+            {
+                
+                buttonBuy.color = Color.grey;
+                
+            }
+        }
+       
+        
+    }
 
 }
+
+
