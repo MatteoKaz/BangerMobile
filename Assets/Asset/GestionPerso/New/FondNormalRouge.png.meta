@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 542625fa5dc223c49bdc9f2b85551850
+guid: 6683bba979422de408a5497da1053757
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5281968478026613446
-    second: Image (13)_0
+      213: 5031546297782864374
+    second: FondNormalRouge_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Image (13)_0
+      name: FondNormalRouge_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 576
-        height: 1024
+        x: 82
+        y: 82
+        width: 239
+        height: 236
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a3db96087ada2b6b0800000000000000
-      internalID: -5281968478026613446
+      spriteID: 6f9874613b4a3d540800000000000000
+      internalID: 5031546297782864374
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Image (13)_0: -5281968478026613446
+      FondNormalRouge_0: 5031546297782864374
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

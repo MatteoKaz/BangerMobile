@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 70390d053c9ebe04ca9a0c0df0a2735b
+guid: 573583ceafe8d824d82480c412e3a2b9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -970582282267372215
-    second: IMG_2474_0
+      213: 8406874558698777673
+    second: FondVert2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: IMG_2474_0
+      name: FondVert2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1080
-        height: 1920
+        x: 79
+        y: 77
+        width: 247
+        height: 245
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9455a208e8cc782f0800000000000000
-      internalID: -970582282267372215
+      spriteID: 94c628e9ed73ba470800000000000000
+      internalID: 8406874558698777673
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      IMG_2474_0: -970582282267372215
+      FondVert2_0: 8406874558698777673
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

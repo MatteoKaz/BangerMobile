@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 95c63a7e401f5a049aa7f0f79b8e3223
+guid: 7fff8551008271541836f142d3f46a33
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7733935467251439777
-    second: Image (15)_0
+      213: 6630552932164737447
+    second: NouveauTube_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Image (15)_0
+      name: NouveauTube_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 224
         y: 0
-        width: 576
-        height: 1024
+        width: 139
+        height: 91
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1a81151d455745b60800000000000000
-      internalID: 7733935467251439777
+      spriteID: 7a99a1af2c4740c50800000000000000
+      internalID: 6630552932164737447
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Image (15)_0: 7733935467251439777
+      NouveauTube_0: 6630552932164737447
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
