@@ -72,12 +72,11 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        _holdStartTime = Time.time;
+        _holdStartTime = Time.realtimeSinceStartup;
         _pressScreenPosition = eventData.position;
 
         if (_actionCoroutine != null)
         {
-            Debug.Log("BlablaTouch");
             StopCoroutine(_actionCoroutine);
             _actionCoroutine = null;
             popup.gameObject.SetActive(false);
@@ -86,7 +85,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        float holdDuration = Time.time - _holdStartTime;
+        float holdDuration = Time.realtimeSinceStartup - _holdStartTime;
 
         MovePopupToClick(_pressScreenPosition);
         ApplyStamp(SelectStamp(holdDuration));
@@ -106,13 +105,17 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     /// <summary>Déplace le popup pour que son centre soit à la position du clic.</summary>
     private void MovePopupToClick(Vector2 screenPosition)
     {
+        Camera cam = _canvas.renderMode == RenderMode.ScreenSpaceOverlay
+            ? null
+            : _canvas.worldCamera;
+
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 _canvas.GetComponent<RectTransform>(),
                 screenPosition,
-                _canvas.worldCamera,
+                cam,
                 out Vector2 localPoint))
         {
-            popup.anchoredPosition = localPoint;
+            popup.position = _canvas.transform.TransformPoint(localPoint);
         }
     }
 
@@ -122,10 +125,10 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
             popupImage.sprite = sprite;
     }
 
-    /// <summary>Attend le délai puis exécute l'action configurée.</summary>
+    /// <summary>Attend le délai en temps réel puis exécute l'action configurée.</summary>
     private IEnumerator ExecuteActionAfterDelay()
     {
-        yield return new WaitForSeconds(delayBeforeAction);
+        yield return new WaitForSecondsRealtime(delayBeforeAction);
 
         switch (actionMode)
         {
@@ -137,9 +140,14 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private void ExecuteLoadScene()
     {
         if (!string.IsNullOrEmpty(targetSceneName))
+        {
+            Time.timeScale = 1f;
             SceneManager.LoadScene(targetSceneName);
+        }
         else
+        {
             Debug.LogWarning("ClickZonePopup : aucune scène cible assignée.", this);
+        }
     }
 
     /// <summary>Toggle le panel cible. Si un parentPanel différent est assigné,
@@ -160,7 +168,6 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         }
         else
         {
-            // Ne désactive les frères que si parentPanel est un conteneur distinct de targetPanel
             if (parentPanel != null && parentPanel != targetPanel)
             {
                 foreach (Transform child in parentPanel.transform)
