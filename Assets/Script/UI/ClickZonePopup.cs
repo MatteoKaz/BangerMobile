@@ -10,7 +10,9 @@ using UnityEditor;
 
 /// <summary>
 /// Affiche un tampon au relâchement dont l'intensité dépend de la durée d'appui (3 niveaux).
-/// Selon le mode choisi dans l'Inspector, charge une scène ou toggle un panel après un délai.
+/// Trois modes : LoadScene, OpenPanel, ToggleStamp.
+/// En mode ToggleStamp, le tampon est centré sur la carte de l'employé et y reste
+/// jusqu'à ce qu'une autre zone soit activée.
 /// </summary>
 [RequireComponent(typeof(Image))]
 public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -18,14 +20,22 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     public enum ActionMode
     {
         LoadScene,
-        OpenPanel
+        OpenPanel,
+        /// <summary>
+        /// Colle le tampon sur la carte de l'employé. Il reste affiché jusqu'à
+        /// ce qu'une autre zone ToggleStamp soit activée.
+        /// </summary>
+        ToggleStamp
     }
 
+    // Zone actuellement stampée — partagée entre toutes les instances.
+    private static ClickZonePopup _activeToggleZone;
+
     [Header("Action")]
-    [Tooltip("LoadScene : charge une scène. OpenPanel : toggle un panel UI.")]
+    [Tooltip("LoadScene : charge une scène.\nOpenPanel : toggle un panel UI.\nToggleStamp : colle le tampon sur la carte de l'employé.")]
     [SerializeField] private ActionMode actionMode = ActionMode.LoadScene;
 
-    [Header("Popup")]
+    [Header("Popup — doit être enfant de la carte de l'employé en mode ToggleStamp")]
     [SerializeField] private RectTransform popup;
     [SerializeField] private Image popupImage;
 
@@ -40,7 +50,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     [Tooltip("Durée minimale pour le tampon foncé.")]
     [SerializeField] private float thresholdDark = 0.9f;
 
-    [Header("Délai avant action (secondes)")]
+    [Header("Délai avant action (secondes) — ignoré en mode ToggleStamp")]
     [SerializeField] private float delayBeforeAction = 1.5f;
 
     [Header("Mode : Load Scene")]
@@ -53,8 +63,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     [Header("Mode : Open Panel")]
     [Tooltip("Panel à activer/désactiver.")]
     [SerializeField] private GameObject targetPanel;
-    [Tooltip("(Optionnel) Conteneur dont les enfants frères seront désactivés avant d'ouvrir targetPanel. " +
-             "Ne pas assigner le même objet que targetPanel.")]
+    [Tooltip("(Optionnel) Conteneur dont les enfants seront désactivés avant d'ouvrir targetPanel.")]
     [SerializeField] private GameObject parentPanel;
 
     private Canvas _canvas;
@@ -72,26 +81,35 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        _holdStartTime = Time.realtimeSinceStartup;
+        _holdStartTime       = Time.realtimeSinceStartup;
         _pressScreenPosition = eventData.position;
 
         if (_actionCoroutine != null)
         {
             StopCoroutine(_actionCoroutine);
             _actionCoroutine = null;
-            popup.gameObject.SetActive(false);
+
+            if (actionMode != ActionMode.ToggleStamp)
+                popup.gameObject.SetActive(false);
         }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         float holdDuration = Time.realtimeSinceStartup - _holdStartTime;
-
-        MovePopupToClick(_pressScreenPosition);
         ApplyStamp(SelectStamp(holdDuration));
-        popup.gameObject.SetActive(true);
 
-        _actionCoroutine = StartCoroutine(ExecuteActionAfterDelay());
+        if (actionMode == ActionMode.ToggleStamp)
+        {
+            MovePopupToClick(_pressScreenPosition);
+            ExecuteToggleStamp();
+        }
+        else
+        {
+            MovePopupToClick(_pressScreenPosition);
+            popup.gameObject.SetActive(true);
+            _actionCoroutine = StartCoroutine(ExecuteActionAfterDelay());
+        }
     }
 
     /// <summary>Retourne le sprite correspondant à la durée d'appui.</summary>
@@ -102,7 +120,18 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         return stampLight;
     }
 
-    /// <summary>Déplace le popup pour que son centre soit à la position du clic.</summary>
+    /// <summary>
+    /// Centre le popup sur sa carte parente.
+    /// Le popup doit être enfant de la carte de l'employé avec des ancres à (0.5, 0.5).
+    /// </summary>
+    private void CenterPopupOnCard()
+    {
+        popup.anchorMin        = new Vector2(0.5f, 0.5f);
+        popup.anchorMax        = new Vector2(0.5f, 0.5f);
+        popup.anchoredPosition = Vector2.zero;
+    }
+
+    /// <summary>Déplace le popup à la position écran du clic en coordonnées monde Canvas.</summary>
     private void MovePopupToClick(Vector2 screenPosition)
     {
         Camera cam = _canvas.renderMode == RenderMode.ScreenSpaceOverlay
@@ -123,6 +152,19 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     {
         if (popupImage != null)
             popupImage.sprite = sprite;
+    }
+
+    /// <summary>
+    /// Mode ToggleStamp : retire le tampon de l'ancienne carte active,
+    /// pose le tampon sur cette carte et la déclare comme zone active.
+    /// </summary>
+    private void ExecuteToggleStamp()
+    {
+        if (_activeToggleZone != null && _activeToggleZone != this)
+            _activeToggleZone.popup.gameObject.SetActive(false);
+
+        popup.gameObject.SetActive(true);
+        _activeToggleZone = this;
     }
 
     /// <summary>Attend le délai en temps réel puis exécute l'action configurée.</summary>
@@ -150,8 +192,10 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         }
     }
 
-    /// <summary>Toggle le panel cible. Si un parentPanel différent est assigné,
-    /// désactive ses enfants frères avant d'ouvrir targetPanel.</summary>
+    /// <summary>
+    /// Toggle le panel cible. Si un parentPanel est assigné,
+    /// désactive ses enfants avant d'ouvrir targetPanel.
+    /// </summary>
     private void ExecuteOpenPanel()
     {
         if (targetPanel == null)
@@ -178,6 +222,12 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         }
 
         popup.gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        if (_activeToggleZone == this)
+            _activeToggleZone = null;
     }
 
 #if UNITY_EDITOR

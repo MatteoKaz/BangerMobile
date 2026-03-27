@@ -21,5 +21,6 @@ public class RankObject : MonoBehaviour
         Score.text = $"Papier: {SucceedPaper}/{TotalPaper}";
         Money.text = $"{TotalMoney}$";
         
+        
     }
 }
