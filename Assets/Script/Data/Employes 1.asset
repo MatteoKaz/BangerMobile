@@ -21,7 +21,7 @@ MonoBehaviour:
     workRythme: 4
     errorPercent: 0.7
     timeInEntreprise: 0
-    icone: {fileID: -7399951015408003080, guid: dbfeab2fa0028e448a8c7dfe3cb452b5, type: 3}
+    icone: {fileID: 3145869850918063400, guid: e270274b849fbfb49a0f1246e281e5db, type: 3}
   - EmployeName: 4444
     description: 
     fireDescription: 

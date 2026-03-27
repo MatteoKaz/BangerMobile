@@ -12,7 +12,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] GameObject Day;
     [SerializeField] GameObject Score;
     [SerializeField] GameObject Difficulty;
-
+    [SerializeField] GameObject shop;
     [SerializeField] UIDay dayScript;
 
     [Header("DifficultyUI")]
@@ -26,6 +26,7 @@ public class UiManager : MonoBehaviour
     public event Action LaunchDayAnim;
     public event Action dayResetOpacity;
     public event Action ScoreReset;
+
 
     private void OnEnable()
     {
@@ -95,5 +96,10 @@ public class UiManager : MonoBehaviour
     {
         ScoreReset?.Invoke();
         Score.SetActive(false);
+    }
+
+    public void EnableShop()
+    {
+        shop.SetActive(true);
     }
 }
