@@ -9,6 +9,7 @@ public class RefOfItem : MonoBehaviour
     [SerializeField] public TextMeshProUGUI numberText;
     [SerializeField] public TextMeshProUGUI NameUI;
     [SerializeField] public Image icone;
+    public int index;
     public int priceOfItem;
     public string UpgradeName;
     public TypeOfUpgrade type;

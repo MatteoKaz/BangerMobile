@@ -26,6 +26,7 @@ public class Employe : MonoBehaviour
     public int timeInEntreprise;
     public Image employeImage;
     public int employeIndex;
+    public Image typeImage;
     
 
     [Header("Upgrade modifier")]
@@ -35,7 +36,7 @@ public class Employe : MonoBehaviour
     public float BonusPaperDone = 0f;
 
     public List<Sprite> upgradesImages = new List<Sprite>();
-
+    public Dictionary<Sprite, int> upgradeCounts = new Dictionary<Sprite, int>();
 
     [Header("Malus")]
     public float errorPercentMalus = 0f;
@@ -113,7 +114,7 @@ public class Employe : MonoBehaviour
         timeInEntreprise = employe.timeInEntreprise;
         employeTypeText = employe.TypeText;
         employeImage.sprite = employe.icone;
-
+        typeImage.sprite = employe.typeSprite;
         Name.text = employe.EmployeName;
         image.sprite = employeImage.sprite;
         // Ajoute le nouveau

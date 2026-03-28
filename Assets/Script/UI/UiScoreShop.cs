@@ -11,7 +11,7 @@ public class UiScoreShop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Uimoney.text = $"{ scoreManager.playerMoney}";
+        Uimoney.text = $"{ scoreManager.playerMoney}$";
 
 
     }

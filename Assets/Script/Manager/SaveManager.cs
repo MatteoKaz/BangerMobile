@@ -13,7 +13,7 @@ public class SaveManager : MonoBehaviour
 
     [SerializeField] private DayManager dayManager;
     [SerializeField] private ScoreManager scoreManager;
-
+    [SerializeField] ShopUpgrade shopUpgrade;
     private Pole[]    _poles;
     private Employe[] _employes;
     private bool      _initialized = false;
@@ -100,7 +100,7 @@ public class SaveManager : MonoBehaviour
 
             InventorySlot slot = FindSlotOfEmploye(emp);
 
-            data.employes.Add(new EmployeSaveData
+            EmployeSaveData empSaveData = new EmployeSaveData
             {
                 sceneEmployeIndex     = i,
                 employeIndex          = emp.employeIndex,
@@ -113,9 +113,33 @@ public class SaveManager : MonoBehaviour
                 workRateBonus         = emp.employeWorkRateBonus,
                 errorPercentBonus     = emp.employeErrorPercenBonus,
                 stressBonus           = emp.StressBonus
+
+            };
+            foreach (var kvp in emp.upgradeCounts)
+            {
+                for (int j = 0; j < shopUpgrade.allUpgrade.Count; j++)
+                {
+                    if (shopUpgrade.allUpgrade[j].icone == kvp.Key)
+                    {
+                        empSaveData.upgradeCounts.Add(new UpgradeCountData
+                        {
+                            upgradeIndex = j,
+                            count = kvp.Value
+                        });
+                        break;
+                    }
+                }
+            }
+        data.employes.Add(empSaveData);
+    }
+        for (int i = 0; i < shopUpgrade.allUpgrade.Count; i++)
+        {
+            data.upgrades.Add(new UpgradeSaveData
+            {
+                upgradeIndex = i,
+                currentPrice = shopUpgrade.allUpgrade[i].price
             });
         }
-
         File.WriteAllText(SavePath, JsonUtility.ToJson(data, true));
         Debug.Log($"[SaveManager] Sauvegarde : Jour {data.currentDay} — Semaine {data.currentWeek}");
     }
@@ -164,8 +188,21 @@ public class SaveManager : MonoBehaviour
 
             if (targetSlot.linkedPole != null)
                 emp.mypole = targetSlot.linkedPole;
-        }
+            foreach (UpgradeCountData ucd in empData.upgradeCounts)
+            {
+                Sprite spr = shopUpgrade.allUpgrade[ucd.upgradeIndex].icone;
+                emp.upgradeCounts[spr] = ucd.count;
 
+                // restore les images si pas déjà présentes
+                if (!emp.upgradesImages.Contains(spr))
+                    emp.upgradesImages.Add(spr);
+            }
+
+        }
+        foreach (UpgradeSaveData upData in data.upgrades)
+        {
+            shopUpgrade.allUpgrade[upData.upgradeIndex].price = upData.currentPrice;
+        }
         foreach (Pole pole in _poles)
             pole.RebuildEmployeList();
 

@@ -2,9 +2,9 @@
 using System;
 
 using TMPro;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class UpgradeSetUp : MonoBehaviour
 {
@@ -56,6 +56,7 @@ public class UpgradeSetUp : MonoBehaviour
             refitem.description = shopUpgrade.allUpgrade[i].Description;
             refitem.categoryUpgrade = shopUpgrade.allUpgrade[i].category;
             refitem.NameUI.text = shopUpgrade.allUpgrade[i].UpgradeName;
+            refitem.index = i;
         }
     }
 
@@ -152,8 +153,11 @@ public class UpgradeSetUp : MonoBehaviour
                 scoreManager.playerMoney -= roi.priceOfItem;
                 scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
                 roi.priceOfItem += roi.inflation;
-              
+                shopUpgrade.allUpgrade[roi.index].price = roi.priceOfItem;
                 popUPPrice.text = $"{roi.priceOfItem}$";
+                if (!emp.upgradeCounts.ContainsKey(roi.iconeRef))
+                    emp.upgradeCounts[roi.iconeRef] = 0;
+                emp.upgradeCounts[roi.iconeRef]++;
                 if (empLink != null)
                 {
                     if (!emp.upgradesImages.Contains(roi.iconeRef))
@@ -199,6 +203,7 @@ public class UpgradeSetUp : MonoBehaviour
                 scoreManager.playerMoney -= roi.priceOfItem;
                 scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
                 roi.priceOfItem += roi.inflation;
+                shopUpgrade.allUpgrade[roi.index].price = roi.priceOfItem;
                 popUPPrice.text = $"{roi.priceOfItem}$";
                 switch (roi.type)
                 {

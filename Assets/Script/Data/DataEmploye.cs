@@ -20,6 +20,7 @@ public class EmployeDataz
     public float workRythme;      // RythmeDeTravail
     public float errorPercent;
     public int timeInEntreprise;
+    public Sprite typeSprite;
 
 
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.Burst.Intrinsics.X86.Avx;
+
 
 public class EmployeLink : MonoBehaviour
 {
@@ -11,14 +11,14 @@ public class EmployeLink : MonoBehaviour
     [SerializeField] public UpgradeSetUp upgradeSet;
     [SerializeField] public Image myCase;
     [SerializeField] public TextMeshProUGUI nameUi;
-    [SerializeField] public TextMeshProUGUI myTypeUi;
+    [SerializeField] public Image myTypeSprite;
     [SerializeField] public TypeOfEmployez myType;
     [SerializeField] public string MyName;
     [SerializeField] public List<Image> allempImage;
     [SerializeField] Image MySlot;
     public List<Sprite> upgradesImages = new List<Sprite>();
-    [SerializeField] Image[] imagesUpgrades;
-
+    [SerializeField] public Image[] imagesUpgrades;
+    public Dictionary<int, int> upgradeCounts = new Dictionary<int, int>();
     public void OnEnable()
     {
         upgradeSet.EmployeSet += MyIdentity;
@@ -27,18 +27,20 @@ public class EmployeLink : MonoBehaviour
     {
         upgradeSet.EmployeSet -= MyIdentity;
     }
+ 
     public void MyIdentity()
     {
         
-        myType = myemp.employeType;
+       
         MyName = myemp.employeName;
         nameUi.text = MyName;
-        myTypeUi.text = $"Type:{myType}";
+        myTypeSprite.sprite = myemp.typeImage.sprite;
         myCase.sprite = myemp.employeImage.sprite;
         MySlot.color = Color.gray;
-        
+        upgradesImages = new List<Sprite>(myemp.upgradesImages);
+        SetIcone();
 
-}
+    }
     public void OnClick()
     {
         myCase.sprite = myemp.employeImage.sprite;
