@@ -27,7 +27,8 @@ public class EmployeDataz
     public int timeInEntreprise;
     public Sprite typeSprite;
     public List<DialogueLine> firelines = new List<DialogueLine>();
-
+    public List<DialogueLine> firelinesChoice = new List<DialogueLine>();
+    public List<DialogueLine> notfirelines = new List<DialogueLine>();
 
     public Sprite icone;
     public Sprite Working;

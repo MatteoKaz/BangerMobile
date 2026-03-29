@@ -36,8 +36,12 @@ MonoBehaviour:
     - text: "C'est une blague ? Vous avez besoin de moi. Le seul homme fort et comp\xE9tent
         de la boite. "
       speed: 0.02
+    firelinesChoice:
     - text: "Bonne chance sans moi\u2026 vous allez cumuler les erreurs."
       speed: 0.03
+    notfirelines:
+    - text: "Je vois que vous avez retrouv\xE9 la raison"
+      speed: 0
     icone: {fileID: 21300000, guid: e270274b849fbfb49a0f1246e281e5db, type: 3}
     Working: {fileID: 21300000, guid: d76a97f462a28ed43b2745bee89e6c17, type: 3}
     Surcharge: {fileID: 21300000, guid: ed70fe2c83a91c24d8a42593841e7aeb, type: 3}
@@ -64,7 +68,11 @@ MonoBehaviour:
     firelines:
     - text: "Euh... C\u2019est une blague ?"
       speed: 0.02
+    firelinesChoice:
     - text: "Oh\u2026 d'accord\u2026 je vois je m\u2019y attendais pas\u2026"
+      speed: 0.02
+    notfirelines:
+    - text: Ca vous amuse de jouer avec moi.. Idiot
       speed: 0.02
     icone: {fileID: 21300000, guid: 14f9bb138c4e86f4c8e0a13e389950c2, type: 3}
     Working: {fileID: 21300000, guid: 141afca3c9c3e9a46bbcd97a11f5c067, type: 3}
@@ -91,7 +99,11 @@ MonoBehaviour:
     - text: "Apr\xE8s toutes ces ann\xE9es \xE0 servir l'entreprise\u2026 vous ne
         pouvez pas me faire \xE7a ?! "
       speed: 0.02
+    firelinesChoice:
     - text: "Je\u2026 j\u2019\xE9tais presque \xE0 la retraite\u2026"
+      speed: 0.02
+    notfirelines:
+    - text: "Hate de la retraite pour plus avoir \xE0 subir vos ind\xE9ciscion."
       speed: 0.02
     icone: {fileID: 21300000, guid: 0a68844e2e9cb274587eb7d65d93eae0, type: 3}
     Working: {fileID: 21300000, guid: 070f6e68f0b8f3b499dbbd74209d851e, type: 3}
@@ -116,7 +128,11 @@ MonoBehaviour:
     - text: "Attendez\u2026 je peux m'am\xE9liorer ! Ne faites pas \xE7a j'ai trois
         enfants \xE0 nourrir !"
       speed: 0.02
+    firelinesChoice:
     - text: "Mes enfants\u2026 Comment je vais faire\u2026"
+      speed: 0.02
+    notfirelines:
+    - text: 'Merci ! '
       speed: 0.02
     icone: {fileID: 21300000, guid: ae6104a4f1aafd04c815a15c342c322a, type: 3}
     Working: {fileID: 21300000, guid: 413e3607708b3b14ca7e1b2af6617ca8, type: 3}
@@ -145,7 +161,12 @@ MonoBehaviour:
     - text: "Attendez ! Ne faites pas \xE7a je vous en supplie. Ma m\xE8re est gravement
         malade !"
       speed: 0.02
+    firelinesChoice:
     - text: "Non\u2026 J\u2019avais vraiment besoin de ce travail... Maman..."
+      speed: 0.02
+    notfirelines:
+    - text: Vous etes trop bon, merci vous etes le meilleur des patrons, le plus
+        grand, le plus beau, le plus gentils.
       speed: 0.02
     icone: {fileID: 21300000, guid: 7bf0d99247ede4645b1623de9a534709, type: 3}
     Working: {fileID: 21300000, guid: 04d60c2589bee244f86fa3b915dce805, type: 3}
@@ -170,7 +191,11 @@ MonoBehaviour:
     firelines:
     - text: Laissez moi vous dire que vous faites une grosse erreur.
       speed: 0.02
+    firelinesChoice:
     - text: "D\xE9cision compl\xE8tement irrationnel "
+      speed: 0.02
+    notfirelines:
+    - text: Premiere fois que vous connectez vos neuronnes
       speed: 0.02
     icone: {fileID: 21300000, guid: 52f806f274acbbb4697b579b6a2a37f5, type: 3}
     Working: {fileID: 21300000, guid: 3ed0255ef51dea6479e14a8302b42898, type: 3}
@@ -196,9 +221,13 @@ MonoBehaviour:
     firelines:
     - text: "Faites ce que vous avez \xE0 faire je m'en fiche. Moi je fais mon travail."
       speed: 0.02
+    firelinesChoice:
     - text: "Tr\xE8s bien. Bonne chance sans la seule personne r\xE9ellement comp\xE9tente
         de la boite."
       speed: 0.02
+    notfirelines:
+    - text: Tant mieux j'en pouvais plus de voir votre sale tronche
+      speed: 0
     icone: {fileID: 21300000, guid: 859752bb043b03642a97ae006c246051, type: 3}
     Working: {fileID: 21300000, guid: b11db67f4b20aba46931026596be6b2a, type: 3}
     Surcharge: {fileID: 21300000, guid: bae84d74c689b2b4a9275fbbe3141384, type: 3}
@@ -225,7 +254,11 @@ MonoBehaviour:
     - text: "Oh non ! ne faites pas \xE7a ! vous savez que je peux m\u2019am\xE9liorer
         !"
       speed: 0.02
+    firelinesChoice:
     - text: Mais, qu'est ce que je vais devenir sans ce travail maintenant...
+      speed: 0.02
+    notfirelines:
+    - text: Je vais m'ameliorer devenir le plus EFFICACE DES EMPLOYE!!!!
       speed: 0.02
     icone: {fileID: 21300000, guid: f259354f6b8dc72418db5fcc84fe6853, type: 3}
     Working: {fileID: 21300000, guid: 27b6ce3f2058e834aa883873d18698ae, type: 3}
@@ -251,7 +284,11 @@ MonoBehaviour:
     firelines:
     - text: "\u2026Si c\u2019est ce que vous souhaitez."
       speed: 0.02
+    firelinesChoice:
     - text: "D\u2019accord."
+      speed: 0.02
+    notfirelines:
+    - text: pfff.
       speed: 0.02
     icone: {fileID: 21300000, guid: ae27765a14492f741afc5ed94eedd606, type: 3}
     Working: {fileID: 21300000, guid: 014277cd6bd730a4c982b10eea872d0f, type: 3}
@@ -278,7 +315,11 @@ MonoBehaviour:
     - text: "S\u2019il vous pla\xEEt\u2026 comment vais je rembourse mes dettes sans
         ce travail ?!"
       speed: 0.02
+    firelinesChoice:
     - text: "\u2026Vous venez de ruiner ma vie."
+      speed: 0.02
+    notfirelines:
+    - text: Merci...J'image.
       speed: 0.02
     icone: {fileID: 21300000, guid: 900292dc5f2d09444b19781942b4d6e5, type: 3}
     Working: {fileID: 21300000, guid: d699784e5d57bca45ae9a43ce50f33a0, type: 3}

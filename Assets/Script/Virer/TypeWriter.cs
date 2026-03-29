@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,15 +15,17 @@ public class TypeWriter : MonoBehaviour
     private int currentIndex = 0;
     private bool isTyping = false;
     public Animator animator;
-    public void StartDialogue(List<DialogueLine> lines,Animator animatorSend)
+    private bool isBase = true;
+    private enum DialoguePhase { Base, Fired, NotFired }
+    private DialoguePhase phase;
+    public void StartDialogue(List<DialogueLine> lines, Animator animatorSend)
     {
+        phase = DialoguePhase.Base;
         animator = animatorSend;
         currentLines = lines;
         currentIndex = 0;
-        //  employeName pas name
         ShowNextLine();
     }
-
     public void ShowNextLine()
     {
         if (currentLines == null)
@@ -50,6 +53,7 @@ public class TypeWriter : MonoBehaviour
         animator.SetTrigger("EndTalk");
         isTyping = false;
         
+        
     }
 
     public void OnClick()
@@ -66,10 +70,37 @@ public class TypeWriter : MonoBehaviour
             ShowNextLine();
         }
     }
-   
+
     private void EndDialogue()
     {
-        fireManager.FiredLauncher();
+        if (phase == DialoguePhase.Base)
+        {
+            fireManager.ShowChoiceButtons();
+        }
+        else if (phase == DialoguePhase.Fired)
+        {
+            fireManager.FiredLauncher();
+        }
+        else if (phase == DialoguePhase.NotFired)
+        {
+            fireManager.NotFiredLaunch();
+        }
+    }
+    public void ChoiceFired()
+    {
+        phase = DialoguePhase.Fired;
+        currentIndex = 0;
+        currentLines = fireManager.empFiche.employe.firelinesChoice;
+        ShowNextLine();
+        fireManager.HideChoiceButtons();
     }
 
+    public void ChoiceNotFired()
+    {
+        phase = DialoguePhase.NotFired;
+        currentIndex = 0;
+        currentLines = fireManager.empFiche.employe.notfirelines;
+        ShowNextLine();
+        fireManager.HideChoiceButtons();
+    }
 }

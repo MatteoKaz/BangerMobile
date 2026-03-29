@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Rendering.MaterialUpgrader;
@@ -6,7 +7,7 @@ using static UnityEditor.Rendering.MaterialUpgrader;
 public class FireManager : MonoBehaviour
 {
     [Header("Ref")]
-    [SerializeField] EmployeFicheInfo empFiche;
+    [SerializeField] public EmployeFicheInfo empFiche;
     [SerializeField] Image employeImage;
     [SerializeField] Animator animator;
     [SerializeField] GameObject FiredScene;
@@ -16,6 +17,7 @@ public class FireManager : MonoBehaviour
     [SerializeField] GameObject Roulette;
     [SerializeField] RouletteWheel RouletteScript;
     [SerializeField] GameObject Tube;
+    [SerializeField] GameObject choiceButtons;
 
     [Header("AnimScoreMenu")]
     [SerializeField] public float animDuration;
@@ -289,5 +291,17 @@ public class FireManager : MonoBehaviour
         }
         FiredScene.SetActive(false);
         
+    }
+
+
+    public void ShowChoiceButtons()
+    {
+        choiceButtons.SetActive(true);
+
+    }
+    public void HideChoiceButtons()
+    {
+        choiceButtons.SetActive(false);
+
     }
 }

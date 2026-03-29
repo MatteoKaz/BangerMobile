@@ -32,6 +32,10 @@ public class Employe : MonoBehaviour
     public Sprite working;
     public Sprite Surcharge;
     public List<DialogueLine> firelines = new List<DialogueLine>();
+    public List<DialogueLine> firelinesChoice = new List<DialogueLine>();
+    public List<DialogueLine> notfirelines = new List<DialogueLine>();
+
+
 
     [Header("Upgrade modifier")]
     public float employeWorkRateBonus = 0f;
@@ -157,6 +161,8 @@ public class Employe : MonoBehaviour
         idleSprite = employeImage.sprite;
         working = employe.Working;
         Surcharge = employe.Surcharge;
+        firelinesChoice = employe.firelinesChoice;
+         notfirelines = employe.notfirelines;
         // Ajoute le nouveau
         if (polemanager != null && polemanager.TakenEmployeIndex != null)
             polemanager.TakenEmployeIndex.Add(employeIndex);
