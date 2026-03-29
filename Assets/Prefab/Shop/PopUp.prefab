@@ -174,7 +174,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -299.75006}
+  m_AnchoredPosition: {x: 0, y: -2689.0417}
   m_SizeDelta: {x: -650, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1826278290807903278
@@ -494,6 +494,8 @@ MonoBehaviour:
   allempImage:
   - {fileID: 7771665185644146842}
   - {fileID: 5411645724201677682}
+  upgradesImages: []
+  imagesUpgrades: []
 --- !u!222 &4405247299104580792
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -721,6 +723,8 @@ MonoBehaviour:
   allempImage:
   - {fileID: 5411645724201677682}
   - {fileID: 732626822674849208}
+  upgradesImages: []
+  imagesUpgrades: []
 --- !u!222 &2798314191720246777
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -911,7 +915,7 @@ MonoBehaviour:
   upgradeSet: {fileID: 0}
   myCase: {fileID: 9066628320972834924}
   nameUi: {fileID: 1597525293289712255}
-  myTypeUi: {fileID: 8662770389823071046}
+  myTypeSprite: {fileID: 0}
   myType: 0
   MyName: 
   allempImage:
@@ -1648,6 +1652,8 @@ MonoBehaviour:
   allempImage:
   - {fileID: 7771665185644146842}
   - {fileID: 732626822674849208}
+  upgradesImages: []
+  imagesUpgrades: []
 --- !u!222 &3661995499875148598
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2050,7 +2056,7 @@ MonoBehaviour:
   upgradeSet: {fileID: 0}
   myCase: {fileID: 9079648328266672925}
   nameUi: {fileID: 8508295558102296545}
-  myTypeUi: {fileID: 725838490849109066}
+  myTypeSprite: {fileID: 0}
   myType: 0
   MyName: 
   allempImage:
@@ -2775,7 +2781,7 @@ MonoBehaviour:
   upgradeSet: {fileID: 0}
   myCase: {fileID: 8467469436397602160}
   nameUi: {fileID: 2840727465472306320}
-  myTypeUi: {fileID: 2869664738175841823}
+  myTypeSprite: {fileID: 0}
   myType: 0
   MyName: 
   allempImage:
@@ -3151,7 +3157,7 @@ MonoBehaviour:
   upgradeSet: {fileID: 0}
   myCase: {fileID: 7320652209024381906}
   nameUi: {fileID: 4496224132284407476}
-  myTypeUi: {fileID: 4188207231810247079}
+  myTypeSprite: {fileID: 0}
   myType: 0
   MyName: 
   allempImage:
@@ -3589,7 +3595,7 @@ MonoBehaviour:
   upgradeSet: {fileID: 0}
   myCase: {fileID: 1694083873512595170}
   nameUi: {fileID: 6724934745607481155}
-  myTypeUi: {fileID: 6411314642792565111}
+  myTypeSprite: {fileID: 0}
   myType: 0
   MyName: 
   allempImage:
@@ -3634,11 +3640,11 @@ RectTransform:
   - {fileID: 9035384169600830913}
   - {fileID: 2407239200093976938}
   - {fileID: 2782272918505006458}
-  - {fileID: 7223435659131850673}
   - {fileID: 3841334668350282334}
-  - {fileID: 6329943205560741495}
   - {fileID: 5590624531813609856}
   - {fileID: 8195838398282049866}
+  - {fileID: 7223435659131850673}
+  - {fileID: 6329943205560741495}
   - {fileID: 4074675526874260763}
   - {fileID: 7300830670175551938}
   m_Father: {fileID: 0}

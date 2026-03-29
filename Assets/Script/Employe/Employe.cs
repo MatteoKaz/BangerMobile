@@ -181,7 +181,7 @@ public class Employe : MonoBehaviour
             mypole.UpdatePaperUI();
             WorkRoutine = StartCoroutine(Work());
             employeImage.sprite = working;
-            Light.intensity = 0.73f;
+            Light.intensity = 0.6f;
            
         }
         
@@ -194,7 +194,7 @@ public class Employe : MonoBehaviour
 
     public IEnumerator Work()
     {
-        baseColor = Light.color;
+       
         float t = 0f;
        
         while (t < 1)
@@ -211,7 +211,7 @@ public class Employe : MonoBehaviour
             else
             {
                 employeImage.sprite = Surcharge;
-                Light.intensity = 0.73f;
+                Light.intensity = 0.6f;
                 Light.color = Color.indianRed;
             }
             yield return null;
@@ -295,6 +295,7 @@ public class Employe : MonoBehaviour
     
     public void EndDayResetStat()
     {
+        Light.intensity = 0.0f;
         iamWorking = false;
         Light.color = baseColor;
         if (WorkRoutine != null)
@@ -328,5 +329,8 @@ public class Employe : MonoBehaviour
         WeeksucceedPaper = 0;
         employeImage.sprite = idleSprite;
     }
-
+    public void Start()
+    {
+        baseColor = Light.color;
+    }
 }
