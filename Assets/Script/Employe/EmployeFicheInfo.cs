@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EmployeFicheInfo : MonoBehaviour
 {
-    [SerializeField] Employe employe;
+    [SerializeField] public Employe employe;
 
     /// <summary>Expose l'employé lié pour les scripts externes (ex. MVPButton).</summary>
     public Employe LinkedEmploye => employe;
@@ -17,13 +17,14 @@ public class EmployeFicheInfo : MonoBehaviour
     [SerializeField] TextMeshProUGUI employeMoney;
     [SerializeField] TextMeshProUGUI tempsinEntreprise;
     [SerializeField] TextMeshProUGUI pole;
-    [SerializeField] Image Image;
+    [SerializeField] public Image Image;
 
     [SerializeField] UiManager UiManager;
-
+    [SerializeField] RouletteWheel rouletteWheel;
     private void OnEnable()
     {
         UiManager.ScoreAnim += SetUpText;
+        rouletteWheel.EmployeSelected += SetUpText;
     }
 
     private void OnDisable()
@@ -47,7 +48,7 @@ public class EmployeFicheInfo : MonoBehaviour
             employeRendement.text   = $"Papier: {employe.succeedPaper}/{employe.numberOfPaperDone}, 1/{employe.employeWorkRate}s";
             employeMoney.text       = $"Apport: {employe.moneyMake} $";
             tempsinEntreprise.text  = $"Temps : {employe.timeInEntreprise}";
-            Image.sprite            = employe.employeImage.sprite;
+            Image.sprite            = employe.idleSprite;
             pole.text               = $"Pole: {employe.mypole.PoleName}";
         }
     }

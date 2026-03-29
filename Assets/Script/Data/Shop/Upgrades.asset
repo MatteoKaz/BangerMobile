@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   allUpgrade:
   - UpgradeName: La carotte
-    price: 150
+    price: 200
     type: 0
     category: 0
     upgradeValue: 0.25
-    icone: {fileID: -7991220575408559152, guid: 44e2866e1e54b624899def5697395abb, type: 3}
+    icone: {fileID: 6150637912722642187, guid: ada59ad41c1fb8f40a2c82097a34bc63, type: 3}
     inflation: 25
     Description: "Permet d'augmenter la rapidit\xE9 d\u2019ex\xE9cution des t\xE2ches
       d'un employ\xE9"
@@ -28,26 +28,26 @@ MonoBehaviour:
     type: 1
     category: 0
     upgradeValue: 0.05
-    icone: {fileID: -6887273583762930350, guid: 2addf3bda0be5074687a5177a01154d3, type: 3}
+    icone: {fileID: -3893841673118602047, guid: d90c09f3675ea334d89a9e524360ea2b, type: 3}
     inflation: 25
     Description: "Permet de baisser le pourcentage d'erreurs d'un employ\xE9."
     duration: 0
   - UpgradeName: "La cam\xE9ra "
-    price: 150
+    price: 475
     type: 2
     category: 0
     upgradeValue: 0.25
-    icone: {fileID: 2564396042336592123, guid: 353e6496c4f6c1e489e5cd0cd878ddcf, type: 3}
+    icone: {fileID: 55277595470563842, guid: d1906c2ca286a2544856ddd54c4663c8, type: 3}
     inflation: 25
     Description: "Permet de surveiller un employ\xE9, lorsque ce dernier ne travaille
       pas, et le force \xE0 se remettre au travail temporairement."
     duration: 0
   - UpgradeName: "Caf\xE9 \xE0 volont\xE9"
-    price: 150
+    price: 950
     type: 3
     category: 0
     upgradeValue: 1
-    icone: {fileID: 6379305646476659001, guid: 86edec779c716cf4f972b1204e524e12, type: 3}
+    icone: {fileID: -7378038606456990723, guid: 4f80c60a3925cdd49b799b86b1ae0769, type: 3}
     inflation: 25
     Description: "Permet \xE0 un employ\xE9 de traiter 2 dossier \xE0 la fois."
     duration: 0
@@ -56,7 +56,7 @@ MonoBehaviour:
     type: 4
     category: 1
     upgradeValue: 1
-    icone: {fileID: -8094445863123026661, guid: a4be551868766674aa463fa727e9186e, type: 3}
+    icone: {fileID: -4089885693471589048, guid: 498518a49f070404ca48fd2ee64c24bc, type: 3}
     inflation: 25
     Description: "Permet de multiplier le pourcentage de revenus,  des employ\xE9es
       d'un p\xF4le"
@@ -66,27 +66,27 @@ MonoBehaviour:
     type: 5
     category: 1
     upgradeValue: 0.25
-    icone: {fileID: -7469407448022531758, guid: 7425d056a6f40b7428062e9071e064bf, type: 3}
+    icone: {fileID: -7290461428519605451, guid: 866e8e08b2ee897459744bf37c3af77b, type: 3}
     inflation: 25
     Description: "Permet d'apaiser les employ\xE9s, et ainsi de repousser la surcharge
       d'un p\xF4le."
     duration: 0
-  - UpgradeName: Push to the limit
+  - UpgradeName: Carotte Multiple
     price: 150
     type: 6
     category: 1
     upgradeValue: 0.25
-    icone: {fileID: -1792168375425548192, guid: 73deaa13c5cc0db43a0b1d82bdca2470, type: 3}
+    icone: {fileID: 4779438007100663045, guid: 9ee7e07b169c9b249b35aec50b345ba7, type: 3}
     inflation: 25
     Description: "Permet d'augmenter la rapidit\xE9 d\u2019ex\xE9cution de t\xE2ches
       d'un p\xF4le."
     duration: 0
-  - UpgradeName: Mental d'acier
-    price: 150
+  - UpgradeName: Pole promo
+    price: 170
     type: 7
     category: 1
     upgradeValue: 0.05
-    icone: {fileID: -8884802200416635717, guid: 62b31afb766f01c45b51e3eec9e53cba, type: 3}
+    icone: {fileID: -9181463752678961260, guid: 0537ec4632db99846a4b80dadd5b5a4f, type: 3}
     inflation: 20
     Description: "Permet de baisser le pourcentage d'erreurs d'un p\xF4le."
     duration: 0

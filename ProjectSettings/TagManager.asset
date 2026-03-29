@@ -47,5 +47,11 @@ TagManager:
   - name: Ranking
     uniqueID: 3374664179
     locked: 0
+  - name: Fire
+    uniqueID: 2871886899
+    locked: 0
+  - name: Score
+    uniqueID: 1013413899
+    locked: 0
   m_RenderingLayers:
   - Default

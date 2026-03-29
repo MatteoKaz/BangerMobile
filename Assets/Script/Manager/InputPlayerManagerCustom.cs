@@ -90,30 +90,30 @@ public class InputPlayerManagerCustom : MonoBehaviour
 
             }
 
-            if (dotDiagLowLeft > 0.7)
-            {
-                if (paperRef != null && HasCall == false)
-                {
-                    HasCall = true;
-                    paperRef.MoveToPile();
-                }
-            }
+            /* if (dotDiagLowLeft > 0.7)
+             {
+                 if (paperRef != null && HasCall == false)
+                 {
+                     HasCall = true;
+                     paperRef.MoveToPile();
+                 }
+             }
 
 
-            if (dotLeft > 0.8f)
-            {
-                if (paperRef != null && HasCall == false)
-                {
-                   
-                    HasCall = true;
+             /*if (dotLeft > 0.8f)
+             {
+                 if (paperRef != null && HasCall == false)
+                 {
 
-                    paperRef.MoveToPile();
+                     HasCall = true;
+
+                     paperRef.MoveToPile();
 
 
-                }
+                 }
 
-            }
-           
+             }*/
+
 
             if (dotdiagLeft > 0.9f)
             {

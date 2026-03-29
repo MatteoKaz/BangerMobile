@@ -13,103 +13,273 @@ MonoBehaviour:
   m_Name: Employes 1
   m_EditorClassIdentifier: Assembly-CSharp::EmployeObject
   allEmploye:
-  - EmployeName: 445555
-    description: 
-    fireDescription: 
+  - EmployeName: Arthur
+    description: "Arthur s'occupe de v\xE9rifier que toutes les d\xE9cisions respectent
+      bien les r\xE8gles de l\u2019entreprise. Strict et inflexible, il ne tol\xE8re
+      aucune approximation. Et ce dernier peut ainsi venir bloquer des dossiers pour
+      de simples d\xE9tails insignifiants.\L Peu appr\xE9ci\xE9 par ses coll\xE8gues
+      d\xFB \xE0 son intransigeance maladive, il l'est \xE9galement pour son c\xF4t\xE9
+      \"grande gueule\" et m\xE9galomane, ne cessant de se vanter de ses multiples
+      conqu\xEAtes. Les femmes de la bo\xEEte pr\xE9f\xE8rent l'\xE9viter, n'appr\xE9ciant
+      gu\xE8re l'avoir proche d'elles, \xE9tant incapable de les respecter.\L Mais
+      ainsi, ce dernier reste pour autant un maillon indispensable de l'entreprise
+      afin d'\xE9viter les erreurs graves.\L Si jamais il venait \xE0 perdre son
+      travail, cela ferait un sacr\xE9 coup \xE0 l'ego pour lui, qu'il ferait probablement
+      payer cher."
     type: 0
     TypeText: 
     workRythme: 4
     errorPercent: 0.7
     timeInEntreprise: 0
     typeSprite: {fileID: -401073943303174144, guid: 4679f2bab0d8f96438c5cb657bedbc7f, type: 3}
+    firelines:
+    - text: "C'est une blague ? Vous avez besoin de moi. Le seul homme fort et comp\xE9tent
+        de la boite. "
+      speed: 0.02
+    - text: "Bonne chance sans moi\u2026 vous allez cumuler les erreurs."
+      speed: 0.03
     icone: {fileID: 21300000, guid: e270274b849fbfb49a0f1246e281e5db, type: 3}
-  - EmployeName: 4444
-    description: 
-    fireDescription: 
+    Working: {fileID: 21300000, guid: d76a97f462a28ed43b2745bee89e6c17, type: 3}
+    Surcharge: {fileID: 21300000, guid: ed70fe2c83a91c24d8a42593841e7aeb, type: 3}
+  - EmployeName: Sam
+    description: "Sam est le \"touche-\xE0-tout\" de l'entreprise. Il n'a pas de
+      sp\xE9cialit\xE9 en particulier, mais il se d\xE9marque justement par sa polyvalence
+      et son adaptabilit\xE9. D\xE8s que quelqu'un a besoin de support sur une t\xE2che,
+      ils font appel \xE0 lui. Cette position lui permet ainsi tr\xE8s souvent de
+      d\xE9bloquer ses coll\xE8gues, en proposant des solutions inattendues aux probl\xE8mes.\L
+      En revanche, ce dernier a tendance \xE0 facilement se d\xE9concentrer, perdant
+      vite le fil de ses t\xE2ches, se retrouvant r\xE9guli\xE8rement \xE0 accumuler
+      et devoir g\xE9rer diff\xE9rentes t\xE2ches en m\xEAme temps.\L \xC9galement,
+      son comportement est souvent soulev\xE9 par ses coll\xE8gues d\xFB \xE0 son
+      impr\xE9visibilit\xE9, \xE9tant capable de passer sa journ\xE9e \xE0 observer
+      ses coll\xE8gues sans raison apparente, ou bien de venir au bureau d\xE9guis\xE9
+      en Spider-Man.\L Malgr\xE9 ses bizarreries et pitreries, le bureau est le seul
+      endroit o\xF9 ce dernier semble pouvoir \xEAtre lui-m\xEAme."
     type: 2
     TypeText: 
     workRythme: 5
     errorPercent: 0.8
     timeInEntreprise: 0
     typeSprite: {fileID: -6265635112725933853, guid: 2b9b5b424e4a6ad4796c141f5ffe1103, type: 3}
+    firelines:
+    - text: "Euh... C\u2019est une blague ?"
+      speed: 0.02
+    - text: "Oh\u2026 d'accord\u2026 je vois je m\u2019y attendais pas\u2026"
+      speed: 0.02
     icone: {fileID: 21300000, guid: 14f9bb138c4e86f4c8e0a13e389950c2, type: 3}
-  - EmployeName: 444455
-    description: 
-    fireDescription: 
+    Working: {fileID: 21300000, guid: 141afca3c9c3e9a46bbcd97a11f5c067, type: 3}
+    Surcharge: {fileID: 21300000, guid: 34a1bffddc005c444a9e87740fea54a2, type: 3}
+  - EmployeName: John
+    description: "John, le doyen de l'entreprise, s'occupe de classer et de conserver
+      les dossiers trait\xE9s. Il conna\xEEt toutes les proc\xE9dures sur le bout
+      des doigts.\L Peu \xE0 l\u2019aise avec les nouvelles technologies, il pr\xE9f\xE8re
+      travailler comme \xE0 l'\xE9poque, \xE0 savoir : sans utiliser l'informatique
+      \xE0 outrance. Seulement, cela a tendance \xE0 rallonger quelque peu certaines
+      proc\xE9dures. De plus, ses r\xE9cents probl\xE8mes de m\xE9moire dus \xE0
+      son \xE2ge grandissant lui demandent souvent de r\xE9p\xE9ter plusieurs fois
+      les m\xEAmes choses \xE0 ses coll\xE8gues. Pour autant, John reste ainsi un
+      employ\xE9 central de l'entreprise, et \xE0 seulement quelques mois de la retraite,
+      ce serait cruel de se d\xE9barrasser de cette vieille branche maintenant, non
+      ?"
     type: 1
     TypeText: 
     workRythme: 6
     errorPercent: 0.9
     timeInEntreprise: 0
     typeSprite: {fileID: -6549401532707822571, guid: 2bbbce11746197841a89124f0338c0b1, type: 3}
+    firelines:
+    - text: "Apr\xE8s toutes ces ann\xE9es \xE0 servir l'entreprise\u2026 vous ne
+        pouvez pas me faire \xE7a ?! "
+      speed: 0.02
+    - text: "Je\u2026 j\u2019\xE9tais presque \xE0 la retraite\u2026"
+      speed: 0.02
     icone: {fileID: 21300000, guid: 0a68844e2e9cb274587eb7d65d93eae0, type: 3}
-  - EmployeName: 45523
-    description: 
-    fireDescription: 
+    Working: {fileID: 21300000, guid: 070f6e68f0b8f3b499dbbd74209d851e, type: 3}
+    Surcharge: {fileID: 21300000, guid: c725b2e1fbb3cff4fa1130aca58cc62a, type: 3}
+  - EmployeName: Tomy
+    description: "Tomy est l'homme de la situation concernant les cas les plus complexes
+      et p\xE9rilleux de l'entreprise, intervenant notamment en premi\xE8re ligne
+      d\xE8s lors que le client r\xE9clame son indemnisation.\LP\xE8re de trois enfants,
+      ce n'est pas toujours facile pour lui de jongler entre vie personnelle et professionnelle,
+      le laissant souvent quelque peu d\xE9bord\xE9, ce qui peut avoir tendance \xE0
+      agacer ses coll\xE8gues, ne cessant d'exhiber fi\xE8rement les photos de ses
+      enfants. Ainsi, bien que quelque peu collant et ben\xEAt, il reste pour autant
+      un tr\xE8s bon employ\xE9 et coll\xE8gue, faisant preuve d\u2019une grande
+      empathie."
     type: 0
     TypeText: 
     workRythme: 4
     errorPercent: 0.7
     timeInEntreprise: 0
     typeSprite: {fileID: -401073943303174144, guid: 4679f2bab0d8f96438c5cb657bedbc7f, type: 3}
+    firelines:
+    - text: "Attendez\u2026 je peux m'am\xE9liorer ! Ne faites pas \xE7a j'ai trois
+        enfants \xE0 nourrir !"
+      speed: 0.02
+    - text: "Mes enfants\u2026 Comment je vais faire\u2026"
+      speed: 0.02
     icone: {fileID: 21300000, guid: ae6104a4f1aafd04c815a15c342c322a, type: 3}
-  - EmployeName: 557132
-    description: 
-    fireDescription: 
+    Working: {fileID: 21300000, guid: 413e3607708b3b14ca7e1b2af6617ca8, type: 3}
+    Surcharge: {fileID: 21300000, guid: 5c8ff4fc1d5f16c43a708c1ec93f2f10, type: 3}
+  - EmployeName: Taylor
+    description: "Taylor s'occupe d\u2019authentifier et de contr\xF4ler les fonds
+      entrants. Petit nouveau \xE9nergique, et motiv\xE9, il est toujours volontaire
+      pour aider ses coll\xE8gues. Beaucoup profitant ainsi de sa na\xEFvet\xE9,
+      en n'h\xE9sitant pas \xE0 lui d\xE9l\xE9guer leurs t\xE2ches. Cependant, ce
+      dernier n'est pas pour autant plus efficace que les autres. Allant droit au
+      but et d\xE9testent relire son travail, il n\xE9glige ainsi souvent de nombreux
+      d\xE9tails dans les documents qu'il traite. Bien qu'il soit tout nouveau dans
+      l'entreprise, il a d\xE9j\xE0 r\xE9ussi \xE0 faire ses preuves et est devenu
+      un coll\xE8gue attachant et un maillon indispensable de l'entreprise.\LLui
+      qui \xE9tait originellement en stage dans l'entreprise, et pas particuli\xE8rement
+      enclin \xE0 rester, s'est finalement accroch\xE9 \xE0 l'id\xE9e de d\xE9crocher
+      son CDI suite au probl\xE8me de sant\xE9 de sa m\xE8re. Cette opportunit\xE9
+      lui \xE9tant plus que vitale."
     type: 1
     TypeText: 
     workRythme: 6
     errorPercent: 0.9
     timeInEntreprise: 0
     typeSprite: {fileID: -6549401532707822571, guid: 2bbbce11746197841a89124f0338c0b1, type: 3}
+    firelines:
+    - text: "Attendez ! Ne faites pas \xE7a je vous en supplie. Ma m\xE8re est gravement
+        malade !"
+      speed: 0.02
+    - text: "Non\u2026 J\u2019avais vraiment besoin de ce travail... Maman..."
+      speed: 0.02
     icone: {fileID: 21300000, guid: 7bf0d99247ede4645b1623de9a534709, type: 3}
-  - EmployeName: 1155
-    description: 
-    fireDescription: 
+    Working: {fileID: 21300000, guid: 04d60c2589bee244f86fa3b915dce805, type: 3}
+    Surcharge: {fileID: 21300000, guid: a7d1402b9224e8a4d9d0675c4c8fe25b, type: 3}
+  - EmployeName: Jade
+    description: "Jade s\u2019occupe d\u2019optimiser la circulation des dossiers
+      entre les diff\xE9rents services.\L Elle se d\xE9marque par son efficacit\xE9,
+      ne s\u2019\xE9garant pas dans des discussions inutiles et \xE0 rallonge. Ne
+      laissant ainsi aucune place \xE0 l\u2019improvisation. Certains coll\xE8gues
+      la trouvent froide d\xFB \xE0 son comportement, mais pour elle, elle est simplement
+      une employ\xE9e mod\xE8le redoublant d'efforts afin d'atteindre ses objectifs
+      de productivit\xE9. Sa vision d'elle-m\xEAme, quelque peu \xE9gocentr\xE9e,
+      a tendance \xE0 agacer ses coll\xE8gues, allant jusqu'\xE0 \xE9viter cette
+      derni\xE8re. Mais ainsi, au-del\xE0 de ses relations sociales caduques au sein
+      de l'entreprise, sa productivit\xE9 est fortement appr\xE9ci\xE9e par ses sup\xE9rieurs."
     type: 2
     TypeText: 
     workRythme: 5
     errorPercent: 0.8
     timeInEntreprise: 0
     typeSprite: {fileID: -6265635112725933853, guid: 2b9b5b424e4a6ad4796c141f5ffe1103, type: 3}
+    firelines:
+    - text: Laissez moi vous dire que vous faites une grosse erreur.
+      speed: 0.02
+    - text: "D\xE9cision compl\xE8tement irrationnel "
+      speed: 0.02
     icone: {fileID: 21300000, guid: 52f806f274acbbb4697b579b6a2a37f5, type: 3}
-  - EmployeName: 2252
-    description: 
-    fireDescription: 
+    Working: {fileID: 21300000, guid: 3ed0255ef51dea6479e14a8302b42898, type: 3}
+    Surcharge: {fileID: 21300000, guid: a003a2d67afba944487de9762a5abc81, type: 3}
+  - EmployeName: Skyler
+    description: "Skyler est sp\xE9cialis\xE9e dans la validation des dossiers les
+      plus sensibles de la bo\xEEte. Particuli\xE8rement rigoureuse, elle rep\xE8re
+      vite les incoh\xE9rences et erreurs dans les documents qu'elle traite. En revanche,
+      son perfectionnisme a tendance \xE0 lui jouer des tours, ayant souvent pour
+      cons\xE9quence de ralentir sa fr\xE9quence de travail.\L Solitaire et exigeante,
+      elle pr\xE9f\xE8re travailler seule, ne supportant pas les j\xE9r\xE9miades
+      et ragots de ses coll\xE8gues.\L C\xE9libataire endurcie, Skyler s'occupe seule
+      de ses deux enfants depuis plus de 5 ans. Ainsi, c'est pour subvenir aux besoins
+      de ses enfants qu'elle se donne autant dans son travail, son salaire \xE9tant
+      le seul revenu pour eux trois. Sans ce travail, elle serait probablement d\xE9j\xE0
+      condamn\xE9e..."
     type: 0
     TypeText: 
     workRythme: 4
     errorPercent: 0.7
     timeInEntreprise: 0
     typeSprite: {fileID: -401073943303174144, guid: 4679f2bab0d8f96438c5cb657bedbc7f, type: 3}
+    firelines:
+    - text: "Faites ce que vous avez \xE0 faire je m'en fiche. Moi je fais mon travail."
+      speed: 0.02
+    - text: "Tr\xE8s bien. Bonne chance sans la seule personne r\xE9ellement comp\xE9tente
+        de la boite."
+      speed: 0.02
     icone: {fileID: 21300000, guid: 859752bb043b03642a97ae006c246051, type: 3}
-  - EmployeName: 66666
-    description: 
-    fireDescription: 
+    Working: {fileID: 21300000, guid: b11db67f4b20aba46931026596be6b2a, type: 3}
+    Surcharge: {fileID: 21300000, guid: bae84d74c689b2b4a9275fbbe3141384, type: 3}
+  - EmployeName: Julie
+    description: "ulie est charg\xE9e d\u2019accompagner les nouveaux employ\xE9s
+      dans leurs missions.\L Patiente et p\xE9dagogue, elle prend le temps d\u2019expliquer
+      les diff\xE9rentes proc\xE9dures, parfois au d\xE9triment des performances.
+      Elle peut ainsi se retrouver \xE0 ralentir le rythme de son travail pour aller
+      aider les autres. Seulement, Julie ne peut s'emp\xEAcher de trop parler, les
+      comm\xE9rages \xE9tant du pain b\xE9ni pour elle : une fois lanc\xE9e, elle
+      ne peut s'arr\xEAter. Et bien que sa pr\xE9sence soit majoritairement appr\xE9ci\xE9e
+      par ses coll\xE8gues, ses sup\xE9rieurs doivent souvent la reprendre afin qu'elle
+      se reconcentre sur ses propres t\xE2ches.\L Il se dit dans les couloirs que
+      si elle ne peut s'emp\xEAcher de parler \xE0 tout-va, c'est d\xFB \xE0 sa profonde
+      solitude personnelle : sans famille ni amis, son travail est sa vie. Ainsi,
+      perdre celui-ci serait tr\xE8s certainement un profond drame pour elle."
     type: 1
     TypeText: 
     workRythme: 6
     errorPercent: 0.9
     timeInEntreprise: 0
     typeSprite: {fileID: -6549401532707822571, guid: 2bbbce11746197841a89124f0338c0b1, type: 3}
+    firelines:
+    - text: "Oh non ! ne faites pas \xE7a ! vous savez que je peux m\u2019am\xE9liorer
+        !"
+      speed: 0.02
+    - text: Mais, qu'est ce que je vais devenir sans ce travail maintenant...
+      speed: 0.02
     icone: {fileID: 21300000, guid: f259354f6b8dc72418db5fcc84fe6853, type: 3}
-  - EmployeName: 556554
-    description: 
-    fireDescription: 
+    Working: {fileID: 21300000, guid: 27b6ce3f2058e834aa883873d18698ae, type: 3}
+    Surcharge: {fileID: 21300000, guid: 8c4f88154130a7540b3bbc54e8afa46e, type: 3}
+  - EmployeName: Grace
+    description: "Grace assure la liaison entre les diff\xE9rents services de l\u2019entreprise.
+      Gr\xE2ce \xE0 son aisance \xE0 l'oral, elle communique facilement et sait apaiser
+      les tensions entre ses coll\xE8gues.\L Tr\xE8s organis\xE9e, elle sait garder
+      un cap dans son travail. Cependant, elle se laisse vite submerger par le stress
+      lorsqu\u2019on lui confie trop de responsabilit\xE9s.\L Couverte de dettes,
+      ce travail lui est indispensable pour esp\xE9rer sortir la t\xEAte de l'eau.\L
+      Si jamais elle venait \xE0 perdre ce dernier, elle perdrait ainsi sa seule
+      rentr\xE9e d'argent pour \xE9ponger ses dettes, et si ses dettes ne sont pas
+      rembours\xE9es... il serait alors fort probable qu'elle vienne \xE0 dispara\xEEtre
+      myst\xE9rieusement. Alors r\xE9fl\xE9chissez bien si vous souhaitez la licencier,
+      n'avez-vous donc pas de c\u0153ur ?"
     type: 2
     TypeText: 
     workRythme: 5
     errorPercent: 0.8
     timeInEntreprise: 0
     typeSprite: {fileID: -6265635112725933853, guid: 2b9b5b424e4a6ad4796c141f5ffe1103, type: 3}
+    firelines:
+    - text: "\u2026Si c\u2019est ce que vous souhaitez."
+      speed: 0.02
+    - text: "D\u2019accord."
+      speed: 0.02
     icone: {fileID: 21300000, guid: ae27765a14492f741afc5ed94eedd606, type: 3}
-  - EmployeName: 55655
-    description: 
-    fireDescription: 
+    Working: {fileID: 21300000, guid: 014277cd6bd730a4c982b10eea872d0f, type: 3}
+    Surcharge: {fileID: 21300000, guid: 46abfc4b515771e43801137896c67dfe, type: 3}
+  - EmployeName: Harper
+    description: "Harper est une employ\xE9e discr\xE8te, \xE9changeant peu avec
+      ses coll\xE8gues. Cette derni\xE8re fait bien la distinction entre vie professionnelle
+      et vie personnelle, ne se laissant pas perturber par les blagues de ses coll\xE8gues,
+      restant totalement focus sur son travail.\L Elle ex\xE9cute sans broncher les
+      diff\xE9rentes t\xE2ches qu'on lui confie. Seulement, cette derni\xE8re manque
+      cruellement d\u2019initiative et fait rarement plus que ce qu\u2019on lui demande,
+      suivant les consignes sans poser de questions. Fort \xE0 parier que si vous
+      lui demandez de se jeter par la fen\xEAtre du bureau, elle le ferait.\L Harper
+      est une jeune femme attendrissante, mais sa discr\xE9tion la rend bien myst\xE9rieuse,
+      ne divulguant rien de sa vie personnelle, personne ne sachant r\xE9ellement
+      qui elle est."
     type: 0
     TypeText: 
     workRythme: 4
     errorPercent: 0.7
     timeInEntreprise: 0
     typeSprite: {fileID: -401073943303174144, guid: 4679f2bab0d8f96438c5cb657bedbc7f, type: 3}
+    firelines:
+    - text: "S\u2019il vous pla\xEEt\u2026 comment vais je rembourse mes dettes sans
+        ce travail ?!"
+      speed: 0.02
+    - text: "\u2026Vous venez de ruiner ma vie."
+      speed: 0.02
     icone: {fileID: 21300000, guid: 900292dc5f2d09444b19781942b4d6e5, type: 3}
+    Working: {fileID: 21300000, guid: d699784e5d57bca45ae9a43ce50f33a0, type: 3}
+    Surcharge: {fileID: 21300000, guid: 2e684d57bd821084aab06be24cd3760c, type: 3}

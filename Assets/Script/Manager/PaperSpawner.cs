@@ -24,7 +24,7 @@ public class PaperSpawner : MonoBehaviour
     [SerializeField] public Pile RefPileGreen;
 
 
-    public float spawnDelay = 1.5f;
+    public float spawnDelay = 0.65f;
     public float DelayBeforeStart = 2f;
 
     [Header("Quota")]
@@ -116,11 +116,26 @@ public class PaperSpawner : MonoBehaviour
     public IEnumerator Spawn()
     {
         int globalSorting = 2;
+        float currentRhythm = 1f;
+        int spawnCount = 0;
         while (spawnList.Count > 0)
         {
             if (!canSpawn)
                 break;
-            float spawntiming = Random.Range(spawnDelay, spawnDelay + 2f);
+            if (spawnCount % 10 == 0)
+            {
+                int rhythm = Random.Range(0, 3);
+                switch (rhythm)
+                {
+                    case 0: currentRhythm = 1.5f; break;  // lent
+                    case 1: currentRhythm = 1f; break;  // moyen
+                    case 2: currentRhythm = 0.5f; break; // rapide
+                }
+                Debug.Log($"Nouveau rythme: {rhythm}");
+            }
+
+            // petit random local × rythme global
+            float spawntiming = Random.Range(spawnDelay, spawnDelay + 0.5f) * currentRhythm;
             GameObject prefab = spawnList[0];
             spawnList.RemoveAt(0);
 
@@ -146,7 +161,7 @@ public class PaperSpawner : MonoBehaviour
             SpriteRenderer spriteRenderer = parentObj.GetComponent<SpriteRenderer>();
             spriteRenderer.sortingOrder = globalSorting--;
             pm.SetInitialPose();
-            
+            spawnCount++;
             yield return new WaitForSeconds(spawntiming);
         }
 

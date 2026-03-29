@@ -39,6 +39,7 @@ public class EmployeSaveData
     public float workRateBonus;
     public float errorPercentBonus;
     public float stressBonus;
+    public float BonusPaperDone;
     public List<UpgradeCountData> upgradeCounts = new List<UpgradeCountData>();
 }
 

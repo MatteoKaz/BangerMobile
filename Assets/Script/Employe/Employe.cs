@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using static Pole;
 
@@ -12,22 +13,25 @@ public class Employe : MonoBehaviour
     [SerializeField] public DataEmploye employeObject;
     [SerializeField] private PoleManager polemanager;
     [SerializeField] public Pole mypole;
+    [SerializeField] public TimeManager timemanager;
 
 
-
-    [Header("Identit�PersoValue")]
+    [Header("IdentitePersoValue")]
     public TypeOfEmployez employeType;
     public string employeTypeText;
     public string employeName;
     public string employeDescription;
-    public string employeFireDescription;
+   
     public float employeWorkRate;
     public float errorPercent;
     public int timeInEntreprise;
     public Image employeImage;
     public int employeIndex;
     public Image typeImage;
-    
+    public Sprite idleSprite;
+    public Sprite working;
+    public Sprite Surcharge;
+    public List<DialogueLine> firelines = new List<DialogueLine>();
 
     [Header("Upgrade modifier")]
     public float employeWorkRateBonus = 0f;
@@ -57,8 +61,9 @@ public class Employe : MonoBehaviour
 
     [Header("Feedback")]
     [SerializeField] Image fond;
-   
-    public float timeBeetwennWork = 0.2f;
+    [SerializeField] Light2D Light;
+    public Color baseColor;
+    public float timeBeetwennWork = 2f;
 
     public bool iamWorking = false;
     private Coroutine WorkRoutine;
@@ -67,6 +72,38 @@ public class Employe : MonoBehaviour
     [SerializeField] TextMeshProUGUI Name;
     [SerializeField] Image image;
 
+
+
+
+    public void OnEnable()
+    {
+        timemanager.TimerEnded += StopWorking;
+    }
+
+    public void OnDisable()
+    {
+        timemanager.TimerEnded -= StopWorking;
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public void StopWorking()
+    {
+        if (WorkRoutine != null)
+        {
+            StopCoroutine(WorkRoutine);
+            WorkRoutine = null;
+        }
+
+    }
     public void InitialSetIdentity()
     {
         Debug.Log("EmployeSetUp");
@@ -108,7 +145,7 @@ public class Employe : MonoBehaviour
         employeType = employe.type;
         employeName = employe.EmployeName;
         employeDescription = employe.description;
-        employeFireDescription = employe.fireDescription;
+        firelines = employe.firelines;
         employeWorkRate = employe.workRythme;
         errorPercent = employe.errorPercent;
         timeInEntreprise = employe.timeInEntreprise;
@@ -117,6 +154,9 @@ public class Employe : MonoBehaviour
         typeImage.sprite = employe.typeSprite;
         Name.text = employe.EmployeName;
         image.sprite = employeImage.sprite;
+        idleSprite = employeImage.sprite;
+        working = employe.Working;
+        Surcharge = employe.Surcharge;
         // Ajoute le nouveau
         if (polemanager != null && polemanager.TakenEmployeIndex != null)
             polemanager.TakenEmployeIndex.Add(employeIndex);
@@ -134,30 +174,39 @@ public class Employe : MonoBehaviour
             mypole.activepaper++;
             mypole.UpdatePaperUI();
             WorkRoutine = StartCoroutine(Work());
-            
-            fond.color = new Color(0x0E / 255f, 0x0E / 255f, 0x0E / 255f, 0f);
+            employeImage.sprite = working;
+            Light.intensity = 0.73f;
+           
         }
         
         else
         {
             iamWorking = false;
-            
+            Light.intensity = 0.0f;
         }
     }
 
     public IEnumerator Work()
     {
-        
+        baseColor = Light.color;
         float t = 0f;
        
         while (t < 1)
         {
             if (isStunned == false) // 
             {
+                Light.color = baseColor;
+                employeImage.sprite = working;
                 float dt = Mathf.Min(Time.deltaTime, 0.05f); // max 50ms par frame
                 float rate = Mathf.Max(0.01f, (employeWorkRate + employeWorkRateMalus) - (mypole.BoostEmployeSpeed + employeWorkRateBonus));
                 t += dt / rate;
                 workAdvancement.value = Mathf.Lerp(0, 1, t);
+            }
+            else
+            {
+                employeImage.sprite = Surcharge;
+                Light.intensity = 0.73f;
+                Light.color = Color.indianRed;
             }
             yield return null;
 
@@ -175,9 +224,12 @@ public class Employe : MonoBehaviour
         numberOfPaperDone += 1 + Mathf.RoundToInt(BonusPaperDone);
         workAdvancement.value = 0;
         Debug.Log("workDone");
+        Light.intensity = 0.0f;
+        employeImage.sprite = idleSprite;
         yield return new WaitForSeconds(timeBeetwennWork);
+       
         iamWorking = false;
-        fond.color = new Color(0x0E / 255f, 0x0E / 255f, 0x0E / 255f, 0.62f);
+        
         mypole.DecrementPaper();
         
         
@@ -197,6 +249,7 @@ public class Employe : MonoBehaviour
         employeWorkRateMalus = 0f;
         errorPercentMalus = 0f;
         mypole = pole;
+        employeImage.sprite = idleSprite;
         Working();
     }
 
@@ -237,12 +290,13 @@ public class Employe : MonoBehaviour
     public void EndDayResetStat()
     {
         iamWorking = false;
+        Light.color = baseColor;
         if (WorkRoutine != null)
         {
             StopCoroutine(WorkRoutine);
             WorkRoutine = null;
-        } // ← accolade manquante ici !
-
+        }
+        employeImage.sprite = idleSprite;
         isStunned = false;
         employeWorkRateMalus = 0f;
         errorPercentMalus = 0f;
@@ -266,6 +320,7 @@ public class Employe : MonoBehaviour
         WeekmoneyMake = 0;
         WeeknumberOfPaperDone = 0;
         WeeksucceedPaper = 0;
+        employeImage.sprite = idleSprite;
     }
 
 }

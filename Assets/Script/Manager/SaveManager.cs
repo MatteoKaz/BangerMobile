@@ -112,7 +112,8 @@ public class SaveManager : MonoBehaviour
                 weekMoneyMake         = emp.WeekmoneyMake,
                 workRateBonus         = emp.employeWorkRateBonus,
                 errorPercentBonus     = emp.employeErrorPercenBonus,
-                stressBonus           = emp.StressBonus
+                stressBonus           = emp.StressBonus,
+                BonusPaperDone        = emp.BonusPaperDone
 
             };
             foreach (var kvp in emp.upgradeCounts)
@@ -175,7 +176,7 @@ public class SaveManager : MonoBehaviour
             emp.employeWorkRateBonus    = empData.workRateBonus;
             emp.employeErrorPercenBonus = empData.errorPercentBonus;
             emp.StressBonus             = empData.stressBonus;
-
+            emp.BonusPaperDone          = empData.BonusPaperDone;
             InventorySlot targetSlot = FindSlot(empData.poleType, empData.slotIndex);
             if (targetSlot == null) continue;
 

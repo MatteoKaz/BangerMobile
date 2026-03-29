@@ -58,6 +58,7 @@ public class RouletteWheel : MonoBehaviour
 
     /// <summary>Invoqué à la fin du spin avec l'employé sélectionné.</summary>
     public event System.Action<EmployeDataz> OnEmployeSelected;
+    public event System.Action EmployeSelected;
 
     // ── Unity ─────────────────────────────────────────────────────────────────
 
@@ -282,6 +283,7 @@ public class RouletteWheel : MonoBehaviour
         spinButton.interactable = true;
 
         OnEmployeSelected?.Invoke(_employees[_selectedIndex]);
+        EmployeSelected?.Invoke();
         Debug.Log($"[RouletteWheel] Sélectionné : {_employees[_selectedIndex].EmployeName}");
     }
 

@@ -11,6 +11,7 @@ public class Pole : MonoBehaviour
 {
 
     [SerializeField] DayManager dayManager;
+    [SerializeField] TimeManager timemanager;
     public int localQuotat;
     public int localAdvencement = 0;
     [Header("PoleType")]
@@ -19,7 +20,7 @@ public class Pole : MonoBehaviour
     [Header("Employe")]
     public int maxEmploye = 4;
     public int currentEmploye;
-   
+
     public List<Employe> employeList = new List<Employe>();
 
     [Header("Papier")]
@@ -32,24 +33,24 @@ public class Pole : MonoBehaviour
     [Header("Surcharge")]
     public float surchargeValue = 0f;             // Valeur actuelle
     public float maxSurcharge = 100f;        // Surcharge maximale
-    public float surchargeStep = 1f;         // Valeur ajoutée à chaque incrément
-    public float baseDelay = 0.5f;           // Délai initial entre incréments
-    public int[] surchargeThresholds = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }; // Paliers pour déclencher malus
+    public float surchargeStep = 5f;         // Valeur ajoutée à chaque incrément
+    public float baseDelay = 0.01f;           // Délai initial entre incréments
+    public int[] surchargeThresholds = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }; // Paliers pour déclencher malus
     private int nextThresholdIndex = 0;      // Pour savoir quel palier est le prochain
     public Coroutine SurchargeRef;      // Pour gérer la coroutine
-    public float decayRate = 5f;
+    public float decayRate = 7f;
     [SerializeField] Slider surchargeProgress;
     public float sliderSpeed = 10f;
 
     [Header("Bonus")]
 
-    public float BonusRevenus =1f;
+    public float BonusRevenus = 1f;
     public float BoostEmployeSpeed;
     public float BoostEmployeError;
     public float BoostTimeForSurcharge;
-    
 
 
+    public bool Stop;
     public event Action UpdatePaperCount;
 
     public enum TypeOfMalus
@@ -75,13 +76,26 @@ public class Pole : MonoBehaviour
         myTuyaux.AddPaper += AddPaper;
         dayManager.ResetValueBeforeNextDay += ResetAllValue;
         dayManager.NewWeekReset += EndWeekReset;
+
+        timemanager.TimerEnded += StopWorking;
+
     }
     public void OnDisable()
     {
         myTuyaux.AddPaper -= AddPaper;
         dayManager.ResetValueBeforeNextDay -= ResetAllValue;
         dayManager.NewWeekReset -= EndWeekReset;
+
+        timemanager.TimerEnded -= StopWorking;
     }
+
+    public void StopWorking()
+    {
+        ResetSurcharge();
+        Stop = true;
+    }
+    
+
     public void EndWeekReset()
     {
         foreach(Employe emp in employeList)
@@ -96,7 +110,8 @@ public class Pole : MonoBehaviour
         
         waitingPaper = totalPaper - activepaper;
         waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
-
+        if (Stop == true)
+            return;
         LaunchWorker();
         BeginSurcharge();
         UpdatePaperCount?.Invoke();
@@ -111,6 +126,8 @@ public class Pole : MonoBehaviour
         activepaper = Mathf.Clamp(activepaper, 0, activepaper);
         waitingPaper = totalPaper - activepaper;
         waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
+        if (Stop == true)
+            return;
         LaunchWorker() ;
         UpdatePaperCount?.Invoke();
 
@@ -159,6 +176,7 @@ public class Pole : MonoBehaviour
 
     public void ResetAllValue()
     {
+        Stop = false;
         totalPaper = 0;
         waitingPaper = 0;
         activepaper = 0;
@@ -224,6 +242,7 @@ public class Pole : MonoBehaviour
                 // Augmentation progressive
                 surchargeValue += surchargeStep /(1f + BoostTimeForSurcharge);
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
+                Debug.LogWarning($"Surcharge {surchargeValue}");
                 surchargeProgress.value = surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
                 
                 if (nextThresholdIndex < surchargeThresholds.Length && surchargeValue >= surchargeThresholds[nextThresholdIndex])
@@ -279,7 +298,7 @@ public class Pole : MonoBehaviour
                 case 6: emp.Malus(TypeOfMalus.WorkRate, 2f); break;       // palier 70
                 case 7: emp.Malus(TypeOfMalus.ErrorPercent, 0.25f); break;  // palier 80
                 case 8: emp.Malus(TypeOfMalus.WorkRate, 3f); break;       // palier 90
-                case 9: emp.Malus(TypeOfMalus.Stun, 5f); break;           // palier 100
+                case 9: emp.Malus(TypeOfMalus.Stun, 8f); break;           // palier 100
             }
         }
         if (i == 9) ResetSurcharge();
