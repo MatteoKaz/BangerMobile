@@ -7,56 +7,91 @@ using UnityEngine.UI;
 /// <summary>
 /// Roulette verticale avec recyclage infini des slots.
 /// Les items descendent, sortent en bas et réapparaissent en haut.
-/// Temps total configurable via totalSpinDuration et decelerationRatio.
+/// La roulette ne peut être lancée qu'une seule fois par jour.
 /// </summary>
 public class RouletteWheel : MonoBehaviour
 {
     [Header("Données")]
     [SerializeField] private DataEmploye employeData;
     [SerializeField] private PoleManager poleManager;
+    [SerializeField] private DayManager dayManager;
 
     [Header("UI")]
-    [SerializeField] private RectTransform    maskRect;
-    [SerializeField] private RectTransform    itemsContainer;
-    [SerializeField] private RouletteSlot     slotPrefab;
-    [SerializeField] private Button           spinButton;
+    [SerializeField] private RectTransform maskRect;
+    [SerializeField] private RectTransform itemsContainer;
+    [SerializeField] private RouletteSlot slotPrefab;
+    [SerializeField] private Button spinButton;
 
-    [Tooltip("Texte affiché après le spin avec le nom de l'employé sélectionné.")]
-    [SerializeField] private TextMeshProUGUI  resultLabel;
+    [Tooltip("Parent hors du Mask où le slot gagnant sera reparenté pour s'afficher par-dessus.")]
+    [SerializeField] private RectTransform overlayContainer;
+
+    [Tooltip("Texte affiché après la pause de révélation avec le nom de l'employé sélectionné.")]
+    [SerializeField] private TextMeshProUGUI resultLabel;
 
     [Header("Paramètres")]
-    [Tooltip("Hauteur d'un slot en pixels — doit correspondre au Preferred Height du LayoutElement du prefab.")]
+    [Tooltip("Hauteur d'un slot en pixels (sizeDelta Y appliqué au RectTransform du slot).")]
     [SerializeField] private float slotHeight = 120f;
 
     [Tooltip("Vitesse maximale en pixels/seconde.")]
     [SerializeField] private float maxSpeed = 1500f;
 
-    [Tooltip("Durée totale du spin (phase constante + décélération) en secondes.")]
-    [SerializeField] private float totalSpinDuration = 4f;
+    [Tooltip("Durée de la phase à vitesse constante en secondes.")]
+    [SerializeField] private float constantDuration = 2.5f;
 
-    [Tooltip("Proportion de la durée totale consacrée à la décélération (0 à 1).")]
-    [Range(0.1f, 0.9f)]
-    [SerializeField] private float decelerationRatio = 0.4f;
+    [Tooltip("Durée de la décélération en secondes.")]
+    [SerializeField] private float decelerationDuration = 2f;
+
+    [Tooltip("Durée de la pause après l'arrêt, avant d'afficher le résultat.")]
+    [SerializeField] private float revealDelay = 1.5f;
 
     [Header("Highlight")]
     [Tooltip("Couleur appliquée au slot gagnant à l'arrêt.")]
     [SerializeField] private Color highlightColor = new Color(1f, 0.85f, 0f, 1f);
 
+    [Header("Tremblement")]
+    [Tooltip("RectTransform à faire trembler — doit avoir des anchors fixes (pas stretch). Si vide, aucun tremblement.")]
+    [SerializeField] private RectTransform shakeTarget;
+
+    [Tooltip("Amplitude maximale du tremblement en pixels, atteinte à vitesse maximale.")]
+    [SerializeField] private float maxShakeAmplitude = 8f;
+
+    [Tooltip("Fréquence du tremblement en Hz (oscillations par seconde).")]
+    [SerializeField] private float shakeFrequency = 30f;
+
+    [Header("Pulse du gagnant")]
+    [Tooltip("Scale maximal atteint lors du grossissement du slot gagnant.")]
+    [SerializeField] private float pulseMaxScale = 1.15f;
+
+    [Tooltip("Scale minimal atteint lors du dégrossissement du slot gagnant.")]
+    [SerializeField] private float pulseMinScale = 0.95f;
+
+    [Tooltip("Durée d'un demi-cycle de pulse (grossir → dégrossir) en secondes.")]
+    [SerializeField] private float pulseHalfDuration = 0.35f;
+
     // ── État interne ──────────────────────────────────────────────────────────
 
-    private readonly List<EmployeDataz>  _employees           = new();
-    private readonly List<RouletteSlot>  _slots               = new();
-    private readonly List<RectTransform> _slotRects           = new();
-    private readonly List<float>         _slotPositions       = new();
-    private readonly List<int>           _slotEmployeeIndices = new();
+    private readonly List<EmployeDataz> _employees = new();
+    private readonly List<int> _employeeGlobalIndices = new();
+    private readonly HashSet<int> _rouletteWinnerIndices = new();
+    private readonly List<RouletteSlot> _slots = new();
+    private readonly List<RectTransform> _slotRects = new();
+    private readonly List<float> _slotPositions = new();
+    private readonly List<int> _slotEmployeeIndices = new();
 
     private float _maskHeight;
     private float _cycleHeight;
-    private bool  _isSpinning;
-    private int   _selectedIndex;
-    private int   _winnerSlotIndex = -1;
+    private float _stepHeight;
 
-    /// <summary>Invoqué à la fin du spin avec l'employé sélectionné.</summary>
+    private bool _isSpinning;
+    private bool _hasSpunToday;
+    private int _selectedIndex;
+
+    private float _shakeTime;
+    private Vector2 _shakeBasePosition;
+    private Coroutine _pulseCoroutine;
+    private RouletteSlot _promotedSlot;
+
+    /// <summary>Invoqué après la pause de révélation avec l'employé sélectionné.</summary>
     public event System.Action<EmployeDataz> OnEmployeSelected;
     public event System.Action EmployeSelected;
 
@@ -68,20 +103,55 @@ public class RouletteWheel : MonoBehaviour
 
         if (resultLabel != null)
             resultLabel.text = string.Empty;
+
+        if (shakeTarget != null)
+            _shakeBasePosition = shakeTarget.anchoredPosition;
+
+        if (dayManager != null)
+            dayManager.ResetValueBeforeNextDay += ResetDailySpin;
+    }
+
+    /// <summary>
+    /// À chaque activation du panneau, on remet à zéro les gagnants précédents
+    /// et on recalcule la liste depuis TakenEmployeIndex en temps réel.
+    /// Les employés retirés de leurs pôles réapparaissent automatiquement.
+    /// </summary>
+    private void OnEnable()
+    {
+        _rouletteWinnerIndices.Clear();
+        BuildAvailableList();
+    }
+
+    private void OnDestroy()
+    {
+        if (dayManager != null)
+            dayManager.ResetValueBeforeNextDay -= ResetDailySpin;
     }
 
     // ── API publique ──────────────────────────────────────────────────────────
 
-    /// <summary>Lance la roulette. Ignoré si un spin est déjà en cours.</summary>
+    /// <summary>Réinitialise le droit de lancer la roulette pour le nouveau jour.</summary>
+    public void ResetDailySpin()
+    {
+        _hasSpunToday = false;
+        spinButton.interactable = true;
+        Debug.Log("[RouletteWheel] Spin quotidien réinitialisé.");
+    }
+
+    /// <summary>Lance la roulette. Ignoré si un spin est en cours ou déjà fait aujourd'hui.</summary>
     public void Spin()
     {
         if (_isSpinning) return;
 
-        BuildAvailableList();
+        if (_hasSpunToday)
+        {
+            Debug.LogWarning("[RouletteWheel] La roulette a déjà été lancée aujourd'hui.");
+            return;
+        }
 
         if (_employees.Count == 0)
         {
-            Debug.LogWarning("[RouletteWheel] Aucun employé disponible.");
+            Debug.LogWarning("[RouletteWheel] Aucun employé disponible pour la roulette.");
             return;
         }
 
@@ -90,6 +160,8 @@ public class RouletteWheel : MonoBehaviour
         if (resultLabel != null)
             resultLabel.text = string.Empty;
 
+        StopPulse();
+        DemoteWinnerSlot();
         BuildSlots();
         StartCoroutine(SpinCoroutine());
     }
@@ -97,32 +169,45 @@ public class RouletteWheel : MonoBehaviour
     // ── Construction ──────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Charge les employés non encore assignés à un pôle.
-    /// Utilise TakenEmployeIndex du PoleManager pour filtrer.
+    /// Construit la liste des employés disponibles pour la roulette.
+    /// Exclut les employés assignés à un pôle (TakenEmployeIndex)
+    /// et ceux déjà gagnés à la roulette ce cycle (_rouletteWinnerIndices).
     /// </summary>
     private void BuildAvailableList()
     {
         _employees.Clear();
+        _employeeGlobalIndices.Clear();
 
-        HashSet<int> takenIndices = new(poleManager.TakenEmployeIndex);
+        HashSet<int> takenByPoles = (poleManager != null && poleManager.TakenEmployeIndex != null)
+            ? new HashSet<int>(poleManager.TakenEmployeIndex)
+            : new HashSet<int>();
 
         for (int i = 0; i < employeData.allEmploye.Count; i++)
         {
-            if (!takenIndices.Contains(i))
+            if (!takenByPoles.Contains(i) && !_rouletteWinnerIndices.Contains(i))
+            {
                 _employees.Add(employeData.allEmploye[i]);
+                _employeeGlobalIndices.Add(i);
+            }
         }
 
-        Debug.Log($"[RouletteWheel] {_employees.Count} employés disponibles " +
-                  $"({poleManager.TakenEmployeIndex.Count} déjà assignés à des pôles).");
-
-        if (_employees.Count == 0)
-            Debug.LogWarning("[RouletteWheel] Tous les employés sont déjà assignés à des pôles.");
+        Debug.Log($"[RouletteWheel] {_employees.Count} disponibles " +
+                  $"({takenByPoles.Count} dans pôles, {_rouletteWinnerIndices.Count} gagnés roulette).");
     }
 
     /// <summary>
-    /// Crée un pool minimal de slots pour couvrir le masque + 1 buffer haut + 1 buffer bas.
-    /// Positions gérées manuellement — aucun VerticalLayoutGroup requis.
+    /// Enregistre le gagnant dans la liste interne de la roulette.
+    /// N'affecte pas TakenEmployeIndex — seuls les pôles gèrent cette liste.
     /// </summary>
+    private void RegisterWinnerAsTaken(int localSelectedIndex)
+    {
+        int globalIndex = _employeeGlobalIndices[localSelectedIndex];
+        _rouletteWinnerIndices.Add(globalIndex);
+        Debug.Log($"[RouletteWheel] Gagnant enregistré : index {globalIndex} " +
+                  $"({_employees[localSelectedIndex].EmployeName}).");
+    }
+
+    /// <summary>Crée le pool de slots qui couvre le masque + buffers haut et bas.</summary>
     private void BuildSlots()
     {
         foreach (RouletteSlot s in _slots) Destroy(s.gameObject);
@@ -131,24 +216,26 @@ public class RouletteWheel : MonoBehaviour
         _slotPositions.Clear();
         _slotEmployeeIndices.Clear();
 
-        _maskHeight  = maskRect.rect.height;
-        _cycleHeight = _employees.Count * slotHeight;
+        _maskHeight = maskRect.rect.height;
+        _stepHeight = slotHeight;
+        _cycleHeight = _employees.Count * _stepHeight;
 
-        int slotCount = Mathf.CeilToInt(_maskHeight / slotHeight) + 2;
+        float prefabScaleY = Mathf.Abs(slotPrefab.transform.localScale.y);
+        float localSlotHeight = (prefabScaleY > 0f) ? slotHeight / prefabScaleY : slotHeight;
+        int slotCount = Mathf.CeilToInt(_maskHeight / _stepHeight) + 2;
 
         for (int i = 0; i < slotCount; i++)
         {
-            // Slot 0 démarre une hauteur au-dessus du masque (caché)
-            float posY   = (i - 1) * slotHeight;
-            int   empIdx = ((i - 1) % _employees.Count + _employees.Count) % _employees.Count;
+            float posY = (i - 1) * _stepHeight + _stepHeight * 0.5f;
+            int empIdx = ((i - 1) % _employees.Count + _employees.Count) % _employees.Count;
 
-            RouletteSlot  slot = Instantiate(slotPrefab, itemsContainer);
-            RectTransform rt   = slot.GetComponent<RectTransform>();
+            RouletteSlot slot = Instantiate(slotPrefab, itemsContainer);
+            RectTransform rt = slot.GetComponent<RectTransform>();
 
-            // Stretch horizontal, hauteur fixe
-            rt.anchorMin        = new Vector2(0f, 1f);
-            rt.anchorMax        = new Vector2(1f, 1f);
-            rt.sizeDelta        = new Vector2(0f, slotHeight);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.sizeDelta = new Vector2(0f, localSlotHeight);
             rt.anchoredPosition = new Vector2(0f, -posY);
 
             slot.Setup(_employees[empIdx]);
@@ -160,45 +247,127 @@ public class RouletteWheel : MonoBehaviour
             _slotEmployeeIndices.Add(empIdx);
         }
 
-        _winnerSlotIndex = -1;
+        Debug.Log($"[RouletteWheel] {slotCount} slots créés, maskHeight={_maskHeight}px.");
+    }
+
+    // ── Tremblement ───────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Applique un tremblement horizontal proportionnel à normalizedSpeed [0..1].
+    /// Travaille depuis _shakeBasePosition pour éviter toute dérive de layout.
+    /// </summary>
+    private void ApplyShake(float normalizedSpeed)
+    {
+        if (shakeTarget == null) return;
+
+        _shakeTime += Time.unscaledDeltaTime * shakeFrequency;
+        float offsetX = Mathf.Sin(_shakeTime * Mathf.PI * 2f) * (normalizedSpeed * maxShakeAmplitude);
+        shakeTarget.anchoredPosition = new Vector2(_shakeBasePosition.x + offsetX, _shakeBasePosition.y);
+    }
+
+    /// <summary>Remet le shakeTarget à sa position de base.</summary>
+    private void ResetShake()
+    {
+        if (shakeTarget == null) return;
+        _shakeTime = 0f;
+        shakeTarget.anchoredPosition = _shakeBasePosition;
+    }
+
+    // ── Pulse du gagnant ──────────────────────────────────────────────────────
+
+    /// <summary>Lance la pulse infinie sur le slot gagnant.</summary>
+    private void StartPulse(Transform slotTransform)
+    {
+        StopPulse();
+        _pulseCoroutine = StartCoroutine(PulseCoroutine(slotTransform));
+    }
+
+    /// <summary>Arrête la pulse.</summary>
+    private void StopPulse()
+    {
+        if (_pulseCoroutine == null) return;
+        StopCoroutine(_pulseCoroutine);
+        _pulseCoroutine = null;
+    }
+
+    /// <summary>Coroutine de pulse infinie : grossit et dégrossit en boucle (smoothstep).</summary>
+    private IEnumerator PulseCoroutine(Transform slotTransform)
+    {
+        Vector3 baseScale = slotTransform.localScale;
+
+        while (true)
+        {
+            // Grossissement : minScale → maxScale
+            float elapsed = 0f;
+            while (elapsed < pulseHalfDuration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = Mathf.Clamp01(elapsed / pulseHalfDuration);
+                float s = t * t * (3f - 2f * t);
+                slotTransform.localScale = baseScale * Mathf.Lerp(pulseMinScale, pulseMaxScale, s);
+                yield return null;
+            }
+
+            // Dégrossissement : maxScale → minScale
+            elapsed = 0f;
+            while (elapsed < pulseHalfDuration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = Mathf.Clamp01(elapsed / pulseHalfDuration);
+                float s = t * t * (3f - 2f * t);
+                slotTransform.localScale = baseScale * Mathf.Lerp(pulseMaxScale, pulseMinScale, s);
+                yield return null;
+            }
+        }
+    }
+
+    // ── Promotion / démot hors du Mask ────────────────────────────────────────
+
+    /// <summary>
+    /// Reparente le slot gagnant dans overlayContainer (hors du Mask) en conservant
+    /// sa position mondiale, pour qu'il s'affiche par-dessus tous les éléments.
+    /// </summary>
+    private void PromoteWinnerSlot(RouletteSlot slot)
+    {
+        if (overlayContainer == null) return;
+
+        _promotedSlot = slot;
+        RectTransform rt = slot.GetComponent<RectTransform>();
+        Vector3 worldPos = rt.position;
+
+        slot.transform.SetParent(overlayContainer, worldPositionStays: true);
+        rt.position = worldPos;
+        slot.transform.SetAsLastSibling();
+    }
+
+    /// <summary>Remet le slot promu dans itemsContainer avant le prochain BuildSlots.</summary>
+    private void DemoteWinnerSlot()
+    {
+        if (_promotedSlot == null) return;
+        _promotedSlot.transform.SetParent(itemsContainer, worldPositionStays: false);
+        _promotedSlot = null;
     }
 
     // ── Défilement ────────────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Déplace tous les slots vers le bas de deltaScroll pixels.
-    /// Les slots sortant par le bas sont recyclés en haut automatiquement.
-    /// </summary>
+    /// <summary>Déplace tous les slots de deltaScroll pixels vers le bas avec recyclage.</summary>
     private void ScrollSlots(float deltaScroll)
     {
-        float bottomBound = _maskHeight + slotHeight * 0.5f;
+        float bottomBound = _maskHeight + _stepHeight * 0.5f;
 
         for (int i = 0; i < _slots.Count; i++)
         {
             _slotPositions[i] += deltaScroll;
 
-            // Slot sorti par le bas → recycler au-dessus du slot le plus haut
             if (_slotPositions[i] > bottomBound)
             {
-                int   topIdx    = GetTopmostSlotIndex(excludeIdx: i);
-                float topY      = _slotPositions[topIdx];
-                int   topEmpIdx = _slotEmployeeIndices[topIdx];
+                int topIdx = GetTopmostSlotIndex(excludeIdx: i);
+                int topEmpIdx = _slotEmployeeIndices[topIdx];
+                int newEmpIdx = (topEmpIdx - 1 + _employees.Count) % _employees.Count;
 
-                _slotPositions[i] = topY - slotHeight;
-
-                if (i == _winnerSlotIndex)
-                {
-                    // Slot gagnant : conserver l'employé sélectionné
-                    _slots[i].Setup(_employees[_selectedIndex]);
-                }
-                else
-                {
-                    // Employé précédant celui du slot le plus haut
-                    int newEmpIdx = (topEmpIdx - 1 + _employees.Count) % _employees.Count;
-                    _slotEmployeeIndices[i] = newEmpIdx;
-                    _slots[i].Setup(_employees[newEmpIdx]);
-                }
-
+                _slotPositions[i] = _slotPositions[topIdx] - _stepHeight;
+                _slotEmployeeIndices[i] = newEmpIdx;
+                _slots[i].Setup(_employees[newEmpIdx]);
                 _slots[i].SetHighlight(false);
             }
 
@@ -210,11 +379,10 @@ public class RouletteWheel : MonoBehaviour
 
     private IEnumerator SpinCoroutine()
     {
-        _isSpinning             = true;
+        _isSpinning = true;
+        _hasSpunToday = true;
         spinButton.interactable = false;
-
-        float constantDuration     = totalSpinDuration * (1f - decelerationRatio);
-        float decelerationDuration = totalSpinDuration * decelerationRatio;
+        _shakeTime = 0f;
 
         // ── Phase 1 : vitesse constante ───────────────────────────────────────
         float elapsed = 0f;
@@ -223,64 +391,83 @@ public class RouletteWheel : MonoBehaviour
             float dt = Time.unscaledDeltaTime;
             elapsed += dt;
             ScrollSlots(maxSpeed * dt);
+            ApplyShake(1f);
             yield return null;
         }
 
-        // ── Préparation décélération ──────────────────────────────────────────
-        // Injecter le slot gagnant juste au-dessus du slot le plus haut (hors écran)
-        int topIdx    = GetTopmostSlotIndex();
+        // centerY = position du pivot du slot gagnant centré dans le masque.
+        float centerY = _maskHeight * 0.5f;
+        int topIdx = GetTopmostSlotIndex();
         int bottomIdx = GetBottommostSlotIndex();
+        float winnerStartY = _slotPositions[topIdx] - _stepHeight;
 
-        _slotPositions[bottomIdx]       = _slotPositions[topIdx] - slotHeight;
+        _slotPositions[bottomIdx] = winnerStartY;
         _slotEmployeeIndices[bottomIdx] = _selectedIndex;
         _slots[bottomIdx].Setup(_employees[_selectedIndex]);
         _slots[bottomIdx].SetHighlight(false);
-        _slotRects[bottomIdx].anchoredPosition = new Vector2(0f, -_slotPositions[bottomIdx]);
-        _winnerSlotIndex = bottomIdx;
+        _slotRects[bottomIdx].anchoredPosition = new Vector2(0f, -winnerStartY);
 
-        // Distance pour que le gagnant atteigne exactement le centre du masque
-        float centerY      = _maskHeight * 0.5f - slotHeight * 0.5f;
-        float winnerY      = _slotPositions[_winnerSlotIndex];
-        float distToCenter = centerY - winnerY;
+        float totalDecelerationDist = centerY - winnerStartY;
+        float adaptedDuration = Mathf.Max(decelerationDuration, 3f * totalDecelerationDist / maxSpeed);
 
-        // Garantir assez de distance pour une décélération visible et fluide
-        float minDist = maxSpeed * decelerationDuration * 0.5f;
-        while (distToCenter < minDist)
-            distToCenter += _cycleHeight;
-
-        // ── Phase 2 : décélération ease-out quadratique ───────────────────────
-        float totalDist     = distToCenter;
+        // ── Phase 2 : décélération ease-out cubique ───────────────────────────
+        float winnerTrackedY = winnerStartY;
         float scrolledSoFar = 0f;
         elapsed = 0f;
 
-        while (elapsed < decelerationDuration)
+        while (elapsed < adaptedDuration)
         {
             float dt = Time.unscaledDeltaTime;
             elapsed += dt;
-            float t        = Mathf.Clamp01(elapsed / decelerationDuration);
-            float progress = 1f - (1f - t) * (1f - t); // ease-out quadratique
-            float delta    = progress * totalDist - scrolledSoFar;
-            scrolledSoFar  = progress * totalDist;
+            float t = Mathf.Clamp01(elapsed / adaptedDuration);
+            float tInv = 1f - t;
+            float progress = 1f - (tInv * tInv * tInv);
+            float delta = progress * totalDecelerationDist - scrolledSoFar;
+            scrolledSoFar = progress * totalDecelerationDist;
+
+            ApplyShake(tInv * tInv);
+            winnerTrackedY += delta;
             ScrollSlots(delta);
             yield return null;
         }
 
-        // Snap précis : aligner le gagnant exactement au centre
-        float snapDelta = centerY - _slotPositions[_winnerSlotIndex];
+        // ── Snap pixel-perfect ────────────────────────────────────────────────
+        float snapDelta = centerY - winnerTrackedY;
         for (int i = 0; i < _slots.Count; i++)
         {
             _slotPositions[i] += snapDelta;
             _slotRects[i].anchoredPosition = new Vector2(0f, -_slotPositions[i]);
         }
 
-        // ── Résultat ──────────────────────────────────────────────────────────
-        _slots[_winnerSlotIndex].SetHighlight(true, highlightColor);
+        ResetShake();
 
+        // Trouver le slot au centre et forcer le gagnant dessus.
+        int finalWinnerSlot = 0;
+        float closestDist = float.MaxValue;
+        for (int i = 0; i < _slotPositions.Count; i++)
+        {
+            float dist = Mathf.Abs(_slotPositions[i] - centerY);
+            if (dist < closestDist) { closestDist = dist; finalWinnerSlot = i; }
+        }
+
+        _slots[finalWinnerSlot].Setup(_employees[_selectedIndex]);
+        _slots[finalWinnerSlot].SetHighlight(true, highlightColor);
+
+        // ── Enregistrer le gagnant ────────────────────────────────────────────
+        RegisterWinnerAsTaken(_selectedIndex);
+
+        // ── Dès l'arrêt : promotion au-dessus du masque + pulse ───────────────
+        PromoteWinnerSlot(_slots[finalWinnerSlot]);
+        StartPulse(_slots[finalWinnerSlot].transform);
+
+        // ── Pause avant révélation du résultat ────────────────────────────────
+        yield return new WaitForSeconds(revealDelay);
+
+        // ── Affichage du résultat ─────────────────────────────────────────────
         if (resultLabel != null)
             resultLabel.text = _employees[_selectedIndex].EmployeName;
 
-        _isSpinning             = false;
-        spinButton.interactable = true;
+        _isSpinning = false;
 
         OnEmployeSelected?.Invoke(_employees[_selectedIndex]);
         EmployeSelected?.Invoke();
@@ -292,29 +479,25 @@ public class RouletteWheel : MonoBehaviour
     /// <summary>Index du slot le plus haut visuellement (position Y minimale).</summary>
     private int GetTopmostSlotIndex(int excludeIdx = -1)
     {
-        int   idx = -1;
+        int idx = -1;
         float min = float.MaxValue;
-
         for (int i = 0; i < _slotPositions.Count; i++)
         {
             if (i == excludeIdx) continue;
             if (_slotPositions[i] < min) { min = _slotPositions[i]; idx = i; }
         }
-
         return idx;
     }
 
     /// <summary>Index du slot le plus bas visuellement (position Y maximale).</summary>
     private int GetBottommostSlotIndex()
     {
-        int   idx = 0;
+        int idx = 0;
         float max = float.MinValue;
-
         for (int i = 0; i < _slotPositions.Count; i++)
         {
             if (_slotPositions[i] > max) { max = _slotPositions[i]; idx = i; }
         }
-
         return idx;
     }
 }

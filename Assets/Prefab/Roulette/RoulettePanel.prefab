@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 2243069698797181463}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.0229688, y: 2.2878, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5480232244426603146}
@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 59, y: 0}
   m_SizeDelta: {x: 300, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1145691615571909821
@@ -124,7 +124,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 0}
+  m_AnchoredPosition: {x: -203, y: 100}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2944006750336923469
@@ -552,6 +552,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RouletteWheel
   employeData: {fileID: 11400000, guid: 04a5c98eb46fb064eaea80aeee9b8e5f, type: 2}
   poleManager: {fileID: 0}
+  dayManager: {fileID: 0}
   maskRect: {fileID: 1479526331606525542}
   itemsContainer: {fileID: 5480232244426603146}
   slotPrefab: {fileID: 4022736069846536601, guid: 37ec08a4353f29c42b66a0d8d4350795, type: 3}
@@ -559,8 +560,9 @@ MonoBehaviour:
   resultLabel: {fileID: 7231083548232802652}
   slotHeight: 120
   maxSpeed: 1500
-  totalSpinDuration: 4
-  decelerationRatio: 0.4
+  constantDuration: 2.5
+  decelerationDuration: 2
+  revealDelay: 1.5
   highlightColor: {r: 1, g: 0.85, b: 0, a: 1}
 --- !u!1 &8162378227935204631
 GameObject:
