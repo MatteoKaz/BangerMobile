@@ -12703,7 +12703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0975d565c814234fb41ccd7d85f2aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeManager
-  DayDuration: 60
+  DayDuration: 5
   DayDurationToShow: 60
   QuotatManager: {fileID: 641038302}
 --- !u!4 &641038308
@@ -12925,8 +12925,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.626395
-      value: 0.95665735
+      time: 0.651396
+      value: 0.85802245
       inSlope: 1.5336691
       outSlope: 1.5336691
       tangentMode: 0
@@ -12934,8 +12934,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.7654975
-      value: 1.2946079
+      time: 0.8655036
+      value: 1.2699487
       inSlope: 0.3273263
       outSlope: 0.3273263
       tangentMode: 0
@@ -12943,8 +12943,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.86145294
-      value: 0.8108406
+      time: 0.91977304
+      value: 1.0019386
       inSlope: -1.1804283
       outSlope: -1.1804283
       tangentMode: 0
@@ -12956,6 +12956,39 @@ MonoBehaviour:
       value: 1
       inSlope: 0
       outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveAnimDialogueBack:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.24307677
+      value: -0.17346911
+      inSlope: 0.37383336
+      outSlope: 0.37383336
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -28871,7 +28904,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5.7145314, y: -463.4897}
+  m_AnchoredPosition: {x: -5.7145314, y: -449.99}
   m_SizeDelta: {x: 671.5, y: 671.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1363067621
@@ -38025,7 +38058,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -517.24994}
-  m_SizeDelta: {x: 168, y: 0}
+  m_SizeDelta: {x: 168, y: 62.800003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1761464683
 MonoBehaviour:
@@ -38695,7 +38728,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1795430754
 MonoBehaviour:
   m_ObjectHideFlags: 0

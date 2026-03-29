@@ -34,7 +34,7 @@ public class FireManager : MonoBehaviour
     [SerializeField] public float xendPoseDialogue = -289;
     [SerializeField] public float animDurationDialogue;
     [SerializeField] AnimationCurve curveAnimDialogue;
-
+    [SerializeField] AnimationCurve curveAnimDialogueBack;
     private bool launch = false;
 
     public void OnEnable()
@@ -57,9 +57,15 @@ public class FireManager : MonoBehaviour
             return;
         launch = true;
         empFiche = emp;
+        
+        
         FiredScene.SetActive(true);
+        typeWriter.dialogueText.text = null;
+        animator.enabled = false;
+        animator.enabled = true;
         employeImage.sprite = empFiche.Image.sprite;
-       
+        animator.Rebind();
+        animator.Update(0f);
         StartCoroutine(FiredSet());
 
     }
@@ -82,10 +88,10 @@ public class FireManager : MonoBehaviour
             yield return null;
         }
 
-        animator.SetTrigger("Walk");
+        animator.SetTrigger("Walking");
         yield return new WaitForSeconds(0.75f);
         employeImage.enabled = true;
-        yield return null;
+       
         yield return null;
         yield return null;
         while (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk") &&
@@ -94,7 +100,7 @@ public class FireManager : MonoBehaviour
             yield return null;
         }
 
-
+        yield return new WaitForSeconds(0.25f);
         RectTransform rectDialogue = dialogueCase.GetComponent<RectTransform>();
 
         Vector2 startposDialogue = new Vector2(xStartPoseDialogue, rectDialogue.anchoredPosition.y);
@@ -110,8 +116,7 @@ public class FireManager : MonoBehaviour
 
             yield return null;
         }
-        animator.Rebind();
-        animator.Update(0f);
+        
         yield return new WaitForSeconds(0.75f);
         typeWriter.StartDialogue(empFiche.employe.firelines, animator);
         launch = false;
@@ -124,20 +129,39 @@ public class FireManager : MonoBehaviour
 
     public  IEnumerator NotFired()
     {
+        RectTransform rectDialogue = dialogueCase.GetComponent<RectTransform>();
+
+        Vector2 startposDialogue = new Vector2(xStartPoseDialogue, rectDialogue.anchoredPosition.y);
+        Vector2 targetPosDialogue = new Vector2(xendPoseDialogue, rectDialogue.anchoredPosition.y);
+        float t = 0;
+
+        while (t < animDurationDialogue)
+        {
+            t += Time.deltaTime;
+            float normalized = t / animDurationDialogue;
+
+            float curve = curveAnimDialogueBack.Evaluate(normalized);
+            rectDialogue.anchoredPosition = Vector2.Lerp(targetPosDialogue, startposDialogue, curve);
+
+            yield return null;
+        }
+        yield return new WaitForSeconds(0.2f);
         animator.SetTrigger("WalkNotFired");
+        yield return new WaitForSeconds(0.2f);
         yield return null;
         yield return null;
-        while (animator.GetCurrentAnimatorStateInfo(0).IsName("WalkNotFired") &&
+        while (animator.GetCurrentAnimatorStateInfo(0).IsName("WalkBack") &&
                animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
         {
             yield return null;
         }
+        
         employeImage.enabled = false;
         RectTransform rect = ScoreScene.GetComponent<RectTransform>();
 
         Vector2 startpos = new Vector2(rect.anchoredPosition.x, ybasePose);
         Vector2 targetPos = new Vector2(rect.anchoredPosition.x, yendPose);
-        float t = 0;
+         t = 0;
         while (t < animDuration)
         {
             t += Time.deltaTime;
@@ -169,7 +193,7 @@ public class FireManager : MonoBehaviour
             t += Time.deltaTime;
             float normalized = t / animDurationDialogue;
 
-            float curve = curveAnimDialogue.Evaluate(normalized);
+            float curve = curveAnimDialogueBack.Evaluate(normalized);
             rectDialogue.anchoredPosition = Vector2.Lerp(targetPosDialogue, startposDialogue, curve);
 
             yield return null;
@@ -193,7 +217,7 @@ public class FireManager : MonoBehaviour
             yield return null;
         }
         animator.SetTrigger("EndTalk");
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.8f);
         animator.SetTrigger("Fired");
 
         yield return new WaitForSeconds(1f);
@@ -264,7 +288,6 @@ public class FireManager : MonoBehaviour
             yield return null;
         }
         FiredScene.SetActive(false);
-        animator.Rebind();
-        animator.Update(0f);
+        
     }
 }

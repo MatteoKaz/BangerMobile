@@ -25,6 +25,8 @@ public class TypeWriter : MonoBehaviour
 
     public void ShowNextLine()
     {
+        if (currentLines == null)
+            return;
         if (currentIndex >= currentLines.Count)
         {
             EndDialogue();
