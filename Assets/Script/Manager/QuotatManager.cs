@@ -84,17 +84,21 @@ public class QuotatManager : MonoBehaviour
             case 0:
                 DayQuotat = quotatEasy;
                 break;
-            case 1: 
+            case 1:
                 DayQuotat = quotatMid;
                 break;
-           case 2:
+            case 2:
                 DayQuotat = quotatHard;
                 break;
         }
+
+        scoreManager.SetDifficulty(difficultySelect);
+
         QuotatIsSet?.Invoke();
         ChosenQuotat(DayQuotat);
     }
-  
+
+
     public void ChosenQuotat(int quotatChosen)
     {
         DayQuotat = quotatChosen;

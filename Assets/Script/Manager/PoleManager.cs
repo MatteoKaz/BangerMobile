@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PoleManager : MonoBehaviour
 {
-    [SerializeField] Pole[] poles;
+    [SerializeField] public Pole[] poles;
     public int quotaGlobal;
     public int EndGamePlayerQuotat;
     public List<int> TakenEmployeIndex;
