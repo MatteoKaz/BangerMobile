@@ -29,13 +29,13 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] Pole poleRef;
     RefOfItem currentRefOfItem;
     public EmployeLink empLink;
-
+    public PoleLink poleLink;
     private bool open = false;
 
 
 
     public event Action EmployeSet;
-
+    public event Action PoleSet;
     public void Start()
     {
 
@@ -85,6 +85,7 @@ public class UpgradeSetUp : MonoBehaviour
             
             scrollPole.SetActive(true);
             ScrollEmploye.SetActive(false);
+            PoleSet?.Invoke();
         }
 
 
@@ -118,11 +119,12 @@ public class UpgradeSetUp : MonoBehaviour
     }
 
 
-    public void chosenPole(Pole pole)
+    public void chosenPole(PoleLink poleLinkref)
     {
 
-        if (pole != null)
-        poleRef = pole;
+        if (poleLinkref != null)
+        poleRef = poleLinkref.pole;
+        poleLink = poleLinkref;
         RefOfItem roi = currentRefOfItem;
         if (roi.priceOfItem <= scoreManager.playerMoney)
             buttonBuy.color = Color.green;
@@ -205,6 +207,19 @@ public class UpgradeSetUp : MonoBehaviour
                 roi.priceOfItem += roi.inflation;
                 shopUpgrade.allUpgrade[roi.index].price = roi.priceOfItem;
                 popUPPrice.text = $"{roi.priceOfItem}$";
+                if (!poleRef.upgradeCounts.ContainsKey(roi.iconeRef))
+                    poleRef.upgradeCounts[roi.iconeRef] = 0;
+                poleRef.upgradeCounts[roi.iconeRef]++;
+                if (poleLink != null)
+                {
+                    if (!poleRef.upgradesImages.Contains(roi.iconeRef))
+                    {
+                        poleRef.upgradesImages.Add(roi.iconeRef);
+
+                        poleLink.upgradesImages.Add(roi.iconeRef);
+                        poleLink.SetIcone();
+                    }
+                }
                 switch (roi.type)
                 {
                     case TypeOfUpgrade.BoostSpeedPole:

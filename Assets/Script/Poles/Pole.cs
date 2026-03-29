@@ -48,7 +48,8 @@ public class Pole : MonoBehaviour
     public float BoostEmployeSpeed;
     public float BoostEmployeError;
     public float BoostTimeForSurcharge;
-
+    public List<Sprite> upgradesImages = new List<Sprite>();
+    public Dictionary<Sprite, int> upgradeCounts = new Dictionary<Sprite, int>();
 
     public bool Stop;
     public event Action UpdatePaperCount;

@@ -9,15 +9,17 @@ public class PoleLink : MonoBehaviour
     [SerializeField] public UpgradeSetUp upgradeSet;
     [SerializeField] public Image myCase;
     [SerializeField] public List<Image> allempImage;
-
+    public List<Sprite> upgradesImages = new List<Sprite>();
+    [SerializeField] public Image[] imagesUpgrades;
 
     public void OnEnable()
     {
-        upgradeSet.EmployeSet += MyIdentity;
+        upgradeSet.PoleSet += MyIdentity;
+        
     }
     public void OnDisable()
     {
-        upgradeSet.EmployeSet -= MyIdentity;
+        upgradeSet.PoleSet -= MyIdentity;
     }
 
     public void MyIdentity()
@@ -34,6 +36,26 @@ public class PoleLink : MonoBehaviour
         {
             image.color = Color.gray;
         }
-        upgradeSet.chosenPole(pole);
+        upgradeSet.chosenPole(this);
+    }
+
+    public void SetIcone()
+    {
+
+
+        for (int i = 0; i < imagesUpgrades.Length; i++)
+        {
+            if (i < upgradesImages.Count)
+            {
+                Debug.LogWarning($"upgradesImages.Count: {upgradesImages.Count}");
+                imagesUpgrades[i].enabled = true;
+                imagesUpgrades[i].sprite = upgradesImages[i];
+
+            }
+            else
+            {
+                imagesUpgrades[i].enabled = false;
+            }
+        }
     }
 }

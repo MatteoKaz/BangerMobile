@@ -13,6 +13,7 @@ public class HoldButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private bool isOpen = false;
 
     [SerializeField] EmployeLink employeLink;
+    [SerializeField] PoleLink poleLink;
     [SerializeField] GameObject popup;
     [SerializeField] public Image myTypeSprite;
     [SerializeField] public Image employeImagepopUp;
@@ -25,6 +26,12 @@ public class HoldButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 
     [SerializeField] ClosePopUp closePopUp;
+    [SerializeField] Type typePress = Type.Employe;
+    public enum Type
+    {
+        Employe,
+        Pole,
+    }
 
     private void OnEnable()
     {
@@ -54,7 +61,10 @@ public class HoldButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             timer += Time.deltaTime;
             if (timer > timeHeld)
             {
+                if (typePress == Type.Employe)
                 openPopUp();
+                if (typePress == Type.Pole)
+                    openPopUpPole();
             }
         }
     }
@@ -84,6 +94,39 @@ public class HoldButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     Sprite spr = employeLink.imagesUpgrades[i].sprite;
                     int count = employeLink.myemp.upgradeCounts.ContainsKey(spr) ?
                                 employeLink.myemp.upgradeCounts[spr] : 0;
+                    var txt = popUPimagesgo[i].GetComponentInChildren<TextMeshProUGUI>(true);
+                    if (txt != null) txt.text = count >= 1 ? $"{count}" : "";
+                }
+            }
+
+
+
+
+        }
+    }
+
+    public void openPopUpPole()
+    {
+
+        if (!isOpen)
+        {
+            isOpen = true;
+            popup.SetActive(true);
+            
+            popupNameUi.text = $"{poleLink.pole.type}";
+  
+
+            for (int i = 0; i < popUPimagesUpgrades.Length; i++)
+            {
+                bool active = poleLink.imagesUpgrades[i].enabled;
+                popUPimagesgo[i].SetActive(active);
+                popUPimagesUpgrades[i].sprite = poleLink.imagesUpgrades[i].sprite;
+
+                if (active)
+                {
+                    Sprite spr = poleLink.imagesUpgrades[i].sprite;
+                    int count = poleLink.pole.upgradeCounts.ContainsKey(spr) ?
+                                poleLink.pole.upgradeCounts[spr] : 0;
                     var txt = popUPimagesgo[i].GetComponentInChildren<TextMeshProUGUI>(true);
                     if (txt != null) txt.text = count >= 1 ? $"{count}" : "";
                 }
