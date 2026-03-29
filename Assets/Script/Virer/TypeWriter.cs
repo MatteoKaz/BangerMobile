@@ -93,6 +93,7 @@ public class TypeWriter : MonoBehaviour
         currentLines = fireManager.empFiche.employe.firelinesChoice;
         ShowNextLine();
         fireManager.HideChoiceButtons();
+        fireManager.DayLaunch = true;
     }
 
     public void ChoiceNotFired()

@@ -71,7 +71,7 @@ public class UpgradeSetUp : MonoBehaviour
             PopUPicon.sprite = roi.iconeRef;
             popUPPrice.text = roi.priceText.text;
             currentRefOfItem = roi;
-            buttonBuy.color = Color.grey;
+            buttonBuy.color = new Color(0.75f, 0.75f, 0.75f);
             open = true;
         if (roi.categoryUpgrade == CategoryUpgrade.Employe)
         {
@@ -101,7 +101,7 @@ public class UpgradeSetUp : MonoBehaviour
         currentRefOfItem = null;
 
         emp = null;
-        buttonBuy.color = Color.grey;
+        buttonBuy.color = buttonBuy.color = new Color(0.75f, 0.75f, 0.75f); 
         scrollPole.SetActive(false);
         ScrollEmploye.SetActive(false);
         poleRef = null;
@@ -115,7 +115,7 @@ public class UpgradeSetUp : MonoBehaviour
         empLink = employeLinkRef;
         RefOfItem roi = currentRefOfItem;
         if (roi.priceOfItem <= scoreManager.playerMoney)
-            buttonBuy.color = Color.green;
+            buttonBuy.color = new Color(0.93f, 0.92f, 0.73f);
     }
 
 
@@ -127,7 +127,7 @@ public class UpgradeSetUp : MonoBehaviour
         poleLink = poleLinkref;
         RefOfItem roi = currentRefOfItem;
         if (roi.priceOfItem <= scoreManager.playerMoney)
-            buttonBuy.color = Color.green;
+            buttonBuy.color = new Color(0.93f, 0.92f, 0.73f);
         
     }
 
@@ -135,7 +135,7 @@ public class UpgradeSetUp : MonoBehaviour
     {
         if (currentRefOfItem == null)
         {
-            buttonBuy.color = Color.grey;
+            buttonBuy.color =  new Color(0.75f, 0.75f, 0.75f);
             return;
         }
            
@@ -149,7 +149,7 @@ public class UpgradeSetUp : MonoBehaviour
             {
                 if (emp == null)
                 {
-                    buttonBuy.color = Color.grey;
+                    buttonBuy.color = new Color(0.75f, 0.75f, 0.75f);
                     return;
                 }
                 scoreManager.playerMoney -= roi.priceOfItem;
@@ -199,7 +199,7 @@ public class UpgradeSetUp : MonoBehaviour
 
                 if (poleRef == null)
                 {
-                    buttonBuy.color = Color.grey;
+                    buttonBuy.color = new Color(0.75f, 0.75f, 0.75f);
                     return;
                 }
                 scoreManager.playerMoney -= roi.priceOfItem;
@@ -251,7 +251,7 @@ public class UpgradeSetUp : MonoBehaviour
             if (currentRefOfItem.priceOfItem > scoreManager.playerMoney)
             {
                 
-                buttonBuy.color = Color.grey;
+                buttonBuy.color = new Color(0.75f, 0.75f, 0.75f);
                 
             }
         }

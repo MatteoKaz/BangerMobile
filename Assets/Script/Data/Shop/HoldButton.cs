@@ -112,8 +112,8 @@ public class HoldButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             isOpen = true;
             popup.SetActive(true);
-            
-            popupNameUi.text = $"{poleLink.pole.type}";
+
+            employeImagepopUp.sprite = poleLink.pole.mySprite;
   
 
             for (int i = 0; i < popUPimagesUpgrades.Length; i++)

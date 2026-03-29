@@ -8,6 +8,7 @@ public class FireManager : MonoBehaviour
 {
     [Header("Ref")]
     [SerializeField] public EmployeFicheInfo empFiche;
+    [SerializeField] public DayManager dayManager;
     [SerializeField] Image employeImage;
     [SerializeField] Animator animator;
     [SerializeField] GameObject FiredScene;
@@ -38,11 +39,22 @@ public class FireManager : MonoBehaviour
     [SerializeField] AnimationCurve curveAnimDialogue;
     [SerializeField] AnimationCurve curveAnimDialogueBack;
     private bool launch = false;
-
+    public bool DayLaunch = false;
     public void OnEnable()
     {
 
         RouletteScript.OnEmployeSelected += ChangeEmploye;
+        dayManager.DayBegin += ResetAction;
+    }
+    public void OnDisable()
+    {
+
+        RouletteScript.OnEmployeSelected -= ChangeEmploye;
+        dayManager.DayBegin -= ResetAction;
+    }
+    public void ResetAction()
+    {
+        DayLaunch = false;
     }
     public void ChangeEmploye(EmployeDataz employeData)
     {
@@ -55,8 +67,11 @@ public class FireManager : MonoBehaviour
     }
     public void Click(EmployeFicheInfo emp)
     {
+        if (DayLaunch == true)// feedbackPeutPAS
+            return;
         if (launch == true)
             return;
+        
         launch = true;
         empFiche = emp;
         
@@ -296,12 +311,61 @@ public class FireManager : MonoBehaviour
 
     public void ShowChoiceButtons()
     {
-        choiceButtons.SetActive(true);
+        if (!choiceButtons.activeSelf)
+        {
+            choiceButtons.SetActive(true);
+            StartCoroutine(ButtonsAnimShow());
+        }
+            
+    }
 
+    public IEnumerator ButtonsAnimShow()
+    {
+        RectTransform rectBouttons = choiceButtons.GetComponent<RectTransform>();
+
+        Vector2 startposBouttons = new Vector2(rectBouttons.anchoredPosition.x, -1372.7f);
+        Vector2 targetPosBouttons = new Vector2(rectBouttons.anchoredPosition.x, -850.3f);
+        float t = 0;
+
+        while (t < animDurationDialogue)
+        {
+            t += Time.deltaTime;
+            float normalized = t / animDurationDialogue;
+
+            float curve = curveAnimDialogueBack.Evaluate(normalized);
+            rectBouttons.anchoredPosition = Vector2.Lerp(startposBouttons, targetPosBouttons, curve);
+
+            yield return null;
+        }
+    }
+
+    public IEnumerator HideButtons()
+    {
+        RectTransform rectBouttons = choiceButtons.GetComponent<RectTransform>();
+
+        Vector2 startposBouttons = new Vector2(rectBouttons.anchoredPosition.x, -1372.7f);
+        Vector2 targetPosBouttons = new Vector2(rectBouttons.anchoredPosition.x, -850.3f);
+        float t = 0;
+
+        while (t < animDurationDialogue)
+        {
+            t += Time.deltaTime;
+            float normalized = t / animDurationDialogue;
+
+            float curve = curveAnimDialogueBack.Evaluate(normalized);
+            rectBouttons.anchoredPosition = Vector2.Lerp(targetPosBouttons, startposBouttons, curve);
+
+            yield return null;
+        }
+        choiceButtons.SetActive(false);
     }
     public void HideChoiceButtons()
     {
-        choiceButtons.SetActive(false);
+        if (choiceButtons.activeSelf)
+        {
+            StartCoroutine(HideButtons());
+        }
+        
 
     }
 }

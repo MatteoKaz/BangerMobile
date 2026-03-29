@@ -41,7 +41,7 @@ MonoBehaviour:
       speed: 0.03
     notfirelines:
     - text: "Je vois que vous avez retrouv\xE9 la raison"
-      speed: 0
+      speed: 0.03
     icone: {fileID: 21300000, guid: e270274b849fbfb49a0f1246e281e5db, type: 3}
     Working: {fileID: 21300000, guid: d76a97f462a28ed43b2745bee89e6c17, type: 3}
     Surcharge: {fileID: 21300000, guid: ed70fe2c83a91c24d8a42593841e7aeb, type: 3}
@@ -226,8 +226,8 @@ MonoBehaviour:
         de la boite."
       speed: 0.02
     notfirelines:
-    - text: Tant mieux j'en pouvais plus de voir votre sale tronche
-      speed: 0
+    - text: "Vous etes malade? Vous avez  r\xE9ussi \xE0 r\xE9fl\xE9chir."
+      speed: 0.03
     icone: {fileID: 21300000, guid: 859752bb043b03642a97ae006c246051, type: 3}
     Working: {fileID: 21300000, guid: b11db67f4b20aba46931026596be6b2a, type: 3}
     Surcharge: {fileID: 21300000, guid: bae84d74c689b2b4a9275fbbe3141384, type: 3}

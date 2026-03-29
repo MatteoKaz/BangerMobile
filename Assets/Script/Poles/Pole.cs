@@ -16,6 +16,7 @@ public class Pole : MonoBehaviour
     public int localAdvencement = 0;
     [Header("PoleType")]
     public PoleType type;
+    public Sprite mySprite;
 
     [Header("Employe")]
     public int maxEmploye = 4;
