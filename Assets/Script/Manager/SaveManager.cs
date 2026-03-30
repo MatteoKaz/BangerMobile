@@ -18,11 +18,16 @@ public class SaveManager : MonoBehaviour
     private Pole[]    _poles;
     private Employe[] _employes;
     private bool      _initialized = false;
-
+    private int[] _basePrices;
     private string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
     private void Awake()
     {
+
+        // Mémorise les prix de base AVANT tout load
+        _basePrices = new int[shopUpgrade.allUpgrade.Count];
+        for (int i = 0; i < shopUpgrade.allUpgrade.Count; i++)
+            _basePrices[i] = shopUpgrade.allUpgrade[i].price;
         GatherReferences();
 
         if (HasSave())
@@ -301,6 +306,8 @@ public class SaveManager : MonoBehaviour
         {
             File.Delete(SavePath);
             Debug.Log("[SaveManager] Save supprimée.");
+            for (int i = 0; i < _basePrices.Length; i++)
+                shopUpgrade.allUpgrade[i].price = _basePrices[i];
         }
     }
 

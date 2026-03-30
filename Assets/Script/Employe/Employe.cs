@@ -67,7 +67,8 @@ public class Employe : MonoBehaviour
     [SerializeField] Image fond;
     [SerializeField] Light2D Light;
     public Color baseColor;
-    public float timeBeetwennWork = 2f;
+    private float timeBeetwennWork = 4f;
+    [SerializeField] Animator animator;
 
     public bool iamWorking = false;
     private Coroutine WorkRoutine;
@@ -75,7 +76,7 @@ public class Employe : MonoBehaviour
     [Header("Ui")]
     [SerializeField] TextMeshProUGUI Name;
     [SerializeField] Image image;
-
+    private bool  wasStunned =false;    
 
 
 
@@ -182,13 +183,21 @@ public class Employe : MonoBehaviour
             WorkRoutine = StartCoroutine(Work());
             employeImage.sprite = working;
             Light.intensity = 0.6f;
-           
+            animator.SetTrigger("Working");
         }
         
         else
         {
             iamWorking = false;
             Light.intensity = 0.0f;
+            animator.SetTrigger("Idle");
+            if (isStunned == true)
+            {
+                employeImage.sprite = Surcharge;
+                Light.intensity = 0.6f;
+                Light.color = Color.indianRed;
+                animator.SetTrigger("Surcharge");
+            }
         }
     }
 
@@ -199,43 +208,71 @@ public class Employe : MonoBehaviour
        
         while (t < 1)
         {
-            if (isStunned == false) // 
+            if (isStunned == false)
             {
-                Light.color = baseColor;
-                employeImage.sprite = working;
-                float dt = Mathf.Min(Time.deltaTime, 0.05f); // max 50ms par frame
-                float rate = Mathf.Max(0.01f, (employeWorkRate + employeWorkRateMalus) - (mypole.BoostEmployeSpeed + employeWorkRateBonus));
+                if (wasStunned) // changement d'état → on trigger une seule fois
+                {
+                    Light.color = baseColor;
+                    employeImage.sprite = working;
+                    animator.SetTrigger("Working");
+                    wasStunned = false;
+                }
+
+                float dt = Mathf.Min(Time.deltaTime, 0.05f);
+                float rate = employeWorkRate
+                           - mypole.BoostEmployeSpeed
+                           - employeWorkRateBonus
+                           + employeWorkRateMalus;
                 t += dt / rate;
                 workAdvancement.value = Mathf.Lerp(0, 1, t);
             }
             else
             {
-                employeImage.sprite = Surcharge;
-                Light.intensity = 0.6f;
-                Light.color = Color.indianRed;
+                if (!wasStunned) // changement d'état → on trigger une seule fois
+                {
+                    employeImage.sprite = Surcharge;
+                    Light.intensity = 0.6f;
+                    Light.color = Color.indianRed;
+                    animator.SetTrigger("Surcharge");
+                    wasStunned = true;
+                }
             }
             yield return null;
 
         }
-        float Succeed = Random.Range(0f, 1f);
-        if (((errorPercent + employeErrorPercenBonus + mypole.BoostEmployeError) - errorPercentMalus) > Succeed)
+        float successChance = errorPercent
+                      + employeErrorPercenBonus
+                      + mypole.BoostEmployeError
+                      - errorPercentMalus;
+
+        successChance = Mathf.Clamp01(successChance);
+
+        float roll = Random.Range(0f, 1f);
+
+        if (roll < successChance)
         {
             mypole.WinMoney();
             moneyMake += mypole.paperValue;
             succeedPaper += 1 + Mathf.RoundToInt(BonusPaperDone);
-
         }
 
-       
+
         numberOfPaperDone += 1 + Mathf.RoundToInt(BonusPaperDone);
         workAdvancement.value = 0;
         Debug.Log("workDone");
         Light.intensity = 0.0f;
         employeImage.sprite = idleSprite;
-        yield return new WaitForSeconds(timeBeetwennWork);
+        animator.SetTrigger("Idle");
+        yield return new WaitForSeconds(Mathf.Max(timeBeetwennWork - StressBonus,0));
        
         iamWorking = false;
-        
+        if (isStunned == true)
+        {
+            employeImage.sprite = Surcharge;
+            Light.intensity = 0.6f;
+            Light.color = Color.indianRed;
+            animator.SetTrigger("Surcharge");
+        }
         mypole.DecrementPaper();
         
         
@@ -265,7 +302,7 @@ public class Employe : MonoBehaviour
         switch (malusType)
         {
             case TypeOfMalus.WorkRate:
-                employeWorkRateMalus = value - StressBonus;   // augmente le temps de travail
+                employeWorkRateMalus = value;   // augmente le temps de travail
                 break;
             case TypeOfMalus.ErrorPercent:
                 errorPercentMalus = value;      // augmente les chances d'erreur
@@ -287,8 +324,10 @@ public class Employe : MonoBehaviour
     }
     public IEnumerator StunCoroutine(float duration)
     {
+        animator.SetTrigger("Surcharge");
         isStunned = true;
         yield return new WaitForSeconds(duration);
+       
         isStunned = false;
     }
 
