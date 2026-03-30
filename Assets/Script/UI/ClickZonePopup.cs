@@ -66,6 +66,9 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     [Tooltip("(Optionnel) Conteneur dont les enfants seront désactivés avant d'ouvrir targetPanel.")]
     [SerializeField] private GameObject parentPanel;
 
+    [Header("Mode :Sound")]
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
+    
     private Canvas _canvas;
     private Coroutine _actionCoroutine;
     private float _holdStartTime;
@@ -81,6 +84,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        audioEventDispatcher.PlayAudio(AudioType.Tampon);
         _holdStartTime       = Time.realtimeSinceStartup;
         _pressScreenPosition = eventData.position;
 

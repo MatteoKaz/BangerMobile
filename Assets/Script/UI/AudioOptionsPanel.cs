@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -8,6 +9,7 @@ public class AudioOptionsPanel : MonoBehaviour
 {
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private Button muteButton;
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
 
     private void OnEnable()
     {
