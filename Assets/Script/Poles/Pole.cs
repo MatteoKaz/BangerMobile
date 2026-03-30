@@ -265,14 +265,15 @@ public class Pole : MonoBehaviour
                 surchargeValue -= decayRate * Time.deltaTime;
                 surchargeValue = Mathf.Max(surchargeValue, 0f);
 
+                // Descend tous les paliers franchis d'un coup, sans yield entre
                 while (nextThresholdIndex > 0 && surchargeValue < surchargeThresholds[nextThresholdIndex - 1])
                 {
                     nextThresholdIndex--;
                     ApplyMalus(nextThresholdIndex);
-                    yield return null;
                 }
+
                 surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
-                yield return null;
+                yield return null; // une seule fois par frame, après avoir traité tous les paliers
             }
             else // surchargeValue == 0 et waitingPaper == 0
             {

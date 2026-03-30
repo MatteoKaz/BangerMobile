@@ -22,6 +22,7 @@ public class DayManager : MonoBehaviour
     public event Action NewWeekReset;
     [SerializeField] private TimeManager timeManager;
     [SerializeField] RankingManager rankingManager;
+    [SerializeField] QuotatManager quotatManager;
     public void OnEnable()
     {
         timeManager.TimerEnded += DayOver;
@@ -57,6 +58,7 @@ public class DayManager : MonoBehaviour
     {
         currentDay  = day;
         currentWeek = week;
+        quotatManager.QuotatCroissance();
         DayNameChange();
         DayBegin?.Invoke();
     }

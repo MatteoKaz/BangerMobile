@@ -6,6 +6,7 @@ public class SaveData
     public int currentDay;
     public int currentWeek;
     public int playerMoney;
+    
     public List<EmployeSaveData> employes = new List<EmployeSaveData>();
     public List<UpgradeSaveData> upgrades = new List<UpgradeSaveData>();
     public List<PoleSaveData> poles = new List<PoleSaveData>();
@@ -75,3 +76,4 @@ public class TimedUpgradeSaveData
     public int upgradeIndex; // index dans shopUpgrade.allUpgrade pour retrouver icon/type/value
     public int daysRemaining;
 }
+
