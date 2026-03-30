@@ -172,7 +172,7 @@ public class Employe : MonoBehaviour
     }
 
 
-    // fonction � lancer lorsqu'il commence a work 
+    // fonction  lancer lorsqu'il commence a work 
     public void Working()
     {
         if (mypole.waitingPaper > 0 && iamWorking == false)
@@ -181,23 +181,22 @@ public class Employe : MonoBehaviour
             mypole.activepaper++;
             mypole.UpdatePaperUI();
             WorkRoutine = StartCoroutine(Work());
-            employeImage.sprite = working;
+            
             Light.intensity = 0.6f;
-            animator.SetTrigger("Working");
+            
         }
         
         else
         {
             iamWorking = false;
+
             Light.intensity = 0.0f;
-            animator.SetTrigger("Idle");
-            if (isStunned == true)
+            if (isStunned == false)
             {
-                employeImage.sprite = Surcharge;
-                Light.intensity = 0.6f;
-                Light.color = Color.indianRed;
-                animator.SetTrigger("Surcharge");
+                animator.SetTrigger("Idle");
+                employeImage.sprite = idleSprite;
             }
+           
         }
     }
 
@@ -205,12 +204,12 @@ public class Employe : MonoBehaviour
     {
        
         float t = 0f;
-       
+        bool wasStunned = true;
         while (t < 1)
         {
             if (isStunned == false)
             {
-                if (wasStunned) // changement d'état → on trigger une seule fois
+                if (wasStunned== true) // changement d'état  on trigger une seule fois
                 {
                     Light.color = baseColor;
                     employeImage.sprite = working;
@@ -228,7 +227,7 @@ public class Employe : MonoBehaviour
             }
             else
             {
-                if (!wasStunned) // changement d'état → on trigger une seule fois
+                if (wasStunned == false) // changement d'état  on trigger une seule fois
                 {
                     employeImage.sprite = Surcharge;
                     Light.intensity = 0.6f;
@@ -261,18 +260,21 @@ public class Employe : MonoBehaviour
         workAdvancement.value = 0;
         Debug.Log("workDone");
         Light.intensity = 0.0f;
-        employeImage.sprite = idleSprite;
-        animator.SetTrigger("Idle");
+        if (isStunned == false)
+        {
+            employeImage.sprite = idleSprite;
+            animator.SetTrigger("Idle");
+        }
         yield return new WaitForSeconds(Mathf.Max(timeBeetwennWork - StressBonus,0));
-       
-        iamWorking = false;
-        if (isStunned == true)
+        if (isStunned)
         {
             employeImage.sprite = Surcharge;
             Light.intensity = 0.6f;
             Light.color = Color.indianRed;
             animator.SetTrigger("Surcharge");
         }
+        iamWorking = false;
+      
         mypole.DecrementPaper();
         
         
@@ -324,11 +326,27 @@ public class Employe : MonoBehaviour
     }
     public IEnumerator StunCoroutine(float duration)
     {
-        animator.SetTrigger("Surcharge");
         isStunned = true;
+        employeImage.sprite = Surcharge;
+        Light.intensity = 0.6f;
+        Light.color = Color.indianRed;
+        animator.SetTrigger("Surcharge");
+        
         yield return new WaitForSeconds(duration);
-       
         isStunned = false;
+        if (iamWorking)
+        {
+        Light.color = baseColor;
+        employeImage.sprite = working;
+        animator.SetTrigger("Working");
+        }
+         else
+        {
+        Light.intensity = 0.0f;
+        employeImage.sprite = idleSprite;
+        animator.SetTrigger("Idle");
+         }
+        
     }
 
     

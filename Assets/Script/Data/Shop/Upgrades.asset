@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   allUpgrade:
   - UpgradeName: La carotte
-    price: 500
+    price: 150
     type: 0
     category: 0
     upgradeValue: 0.25
@@ -24,7 +24,7 @@ MonoBehaviour:
       d'un employ\xE9"
     duration: 0
   - UpgradeName: Promesse de Promotion
-    price: 325
+    price: 150
     type: 1
     category: 0
     upgradeValue: 0.05
@@ -33,7 +33,7 @@ MonoBehaviour:
     Description: "Permet de baisser le pourcentage d'erreurs d'un employ\xE9."
     duration: 0
   - UpgradeName: "La cam\xE9ra "
-    price: 625
+    price: 150
     type: 2
     category: 0
     upgradeValue: 0.25
@@ -43,7 +43,7 @@ MonoBehaviour:
       pas, et le force \xE0 se remettre au travail temporairement."
     duration: 0
   - UpgradeName: "Caf\xE9 \xE0 volont\xE9"
-    price: 975
+    price: 150
     type: 3
     category: 0
     upgradeValue: 1
@@ -52,7 +52,7 @@ MonoBehaviour:
     Description: "Permet \xE0 un employ\xE9 de traiter 2 dossier \xE0 la fois."
     duration: 0
   - UpgradeName: La Prime
-    price: 650
+    price: 200
     type: 4
     category: 1
     upgradeValue: 0.25
@@ -62,7 +62,7 @@ MonoBehaviour:
       d'un p\xF4le"
     duration: 5
   - UpgradeName: Cigarette offerte
-    price: 275
+    price: 150
     type: 5
     category: 1
     upgradeValue: 0.25
@@ -82,7 +82,7 @@ MonoBehaviour:
       d'un p\xF4le."
     duration: 5
   - UpgradeName: Pole promo
-    price: 170
+    price: 150
     type: 7
     category: 1
     upgradeValue: 0.05
