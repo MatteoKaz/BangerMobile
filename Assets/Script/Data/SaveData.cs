@@ -8,7 +8,7 @@ public class SaveData
     public int playerMoney;
     public List<EmployeSaveData> employes = new List<EmployeSaveData>();
     public List<UpgradeSaveData> upgrades = new List<UpgradeSaveData>();
-
+    public List<PoleSaveData> poles = new List<PoleSaveData>();
 }
 
 [System.Serializable]
@@ -57,3 +57,21 @@ public class UpgradeCountData
     public int count;
 }
 
+[System.Serializable]
+public class PoleSaveData
+{
+    public PoleType poleType;
+    public float boostEmployeSpeed;
+    public float boostEmployeError;
+    public float bonusRevenus;
+    public float boostTimeForSurcharge;
+    public List<TimedUpgradeSaveData> timedUpgrades = new List<TimedUpgradeSaveData>();
+    public List<UpgradeCountData> upgradeCounts = new List<UpgradeCountData>();
+}
+
+[System.Serializable]
+public class TimedUpgradeSaveData
+{
+    public int upgradeIndex; // index dans shopUpgrade.allUpgrade pour retrouver icon/type/value
+    public int daysRemaining;
+}

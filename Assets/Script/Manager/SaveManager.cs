@@ -14,6 +14,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private DayManager dayManager;
     [SerializeField] private ScoreManager scoreManager;
     [SerializeField] ShopUpgrade shopUpgrade;
+    [SerializeField] private PoleLink[] _poleLinks;
     private Pole[]    _poles;
     private Employe[] _employes;
     private bool      _initialized = false;
@@ -132,7 +133,54 @@ public class SaveManager : MonoBehaviour
                 }
             }
         data.employes.Add(empSaveData);
+
     }
+        // Poles
+       
+        foreach (PoleLink poleLink in _poleLinks)
+        {
+            PoleSaveData poleSaveData = new PoleSaveData
+            {
+                poleType = poleLink.pole.type,
+                boostEmployeSpeed = poleLink.pole.BoostEmployeSpeed,
+                boostEmployeError = poleLink.pole.BoostEmployeError,
+                bonusRevenus = poleLink.pole.BonusRevenus,
+                boostTimeForSurcharge = poleLink.pole.BoostTimeForSurcharge
+            };
+
+            foreach (var t in poleLink.timedUpgrades)
+            {
+                for (int j = 0; j < shopUpgrade.allUpgrade.Count; j++)
+                {
+                    if (shopUpgrade.allUpgrade[j].icone == t.icon)
+                    {
+                        poleSaveData.timedUpgrades.Add(new TimedUpgradeSaveData
+                        {
+                            upgradeIndex = j,
+                            daysRemaining = t.daysRemaining
+                        });
+                        break;
+                    }
+                }
+            }
+
+            foreach (var kvp in poleLink.pole.upgradeCounts)
+            {
+                for (int j = 0; j < shopUpgrade.allUpgrade.Count; j++)
+                {
+                    if (shopUpgrade.allUpgrade[j].icone == kvp.Key)
+                    {
+                        poleSaveData.upgradeCounts.Add(new UpgradeCountData
+                        {
+                            upgradeIndex = j,
+                            count = kvp.Value
+                        });
+                        break;
+                    }
+                }
+            }
+            data.poles.Add(poleSaveData);
+        }
         for (int i = 0; i < shopUpgrade.allUpgrade.Count; i++)
         {
             data.upgrades.Add(new UpgradeSaveData
@@ -204,6 +252,40 @@ public class SaveManager : MonoBehaviour
         {
             shopUpgrade.allUpgrade[upData.upgradeIndex].price = upData.currentPrice;
         }
+        // Poles
+        
+        foreach (PoleSaveData poleData in data.poles)
+        {
+            PoleLink poleLink = System.Array.Find(_poleLinks, p => p.pole.type == poleData.poleType);
+            if (poleLink == null) continue;
+
+            poleLink.pole.BoostEmployeSpeed = poleData.boostEmployeSpeed;
+            poleLink.pole.BoostEmployeError = poleData.boostEmployeError;
+            poleLink.pole.BonusRevenus = poleData.bonusRevenus;
+            poleLink.pole.BoostTimeForSurcharge = poleData.boostTimeForSurcharge;
+
+            poleLink.timedUpgrades.Clear();
+            foreach (TimedUpgradeSaveData tData in poleData.timedUpgrades)
+            {
+                var upgrade = shopUpgrade.allUpgrade[tData.upgradeIndex];
+                poleLink.timedUpgrades.Add(new PoleLink.TimedUpgrade
+                {
+                    icon = upgrade.icone,
+                    type = upgrade.type,
+                    value = upgrade.upgradeValue,
+                    daysRemaining = tData.daysRemaining
+                });
+            }
+
+            poleLink.pole.upgradeCounts.Clear();
+            foreach (UpgradeCountData ucd in poleData.upgradeCounts)
+            {
+                Sprite spr = shopUpgrade.allUpgrade[ucd.upgradeIndex].icone;
+                poleLink.pole.upgradeCounts[spr] = ucd.count;
+            }
+            poleLink.SetIcone();
+        }
+
         foreach (Pole pole in _poles)
             pole.RebuildEmployeList();
 
