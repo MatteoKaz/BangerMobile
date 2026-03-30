@@ -112,9 +112,8 @@ public class RouletteWheel : MonoBehaviour
     }
 
     /// <summary>
-    /// À chaque activation du panneau, on remet à zéro les gagnants précédents
-    /// et on recalcule la liste depuis TakenEmployeIndex en temps réel.
-    /// Les employés retirés de leurs pôles réapparaissent automatiquement.
+    /// À chaque activation du panneau, remet à zéro les gagnants précédents
+    /// et recalcule la liste depuis TakenEmployeIndex en temps réel.
     /// </summary>
     private void OnEnable()
     {
@@ -130,12 +129,21 @@ public class RouletteWheel : MonoBehaviour
 
     // ── API publique ──────────────────────────────────────────────────────────
 
-    /// <summary>Réinitialise le droit de lancer la roulette pour le nouveau jour.</summary>
+    /// <summary>
+    /// Réinitialise le droit de lancer la roulette pour le nouveau jour
+    /// et met à jour la liste des employés disponibles en excluant ceux dans les pôles.
+    /// </summary>
     public void ResetDailySpin()
     {
         _hasSpunToday = false;
         spinButton.interactable = true;
-        Debug.Log("[RouletteWheel] Spin quotidien réinitialisé.");
+
+        // Nouveau jour : on repart d'un pool propre en relisant TakenEmployeIndex.
+        // Les gagnants de la veille sont oubliés — seuls les pôles font foi.
+        _rouletteWinnerIndices.Clear();
+        BuildAvailableList();
+
+        Debug.Log($"[RouletteWheel] Nouveau jour — {_employees.Count} employés disponibles.");
     }
 
     /// <summary>Lance la roulette. Ignoré si un spin est en cours ou déjà fait aujourd'hui.</summary>
@@ -297,7 +305,6 @@ public class RouletteWheel : MonoBehaviour
 
         while (true)
         {
-            // Grossissement : minScale → maxScale
             float elapsed = 0f;
             while (elapsed < pulseHalfDuration)
             {
@@ -308,7 +315,6 @@ public class RouletteWheel : MonoBehaviour
                 yield return null;
             }
 
-            // Dégrossissement : maxScale → minScale
             elapsed = 0f;
             while (elapsed < pulseHalfDuration)
             {
@@ -395,7 +401,6 @@ public class RouletteWheel : MonoBehaviour
             yield return null;
         }
 
-        // centerY = position du pivot du slot gagnant centré dans le masque.
         float centerY = _maskHeight * 0.5f;
         int topIdx = GetTopmostSlotIndex();
         int bottomIdx = GetBottommostSlotIndex();
@@ -441,7 +446,6 @@ public class RouletteWheel : MonoBehaviour
 
         ResetShake();
 
-        // Trouver le slot au centre et forcer le gagnant dessus.
         int finalWinnerSlot = 0;
         float closestDist = float.MaxValue;
         for (int i = 0; i < _slotPositions.Count; i++)
@@ -453,17 +457,15 @@ public class RouletteWheel : MonoBehaviour
         _slots[finalWinnerSlot].Setup(_employees[_selectedIndex]);
         _slots[finalWinnerSlot].SetHighlight(true, highlightColor);
 
-        // ── Enregistrer le gagnant ────────────────────────────────────────────
         RegisterWinnerAsTaken(_selectedIndex);
 
-        // ── Dès l'arrêt : promotion au-dessus du masque + pulse ───────────────
+        // ── Dès l'arrêt : promotion + pulse ───────────────────────────────────
         PromoteWinnerSlot(_slots[finalWinnerSlot]);
         StartPulse(_slots[finalWinnerSlot].transform);
 
-        // ── Pause avant révélation du résultat ────────────────────────────────
+        // ── Pause avant révélation ────────────────────────────────────────────
         yield return new WaitForSeconds(revealDelay);
 
-        // ── Affichage du résultat ─────────────────────────────────────────────
         if (resultLabel != null)
             resultLabel.text = _employees[_selectedIndex].EmployeName;
 

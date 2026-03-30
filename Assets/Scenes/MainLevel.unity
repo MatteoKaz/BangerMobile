@@ -3754,7 +3754,7 @@ PrefabInstance:
       objectReference: {fileID: 641038301}
     - target: {fileID: 5917625373617880111, guid: ff8b6b03c3bb8f14aa8db7c6d933a551, type: 3}
       propertyPath: revealDelay
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5917625373617880111, guid: ff8b6b03c3bb8f14aa8db7c6d933a551, type: 3}
       propertyPath: shakeTarget
@@ -3766,7 +3766,7 @@ PrefabInstance:
       objectReference: {fileID: 1549179203}
     - target: {fileID: 5917625373617880111, guid: ff8b6b03c3bb8f14aa8db7c6d933a551, type: 3}
       propertyPath: decelerationDuration
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5931145640226228059, guid: ff8b6b03c3bb8f14aa8db7c6d933a551, type: 3}
       propertyPath: m_Name
