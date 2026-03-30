@@ -31,7 +31,7 @@ MonoBehaviour:
     workRythme: 4
     errorPercent: 0.7
     timeInEntreprise: 0
-    typeSprite: {fileID: -401073943303174144, guid: 4679f2bab0d8f96438c5cb657bedbc7f, type: 3}
+    typeSprite: {fileID: -9205446280149291036, guid: 2661d2b11b84bee4e891387ac5b7bd0f, type: 3}
     firelines:
     - text: "C'est une blague ? Vous avez besoin de moi. Le seul homme fort et comp\xE9tent
         de la boite. "
@@ -64,7 +64,7 @@ MonoBehaviour:
     workRythme: 5
     errorPercent: 0.8
     timeInEntreprise: 0
-    typeSprite: {fileID: -6265635112725933853, guid: 2b9b5b424e4a6ad4796c141f5ffe1103, type: 3}
+    typeSprite: {fileID: 7174708238663027378, guid: 7ded8aa5b57241041a3741eab8ae02dc, type: 3}
     firelines:
     - text: "Euh... C\u2019est une blague ?"
       speed: 0.02
@@ -94,7 +94,7 @@ MonoBehaviour:
     workRythme: 6
     errorPercent: 0.9
     timeInEntreprise: 0
-    typeSprite: {fileID: -6549401532707822571, guid: 2bbbce11746197841a89124f0338c0b1, type: 3}
+    typeSprite: {fileID: 402761151100828559, guid: 8e8f8647c2b0bd74d930e847c2cd4a68, type: 3}
     firelines:
     - text: "Apr\xE8s toutes ces ann\xE9es \xE0 servir l'entreprise\u2026 vous ne
         pouvez pas me faire \xE7a ?! "
@@ -123,7 +123,7 @@ MonoBehaviour:
     workRythme: 4
     errorPercent: 0.7
     timeInEntreprise: 0
-    typeSprite: {fileID: -401073943303174144, guid: 4679f2bab0d8f96438c5cb657bedbc7f, type: 3}
+    typeSprite: {fileID: -9205446280149291036, guid: 2661d2b11b84bee4e891387ac5b7bd0f, type: 3}
     firelines:
     - text: "Attendez\u2026 je peux m'am\xE9liorer ! Ne faites pas \xE7a j'ai trois
         enfants \xE0 nourrir !"
@@ -156,7 +156,7 @@ MonoBehaviour:
     workRythme: 6
     errorPercent: 0.9
     timeInEntreprise: 0
-    typeSprite: {fileID: -6549401532707822571, guid: 2bbbce11746197841a89124f0338c0b1, type: 3}
+    typeSprite: {fileID: 402761151100828559, guid: 8e8f8647c2b0bd74d930e847c2cd4a68, type: 3}
     firelines:
     - text: "Attendez ! Ne faites pas \xE7a je vous en supplie. Ma m\xE8re est gravement
         malade !"
@@ -187,7 +187,7 @@ MonoBehaviour:
     workRythme: 5
     errorPercent: 0.8
     timeInEntreprise: 0
-    typeSprite: {fileID: -6265635112725933853, guid: 2b9b5b424e4a6ad4796c141f5ffe1103, type: 3}
+    typeSprite: {fileID: 7174708238663027378, guid: 7ded8aa5b57241041a3741eab8ae02dc, type: 3}
     firelines:
     - text: Laissez moi vous dire que vous faites une grosse erreur.
       speed: 0.02
@@ -217,7 +217,7 @@ MonoBehaviour:
     workRythme: 4
     errorPercent: 0.7
     timeInEntreprise: 0
-    typeSprite: {fileID: -401073943303174144, guid: 4679f2bab0d8f96438c5cb657bedbc7f, type: 3}
+    typeSprite: {fileID: -9205446280149291036, guid: 2661d2b11b84bee4e891387ac5b7bd0f, type: 3}
     firelines:
     - text: "Faites ce que vous avez \xE0 faire je m'en fiche. Moi je fais mon travail."
       speed: 0.02
@@ -249,7 +249,7 @@ MonoBehaviour:
     workRythme: 6
     errorPercent: 0.9
     timeInEntreprise: 0
-    typeSprite: {fileID: -6549401532707822571, guid: 2bbbce11746197841a89124f0338c0b1, type: 3}
+    typeSprite: {fileID: 402761151100828559, guid: 8e8f8647c2b0bd74d930e847c2cd4a68, type: 3}
     firelines:
     - text: "Oh non ! ne faites pas \xE7a ! vous savez que je peux m\u2019am\xE9liorer
         !"
@@ -280,7 +280,7 @@ MonoBehaviour:
     workRythme: 5
     errorPercent: 0.8
     timeInEntreprise: 0
-    typeSprite: {fileID: -6265635112725933853, guid: 2b9b5b424e4a6ad4796c141f5ffe1103, type: 3}
+    typeSprite: {fileID: 7174708238663027378, guid: 7ded8aa5b57241041a3741eab8ae02dc, type: 3}
     firelines:
     - text: "\u2026Si c\u2019est ce que vous souhaitez."
       speed: 0.02
@@ -310,7 +310,7 @@ MonoBehaviour:
     workRythme: 4
     errorPercent: 0.7
     timeInEntreprise: 0
-    typeSprite: {fileID: -401073943303174144, guid: 4679f2bab0d8f96438c5cb657bedbc7f, type: 3}
+    typeSprite: {fileID: -9205446280149291036, guid: 2661d2b11b84bee4e891387ac5b7bd0f, type: 3}
     firelines:
     - text: "S\u2019il vous pla\xEEt\u2026 comment vais je rembourse mes dettes sans
         ce travail ?!"

@@ -7,7 +7,7 @@ public class QuotatManager : MonoBehaviour
 {
     public int WeekQuotat = 250;
     public int BaseQuotat = 250;
-    public float exposant = 1.5f;
+    public float exposant = 2f;
     public int DayQuotat ;
     [SerializeField] DayManager dayManager;
     public event Action QuotatChosen;
