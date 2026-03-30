@@ -44,7 +44,7 @@ public class PaperSpawner : MonoBehaviour
     private Coroutine spawnRoutine;
     [SerializeField] DayManager dayManager;
     private bool canSpawn = true;
-
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
 
     public void OnEnable()
     {
@@ -115,6 +115,7 @@ public class PaperSpawner : MonoBehaviour
    
     public IEnumerator Spawn()
     {
+        audioEventDispatcher.PlayAudio(AudioType.Pop);
         int globalSorting = 2;
         float currentRhythm = 1f;
         int spawnCount = 0;
@@ -122,6 +123,8 @@ public class PaperSpawner : MonoBehaviour
         {
             if (!canSpawn)
                 break;
+            audioEventDispatcher.PlayAudio(AudioType.Pop);
+
             if (spawnCount % 10 == 0)
             {
                 int rhythm = Random.Range(0, 3);
@@ -134,7 +137,7 @@ public class PaperSpawner : MonoBehaviour
                 Debug.Log($"Nouveau rythme: {rhythm}");
             }
 
-            // petit random local × rythme global
+            // petit random local ï¿½ rythme global
             float spawntiming = Random.Range(spawnDelay, spawnDelay + 0.5f) * currentRhythm;
             GameObject prefab = spawnList[0];
             spawnList.RemoveAt(0);
@@ -196,7 +199,7 @@ public class PaperSpawner : MonoBehaviour
         // Liste des types
         PaperType[] types = { PaperType.Red, PaperType.Blue, PaperType.Green };
 
-        // Mélanger la liste de types
+        // Mï¿½langer la liste de types
         for (int i = 0; i < types.Length; i++)
         {
             int randomIndex = Random.Range(i, types.Length);
@@ -205,7 +208,7 @@ public class PaperSpawner : MonoBehaviour
             types[randomIndex] = temp;
         }
 
-        // Assigner les quotas aléatoirement
+        // Assigner les quotas alï¿½atoirement
         redQuota = 0;
         blueQuota = 0;
         greenQuota = 0;

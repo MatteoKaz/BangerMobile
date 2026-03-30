@@ -28,7 +28,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
     [SerializeField] public float swipeStartTime = 0.3f;
     [SerializeField] public float maxswipeTime = 0.3f;
     bool hasRemove = false;
-
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     
 
     void Awake()
@@ -76,6 +76,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
                 {
                     HasCall = true;
                     paperRef.MoveUpTuyaux();
+                    audioEventDispatcher.PlayAudio(AudioType.Swipe1); 
                 }
 
             }
@@ -86,6 +87,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
                 {
                     HasCall = true;
                     paperRef.MoveRightTuyaux();
+                    audioEventDispatcher.PlayAudio(AudioType.Swipe2); 
                 }
 
             }
@@ -122,6 +124,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
                 {
                     HasCall = true;
                     paperRef.MoveLeftTuyaux();
+                    audioEventDispatcher.PlayAudio(AudioType.Swipe3); 
                 }
 
             }

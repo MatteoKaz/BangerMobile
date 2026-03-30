@@ -9,11 +9,12 @@ public class PauseManager : MonoBehaviour
 {
     [SerializeField] private Button pauseButton;
     [SerializeField] private GameObject pausePanel;
-
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     private bool _isPaused = false;
 
     private void Start()
     {
+        audioEventDispatcher.PlayAudio(AudioType.Click);
         pausePanel.SetActive(false);
     }
 
