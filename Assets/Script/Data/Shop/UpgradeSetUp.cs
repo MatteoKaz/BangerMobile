@@ -13,7 +13,7 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] GameObject itemToBuy;
     [SerializeField] GameObject parentUpgrade;
     [SerializeField] GameObject Popup;
-
+    [SerializeField] ScrollRect myScrollRect;
     [Header("PopUp")]
     [SerializeField] TextMeshProUGUI Popupname;
     [SerializeField] TextMeshProUGUI PopUPdescription;
@@ -63,6 +63,8 @@ public class UpgradeSetUp : MonoBehaviour
             refitem.index = i;
             refitem.durationInDays = shopUpgrade.allUpgrade[i].duration;
         }
+        myScrollRect.verticalNormalizedPosition = 1f;
+
     }
 
 
