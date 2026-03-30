@@ -5,6 +5,7 @@ using TMPro;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
+using static PoleLink;
 
 public class UpgradeSetUp : MonoBehaviour
 {
@@ -22,8 +23,11 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] GameObject ScrollEmploye;
     [SerializeField] GameObject scrollPole;
 
+
     [SerializeField] TextMeshProUGUI popUPPrice;
     [SerializeField] Image buttonBuy;
+    [SerializeField] Sprite CanBuy;
+    [SerializeField] Sprite CannotBuy;
     [SerializeField] TextMeshProUGUI PopUPdescriptionPole;
     [SerializeField] Image PopUPiconPole;
     [SerializeField] Pole poleRef;
@@ -57,6 +61,7 @@ public class UpgradeSetUp : MonoBehaviour
             refitem.categoryUpgrade = shopUpgrade.allUpgrade[i].category;
             refitem.NameUI.text = shopUpgrade.allUpgrade[i].UpgradeName;
             refitem.index = i;
+            refitem.durationInDays = shopUpgrade.allUpgrade[i].duration;
         }
     }
 
@@ -71,8 +76,8 @@ public class UpgradeSetUp : MonoBehaviour
             PopUPicon.sprite = roi.iconeRef;
             popUPPrice.text = roi.priceText.text;
             currentRefOfItem = roi;
-            buttonBuy.color = new Color(0.75f, 0.75f, 0.75f);
-            open = true;
+             buttonBuy.sprite = CannotBuy;
+             open = true;
         if (roi.categoryUpgrade == CategoryUpgrade.Employe)
         {
             
@@ -101,7 +106,7 @@ public class UpgradeSetUp : MonoBehaviour
         currentRefOfItem = null;
 
         emp = null;
-        buttonBuy.color = buttonBuy.color = new Color(0.75f, 0.75f, 0.75f); 
+        buttonBuy.sprite = CannotBuy;
         scrollPole.SetActive(false);
         ScrollEmploye.SetActive(false);
         poleRef = null;
@@ -115,7 +120,7 @@ public class UpgradeSetUp : MonoBehaviour
         empLink = employeLinkRef;
         RefOfItem roi = currentRefOfItem;
         if (roi.priceOfItem <= scoreManager.playerMoney)
-            buttonBuy.color = new Color(0.93f, 0.92f, 0.73f);
+            buttonBuy.sprite = CanBuy;
     }
 
 
@@ -127,15 +132,15 @@ public class UpgradeSetUp : MonoBehaviour
         poleLink = poleLinkref;
         RefOfItem roi = currentRefOfItem;
         if (roi.priceOfItem <= scoreManager.playerMoney)
-            buttonBuy.color = new Color(0.93f, 0.92f, 0.73f);
-        
+            buttonBuy.sprite = CanBuy;
+
     }
 
     public void Buy()
     {
         if (currentRefOfItem == null)
         {
-            buttonBuy.color =  new Color(0.75f, 0.75f, 0.75f);
+            buttonBuy.sprite = CannotBuy;
             return;
         }
            
@@ -149,7 +154,7 @@ public class UpgradeSetUp : MonoBehaviour
             {
                 if (emp == null)
                 {
-                    buttonBuy.color = new Color(0.75f, 0.75f, 0.75f);
+                    buttonBuy.sprite = CannotBuy;
                     return;
                 }
                 scoreManager.playerMoney -= roi.priceOfItem;
@@ -196,48 +201,42 @@ public class UpgradeSetUp : MonoBehaviour
         {
             if (roi.priceOfItem <= scoreManager.playerMoney)
             {
-
                 if (poleRef == null)
                 {
-                    buttonBuy.color = new Color(0.75f, 0.75f, 0.75f);
+                    buttonBuy.sprite = CannotBuy;
                     return;
                 }
+
                 scoreManager.playerMoney -= roi.priceOfItem;
                 scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
                 roi.priceOfItem += roi.inflation;
                 shopUpgrade.allUpgrade[roi.index].price = roi.priceOfItem;
                 popUPPrice.text = $"{roi.priceOfItem}$";
+
                 if (!poleRef.upgradeCounts.ContainsKey(roi.iconeRef))
                     poleRef.upgradeCounts[roi.iconeRef] = 0;
                 poleRef.upgradeCounts[roi.iconeRef]++;
-                if (poleLink != null)
-                {
-                    if (!poleRef.upgradesImages.Contains(roi.iconeRef))
-                    {
-                        poleRef.upgradesImages.Add(roi.iconeRef);
 
-                        poleLink.upgradesImages.Add(roi.iconeRef);
-                        poleLink.SetIcone();
-                    }
-                }
+                poleLink.timedUpgrades.Add(new TimedUpgrade
+                {
+                    icon = roi.iconeRef,
+                    type = roi.type,
+                    value = roi.upgradeValue,
+                    daysRemaining = roi.durationInDays
+                });
+                
+                poleLink.SetIcone();
+
                 switch (roi.type)
                 {
-                    case TypeOfUpgrade.BoostSpeedPole:
-                        poleRef.BoostEmployeSpeed += roi.upgradeValue; 
-                        break;
-                    case TypeOfUpgrade.BoostErrorPole:
-                        poleRef.BoostEmployeError += roi.upgradeValue; break;
-                    case TypeOfUpgrade.PrimePole:
-                        poleRef.BonusRevenus += roi.upgradeValue; break;
-                    case TypeOfUpgrade.CigarettePole:
-                        poleRef.BoostTimeForSurcharge += roi.upgradeValue; break;
-
+                    case TypeOfUpgrade.BoostSpeedPole: poleRef.BoostEmployeSpeed += roi.upgradeValue; break;
+                    case TypeOfUpgrade.BoostErrorPole: poleRef.BoostEmployeError += roi.upgradeValue; break;
+                    case TypeOfUpgrade.PrimePole: poleRef.BonusRevenus += roi.upgradeValue; break;
+                    case TypeOfUpgrade.CigarettePole: poleRef.BoostTimeForSurcharge += roi.upgradeValue; break;
                 }
-               
-                
             }
         }
-        
+
 
 
 
@@ -251,7 +250,7 @@ public class UpgradeSetUp : MonoBehaviour
             if (currentRefOfItem.priceOfItem > scoreManager.playerMoney)
             {
                 
-                buttonBuy.color = new Color(0.75f, 0.75f, 0.75f);
+                buttonBuy.sprite = CannotBuy;
                 
             }
         }

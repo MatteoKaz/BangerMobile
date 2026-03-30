@@ -60,7 +60,7 @@ MonoBehaviour:
     inflation: 25
     Description: "Permet de multiplier le pourcentage de revenus,  des employ\xE9es
       d'un p\xF4le"
-    duration: 0
+    duration: 5
   - UpgradeName: Cigarette offerte
     price: 150
     type: 5
@@ -70,7 +70,7 @@ MonoBehaviour:
     inflation: 25
     Description: "Permet d'apaiser les employ\xE9s, et ainsi de repousser la surcharge
       d'un p\xF4le."
-    duration: 0
+    duration: 5
   - UpgradeName: Carotte Multiple
     price: 150
     type: 6
@@ -80,7 +80,7 @@ MonoBehaviour:
     inflation: 25
     Description: "Permet d'augmenter la rapidit\xE9 d\u2019ex\xE9cution de t\xE2ches
       d'un p\xF4le."
-    duration: 0
+    duration: 5
   - UpgradeName: Pole promo
     price: 170
     type: 7
@@ -89,4 +89,4 @@ MonoBehaviour:
     icone: {fileID: -9181463752678961260, guid: 0537ec4632db99846a4b80dadd5b5a4f, type: 3}
     inflation: 20
     Description: "Permet de baisser le pourcentage d'erreurs d'un p\xF4le."
-    duration: 0
+    duration: 3

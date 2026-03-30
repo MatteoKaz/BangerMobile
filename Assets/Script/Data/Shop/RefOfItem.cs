@@ -19,7 +19,7 @@ public class RefOfItem : MonoBehaviour
     public string description;
     public CategoryUpgrade categoryUpgrade;
     public string nameEncadre;
-
+    public int durationInDays;
 
     public void OpenPopUP()
     {
