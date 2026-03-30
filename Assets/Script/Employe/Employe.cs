@@ -49,6 +49,8 @@ public class Employe : MonoBehaviour
     [Header("Malus")]
     public float errorPercentMalus = 0f;
     public float employeWorkRateMalus = 0f;
+    public float RankingWorkRateMalus = 0f;
+    public float RankingPercentMalus = 0f;
     public bool isStunned =false ;
     [Header("Ui")]
     [SerializeField] Slider workAdvancement;
@@ -221,7 +223,7 @@ public class Employe : MonoBehaviour
                 float rate = employeWorkRate
                            - mypole.BoostEmployeSpeed
                            - employeWorkRateBonus
-                           + employeWorkRateMalus;
+                           + (employeWorkRateMalus + RankingWorkRateMalus);
                 t += dt / rate;
                 workAdvancement.value = Mathf.Lerp(0, 1, t);
             }
@@ -242,7 +244,7 @@ public class Employe : MonoBehaviour
         float successChance = errorPercent
                       + employeErrorPercenBonus
                       + mypole.BoostEmployeError
-                      - errorPercentMalus;
+                      - (errorPercentMalus + RankingPercentMalus);
 
         successChance = Mathf.Clamp01(successChance);
 
@@ -323,6 +325,11 @@ public class Employe : MonoBehaviour
     {
         employeWorkRateMalus = 0f;
         errorPercentMalus = 0f;
+    }
+    public void ResetRankingMalus()
+    {
+        RankingWorkRateMalus = 0f;
+        RankingPercentMalus = 0f;
     }
     public IEnumerator StunCoroutine(float duration)
     {

@@ -19,6 +19,7 @@ public class RankingManager : MonoBehaviour
     public Employe ChooseMVP;
     /// <summary>MVP de la semaine précédente — celui qui a les bonus actifs.</summary>
     public Employe CurrentMVP;
+    public Employe CurrentTopEarner;
 
     [Header("Valeurs de bonus MVP")]
     [SerializeField] private float mvpWorkRateBonus = 0.5f;
@@ -69,8 +70,8 @@ public class RankingManager : MonoBehaviour
     /// </summary>
     private void SetMalus(Employe employe)
     {
-        employe.errorPercentMalus += topEarnerErrorMalus;
-        employe.employeWorkRateMalus += topEarnerWorkRateMalus;
+        employe.RankingPercentMalus += topEarnerErrorMalus;
+        employe.RankingWorkRateMalus += topEarnerWorkRateMalus;
     }
 
     /// <summary>
@@ -83,7 +84,7 @@ public class RankingManager : MonoBehaviour
 
         employe.employeWorkRateBonus = 0f;
         employe.BonusPaperDone = 0f;
-        employe.ResetMalus();
+        employe.ResetRankingMalus();
     }
 
     /// <summary>
@@ -97,6 +98,7 @@ public class RankingManager : MonoBehaviour
     {
         // 1 — Réinitialiser les stats de l'ancien MVP avant tout
         ResetMVPStats(CurrentMVP);
+        ResetMVPStats(CurrentTopEarner); 
         if (CurrentMVP != null)
             Debug.Log($"[MVP] Reset des stats de l'ancien MVP : {CurrentMVP.employeName}");
 
@@ -162,6 +164,8 @@ public class RankingManager : MonoBehaviour
         // 9 — Faire passer ChooseMVP → CurrentMVP pour la prochaine semaine
         Debug.Log($"[MVP] Fin de semaine — CurrentMVP devient : {(ChooseMVP != null ? ChooseMVP.employeName : "aucun")}");
         CurrentMVP = ChooseMVP;
+        CurrentTopEarner = (topEarner != ChooseMVP) ? topEarner : null;
         ChooseMVP = null;
+        
     }
 }
