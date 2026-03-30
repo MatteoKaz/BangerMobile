@@ -361,6 +361,8 @@ public class Employe : MonoBehaviour
             WorkRoutine = null;
         }
         employeImage.sprite = idleSprite;
+        animator.SetTrigger("Idle");
+       
         isStunned = false;
         employeWorkRateMalus = 0f;
         errorPercentMalus = 0f;
