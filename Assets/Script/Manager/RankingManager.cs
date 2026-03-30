@@ -21,11 +21,11 @@ public class RankingManager : MonoBehaviour
     public Employe CurrentMVP;
 
     [Header("Valeurs de bonus MVP")]
-    [SerializeField] private float mvpWorkRateBonus  = 0.5f;
+    [SerializeField] private float mvpWorkRateBonus = 0.5f;
     [SerializeField] private float mvpBonusPaperDone = 1f;
 
     [Header("Valeurs de malus top earner")]
-    [SerializeField] private float topEarnerErrorMalus    = 0.1f;
+    [SerializeField] private float topEarnerErrorMalus = 0.1f;
     [SerializeField] private float topEarnerWorkRateMalus = 0.5f;
 
     private void OnEnable()
@@ -53,7 +53,6 @@ public class RankingManager : MonoBehaviour
         Debug.Log($"[MVP] Nouveau MVP choisi : {employe.employeName}");
     }
 
-
     /// <summary>
     /// Applique les bonus de MVP à l'employé du mois :
     /// vitesse de travail améliorée et papiers bonus.
@@ -61,7 +60,7 @@ public class RankingManager : MonoBehaviour
     private void SetBonus(Employe employe)
     {
         employe.employeWorkRateBonus += mvpWorkRateBonus;
-        employe.BonusPaperDone       += mvpBonusPaperDone;
+        employe.BonusPaperDone += mvpBonusPaperDone;
     }
 
     /// <summary>
@@ -70,7 +69,7 @@ public class RankingManager : MonoBehaviour
     /// </summary>
     private void SetMalus(Employe employe)
     {
-        employe.errorPercentMalus    += topEarnerErrorMalus;
+        employe.errorPercentMalus += topEarnerErrorMalus;
         employe.employeWorkRateMalus += topEarnerWorkRateMalus;
     }
 
@@ -83,7 +82,7 @@ public class RankingManager : MonoBehaviour
         if (employe == null) return;
 
         employe.employeWorkRateBonus = 0f;
-        employe.BonusPaperDone       = 0f;
+        employe.BonusPaperDone = 0f;
         employe.ResetMalus();
     }
 
@@ -92,6 +91,7 @@ public class RankingManager : MonoBehaviour
     /// change l'icône principale par celle du MVP, retire le MVP de la liste affichée,
     /// applique bonus au MVP et malus au top earner (sauf si identiques),
     /// puis fait avancer ChooseMVP → CurrentMVP.
+    /// Si aucun MVP n'a été choisi par le joueur, le top earner gagne automatiquement la place et le bonus.
     /// </summary>
     public void SetRankingOrder()
     {
@@ -109,6 +109,15 @@ public class RankingManager : MonoBehaviour
         if (topEarner != null)
             Debug.Log($"[MVP] Top earner cette semaine : {topEarner.employeName} ({topEarner.WeekmoneyMake}$)");
 
+        // 3b — Si aucun MVP n'a été choisi, le top earner gagne automatiquement la place et le bonus
+        if (ChooseMVP == null && topEarner != null)
+        {
+            ChooseMVP = topEarner;
+            if (Besticone != null)
+                Besticone.sprite = topEarner.employeImage.sprite;
+            Debug.Log($"[MVP] Aucun choix du joueur — MVP automatique : {topEarner.employeName} (top earner)");
+        }
+
         // 4 — Construire la liste d'affichage en retirant le MVP choisi
         List<Employe> displayList = new List<Employe>(ranked);
         if (ChooseMVP != null)
@@ -119,10 +128,10 @@ public class RankingManager : MonoBehaviour
         {
             if (i < displayList.Count)
             {
-                objects[i].NameToShow   = displayList[i].employeName;
+                objects[i].NameToShow = displayList[i].employeName;
                 objects[i].SucceedPaper = displayList[i].WeeksucceedPaper;
-                objects[i].TotalPaper   = displayList[i].WeeknumberOfPaperDone;
-                objects[i].TotalMoney   = displayList[i].WeekmoneyMake;
+                objects[i].TotalPaper = displayList[i].WeeknumberOfPaperDone;
+                objects[i].TotalMoney = displayList[i].WeekmoneyMake;
                 objects[i].icone.sprite = displayList[i].employeImage.sprite;
             }
             objects[i].SetText();
@@ -137,10 +146,6 @@ public class RankingManager : MonoBehaviour
         {
             Debug.Log($"[MVP] BONUS appliqué à : {ChooseMVP.employeName}");
             SetBonus(ChooseMVP);
-        }
-        else
-        {
-            Debug.LogWarning("[MVP] Aucun MVP choisi cette semaine — aucun bonus appliqué.");
         }
 
         // 8 — Appliquer SetMalus au top earner, sauf si c'est le même que le MVP
@@ -157,6 +162,6 @@ public class RankingManager : MonoBehaviour
         // 9 — Faire passer ChooseMVP → CurrentMVP pour la prochaine semaine
         Debug.Log($"[MVP] Fin de semaine — CurrentMVP devient : {(ChooseMVP != null ? ChooseMVP.employeName : "aucun")}");
         CurrentMVP = ChooseMVP;
-        ChooseMVP  = null;
+        ChooseMVP = null;
     }
 }
