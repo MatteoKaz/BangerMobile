@@ -241,6 +241,7 @@ public class PaperMove : MonoBehaviour
         }
         else
         {
+            tuyaux.WrongPaper();
             Destroy(myself);
         }
     }
