@@ -11,13 +11,14 @@ public class Tuyaux : MonoBehaviour
     public event Action AddPaper;
     [SerializeField] Light2D lightcomp;
     public Color baseColor;
-
+[SerializeField] private AudioEventDispatcher audioEventDispatcher;
     public void Start()
     {
         baseColor = lightcomp.color;
     }
     public void GoodPaper()
     {
+        audioEventDispatcher.PlayAudio(AudioType.Point);
         Debug.Log("+1");
         AddPaper?.Invoke();
         lightcomp.color = baseColor;
@@ -26,8 +27,10 @@ public class Tuyaux : MonoBehaviour
 
     public void WrongPaper()
     {
+        audioEventDispatcher.PlayAudio(AudioType.Wrong);
         lightcomp.color = Color.indianRed;
         StartCoroutine(LightCoroutine());
+        
     }
    public IEnumerator LightCoroutine()
     {

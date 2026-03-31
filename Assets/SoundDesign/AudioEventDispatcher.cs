@@ -7,6 +7,7 @@ public enum AudioType
     Destruction, 
     Death, 
     Hurt, 
+    Wrong,
     Point, 
     Win, 
     Loose, 
@@ -28,6 +29,7 @@ public enum AudioType
     Tampon, 
     End, 
     Pop, 
+    Pop2,
     PenWritting, 
     PenWritting2,
 }

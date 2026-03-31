@@ -74,6 +74,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private float _holdStartTime;
     private Vector2 _pressScreenPosition;
 
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     private void Awake()
     {
         _canvas = GetComponentInParent<Canvas>();
@@ -84,6 +85,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        audioEventDispatcher.PlayAudio(AudioType.Tampon);
         _holdStartTime       = Time.realtimeSinceStartup;
         _pressScreenPosition = eventData.position;
 
