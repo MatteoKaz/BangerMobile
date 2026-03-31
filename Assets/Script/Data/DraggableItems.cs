@@ -23,6 +23,7 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     private Coroutine _scaleCoroutine;
     public Employe linkedEmploye;
 
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     private void Awake()
     {
         _canvas = GetComponentInParent<Canvas>();
@@ -35,7 +36,6 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     public void OnBeginDrag(PointerEventData eventData)
     {
         IsDragging = true;
-
         originalParent = transform.parent;
         parentAfterDrag = transform.parent;
         _originalWorldScale = transform.lossyScale;
@@ -47,20 +47,21 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
         if (image != null)
             image.raycastTarget = false;
-
+        
         Vector3 pickupTarget = WorldToLocalScale(_canvas.transform, _originalWorldScale * PickupScaleMultiplier);
         AnimateScale(pickupTarget, PickupAnimDuration);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.Drag);
         transform.position = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         IsDragging = false;
-
         transform.SetParent(parentAfterDrag, false);
         transform.localPosition = Vector3.zero;
         transform.localScale = WorldToLocalScale(parentAfterDrag, _originalWorldScale * PickupScaleMultiplier);
@@ -69,7 +70,7 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
         if (image != null)
             image.raycastTarget = true;
-
+        
         AnimateScale(WorldToLocalScale(parentAfterDrag, _originalWorldScale), DropAnimDuration);
     }
 

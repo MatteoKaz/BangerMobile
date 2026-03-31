@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// Roulette verticale avec recyclage infini des slots.
@@ -91,6 +93,8 @@ public class RouletteWheel : MonoBehaviour
     private Coroutine _pulseCoroutine;
     private RouletteSlot _promotedSlot;
 
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
+    
     /// <summary>Invoqué après la pause de révélation avec l'employé sélectionné.</summary>
     public event System.Action<EmployeDataz> OnEmployeSelected;
     public event System.Action EmployeSelected;
@@ -150,7 +154,7 @@ public class RouletteWheel : MonoBehaviour
     public void Spin()
     {
         if (_isSpinning) return;
-
+        audioEventDispatcher.PlayLoopAudio(AudioType.Spin);
         if (_hasSpunToday)
         {
             Debug.LogWarning("[RouletteWheel] La roulette a déjà été lancée aujourd'hui.");

@@ -21,10 +21,6 @@ public class PauseManager : MonoBehaviour
     public void TogglePause()
     {
         _isPaused = !_isPaused;
-
-        if (audioEventDispatcher != null)
-            audioEventDispatcher.PlayAudio(AudioType.Click);
-
         Time.timeScale = _isPaused ? 0f : 1f;
         pausePanel.SetActive(_isPaused);
     }

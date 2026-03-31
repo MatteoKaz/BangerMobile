@@ -34,6 +34,7 @@ public enum AudioType
     PenWritting2,
     Levier,
     Bouton,
+    Spin,
 }
 [System.Serializable]
 public struct AudioInfos

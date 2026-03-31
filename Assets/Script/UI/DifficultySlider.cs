@@ -75,6 +75,8 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     private void Awake()
     {
+        if (audioEventDispatcher == null)
+            Debug.LogError("[DifficultySlider] audioEventDispatcher is not assigned — sounds will not play.", this);
         _rect          = GetComponent<RectTransform>();
         _snapPositions = new float[] { positionEasy, positionMedium, positionHard };
 
