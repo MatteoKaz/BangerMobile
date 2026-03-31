@@ -41,6 +41,7 @@ public class QuotatManager : MonoBehaviour
 
     public void QuotatCroissance()
     {
+        Debug.LogWarning(dayManager.currentWeek);
         WeekQuotat = (int)Math.Round(BaseQuotat * Math.Pow(dayManager.currentWeek, exposant - 1));
     }
 

@@ -40,6 +40,7 @@ public class FireManager : MonoBehaviour
     [SerializeField] AnimationCurve curveAnimDialogueBack;
     private bool launch = false;
     public bool DayLaunch = false;
+    public bool LaunchFire = false; 
     public void OnEnable()
     {
 
@@ -74,8 +75,8 @@ public class FireManager : MonoBehaviour
         
         launch = true;
         empFiche = emp;
-        
-        
+        LaunchFire = false;
+
         FiredScene.SetActive(true);
         typeWriter.dialogueText.text = null;
         animator.enabled = false;
@@ -140,7 +141,12 @@ public class FireManager : MonoBehaviour
     }
     public void NotFiredLaunch()
     {
-        StartCoroutine(NotFired());
+        if(LaunchFire == false) 
+        {
+            LaunchFire = true;
+            StartCoroutine(NotFired());
+        }
+       
 
     }
 
@@ -193,12 +199,18 @@ public class FireManager : MonoBehaviour
     }
     public void FiredLauncher()
     {
-        StartCoroutine(Fired());
+        if (LaunchFire ==false)
+        {
+            LaunchFire = true;
+            StartCoroutine(Fired());
+        }
+        
 
     }
 
     public IEnumerator Fired()
     {
+
         RectTransform rectDialogue = dialogueCase.GetComponent<RectTransform>();
 
         Vector2 startposDialogue = new Vector2(xStartPoseDialogue, rectDialogue.anchoredPosition.y);
