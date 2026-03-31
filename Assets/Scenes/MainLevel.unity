@@ -10758,8 +10758,46 @@ MonoBehaviour:
   Difficulty: {fileID: 421191338}
   shop: {fileID: 1795430753}
   dayScript: {fileID: 1319543055}
+  ScoreScene: {fileID: 415495374}
+  animDuration: 1
   waitTimeBeforeCloseDifficulty: 2.5
   DifficultyChoice: {fileID: 421191338}
+  yendPose: 2890
+  ybasePose: 960
+  ScoreUi: {fileID: 1023266321}
+  curveAnim:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.390081
+      value: 0.1456886
+      inSlope: 0.43849528
+      outSlope: 0.43849528
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &641038306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10793,7 +10831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeManager
   DayDuration: 120
-  DayDurationToShow: 60
+  DayDurationToShow: 120
   QuotatManager: {fileID: 641038302}
 --- !u!4 &641038308
 Transform:
@@ -11093,6 +11131,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   DayLaunch: 0
+  LaunchFire: 0
 --- !u!1 &654112397
 GameObject:
   m_ObjectHideFlags: 0
@@ -15826,7 +15865,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 443.7149, y: 960}
+  m_AnchoredPosition: {x: 443.7149, y: 2890}
   m_SizeDelta: {x: 883.7217, y: 1911.9772}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1023266323

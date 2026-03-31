@@ -101,7 +101,8 @@ public class UiManager : MonoBehaviour
 
     public IEnumerator AnimScore()
     {
-        RectTransform rect = ScoreScene.GetComponent<RectTransform>();
+        Debug.LogWarning("je lance");
+        RectTransform rect = ScoreUi.GetComponent<RectTransform>();
 
         Vector2 startpos = new Vector2(rect.anchoredPosition.x, ybasePose);
         Vector2 targetPos = new Vector2(rect.anchoredPosition.x, yendPose);
