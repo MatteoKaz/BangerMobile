@@ -54,7 +54,7 @@ public class Pole : MonoBehaviour
 
     public bool Stop;
     public event Action UpdatePaperCount;
-
+    public event Action UpdatePaperFond;
     public enum TypeOfMalus
     {
         WorkRate,
@@ -205,6 +205,7 @@ public class Pole : MonoBehaviour
                 slots.Add(slot);
         }
 
+
         // tri explicite
         slots.Sort((a, b) => a.slotIndex.CompareTo(b.slotIndex));
 
@@ -215,7 +216,11 @@ public class Pole : MonoBehaviour
             {
                 employeList.Add(draggable.linkedEmploye);
             }
+            var pile = draggable.linkedEmploye.GetComponent<PileBackEmploye>();
+            if (pile != null)
+                pile.OnPoleChanged();
         }
+       
     }
 
     public void BeginSurcharge()

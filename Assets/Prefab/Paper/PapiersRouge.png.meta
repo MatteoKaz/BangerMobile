@@ -125,12 +125,12 @@ TextureImporter:
       name: PapiersRouge_0
       rect:
         serializedVersion: 2
-        x: 56
-        y: 67
-        width: 160
-        height: 219
+        x: 57
+        y: 68
+        width: 158
+        height: 217
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -147,12 +147,12 @@ TextureImporter:
       name: PapiersRouge_1
       rect:
         serializedVersion: 2
-        x: 295
-        y: 48
-        width: 183
-        height: 243
+        x: 296
+        y: 49
+        width: 181
+        height: 241
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -169,12 +169,12 @@ TextureImporter:
       name: PapiersRouge_2
       rect:
         serializedVersion: 2
-        x: 560
-        y: 47
-        width: 190
-        height: 169
+        x: 561
+        y: 48
+        width: 188
+        height: 167
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -191,12 +191,12 @@ TextureImporter:
       name: PapiersRouge_3
       rect:
         serializedVersion: 2
-        x: 816
-        y: 51
-        width: 182
-        height: 123
+        x: 817
+        y: 52
+        width: 180
+        height: 121
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -213,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: f4b04325d7be09b4ca398c850a6aa430
     internalID: 0
     vertices: []
     indices: 
@@ -221,7 +221,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       PapiersRouge_0: -1084235639305710980
       PapiersRouge_1: -842362135708087000
