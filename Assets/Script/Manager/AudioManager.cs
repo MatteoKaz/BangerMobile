@@ -1,5 +1,6 @@
 using System.IO;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 /// <summary>
@@ -26,6 +27,8 @@ public class AudioManager : MonoBehaviour
     [Header("Icône bouton mute actif")]
     [SerializeField] private Sprite spriteMutedButton;
 
+    [SerializeField] private AudioMixer audioMixer;
+    
     private Image _muteButtonImage;
     private float _volumeBeforeMute = 1f;
     private bool  _isMuted;
@@ -159,16 +162,13 @@ public class AudioManager : MonoBehaviour
 
     private void ApplyVolume()
     {
-        AudioListener.volume = _isMuted ? 0f : _volumeBeforeMute;
-    }
+        float db = _isMuted || _volumeBeforeMute <= 0f
+            ? -80f
+            : Mathf.Log10(_volumeBeforeMute) * 20f;
 
-    private void SyncSlider()
-    {
-        if (volumeSlider == null) return;
-
-        volumeSlider.onValueChanged.RemoveListener(SetVolume);
-        volumeSlider.value = _volumeBeforeMute;
-        volumeSlider.onValueChanged.AddListener(SetVolume);
+        audioMixer.SetFloat("VolumeSFX",    db);
+        audioMixer.SetFloat("VolumeUI",     db);
+        audioMixer.SetFloat("VolumeAmbiance", db);
     }
 
     private void RefreshMuteButtonSprite()

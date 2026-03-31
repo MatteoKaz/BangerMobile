@@ -145,10 +145,13 @@ public class InputPlayerManagerCustom : MonoBehaviour
         {
             if (dotLeft > 0)
             {
+                audioEventDispatcher.PlayAudio(AudioType.TurnPageLeft);
                 OnMoveLeft?.Invoke();
+                
             }
             else
             {
+                audioEventDispatcher.PlayAudio(AudioType.TurnPageRight);
                 OnMoveRight?.Invoke();
             }
         }

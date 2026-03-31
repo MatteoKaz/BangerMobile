@@ -115,7 +115,7 @@ public class PaperSpawner : MonoBehaviour
    
     public IEnumerator Spawn()
     {
-        audioEventDispatcher.PlayAudio(AudioType.Pop);
+        audioEventDispatcher.PlayExclusiveAudio(AudioType.Pop);
         int globalSorting = 2;
         float currentRhythm = 1f;
         int spawnCount = 0;
