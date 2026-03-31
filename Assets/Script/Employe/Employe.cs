@@ -184,7 +184,7 @@ public class Employe : MonoBehaviour
             mypole.UpdatePaperUI();
             WorkRoutine = StartCoroutine(Work());
             
-            Light.intensity = 0.6f;
+            Light.intensity = 0.3f;
             
         }
         
@@ -206,7 +206,7 @@ public class Employe : MonoBehaviour
     {
        
         float t = 0f;
-        bool wasStunned = true;
+        wasStunned = true;
         while (t < 1)
         {
             if (isStunned == false)
@@ -232,7 +232,7 @@ public class Employe : MonoBehaviour
                 if (wasStunned == false) // changement d'état  on trigger une seule fois
                 {
                     employeImage.sprite = Surcharge;
-                    Light.intensity = 0.6f;
+                    Light.intensity = 0.3f;
                     Light.color = Color.indianRed;
                     animator.SetTrigger("Surcharge");
                     wasStunned = true;
@@ -260,7 +260,7 @@ public class Employe : MonoBehaviour
 
         numberOfPaperDone += 1 + Mathf.RoundToInt(BonusPaperDone);
         workAdvancement.value = 0;
-        Debug.Log("workDone");
+       
         Light.intensity = 0.0f;
         if (isStunned == false)
         {
@@ -271,7 +271,7 @@ public class Employe : MonoBehaviour
         if (isStunned)
         {
             employeImage.sprite = Surcharge;
-            Light.intensity = 0.6f;
+            Light.intensity = 0.3f;
             Light.color = Color.indianRed;
             animator.SetTrigger("Surcharge");
         }
@@ -303,6 +303,8 @@ public class Employe : MonoBehaviour
 
     public void Malus(TypeOfMalus malusType, float value)
     {
+        if (isStunned == true)
+            return;
         switch (malusType)
         {
             case TypeOfMalus.WorkRate:
@@ -335,7 +337,7 @@ public class Employe : MonoBehaviour
     {
         isStunned = true;
         employeImage.sprite = Surcharge;
-        Light.intensity = 0.6f;
+        Light.intensity = 0.3f;
         Light.color = Color.indianRed;
         animator.SetTrigger("Surcharge");
         
@@ -398,5 +400,43 @@ public class Employe : MonoBehaviour
     public void Start()
     {
         baseColor = Light.color;
+    }
+    private static readonly Color[] SurchargeColors = new Color[]
+    {
+    Color.white,                        // 0     - pas de surcharge
+    new Color(1f, 0.95f, 0.95f),       // palier 10
+    new Color(1f, 0.90f, 0.90f),       // palier 20
+    new Color(1f, 0.85f, 0.85f),       // palier 30
+    new Color(1f, 0.80f, 0.80f),       // palier 40  → FFCCCC
+    new Color(1f, 0.75f, 0.75f),       // palier 50
+    new Color(1f, 0.65f, 0.65f),       // palier 60
+    new Color(1f, 0.55f, 0.55f),       // palier 70
+    new Color(1f, 0.47f, 0.47f),       // palier 80
+    new Color(0.97f, 0.40f, 0.40f),    // palier 90
+    new Color(0.97f, 0.38f, 0.38f),    // palier 100 → F86262
+    };
+
+    private void Update()
+    {
+        if (mypole == null) return;
+        if (isStunned == true)
+            { employeImage.color = Color.white; return; }
+           
+        int stage = mypole.nextThresholdIndex; // 0 à 10
+        stage = Mathf.Clamp(stage, 0, SurchargeColors.Length - 1);
+
+        if (stage == 0)
+        {
+            employeImage.color = Color.white;
+            return;
+        }
+        float speed = Mathf.Lerp(1.5f, 3f, (float)stage / (SurchargeColors.Length - 1));
+        
+        float ping = Mathf.PingPong(Time.time * speed, 1f);
+
+        Color colorMin = SurchargeColors[stage - 1];
+        Color colorMax = SurchargeColors[stage];
+
+        employeImage.color = Color.Lerp(Color.white, colorMax, ping);
     }
 }

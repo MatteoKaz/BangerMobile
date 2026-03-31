@@ -6,7 +6,7 @@ using System.Collections;
 /// Anime un punch de scale à chaque changement de count.
 /// Contre-scale le Canvas enfant pour que le compteur garde toujours la même taille.
 /// </summary>
-[RequireComponent(typeof(SpriteRenderer))]
+
 public class PileBackEmploye : MonoBehaviour
 {
     [System.Serializable]
@@ -57,10 +57,7 @@ public class PileBackEmploye : MonoBehaviour
 
     private void Start()
     {
-        _activeTuyaux = GetTuyauxForPole();
-        if (_activeTuyaux != null)
-            _activeTuyaux.AddPaper += OnCountUpdated;
-        UpdateVisual();
+       
     }
 
     private void OnDestroy()
@@ -194,14 +191,18 @@ public class PileBackEmploye : MonoBehaviour
 
     public void OnPoleChanged()
     {
-        // Désabonne l'ancien tuyau
-        _activeTuyaux.AddPaper -= OnCountUpdated;
+        // Désabonne l'ancien
+        if (_activeTuyaux != null)
+            _activeTuyaux.AddPaper -= OnCountUpdated;
         if (employe?.mypole != null)
             employe.mypole.UpdatePaperFond -= UpdateVisual;
 
-        // Abonne au nouveau
+        // Assigne toujours le nouveau tuyau
         _activeTuyaux = GetTuyauxForPole();
-        _activeTuyaux.AddPaper += OnCountUpdated;
+
+        // Abonne au nouveau
+        if (_activeTuyaux != null)
+            _activeTuyaux.AddPaper += OnCountUpdated;
         if (employe?.mypole != null)
             employe.mypole.UpdatePaperFond += UpdateVisual;
 

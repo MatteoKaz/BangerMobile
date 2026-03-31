@@ -321,7 +321,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.0000544, y: -138}
+  m_AnchoredPosition: {x: 5.0000544, y: -38}
   m_SizeDelta: {x: 182, y: 123}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &8885602863771717404
@@ -395,7 +395,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09d56f0ada3d868479ee90f0f61737e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PileBackEmploye
-  tuyaux: {fileID: 0}
+  tuyauxGreen: {fileID: 0}
+  tuyauxRed: {fileID: 0}
+  tuyauxBlue: {fileID: 0}
   employe: {fileID: 5534161824411419701}
   thresholdsByPole:
   - poleType: 0
@@ -406,27 +408,33 @@ MonoBehaviour:
     - minCount: 1
       sprite: {fileID: 21300000, guid: e7eb6cfacb3386c45b20d8f6346fd961, type: 2}
       scale: 170.9881
-    - minCount: 5
+    - minCount: 10
       sprite: {fileID: 21300000, guid: 89a9b3bc78e1f244198d9cde6fa17eb1, type: 2}
       scale: 170.9881
-    - minCount: 10
+    - minCount: 20
       sprite: {fileID: 21300000, guid: 33204dd8fdf109f4bb5f07624a09feda, type: 2}
+      scale: 170.9881
+    - minCount: 30
+      sprite: {fileID: 2719692304471178388, guid: e87b5c5ed95eeed4d97a93811e538fff, type: 3}
       scale: 170.9881
   - poleType: 1
     thresholds:
     - minCount: 0
       sprite: {fileID: 0}
-      scale: 0
+      scale: 170
     - minCount: 1
       sprite: {fileID: 3764740212062632781, guid: 87599d84e6ff6ad4fab97696db8cc185, type: 3}
       scale: 170.9881
-    - minCount: 5
+    - minCount: 10
       sprite: {fileID: -8019295770073047210, guid: 87599d84e6ff6ad4fab97696db8cc185, type: 3}
       scale: 170.9881
-    - minCount: 10
+    - minCount: 20
+      sprite: {fileID: 21300000, guid: 514dc677063d3aa4c8e38288c946c071, type: 2}
+      scale: 170.9881
+    - minCount: 30
       sprite: {fileID: 3806275141983278644, guid: 87599d84e6ff6ad4fab97696db8cc185, type: 3}
       scale: 170.9881
-  - poleType: 1
+  - poleType: 2
     thresholds:
     - minCount: 0
       sprite: {fileID: 0}
@@ -434,11 +442,14 @@ MonoBehaviour:
     - minCount: 1
       sprite: {fileID: 21300000, guid: b0bd15acd77a5ab47ab2f68a6a833f08, type: 2}
       scale: 170.9881
-    - minCount: 5
+    - minCount: 10
       sprite: {fileID: 21300000, guid: a3e62d85e3769ca439c71a7a4c0c3b24, type: 2}
       scale: 170.9881
-    - minCount: 10
+    - minCount: 20
       sprite: {fileID: 21300000, guid: aebe0aa4f834fcb4789dea2330f29ab1, type: 2}
+      scale: 170.9881
+    - minCount: 30
+      sprite: {fileID: 7326808409790145317, guid: 27e3adf30304b464e82c7640fda2e43a, type: 3}
       scale: 170.9881
   counterCanvas: {fileID: 0}
 --- !u!1 &3280133360843763271

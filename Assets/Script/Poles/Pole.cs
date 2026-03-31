@@ -2,9 +2,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.Burst.Intrinsics.X86.Avx;
+using Debug = UnityEngine.Debug;
+
 
 
 public class Pole : MonoBehaviour
@@ -37,7 +39,7 @@ public class Pole : MonoBehaviour
     public float surchargeStep = 5f;         // Valeur ajoutée à chaque incrément
     public float baseDelay = 0.01f;           // Délai initial entre incréments
     public int[] surchargeThresholds = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }; // Paliers pour déclencher malus
-    private int nextThresholdIndex = 0;      // Pour savoir quel palier est le prochain
+    public int nextThresholdIndex = 0;      // Pour savoir quel palier est le prochain
     public Coroutine SurchargeRef;      // Pour gérer la coroutine
     public float decayRate = 7f;
     [SerializeField] Slider surchargeProgress;
@@ -142,7 +144,7 @@ public class Pole : MonoBehaviour
     public void WinMoney()
     {
         localAdvencement += paperValue * Mathf.RoundToInt(BonusRevenus);
-        Debug.Log($"PaperValue {paperValue * Mathf.RoundToInt(BonusRevenus)}");
+        
         eventWinMoney?.Invoke();
     }
 
@@ -194,6 +196,12 @@ public class Pole : MonoBehaviour
     }
     public void RebuildEmployeList()
     {
+        StartCoroutine(RebuildAfterLoad());
+       
+    }
+    IEnumerator RebuildAfterLoad()
+    {
+        yield return new WaitForEndOfFrame(); // attend que tout soit initialisé
         employeList.Clear();
 
         List<InventorySlot> slots = new List<InventorySlot>();
@@ -216,13 +224,19 @@ public class Pole : MonoBehaviour
             {
                 employeList.Add(draggable.linkedEmploye);
             }
-            var pile = draggable.linkedEmploye.GetComponent<PileBackEmploye>();
-            if (pile != null)
-                pile.OnPoleChanged();
-        }
-       
-    }
+            draggable = slot.GetComponentInChildren<DraggableItems>();
+            if (draggable != null && draggable.linkedEmploye != null)
+            {
+                employeList.Add(draggable.linkedEmploye);
 
+                yield return new WaitForSeconds(0.015f);
+                var pile = draggable.linkedEmploye.GetComponentInChildren<PileBackEmploye>(true);
+                if (pile != null)
+                    pile.OnPoleChanged();
+            }
+
+        }
+    }
     public void BeginSurcharge()
     {
 

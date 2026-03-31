@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: ad9bc8b1efc7392448ee8424343d54d5
+guid: 27e3adf30304b464e82c7640fda2e43a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9195663438911847084
-    second: PapiersBleu_0
-  - first:
-      213: -374841247551510539
-    second: PapiersBleu_1
-  - first:
-      213: 4827709487850986343
-    second: PapiersBleu_2
-  - first:
-      213: 1056056729309775311
-    second: PapiersBleu_3
+      213: 7326808409790145317
+    second: Image (36)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -55,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -122,89 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PapiersBleu_0
+      name: Image (36)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 258
-        height: 347
+        x: 24
+        y: 22
+        width: 191
+        height: 363
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 455cc91b2d0726080800000000000000
-      internalID: -9195663438911847084
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PapiersBleu_1
-      rect:
-        serializedVersion: 2
-        x: 258
-        y: 0
-        width: 258
-        height: 347
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5f727801fdb4ccaf0800000000000000
-      internalID: -374841247551510539
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PapiersBleu_2
-      rect:
-        serializedVersion: 2
-        x: 516
-        y: 0
-        width: 258
-        height: 347
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 76b142e63387ff240800000000000000
-      internalID: 4827709487850986343
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PapiersBleu_3
-      rect:
-        serializedVersion: 2
-        x: 774
-        y: 0
-        width: 258
-        height: 347
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fc58b25000ed7ae00800000000000000
-      internalID: 1056056729309775311
+      spriteID: 523e2eafd6d0ea560800000000000000
+      internalID: 7326808409790145317
       vertices: []
       indices: 
       edges: []
@@ -213,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 6386684cc3ecee449a6005583067be7a
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -221,14 +146,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":258.0,"y":347.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      PapiersBleu_0: -9195663438911847084
-      PapiersBleu_1: -374841247551510539
-      PapiersBleu_2: 4827709487850986343
-      PapiersBleu_3: 1056056729309775311
+      Image (36)_0: 7326808409790145317
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
