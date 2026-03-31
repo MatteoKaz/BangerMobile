@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 /// <summary>
 /// Change le sprite et la taille du SpriteRenderer de la pile selon le nombre de papiers.
@@ -40,14 +41,14 @@ public class PileBackEmploye : MonoBehaviour
     [Tooltip("Canvas enfant contenant le compteur — son scale sera compensé automatiquement.")]
     [SerializeField] private Transform counterCanvas;
 
-    private SpriteRenderer _spriteRenderer;
+    private Image _spriteRenderer;
     private Vector3 _originalCanvasLocalScale;
     private Vector3 _targetScale;
     private Coroutine _punchCoroutine;
 
     private void Awake()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponent<Image>();
 
         if (counterCanvas != null)
             _originalCanvasLocalScale = counterCanvas.localScale;
