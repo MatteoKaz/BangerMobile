@@ -27,7 +27,7 @@ public class EmployeFicheMove : MonoBehaviour
         inputPlayerManagerCustom.OnMoveRight -= RightSwipe;
     }
 
-    void LeftSwipe()
+    public void LeftSwipe()
     {
         if (!Parent.activeInHierarchy || isMoving)
             return;

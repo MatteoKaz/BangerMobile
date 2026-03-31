@@ -1,4 +1,5 @@
 
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using static Pole;
+
 
 public class Employe : MonoBehaviour
 {
@@ -78,10 +80,17 @@ public class Employe : MonoBehaviour
     [Header("Ui")]
     [SerializeField] TextMeshProUGUI Name;
     [SerializeField] Image image;
-    private bool  wasStunned =false;    
+    private bool  wasStunned =false;
 
-
-
+    [Header("RandomEvent")]
+    public bool occupied = false;
+    public bool SwatGoing = false; 
+    public bool HasBeenSwat= false;
+    [Header("Swat")]
+    public GameObject GrilleSwat;
+    public float swatBoostSpeed = 0;
+    public float swatBoostError = 0;
+    public float swatBoostTimeBeetweenWork = 0; 
     public void OnEnable()
     {
         timemanager.TimerEnded += StopWorking;
@@ -209,41 +218,55 @@ public class Employe : MonoBehaviour
         wasStunned = true;
         while (t < 1)
         {
+            while (occupied)
+            {
+                if (StunRef != null)
+                {
+                    StopCoroutine(StunRef);
+                    StunRef = null;
+                    isStunned = false;
+                }
+                yield return null;
+            }
             if (isStunned == false)
-            {
-                if (wasStunned== true) // changement d'état  on trigger une seule fois
                 {
-                    Light.color = baseColor;
-                    employeImage.sprite = working;
-                    animator.SetTrigger("Working");
-                    wasStunned = false;
-                }
+                    if (wasStunned == true) // changement d'état  on trigger une seule fois
+                    {
+                        Light.color = baseColor;
+                        employeImage.sprite = working;
+                        animator.SetTrigger("Working");
+                        wasStunned = false;
+                    }
 
-                float dt = Mathf.Min(Time.deltaTime, 0.05f);
-                float rate = employeWorkRate
-                           - mypole.BoostEmployeSpeed
-                           - employeWorkRateBonus
-                           + (employeWorkRateMalus + RankingWorkRateMalus);
-                t += dt / rate;
-                workAdvancement.value = Mathf.Lerp(0, 1, t);
-            }
-            else
-            {
-                if (wasStunned == false) // changement d'état  on trigger une seule fois
-                {
-                    employeImage.sprite = Surcharge;
-                    Light.intensity = 0.3f;
-                    Light.color = Color.indianRed;
-                    animator.SetTrigger("Surcharge");
-                    wasStunned = true;
+                    float dt = Mathf.Min(Time.deltaTime, 0.05f);
+                    float rate = employeWorkRate
+                               - mypole.BoostEmployeSpeed
+                               - employeWorkRateBonus
+                               -swatBoostSpeed  
+                               + (employeWorkRateMalus + RankingWorkRateMalus);
+                    t += dt / rate;
+                    workAdvancement.value = Mathf.Lerp(0, 1, t);
                 }
-            }
-            yield return null;
+                else
+                {
+                    if (wasStunned == false) // changement d'état  on trigger une seule fois
+                    {
+                        employeImage.sprite = Surcharge;
+                        Light.intensity = 0.3f;
+                        Light.color = Color.indianRed;
+                        animator.SetTrigger("Surcharge");
+                        wasStunned = true;
+                    }
+                }
+                yield return null;
+            
+            
 
         }
         float successChance = errorPercent
                       + employeErrorPercenBonus
                       + mypole.BoostEmployeError
+                      + swatBoostError 
                       - (errorPercentMalus + RankingPercentMalus);
 
         successChance = Mathf.Clamp01(successChance);
@@ -267,7 +290,7 @@ public class Employe : MonoBehaviour
             employeImage.sprite = idleSprite;
             animator.SetTrigger("Idle");
         }
-        yield return new WaitForSeconds(Mathf.Max(timeBeetwennWork - StressBonus,0));
+        yield return new WaitForSeconds(Mathf.Max(timeBeetwennWork - StressBonus - swatBoostTimeBeetweenWork, 0));
         if (isStunned)
         {
             employeImage.sprite = Surcharge;
@@ -305,6 +328,10 @@ public class Employe : MonoBehaviour
     {
         if (isStunned == true)
             return;
+        if (SwatGoing == true)
+            return;
+        if (HasBeenSwat == true)
+            return;
         switch (malusType)
         {
             case TypeOfMalus.WorkRate:
@@ -335,6 +362,7 @@ public class Employe : MonoBehaviour
     }
     public IEnumerator StunCoroutine(float duration)
     {
+        
         isStunned = true;
         employeImage.sprite = Surcharge;
         Light.intensity = 0.3f;
@@ -362,6 +390,9 @@ public class Employe : MonoBehaviour
     public void EndDayResetStat()
     {
         Light.intensity = 0.0f;
+        HasBeenSwat = false;
+        SwatGoing = false;
+        occupied = false;
         iamWorking = false;
         Light.color = baseColor;
         if (WorkRoutine != null)
@@ -438,5 +469,60 @@ public class Employe : MonoBehaviour
         Color colorMax = SurchargeColors[stage];
 
         employeImage.color = Color.Lerp(Color.white, colorMax, ping);
+    }
+
+
+
+
+    public void OnSwat()
+    {
+        occupied = true;
+        if (StunRef != null)
+        {
+            StopCoroutine(StunRef);
+            StunRef = null;
+            isStunned = false; 
+        }
+
+        SwatGoing = true;
+        StartCoroutine(SwatCoroutine());
+    }
+
+    public IEnumerator SwatCoroutine()
+    {
+        animator.SetTrigger("Swat");
+        yield return new WaitForSeconds(2f);
+        foreach(Transform child in GrilleSwat.transform)
+        {
+            GameObject go = child.gameObject;
+            go.GetComponent<Image>().enabled = true;
+            yield return new WaitForSeconds(0.02f);
+        }
+
+        
+        yield return new WaitForSeconds(9f);
+        for (int i = GrilleSwat.transform.childCount - 1; i >= 0; i--)
+        {
+            GrilleSwat.transform.GetChild(i).GetComponent<Image>().enabled = false;
+            yield return new WaitForSeconds(0.02f);
+        }
+        HasBeenSwat = true;
+        SwatGoing = false;
+        occupied = false;
+        StartCoroutine(SwatBuff());
+        yield return null;  
+    }
+
+    public IEnumerator SwatBuff()
+    {
+        swatBoostError = 0.1f;
+        swatBoostTimeBeetweenWork = 1.5f;
+        swatBoostSpeed = 1.5f;
+        yield return new WaitForSeconds(25f);
+        swatBoostError = 0f;
+        swatBoostSpeed = 0f;
+        swatBoostTimeBeetweenWork = 0f;
+        HasBeenSwat = false;
+
     }
 }
