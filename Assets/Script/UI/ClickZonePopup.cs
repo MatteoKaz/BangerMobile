@@ -11,8 +11,8 @@ using UnityEditor;
 /// <summary>
 /// Affiche un tampon au relâchement dont l'intensité dépend de la durée d'appui (3 niveaux).
 /// Trois modes : LoadScene, OpenPanel, ToggleStamp.
-/// En mode ToggleStamp, le tampon est centré sur la carte de l'employé et y reste
-/// jusqu'à ce qu'une autre zone soit activée.
+/// En mode ToggleStamp, le tampon reste jusqu'au prochain clic sur une autre zone,
+/// ou disparaît automatiquement si autoHideDelay est supérieur à 0.
 /// </summary>
 [RequireComponent(typeof(Image))]
 public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -22,8 +22,8 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         LoadScene,
         OpenPanel,
         /// <summary>
-        /// Colle le tampon sur la carte de l'employé. Il reste affiché jusqu'à
-        /// ce qu'une autre zone ToggleStamp soit activée.
+        /// Colle le tampon sur la carte. Il reste affiché jusqu'à ce qu'une autre zone
+        /// ToggleStamp soit activée, ou se cache automatiquement si autoHideDelay > 0.
         /// </summary>
         ToggleStamp
     }
@@ -32,12 +32,14 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private static ClickZonePopup _activeToggleZone;
 
     [Header("Action")]
-    [Tooltip("LoadScene : charge une scène.\nOpenPanel : toggle un panel UI.\nToggleStamp : colle le tampon sur la carte de l'employé.")]
+    [Tooltip("LoadScene : charge une scène.\nOpenPanel : toggle un panel UI.\nToggleStamp : colle le tampon sur la carte.")]
     [SerializeField] private ActionMode actionMode = ActionMode.LoadScene;
 
-    [Header("Popup — doit être enfant de la carte de l'employé en mode ToggleStamp")]
+    [Header("Popup — doit être enfant de la carte en mode ToggleStamp")]
     [SerializeField] private RectTransform popup;
     [SerializeField] private Image popupImage;
+    [Tooltip("Durée en secondes avant que le tampon disparaisse automatiquement (0 = reste indéfiniment).")]
+    [SerializeField] private float autoHideDelay = 0f;
 
     [Header("Sprites du tampon (du plus clair au plus foncé)")]
     [SerializeField] private Sprite stampLight;
@@ -66,11 +68,9 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     [Tooltip("(Optionnel) Conteneur dont les enfants seront désactivés avant d'ouvrir targetPanel.")]
     [SerializeField] private GameObject parentPanel;
 
-    [Header("Mode :Sound")]
-    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
-    
     private Canvas _canvas;
     private Coroutine _actionCoroutine;
+    private Coroutine _autoHideCoroutine;
     private float _holdStartTime;
     private Vector2 _pressScreenPosition;
 
@@ -84,7 +84,6 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        audioEventDispatcher.PlayAudio(AudioType.Tampon);
         _holdStartTime       = Time.realtimeSinceStartup;
         _pressScreenPosition = eventData.position;
 
@@ -124,17 +123,6 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         return stampLight;
     }
 
-    /// <summary>
-    /// Centre le popup sur sa carte parente.
-    /// Le popup doit être enfant de la carte de l'employé avec des ancres à (0.5, 0.5).
-    /// </summary>
-    private void CenterPopupOnCard()
-    {
-        popup.anchorMin        = new Vector2(0.5f, 0.5f);
-        popup.anchorMax        = new Vector2(0.5f, 0.5f);
-        popup.anchoredPosition = Vector2.zero;
-    }
-
     /// <summary>Déplace le popup à la position écran du clic en coordonnées monde Canvas.</summary>
     private void MovePopupToClick(Vector2 screenPosition)
     {
@@ -159,16 +147,52 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     }
 
     /// <summary>
-    /// Mode ToggleStamp : retire le tampon de l'ancienne carte active,
-    /// pose le tampon sur cette carte et la déclare comme zone active.
+    /// Mode ToggleStamp : retire le tampon de l'ancienne zone active,
+    /// pose le tampon sur cette zone, puis lance l'auto-hide si configuré.
     /// </summary>
     private void ExecuteToggleStamp()
     {
+        // Annule l'auto-hide en cours sur l'ancienne zone active
         if (_activeToggleZone != null && _activeToggleZone != this)
+        {
+            if (_activeToggleZone._autoHideCoroutine != null)
+            {
+                _activeToggleZone.StopCoroutine(_activeToggleZone._autoHideCoroutine);
+                _activeToggleZone._autoHideCoroutine = null;
+            }
             _activeToggleZone.popup.gameObject.SetActive(false);
+        }
+
+        // Annule l'auto-hide précédent sur cette zone si on re-clique dessus
+        if (_autoHideCoroutine != null)
+        {
+            StopCoroutine(_autoHideCoroutine);
+            _autoHideCoroutine = null;
+        }
 
         popup.gameObject.SetActive(true);
         _activeToggleZone = this;
+
+        // Lance l'auto-hide uniquement si un délai est configuré
+        if (autoHideDelay > 0f)
+            _autoHideCoroutine = StartCoroutine(AutoHideStamp());
+    }
+
+    /// <summary>
+    /// Cache automatiquement le tampon après autoHideDelay secondes.
+    /// Utilisé pour les actions comme virer un employé.
+    /// </summary>
+    private IEnumerator AutoHideStamp()
+    {
+        yield return new WaitForSecondsRealtime(autoHideDelay);
+
+        if (popup != null)
+            popup.gameObject.SetActive(false);
+
+        if (_activeToggleZone == this)
+            _activeToggleZone = null;
+
+        _autoHideCoroutine = null;
     }
 
     /// <summary>Attend le délai en temps réel puis exécute l'action configurée.</summary>
