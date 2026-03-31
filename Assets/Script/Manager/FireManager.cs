@@ -1,8 +1,8 @@
 using System.Collections;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Rendering.MaterialUpgrader;
+
 
 public class FireManager : MonoBehaviour
 {

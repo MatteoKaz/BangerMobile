@@ -14,6 +14,9 @@ public class UiManager : MonoBehaviour
     [SerializeField] GameObject Difficulty;
     [SerializeField] GameObject shop;
     [SerializeField] UIDay dayScript;
+    [SerializeField] GameObject ScoreScene;
+
+    public float animDuration = 1.0f;
 
     [Header("DifficultyUI")]
     public float waitTimeBeforeCloseDifficulty = 1f;
@@ -27,7 +30,10 @@ public class UiManager : MonoBehaviour
     public event Action dayResetOpacity;
     public event Action ScoreReset;
 
-
+    [SerializeField] public float yendPose = 2890f;
+    [SerializeField] public float ybasePose = 960f;
+    [SerializeField] GameObject ScoreUi;
+    [SerializeField] AnimationCurve curveAnim;
     private void OnEnable()
     {
         quotatManager.QuotatIsSet += DisableDifficultyUI;
@@ -88,9 +94,28 @@ public class UiManager : MonoBehaviour
         Score.SetActive(true);
         DifficultyChoice.SetActive(true);
         Day.SetActive(true);
-        
+        StartCoroutine(AnimScore());
         ScoreAnim?.Invoke();
         dayResetOpacity?.Invoke();
+    }
+
+    public IEnumerator AnimScore()
+    {
+        RectTransform rect = ScoreScene.GetComponent<RectTransform>();
+
+        Vector2 startpos = new Vector2(rect.anchoredPosition.x, ybasePose);
+        Vector2 targetPos = new Vector2(rect.anchoredPosition.x, yendPose);
+        float t = 0;
+        while (t < animDuration)
+        {
+            t += Time.deltaTime;
+            float normalized = t / animDuration;
+
+            float curve = curveAnim.Evaluate(normalized);
+            rect.anchoredPosition = Vector2.Lerp(targetPos, startpos, curve);
+
+            yield return null;
+        }
     }
     public void DisableScore()
     {
