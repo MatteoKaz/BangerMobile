@@ -15,6 +15,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] GameObject shop;
     [SerializeField] UIDay dayScript;
     [SerializeField] GameObject ScoreScene;
+    [SerializeField] GameObject ShopScene;
 
     public float animDuration = 1.0f;
 
@@ -127,7 +128,27 @@ public class UiManager : MonoBehaviour
     public void EnableShop()
     {
         shop.SetActive(true);
+        StartCoroutine(AnimShop());
+    }
+    public IEnumerator AnimShop()
+    {
+        Debug.LogWarning("je lance");
+        RectTransform rect = ShopScene.GetComponent<RectTransform>();
+
+        Vector2 startpos = new Vector2(rect.anchoredPosition.x, 2500f);
+        Vector2 targetPos = new Vector2(rect.anchoredPosition.x, 0f);
+        float t = 0;
+        while (t < 2f)
+        {
+            t += Time.deltaTime;
+            float normalized = t / animDuration;
+
+            float curve = curveAnim.Evaluate(normalized);
+            rect.anchoredPosition = Vector2.Lerp(startpos, targetPos, curve);
+
+            yield return null;
+        }
     }
 
-    
+
 }
