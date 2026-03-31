@@ -1,42 +1,58 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 /// <summary>
-/// Handles the vertical difficulty slider with a heavy, spring-bouncy feel.
-/// Three snap positions: top = Easy, middle = Medium, bottom = Hard.
-/// Drives the LED sprite and calls QuotatManager.SelectQuotat() on GO.
+/// Slider vertical de sélection de difficulté avec feeling lourd et rebond spring.
+/// 3 positions snappées : haut = Easy, milieu = Medium, bas = Hard.
+/// Change le sprite et la lumière du LED selon la difficulté.
+/// Le bouton GO est désactivé après un clic et se réarme à chaque DayBegin.
 /// </summary>
 public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    // ── Snap positions (anchoredPosition.y) ──────────────────────────────
+    // ── Snap Positions ────────────────────────────────────────────────────
     [Header("Snap Positions (anchoredPosition Y)")]
-    [SerializeField] private float positionEasy   =  200f;
+    [SerializeField] private float positionEasy   = -250f;
     [SerializeField] private float positionMedium =    0f;
-    [SerializeField] private float positionHard   = -200f;
+    [SerializeField] private float positionHard   =  200f;
 
-    // ── LED sprites ───────────────────────────────────────────────────────
-    [Header("LED")]
+    // ── LED Sprites ───────────────────────────────────────────────────────
+    [Header("LED Sprites")]
     [SerializeField] private Image  ledImage;
     [SerializeField] private Sprite spriteEasy;
     [SerializeField] private Sprite spriteMedium;
     [SerializeField] private Sprite spriteHard;
 
-    // ── Spring / bounce feel ─────────────────────────────────────────────
+    // ── LED Glow ──────────────────────────────────────────────────────────
+    [Header("LED Glow")]
+    [SerializeField] private Light2D ledLightA;
+    [SerializeField] private Light2D ledLightB;
+    [SerializeField] private Color colorEasy   = new Color(0.2f, 1f,   0.2f);
+    [SerializeField] private Color colorMedium = new Color(1f,   0.65f, 0f);
+    [SerializeField] private Color colorHard   = new Color(1f,   0.1f,  0.1f);
+
+    // ── Spring Feel ───────────────────────────────────────────────────────
     [Header("Spring Feel")]
-    [SerializeField] private float snapSpeed    = 18f;   // fréquence angulaire du ressort
-    [SerializeField] private float dampingRatio = 0.35f; // <1 = rebondissant, 1 = critique
-    [SerializeField] private float heavyDragMult = 0.55f; // résistance au drag (0..1)
+    [SerializeField] private float heavyDragMult = 0.30f;
+    [SerializeField] private float snapSpeed     = 28f;
+    [SerializeField] private float dampingRatio  = 0.40f;
 
     // ── References ────────────────────────────────────────────────────────
     [Header("References")]
     [SerializeField] private QuotatManager quotatManager;
+    [SerializeField] private DayManager    dayManager;
+    [SerializeField] private Button        goButton;
 
-    // ── Public read state ─────────────────────────────────────────────────
+    // ── Public State ──────────────────────────────────────────────────────
     public int CurrentDifficulty { get; private set; } = 0; // 0=Easy 1=Medium 2=Hard
 
-    // ── Private state ─────────────────────────────────────────────────────
+    /// <summary>Fired every time the slider snaps to a new difficulty. Parameter is 0=Easy, 1=Medium, 2=Hard.</summary>
+    public event Action<int> DifficultyChanged;
+
+    // ── Private State ─────────────────────────────────────────────────────
     private RectTransform _rect;
     private bool          _isDragging;
     private float         _dragStartLocalY;
@@ -44,23 +60,46 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
     private float         _velocity;
     private float         _targetY;
     private Coroutine     _springCoroutine;
-    private float[]       _snapPositions;
+    private bool          _goAlreadyPressed;
+
+    private float[] _snapPositions;
+
+    private const float RubberBandFactor  = 0.25f;
+    private const float SnapSettlePos     = 0.5f;
+    private const float SnapSettleVel     = 2f;
+    private const float CarryVelocityMult = 0.4f;
 
     // ─────────────────────────────────────────────────────────────────────
+
     private void Awake()
     {
         _rect          = GetComponent<RectTransform>();
         _snapPositions = new float[] { positionEasy, positionMedium, positionHard };
 
-        _targetY = positionEasy;
         SetAnchoredY(positionEasy);
+        _targetY = positionEasy;
         UpdateLED(0);
+        DifficultyChanged?.Invoke(0);
     }
 
-    // ── Drag handling ─────────────────────────────────────────────────────
+    private void OnEnable()
+    {
+        if (dayManager != null)
+            dayManager.DayBegin += ResetGoButton;
+    }
+
+    private void OnDisable()
+    {
+        if (dayManager != null)
+            dayManager.DayBegin -= ResetGoButton;
+    }
+
+    // ── Drag Handling ─────────────────────────────────────────────────────
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (_goAlreadyPressed) return;
+        
         StopCurrentSpring();
         _isDragging = true;
         _velocity   = 0f;
@@ -88,11 +127,8 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
         float delta = (localPoint.y - _dragStartLocalY) * heavyDragMult;
         float newY  = _rectStartY + delta;
 
-        // Rubber-band au delà des extrêmes
-        float minY = positionHard;
-        float maxY = positionEasy;
-        if (newY > maxY) newY = maxY + (newY - maxY) * 0.25f;
-        if (newY < minY) newY = minY + (newY - minY) * 0.25f;
+        if (newY > positionHard) newY = positionHard + (newY - positionHard) * RubberBandFactor;
+        if (newY < positionEasy) newY = positionEasy + (newY - positionEasy) * RubberBandFactor;
 
         _velocity = (newY - _rect.anchoredPosition.y) / Time.deltaTime;
         SetAnchoredY(newY);
@@ -107,13 +143,14 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
         SnapTo(nearest);
     }
 
-    // ── Snap + spring ─────────────────────────────────────────────────────
+    // ── Snap + Spring ─────────────────────────────────────────────────────
 
     private void SnapTo(int index)
     {
         CurrentDifficulty = index;
         _targetY          = _snapPositions[index];
         UpdateLED(index);
+        DifficultyChanged?.Invoke(index);
 
         StopCurrentSpring();
         _springCoroutine = StartCoroutine(SpringCoroutine());
@@ -124,7 +161,7 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
         float omega      = snapSpeed;
         float zeta       = dampingRatio;
         float currentY   = _rect.anchoredPosition.y;
-        float currentVel = _velocity * 0.4f; // on conserve une fraction de l'élan
+        float currentVel = _velocity * CarryVelocityMult;
 
         while (true)
         {
@@ -134,11 +171,11 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
             float acceleration = springForce + dampForce;
 
             currentVel += acceleration * Time.deltaTime;
-            currentY   += currentVel  * Time.deltaTime;
+            currentY   += currentVel   * Time.deltaTime;
 
             SetAnchoredY(currentY);
 
-            if (Mathf.Abs(displacement) < 0.5f && Mathf.Abs(currentVel) < 2f)
+            if (Mathf.Abs(displacement) < SnapSettlePos && Mathf.Abs(currentVel) < SnapSettleVel)
             {
                 SetAnchoredY(_targetY);
                 break;
@@ -146,6 +183,38 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
 
             yield return null;
         }
+    }
+
+    // ── ButtonGo ──────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Branche cette méthode sur ButtonGo.onClick.
+    /// N'est actif qu'une seule fois par jour ; se réarme sur DayBegin.
+    /// </summary>
+    public void OnGoPressed()
+    {
+        if (_goAlreadyPressed) return;
+
+        if (quotatManager == null)
+        {
+            Debug.LogError("DifficultySlider: QuotatManager reference is missing.");
+            return;
+        }
+
+        _goAlreadyPressed = true;
+
+        if (goButton != null)
+            goButton.interactable = false;
+
+        quotatManager.SelectQuotat(CurrentDifficulty);
+    }
+
+    private void ResetGoButton()
+    {
+        _goAlreadyPressed = false;
+
+        if (goButton != null)
+            goButton.interactable = true;
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────
@@ -180,28 +249,24 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     private void UpdateLED(int difficultyIndex)
     {
-        if (ledImage == null) return;
-        switch (difficultyIndex)
+        if (ledImage != null)
         {
-            case 0: ledImage.sprite = spriteEasy;   break;
-            case 1: ledImage.sprite = spriteMedium; break;
-            case 2: ledImage.sprite = spriteHard;   break;
+            switch (difficultyIndex)
+            {
+                case 0: ledImage.sprite = spriteEasy;   break;
+                case 1: ledImage.sprite = spriteMedium; break;
+                case 2: ledImage.sprite = spriteHard;   break;
+            }
         }
-    }
 
-    // ── ButtonGo callback ─────────────────────────────────────────────────
-
-    /// <summary>
-    /// Branche cette méthode sur ButtonGo.onClick.
-    /// Transmet la difficulté courante à QuotatManager.
-    /// </summary>
-    public void OnGoPressed()
-    {
-        if (quotatManager == null)
+        Color targetColor = difficultyIndex switch
         {
-            Debug.LogError("DifficultySlider: QuotatManager reference is missing.");
-            return;
-        }
-        quotatManager.SelectQuotat(CurrentDifficulty);
+            0 => colorEasy,
+            1 => colorMedium,
+            _ => colorHard
+        };
+
+        if (ledLightA != null) ledLightA.color = targetColor;
+        if (ledLightB != null) ledLightB.color = targetColor;
     }
 }

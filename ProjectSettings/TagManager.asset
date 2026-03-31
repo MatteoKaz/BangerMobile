@@ -44,6 +44,9 @@ TagManager:
   - name: Paper
     uniqueID: 2206936169
     locked: 0
+  - name: ChooseDifficulty
+    uniqueID: 1562091099
+    locked: 0
   - name: Ranking
     uniqueID: 3374664179
     locked: 0
