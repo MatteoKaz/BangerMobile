@@ -235,7 +235,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 2.154}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 32, y: 422}
+  m_AnchoredPosition: {x: 31.9, y: 456}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &93698585
@@ -420,7 +420,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 6.727}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 91, y: 120}
+  m_AnchoredPosition: {x: 80, y: 195}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &366973434
@@ -590,6 +590,7 @@ MonoBehaviour:
   actionMode: 1
   popup: {fileID: 1944830671}
   popupImage: {fileID: 1944830672}
+  autoHideDelay: 0
   stampLight: {fileID: -1540165674282403192, guid: 8a3f26a6c6d0dd14daf4ec24be69b346, type: 3}
   stampMedium: {fileID: -2390820086626876488, guid: 81b14822a75d51644a298e67c2610801, type: 3}
   stampDark: {fileID: 7261223510755608039, guid: 67d7708a6bba8f34ea7712edddfddcab, type: 3}
@@ -600,7 +601,6 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 895084656}
   parentPanel: {fileID: 895084656}
-  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &540167834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1153,7 +1153,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -14.2354, y: 776.8289}
+  m_AnchoredPosition: {x: 38, y: 749}
   m_SizeDelta: {x: 108.4118, y: 239.2391}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &902222757
@@ -1262,6 +1262,7 @@ MonoBehaviour:
   actionMode: 1
   popup: {fileID: 1635195998}
   popupImage: {fileID: 1635195999}
+  autoHideDelay: 0
   stampLight: {fileID: -1540165674282403192, guid: 8a3f26a6c6d0dd14daf4ec24be69b346, type: 3}
   stampMedium: {fileID: -2390820086626876488, guid: 81b14822a75d51644a298e67c2610801, type: 3}
   stampDark: {fileID: 7261223510755608039, guid: 67d7708a6bba8f34ea7712edddfddcab, type: 3}
@@ -1272,7 +1273,6 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 366973434}
   parentPanel: {fileID: 366973434}
-  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &931190108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1439,6 +1439,7 @@ MonoBehaviour:
   actionMode: 1
   popup: {fileID: 969938550}
   popupImage: {fileID: 969938551}
+  autoHideDelay: 0
   stampLight: {fileID: -3437022533778657886, guid: a3b384d9c1323104e85cc450e6500a77, type: 3}
   stampMedium: {fileID: -7960818194000818557, guid: cf529315431084c4c9bff446b0fd7c71, type: 3}
   stampDark: {fileID: -2196035622865519434, guid: f6e24f3b1853d6a44bd703000d6bf2f4, type: 3}
@@ -1449,7 +1450,6 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 895084656}
   parentPanel: {fileID: 895084656}
-  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &978402750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1647,8 +1647,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 200
-  m_fontSizeBase: 200
+  m_fontSize: 120
+  m_fontSizeBase: 120
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1959,8 +1959,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 4.22}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 201, y: -152}
-  m_SizeDelta: {x: 1126.6871, y: 195.9329}
+  m_AnchoredPosition: {x: 206, y: -176.55}
+  m_SizeDelta: {x: 1126.6871, y: 353.1009}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1189928822
 MonoBehaviour:
@@ -1982,7 +1982,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sauvegarde
+  m_text: 'Supprimer la sauvegarde '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2009,8 +2009,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 150
-  m_fontSizeBase: 150
+  m_fontSize: 120
+  m_fontSizeBase: 120
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2374,7 +2374,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 5.348}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 144, y: -418}
+  m_AnchoredPosition: {x: 120, y: -419}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1264659929
@@ -2673,6 +2673,7 @@ MonoBehaviour:
   actionMode: 1
   popup: {fileID: 1152349398}
   popupImage: {fileID: 1152349399}
+  autoHideDelay: 0
   stampLight: {fileID: 4945239985283531135, guid: 218e6fe05abbfa641bb7182458347a69, type: 3}
   stampMedium: {fileID: -4949577639409709970, guid: b5c29414a8a6cfd42b9842b9e52e13b5, type: 3}
   stampDark: {fileID: 5759857096319705333, guid: 1a3c67acd7565c144b2bca370095aa77, type: 3}
@@ -2683,7 +2684,6 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 366973434}
   parentPanel: {fileID: 366973434}
-  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &1581480308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2775,6 +2775,7 @@ MonoBehaviour:
   actionMode: 0
   popup: {fileID: 1094384614}
   popupImage: {fileID: 1094384615}
+  autoHideDelay: 0
   stampLight: {fileID: 2738577844032149819, guid: cfddd1d578653bc4fa5cbe4eeef9c259, type: 3}
   stampMedium: {fileID: -3780336102546973749, guid: 52507c220243b2b4e837bf55d4d3310c, type: 3}
   stampDark: {fileID: -1333008625247902045, guid: 8bc9879209029644f94ac80c194ec7e4, type: 3}
@@ -2785,7 +2786,6 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 0}
   parentPanel: {fileID: 0}
-  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &1582533196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3217,10 +3217,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -3237,7 +3237,7 @@ Canvas:
   m_GameObject: {fileID: 2026172524}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -3267,8 +3267,8 @@ RectTransform:
   - {fileID: 1582533194}
   - {fileID: 978402748}
   - {fileID: 1581480306}
-  - {fileID: 1094384614}
   - {fileID: 969938550}
+  - {fileID: 1094384614}
   - {fileID: 1152349398}
   - {fileID: 895084657}
   - {fileID: 366973435}
