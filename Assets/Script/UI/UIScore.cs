@@ -5,160 +5,144 @@ using UnityEngine;
 public class UIScore : MonoBehaviour
 {
     [SerializeField] UiManager uiManager;
-    [SerializeField] TextMeshProUGUI UiScore;
-    [SerializeField] TextMeshProUGUI Uimoney;
     [SerializeField] ScoreManager scoreManager;
 
-    [Header("Texte de bonus p�le")]
-    [Tooltip("TextMeshPro qui affiche le statut de chaque p�le.")]
-    [SerializeField] TextMeshProUGUI bonusLabel;
+    [Header("Quota par pôle (un label par pôle, dans l'ordre)")]
+    [SerializeField] TextMeshProUGUI[] poleQuotaLabels;
 
-    [Header("Textes personnalisables")]
-    [SerializeField] string texteQuotaAtteint = "Quota atteint";
-    [SerializeField] string texteQuotaPasAtteint = "Quota pas atteint";
-    [SerializeField] string prefixeBonus = "+";
-    [SerializeField] string suffixeBonus = "%";
+    [Header("Bénéfice de la partie")]
+    [SerializeField] TextMeshProUGUI beneficeLabel;
+
+    [Header("Total argent joueur")]
+    [SerializeField] TextMeshProUGUI totalMoneyLabel;
 
     [Header("Timings")]
-    [SerializeField] float pauseBeforeEachPole = 0.6f;
-    [SerializeField] float statusDisplayDuration = 0.8f;
-    [SerializeField] float bonusDisplayDuration = 0.8f;
-    [SerializeField] float bonusAnimDuration = 0.6f;
-
-    [Header("Vibration du label")]
-    [SerializeField] float shakeMagnitude = 5f;
-    [SerializeField] float shakeDuration = 0.3f;
+    [SerializeField] float delayBeforeStart      = 1.5f;
+    [SerializeField] float quotaCountDuration    = 1.0f;
+    [SerializeField] float pauseAfterQuota       = 0.4f;
+    [SerializeField] float baseMoneyCountDuration = 1.0f;
+    [SerializeField] float pauseBetweenBonuses   = 0.4f;
+    [SerializeField] float bonusCountDuration    = 0.6f;
+    [SerializeField] float pauseBeforeTotal      = 0.4f;
+    [SerializeField] float totalCountDuration    = 1.0f;
 
     private void OnEnable()
     {
-        uiManager.ScoreAnim += LaunchAnim;
+        uiManager.ScoreAnim  += LaunchAnim;
         uiManager.ScoreReset += ResetScore;
     }
 
     private void OnDisable()
     {
-        uiManager.ScoreAnim -= LaunchAnim;
+        uiManager.ScoreAnim  -= LaunchAnim;
         uiManager.ScoreReset -= ResetScore;
     }
 
+    /// <summary>Réinitialise tous les textes du menu de score.</summary>
     public void ResetScore()
     {
-        UiScore.text = null;
-        Uimoney.text = "Argent:";
-        if (bonusLabel != null)
-            bonusLabel.gameObject.SetActive(false);
+        foreach (TextMeshProUGUI label in poleQuotaLabels)
+            if (label != null) label.text = string.Empty;
+
+        if (beneficeLabel  != null) beneficeLabel.text  = string.Empty;
+        if (totalMoneyLabel != null) totalMoneyLabel.text = string.Empty;
     }
 
+    /// <summary>Lance l'animation d'affichage du score.</summary>
     public void LaunchAnim()
     {
         StartCoroutine(ScoreAnim());
     }
 
-    /// <summary>Fait vibrer le RectTransform du bonusLabel pendant une courte dur�e.</summary>
-    private IEnumerator ShakeText()
-    {
-        RectTransform rect = bonusLabel.rectTransform;
-        Vector2 originalPos = rect.anchoredPosition;
-        float elapsed = 0f;
-
-        while (elapsed < shakeDuration)
-        {
-            float offsetX = Random.Range(-shakeMagnitude, shakeMagnitude);
-            float offsetY = Random.Range(-shakeMagnitude, shakeMagnitude);
-            rect.anchoredPosition = originalPos + new Vector2(offsetX, offsetY);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        rect.anchoredPosition = originalPos;
-    }
-
+    /// <summary>Anime séquentiellement les quotas de pôle, le bénéfice, puis le total joueur.</summary>
     public IEnumerator ScoreAnim()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(delayBeforeStart);
 
-        // --- Animation du score (quotat) ---
-        float duration = 1f;
+        // ── Quotas par pôle ─────────────────────────────────────────────
         float t = 0f;
-        int score = scoreManager.playerQuotat;
-
-        while (t < duration)
+        while (t < quotaCountDuration)
         {
             t += Time.deltaTime;
-            int display = Mathf.Clamp(Mathf.RoundToInt(Mathf.Lerp(0, score, t / duration)), 0, score);
-            UiScore.text = $"{display}/{scoreManager.quotatOfTheDay}";
-            yield return null;
-        }
+            float ratio = Mathf.Clamp01(t / quotaCountDuration);
 
-        yield return new WaitForSeconds(0.5f);
-
-        // --- Animation de l'argent de BASE ---
-        t = 0f;
-        int baseMoney = scoreManager.baseMoney;
-        int currentDisplayMoney = 0;
-
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            currentDisplayMoney = Mathf.Clamp(Mathf.RoundToInt(Mathf.Lerp(0, baseMoney, t / duration)), 0, baseMoney);
-            Uimoney.text = $"Argent: {currentDisplayMoney}";
-            yield return null;
-        }
-        currentDisplayMoney = baseMoney;
-        Uimoney.text = $"Argent: {currentDisplayMoney}";
-
-        // --- R�sultats par p�le ---
-        if (bonusLabel != null)
-        {
-            foreach (ScoreManager.PoleResult result in scoreManager.poleResults)
+            for (int i = 0; i < poleQuotaLabels.Length; i++)
             {
-                yield return new WaitForSeconds(pauseBeforeEachPole);
+                if (poleQuotaLabels[i] == null || i >= scoreManager.poleResults.Count) continue;
 
-                if (result.quotaReached)
-                {
-                    // �tape 1 : "P�le X - Quota atteint"
-                    bonusLabel.text = $"{result.poleName} - {texteQuotaAtteint}";
-                    bonusLabel.gameObject.SetActive(true);
-                    StartCoroutine(ShakeText());
-
-                    yield return new WaitForSeconds(statusDisplayDuration);
-
-                    // �tape 2 : "+X%"
-                    int bonusPct = Mathf.RoundToInt(result.bonusPercent * 100f);
-                    bonusLabel.text = $"{prefixeBonus}{bonusPct}{suffixeBonus}";
-                    StartCoroutine(ShakeText());
-
-                    yield return new WaitForSeconds(bonusDisplayDuration);
-
-                    // �tape 3 : Animer l'argent qui monte
-                    int bonusAmount = Mathf.RoundToInt(baseMoney * result.bonusPercent);
-                    int targetMoney = currentDisplayMoney + bonusAmount;
-                    t = 0f;
-                    int startMoney = currentDisplayMoney;
-
-                    while (t < bonusAnimDuration)
-                    {
-                        t += Time.deltaTime;
-                        currentDisplayMoney = Mathf.RoundToInt(Mathf.Lerp(startMoney, targetMoney, t / bonusAnimDuration));
-                        Uimoney.text = $"Argent: {currentDisplayMoney}";
-                        yield return null;
-                    }
-
-                    currentDisplayMoney = targetMoney;
-                    Uimoney.text = $"Argent: {currentDisplayMoney}";
-                }
-                else
-                {
-                    // Quota pas atteint : affiche le message sans bonus
-                    bonusLabel.text = $"{result.poleName} - {texteQuotaPasAtteint}";
-                    bonusLabel.gameObject.SetActive(true);
-                    StartCoroutine(ShakeText());
-
-                    yield return new WaitForSeconds(statusDisplayDuration);
-                }
-
-                bonusLabel.gameObject.SetActive(false);
+                ScoreManager.PoleResult r = scoreManager.poleResults[i];
+                int displayed = Mathf.RoundToInt(Mathf.Lerp(0, r.advancement, ratio));
+                poleQuotaLabels[i].text = $"{r.poleName} : {displayed} / {r.quota}";
             }
+
+            yield return null;
         }
+
+        // Valeurs finales exactes
+        for (int i = 0; i < poleQuotaLabels.Length; i++)
+        {
+            if (poleQuotaLabels[i] == null || i >= scoreManager.poleResults.Count) continue;
+
+            ScoreManager.PoleResult r = scoreManager.poleResults[i];
+            poleQuotaLabels[i].text = $"{r.poleName} : {r.advancement} / {r.quota}";
+        }
+
+        yield return new WaitForSeconds(pauseAfterQuota);
+
+        // ── Bénéfice de base ─────────────────────────────────────────────
+        int baseMoney       = scoreManager.baseMoney;
+        int displayBenefice = 0;
+
+        t = 0f;
+        while (t < baseMoneyCountDuration)
+        {
+            t += Time.deltaTime;
+            displayBenefice = Mathf.RoundToInt(Mathf.Lerp(0, baseMoney, Mathf.Clamp01(t / baseMoneyCountDuration)));
+            if (beneficeLabel != null) beneficeLabel.text = $"Bénéfice : {displayBenefice}";
+            yield return null;
+        }
+        displayBenefice = baseMoney;
+        if (beneficeLabel != null) beneficeLabel.text = $"Bénéfice : {displayBenefice}";
+
+        // ── Bonus des pôles ───────────────────────────────────────────────
+        foreach (ScoreManager.PoleResult result in scoreManager.poleResults)
+        {
+            if (!result.quotaReached) continue;
+
+            yield return new WaitForSeconds(pauseBetweenBonuses);
+
+            int bonusAmount    = Mathf.RoundToInt(baseMoney * result.bonusPercent);
+            int startBenefice  = displayBenefice;
+            int targetBenefice = displayBenefice + bonusAmount;
+            int bonusPct       = Mathf.RoundToInt(result.bonusPercent * 100f);
+
+            t = 0f;
+            while (t < bonusCountDuration)
+            {
+                t += Time.deltaTime;
+                displayBenefice = Mathf.RoundToInt(Mathf.Lerp(startBenefice, targetBenefice, Mathf.Clamp01(t / bonusCountDuration)));
+                if (beneficeLabel != null)
+                    beneficeLabel.text = $"Bénéfice : {displayBenefice}  (+{bonusPct}% {result.poleName})";
+                yield return null;
+            }
+            displayBenefice = targetBenefice;
+            if (beneficeLabel != null) beneficeLabel.text = $"Bénéfice : {displayBenefice}";
+        }
+
+        yield return new WaitForSeconds(pauseBeforeTotal);
+
+        // ── Total argent joueur ───────────────────────────────────────────
+        int previousMoney = scoreManager.playerMoney - displayBenefice;
+        int finalMoney    = scoreManager.playerMoney;
+
+        t = 0f;
+        while (t < totalCountDuration)
+        {
+            t += Time.deltaTime;
+            int displayed = Mathf.RoundToInt(Mathf.Lerp(previousMoney, finalMoney, Mathf.Clamp01(t / totalCountDuration)));
+            if (totalMoneyLabel != null) totalMoneyLabel.text = $"Total : {displayed}";
+            yield return null;
+        }
+        if (totalMoneyLabel != null) totalMoneyLabel.text = $"Total : {finalMoney}";
     }
 }
