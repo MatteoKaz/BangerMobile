@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -69,6 +70,7 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
     private const float SnapSettleVel     = 2f;
     private const float CarryVelocityMult = 0.4f;
 
+    [SerializeField] AudioEventDispatcher audioEventDispatcher;
     // ─────────────────────────────────────────────────────────────────────
 
     private void Awake()
@@ -202,7 +204,6 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
         }
 
         _goAlreadyPressed = true;
-
         if (goButton != null)
             goButton.interactable = false;
 

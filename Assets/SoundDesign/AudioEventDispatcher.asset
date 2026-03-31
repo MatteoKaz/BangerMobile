@@ -14,40 +14,65 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioEventDispatcher
   audioClips:
   - audioType: 21
-    audioClip: {fileID: 8300000, guid: a3926b18597bfdf429380c42c66d2f46, type: 3}
+    audioClips:
+    - {fileID: 0}
   - audioType: 22
-    audioClip: {fileID: 8300000, guid: 4db102f7b4c9a6c439e126c138ccc579, type: 3}
+    audioClips: []
   - audioType: 17
-    audioClip: {fileID: 8300000, guid: cd947131ed5f648458274b3b02bd0645, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: cd947131ed5f648458274b3b02bd0645, type: 3}
+    - {fileID: 8300000, guid: 041e11750e7515048bbd5b4c18c3eb64, type: 3}
   - audioType: 16
-    audioClip: {fileID: 8300000, guid: 041e11750e7515048bbd5b4c18c3eb64, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: cd947131ed5f648458274b3b02bd0645, type: 3}
+    - {fileID: 8300000, guid: 041e11750e7515048bbd5b4c18c3eb64, type: 3}
   - audioType: 12
-    audioClip: {fileID: 8300000, guid: 65ddb1cafdd1bfe4cb3999d6ced2b2c1, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: 65ddb1cafdd1bfe4cb3999d6ced2b2c1, type: 3}
   - audioType: 13
-    audioClip: {fileID: 8300000, guid: 49c6d9c4fcdb95e4e9b52139368d9248, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: 49c6d9c4fcdb95e4e9b52139368d9248, type: 3}
+    - {fileID: 8300000, guid: 826897d4e93ed024b9992a076c382b2b, type: 3}
+    - {fileID: 8300000, guid: e630d20795414ef4d8f5bcc442def595, type: 3}
   - audioType: 14
-    audioClip: {fileID: 8300000, guid: 826897d4e93ed024b9992a076c382b2b, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: 826897d4e93ed024b9992a076c382b2b, type: 3}
+    - {fileID: 8300000, guid: 49c6d9c4fcdb95e4e9b52139368d9248, type: 3}
+    - {fileID: 8300000, guid: e630d20795414ef4d8f5bcc442def595, type: 3}
   - audioType: 15
-    audioClip: {fileID: 8300000, guid: e630d20795414ef4d8f5bcc442def595, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: e630d20795414ef4d8f5bcc442def595, type: 3}
+    - {fileID: 8300000, guid: 826897d4e93ed024b9992a076c382b2b, type: 3}
+    - {fileID: 8300000, guid: 49c6d9c4fcdb95e4e9b52139368d9248, type: 3}
   - audioType: 18
-    audioClip: {fileID: 8300000, guid: 3601ea329f24c15469126c36b570ac7a, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: 3601ea329f24c15469126c36b570ac7a, type: 3}
   - audioType: 19
-    audioClip: {fileID: 8300000, guid: 26ca74d16a923d042b85237906f4ec33, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: 26ca74d16a923d042b85237906f4ec33, type: 3}
   - audioType: 24
-    audioClip: {fileID: 8300000, guid: eb2bc8d4c27bd0048846e1601122f538, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: eb2bc8d4c27bd0048846e1601122f538, type: 3}
   - audioType: 25
-    audioClip: {fileID: 8300000, guid: fb58242deed5d324da0cf924158a0256, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: fb58242deed5d324da0cf924158a0256, type: 3}
+    - {fileID: 8300000, guid: 9e082976bbd155a47bf1e6e5ad8019ab, type: 3}
   - audioType: 23
-    audioClip: {fileID: 8300000, guid: c605302202d5cee47a8d193e48220f8b, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: 227d99ffa5ebac947993b65c92a643e7, type: 3}
+  - audioType: 29
+    audioClips:
+    - {fileID: 8300000, guid: cc071209ae0a7eb41941eda2a3c4bf78, type: 3}
   - audioType: 0
-    audioClip: {fileID: 8300000, guid: 4c243d6b50dbbb14f9b25f6493f6bf24, type: 3}
+    audioClips: []
   - audioType: 0
-    audioClip: {fileID: 8300000, guid: f6c5a78a6f5475640879dfa583016f02, type: 3}
-  - audioType: 0
-    audioClip: {fileID: 8300000, guid: f6c5a78a6f5475640879dfa583016f02, type: 3}
+    audioClips: []
   - audioType: 4
-    audioClip: {fileID: 8300000, guid: 634c28fef00999a48b557b878dcbfd3a, type: 3}
-  - audioType: 26
-    audioClip: {fileID: 8300000, guid: f5f92fce256dba848be090e3ddf2ba31, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: 634c28fef00999a48b557b878dcbfd3a, type: 3}
   - audioType: 5
-    audioClip: {fileID: 8300000, guid: 4c4e0d6d7f729de44906dc2ba5fe3e86, type: 3}
+    audioClips:
+    - {fileID: 8300000, guid: 4c4e0d6d7f729de44906dc2ba5fe3e86, type: 3}
+  - audioType: 10
+    audioClips:
+    - {fileID: 8300000, guid: 7a06ac4366cc1a9438b1fe1f5b9c590b, type: 3}

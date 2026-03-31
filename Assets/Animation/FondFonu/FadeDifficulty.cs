@@ -16,15 +16,13 @@ public class FadeDifficulty : MonoBehaviour
     [SerializeField] UIDay uIDay;
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI textMeshPro;
-
+[SerializeField] AudioEventDispatcher audioEventDispatcher;
     //For TestOnly
     [SerializeField] GameObject textParent;
     private void OnEnable()
     {
         uiManager.DifficultyChosenAnim += LaunchFade;
         uiManager.dayResetOpacity += LaunchFadeIn;
-
-
     }
     private void OnDisable()
     {
@@ -78,7 +76,6 @@ public class FadeDifficulty : MonoBehaviour
 
                 yield return null;
             }
-        
     }
     public IEnumerator FadeInImage()
     {

@@ -32,6 +32,8 @@ public enum AudioType
     Pop2,
     PenWritting, 
     PenWritting2,
+    Levier,
+    Bouton,
 }
 [System.Serializable]
 public struct AudioInfos
