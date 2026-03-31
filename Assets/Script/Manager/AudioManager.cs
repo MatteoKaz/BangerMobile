@@ -166,10 +166,9 @@ public class AudioManager : MonoBehaviour
             ? -80f
             : Mathf.Log10(_volumeBeforeMute) * 20f;
 
-        audioMixer.SetFloat("VolumeSFX",    db);
-        audioMixer.SetFloat("VolumeUI",     db);
-        audioMixer.SetFloat("VolumeAmbiance", db);
+        audioMixer.SetFloat("VolumeMaster", db);
     }
+
 
     private void RefreshMuteButtonSprite()
     {

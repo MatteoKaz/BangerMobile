@@ -14,7 +14,6 @@ public class PauseManager : MonoBehaviour
 
     private void Start()
     {
-        audioEventDispatcher.PlayAudio(AudioType.Click);
         pausePanel.SetActive(false);
     }
 
@@ -23,9 +22,13 @@ public class PauseManager : MonoBehaviour
     {
         _isPaused = !_isPaused;
 
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.Click);
+
         Time.timeScale = _isPaused ? 0f : 1f;
         pausePanel.SetActive(_isPaused);
     }
+
 
     private void OnDisable()
     {

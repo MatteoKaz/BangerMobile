@@ -76,7 +76,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
                 {
                     HasCall = true;
                     paperRef.MoveUpTuyaux();
-                    audioEventDispatcher.PlayAudio(AudioType.Swipe1); 
+                    audioEventDispatcher.PlayExclusiveAudio(AudioType.Swipe1); 
                 }
 
             }
@@ -87,7 +87,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
                 {
                     HasCall = true;
                     paperRef.MoveRightTuyaux();
-                    audioEventDispatcher.PlayAudio(AudioType.Swipe2); 
+                    audioEventDispatcher.PlayExclusiveAudio(AudioType.Swipe2); 
                 }
 
             }
@@ -124,7 +124,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
                 {
                     HasCall = true;
                     paperRef.MoveLeftTuyaux();
-                    audioEventDispatcher.PlayAudio(AudioType.Swipe3); 
+                    audioEventDispatcher.PlayExclusiveAudio(AudioType.Swipe3); 
                 }
 
             }
@@ -145,13 +145,13 @@ public class InputPlayerManagerCustom : MonoBehaviour
         {
             if (dotLeft > 0)
             {
-                audioEventDispatcher.PlayAudio(AudioType.TurnPageLeft);
+                audioEventDispatcher.PlayExclusiveAudio(AudioType.TurnPageLeft);
                 OnMoveLeft?.Invoke();
                 
             }
             else
             {
-                audioEventDispatcher.PlayAudio(AudioType.TurnPageRight);
+                audioEventDispatcher.PlayExclusiveAudio(AudioType.TurnPageRight);
                 OnMoveRight?.Invoke();
             }
         }

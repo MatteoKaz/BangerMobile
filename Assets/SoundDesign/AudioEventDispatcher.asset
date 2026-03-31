@@ -59,12 +59,13 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 9e082976bbd155a47bf1e6e5ad8019ab, type: 3}
   - audioType: 23
     audioClips:
-    - {fileID: 8300000, guid: 227d99ffa5ebac947993b65c92a643e7, type: 3}
+    - {fileID: 8300000, guid: c605302202d5cee47a8d193e48220f8b, type: 3}
   - audioType: 29
     audioClips:
     - {fileID: 8300000, guid: cc071209ae0a7eb41941eda2a3c4bf78, type: 3}
-  - audioType: 0
-    audioClips: []
+  - audioType: 30
+    audioClips:
+    - {fileID: 8300000, guid: 392ef4246469ec74a9ce03de60596c49, type: 3}
   - audioType: 0
     audioClips: []
   - audioType: 4

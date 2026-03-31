@@ -601,6 +601,7 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 895084656}
   parentPanel: {fileID: 895084656}
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &540167834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -678,6 +679,7 @@ MonoBehaviour:
   spriteLow: {fileID: -430563400373954102, guid: 92d7264990ac5f942b1ff06c2dcf972e, type: 3}
   spriteMutedSlider: {fileID: 5205555643490293147, guid: 92d7264990ac5f942b1ff06c2dcf972e, type: 3}
   spriteMutedButton: {fileID: -4393060395860690107, guid: 92d7264990ac5f942b1ff06c2dcf972e, type: 3}
+  audioMixer: {fileID: 24100000, guid: 8aeabdc342c12054ab0e9deb7c4ad1de, type: 2}
 --- !u!4 &614300500
 Transform:
   m_ObjectHideFlags: 0
@@ -805,6 +807,8 @@ MonoBehaviour:
   audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
   sfxSource: {fileID: 614300501}
   loopSource: {fileID: 614300503}
+  exclusiveSource: {fileID: 614300501}
+  exclusiveCooldown: 0.4
 --- !u!82 &614300503
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1117,7 +1121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioOptionsPanel
   volumeSlider: {fileID: 93698585}
   muteButton: {fileID: 148164775}
-  audioEventDispatcher: {fileID: 0}
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!1 &902222755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1273,6 +1277,7 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 366973434}
   parentPanel: {fileID: 366973434}
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &931190108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1450,6 +1455,7 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 895084656}
   parentPanel: {fileID: 895084656}
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &978402750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2684,6 +2690,7 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 366973434}
   parentPanel: {fileID: 366973434}
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &1581480308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2786,6 +2793,7 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 0}
   parentPanel: {fileID: 0}
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &1582533196
 MonoBehaviour:
   m_ObjectHideFlags: 0

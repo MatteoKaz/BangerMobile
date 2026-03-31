@@ -39,7 +39,7 @@ public enum AudioType
 public struct AudioInfos
 {
     public AudioType   audioType;
-    public AudioClip[] audioClips; // plusieurs variantes possibles
+    public AudioClip[] audioClips;
 }
 
 [CreateAssetMenu(fileName = "AudioEventDispatcher", menuName = "Scriptable Objects/AudioEventDispatcher")]
@@ -48,8 +48,9 @@ public class AudioEventDispatcher : ScriptableObject
     [SerializeField] private AudioInfos[] audioClips;
 
     public event Action<AudioClip>        OnAudioEvent;
+    public event Action<AudioClip>        OnQueuedAudioEvent;   // attend la fin du son en cours
     public event Action<AudioClip>        OnLoopAudioEvent;
-    public event Action<AudioClip, float> OnExclusiveAudioEvent; // non-duplicable
+    public event Action<AudioClip, float> OnExclusiveAudioEvent;
     public event Action                   OnStopLoopEvent;
 
     /// <summary>Joue un son one-shot (interrompt le précédent).</summary>
@@ -61,8 +62,19 @@ public class AudioEventDispatcher : ScriptableObject
     }
 
     /// <summary>
+    /// Attend que le son en cours soit terminé avant de jouer le suivant.
+    /// Idéal pour des sons qui doivent s'enchaîner sans se couper.
+    /// </summary>
+    public void PlayQueuedAudio(AudioType audioType)
+    {
+        AudioClip clip = FindRandomClip(audioType);
+        if (clip != null)
+            OnQueuedAudioEvent?.Invoke(clip);
+    }
+
+    /// <summary>
     /// Joue un son seulement s'il n'est pas déjà en cours.
-    /// Idéal pour les sons de spawn : pas de doublon, premier son prioritaire.
+    /// Le cooldown est géré dans AudioEventManager.
     /// </summary>
     public void PlayExclusiveAudio(AudioType audioType)
     {
@@ -92,8 +104,7 @@ public class AudioEventDispatcher : ScriptableObject
             if (audioClips[i].audioType != audioType) continue;
             if (audioClips[i].audioClips == null || audioClips[i].audioClips.Length == 0) return null;
 
-            int index = UnityEngine.Random.Range(0, audioClips[i].audioClips.Length);
-            return audioClips[i].audioClips[index];
+            return audioClips[i].audioClips[UnityEngine.Random.Range(0, audioClips[i].audioClips.Length)];
         }
         return null;
     }

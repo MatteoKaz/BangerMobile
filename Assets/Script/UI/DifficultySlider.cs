@@ -154,10 +154,12 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
         UpdateLED(index);
         DifficultyChanged?.Invoke(index);
 
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.Levier); // one-shot immédiat
+
         StopCurrentSpring();
         _springCoroutine = StartCoroutine(SpringCoroutine());
     }
-
     private IEnumerator SpringCoroutine()
     {
         float omega      = snapSpeed;
@@ -196,19 +198,17 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
     public void OnGoPressed()
     {
         if (_goAlreadyPressed) return;
-
-        if (quotatManager == null)
-        {
-            Debug.LogError("DifficultySlider: QuotatManager reference is missing.");
-            return;
-        }
+        if (quotatManager == null) { Debug.LogError("DifficultySlider: QuotatManager reference is missing."); return; }
 
         _goAlreadyPressed = true;
-        if (goButton != null)
-            goButton.interactable = false;
+        if (goButton != null) goButton.interactable = false;
+
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.Bouton); // one-shot immédiat
 
         quotatManager.SelectQuotat(CurrentDifficulty);
     }
+
 
     private void ResetGoButton()
     {
