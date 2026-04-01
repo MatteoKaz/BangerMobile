@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class SwatManager : MonoBehaviour
 {
@@ -12,9 +13,18 @@ public class SwatManager : MonoBehaviour
     [SerializeField] DayManager dayManager;
     [SerializeField] Light2D lightblue;
     [SerializeField] Light2D lightred;
+    [SerializeField] Image highglightsRouge;
+    [SerializeField] Image highglightsBleu;
+    [SerializeField] Image highglightsVert;
 
+    [SerializeField] Color redcolor;
+    [SerializeField] Color bleucolor;
+    [SerializeField] Color vertcolor;
+
+    private Coroutine HighlightCoroutine;
     public event Action SwatModeStart;
     public event Action SwatModeEnd;
+
 
     public void OnEnable()
     {
@@ -47,7 +57,8 @@ public class SwatManager : MonoBehaviour
         if (numberOfUtilisation <= 0) return;
         numberOfUtilisation--;
 
-
+        StopCoroutine(HighlightCoroutine);
+        StartCoroutine(StopPulse());
         foreach (Employe emp in pole.employeList)
         {
             emp.OnSwat(); // ou via event
@@ -111,6 +122,40 @@ public class SwatManager : MonoBehaviour
             float t = Mathf.PingPong(Time.time / 0.4f, 0.7f);
             lightblue.intensity = Mathf.Lerp(0f, 2.12f, t);
             lightred.intensity = Mathf.Lerp(2.12f, 0f, t);
+            yield return null;
+        }
+    }
+
+    public void StartPulse()
+    {
+        HighlightCoroutine = StartCoroutine(PulseHighlight());
+    }
+    public IEnumerator PulseHighlight()
+    {
+        
+   
+            while (true)
+            {
+                
+                float t = (Mathf.Sin(Time.time * 3f) + 1f) / 2f;
+                highglightsBleu.color = new Color(bleucolor.r, bleucolor.g, bleucolor.b, Mathf.Lerp(0f, 0.3f, t));
+                highglightsRouge.color = new Color(redcolor.r, redcolor.g,redcolor.b, Mathf.Lerp(0f, 0.3f, t));
+                highglightsVert.color = new Color(vertcolor.r,vertcolor.g, vertcolor.b  , Mathf.Lerp(0f, 0.3f, t));
+                yield return null;
+            }
+        
+    }
+
+    public IEnumerator StopPulse()
+    {
+        float t = 0f;
+        while (t<1f)
+        {
+            t += Time.deltaTime/0.1f;
+            float normalized = Mathf.Clamp01(t);
+            highglightsBleu.color = new Color(bleucolor.r, bleucolor.g, bleucolor.b, Mathf.Lerp(0.3f, 0f, t));
+            highglightsRouge.color = new Color(redcolor.r, redcolor.g, redcolor.b, Mathf.Lerp(0.3f, 0.0f, t));
+            highglightsVert.color = new Color(vertcolor.r, vertcolor.g, vertcolor.b, Mathf.Lerp(0.3f, 0.0f, t));
             yield return null;
         }
     }

@@ -14,6 +14,7 @@ public class SwatButton : MonoBehaviour
     public void OnClick()
     {
         StartCoroutine(ClickAnim());
+        swatManager.StartPulse();
     }
 
     public IEnumerator ClickAnim()

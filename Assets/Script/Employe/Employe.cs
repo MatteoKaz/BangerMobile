@@ -494,7 +494,7 @@ public class Employe : MonoBehaviour
 
     public IEnumerator SwatCoroutine()
     {
-        Color ColorFond = new Color(0x82 / 255f, 0x82 / 255f, 0x82 / 255f);
+        Color ColorFond = new Color(0x82 / 255f, 0x82 / 255f, 0x82 / 255f, 0.6f);
         Color color = new Color(0x8C / 255f, 0x8C / 255f, 0x8C / 255f);
         employeImage.sprite = idleSprite;
         animator.SetTrigger("Swat");
@@ -541,19 +541,15 @@ public class Employe : MonoBehaviour
 
         }
         t = 0;
-        while (t < 0.25f)
-        {
-
-            t += Time.deltaTime / 0.2f;
-            VerticalLayoutGroup vlg = GrilleSwat.GetComponent<VerticalLayoutGroup>();
-            float normalized = t / 0.25f;
-
-
-            FondSwat.color = Color.Lerp(Color.clear, ColorFond, t);
-            yield return null;
-
-        }
         
+        while (t < 1f)
+        {
+            t += Time.deltaTime / 0.2f;
+            float normalized = Mathf.Clamp01(t);
+            FondSwat.color = Color.Lerp(Color.clear, ColorFond, normalized);
+            yield return null;
+        }
+
         yield return new WaitForSeconds(1.5f);
         Vector3 originalPos = GrilleSwat.transform.localPosition;
         for (int i = 0; i< 3; i++)
@@ -591,17 +587,13 @@ public class Employe : MonoBehaviour
     
         yield return new WaitForSeconds(3f);
         t = 0;
-        while (t < 0.25f)
+
+        while (t < 1f)
         {
-
             t += Time.deltaTime / 0.2f;
-            VerticalLayoutGroup vlg = GrilleSwat.GetComponent<VerticalLayoutGroup>();
-            float normalized = t / 0.25f;
-
-
-            FondSwat.color = Color.Lerp(ColorFond,Color.clear, t);
+            float normalized = Mathf.Clamp01(t);
+            FondSwat.color = Color.Lerp(ColorFond, Color.clear, normalized);
             yield return null;
-
         }
         t = 0;
         while (t < 1f)
