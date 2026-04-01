@@ -244,8 +244,8 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         {
             if (parentPanel != null && parentPanel != targetPanel)
             {
-                foreach (Transform child in parentPanel.transform)
-                    child.gameObject.SetActive(false);
+                //foreach (Transform child in parentPanel.transform)
+                //child.gameObject.SetActive(false);
             }
 
             targetPanel.SetActive(true);

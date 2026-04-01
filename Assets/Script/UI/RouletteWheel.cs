@@ -154,7 +154,11 @@ public class RouletteWheel : MonoBehaviour
     public void Spin()
     {
         if (_isSpinning) return;
-        audioEventDispatcher.PlayLoopAudio(AudioType.Spin);
+        if (audioEventDispatcher != null)
+        {
+            audioEventDispatcher.PlayLoopAudio(AudioType.Spin);
+        }
+        
         if (_hasSpunToday)
         {
             Debug.LogWarning("[RouletteWheel] La roulette a déjà été lancée aujourd'hui.");
