@@ -42,6 +42,10 @@ public enum AudioType
     ClosePopUp,
     ClickShopIcon,
     MouseClick,
+    Walk,
+    Fired,
+    Talk,
+    CannotBuy,
 }
 [System.Serializable]
 public struct AudioInfos
@@ -105,7 +109,7 @@ public class AudioEventDispatcher : ScriptableObject
         OnStopLoopEvent?.Invoke();
     }
 
-    private AudioClip FindRandomClip(AudioType audioType)
+    public AudioClip FindRandomClip(AudioType audioType)
     {
         for (int i = 0; i < audioClips.Length; i++)
         {
@@ -116,4 +120,16 @@ public class AudioEventDispatcher : ScriptableObject
         }
         return null;
     }
+    // Remplace "private" par "public"
+    public AudioClip GetClip(AudioType audioType)
+    {
+        for (int i = 0; i < audioClips.Length; i++)
+        {
+            if (audioClips[i].audioType != audioType) continue;
+            if (audioClips[i].audioClips == null || audioClips[i].audioClips.Length == 0) return null;
+            return audioClips[i].audioClips[UnityEngine.Random.Range(0, audioClips[i].audioClips.Length)];
+        }
+        return null;
+    }
+
 }

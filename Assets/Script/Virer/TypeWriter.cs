@@ -18,6 +18,8 @@ public class TypeWriter : MonoBehaviour
     private bool isBase = true;
     private enum DialoguePhase { Base, Fired, NotFired }
     private DialoguePhase phase;
+    
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     public void StartDialogue(List<DialogueLine> lines, Animator animatorSend)
     {
         phase = DialoguePhase.Base;
@@ -43,6 +45,7 @@ public class TypeWriter : MonoBehaviour
     private IEnumerator TypeText(DialogueLine line)
     {
         animator.SetTrigger("Talk");
+        audioEventDispatcher?.PlayLoopAudio(AudioType.Talk);
         isTyping = true;
         dialogueText.text = "";
         foreach (char letter in line.text)
@@ -50,6 +53,7 @@ public class TypeWriter : MonoBehaviour
             dialogueText.text += letter;
             yield return new WaitForSeconds(line.speed);
         }
+        audioEventDispatcher?.StopLoopAudio();
         animator.SetTrigger("EndTalk");
         isTyping = false;
         
@@ -61,6 +65,7 @@ public class TypeWriter : MonoBehaviour
         if (isTyping)
         {
             StopAllCoroutines();
+            audioEventDispatcher?.StopLoopAudio();
             animator.SetTrigger("EndTalk");
             dialogueText.text = currentLines[currentIndex - 1].text;
             isTyping = false;

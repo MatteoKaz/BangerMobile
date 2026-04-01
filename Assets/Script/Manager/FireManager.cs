@@ -41,6 +41,10 @@ public class FireManager : MonoBehaviour
     private bool launch = false;
     public bool DayLaunch = false;
     public bool LaunchFire = false; 
+    
+    [Header("Audio")]
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
+
     public void OnEnable()
     {
 
@@ -107,6 +111,7 @@ public class FireManager : MonoBehaviour
         }
 
         animator.SetTrigger("Walking");
+        audioEventDispatcher?.PlayLoopAudio(AudioType.Walk);
         yield return new WaitForSeconds(0.75f);
         employeImage.enabled = true;
        
@@ -117,7 +122,7 @@ public class FireManager : MonoBehaviour
         {
             yield return null;
         }
-
+        audioEventDispatcher?.PlayLoopAudio(AudioType.Walk);
         yield return new WaitForSeconds(0.25f);
         RectTransform rectDialogue = dialogueCase.GetComponent<RectTransform>();
 
@@ -170,6 +175,7 @@ public class FireManager : MonoBehaviour
         }
         yield return new WaitForSeconds(0.2f);
         animator.SetTrigger("WalkNotFired");
+        audioEventDispatcher?.PlayLoopAudio(AudioType.Walk);
         yield return new WaitForSeconds(0.2f);
         yield return null;
         yield return null;
@@ -178,7 +184,7 @@ public class FireManager : MonoBehaviour
         {
             yield return null;
         }
-        
+        audioEventDispatcher?.StopLoopAudio();
         employeImage.enabled = false;
         RectTransform rect = ScoreScene.GetComponent<RectTransform>();
 
@@ -248,7 +254,7 @@ public class FireManager : MonoBehaviour
         animator.SetTrigger("EndTalk");
         yield return new WaitForSeconds(0.8f);
         animator.SetTrigger("Fired");
-
+        audioEventDispatcher?.PlayAudio(AudioType.Fired);
         yield return new WaitForSeconds(1f);
         yield return null;
         yield return null;
