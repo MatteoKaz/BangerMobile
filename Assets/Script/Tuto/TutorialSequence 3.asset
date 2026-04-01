@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a21360199fbacb4aa0c6262bb4d5816, type: 3}
+  m_Name: TutorialSequence 3
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  triggerType: 2
+  triggerDelay: 10
+  steps:
+  - text: "Sur votre ordinateur, vous pouvez suivre l'avanc\xE9e de vos employ\xE9s,
+      en voyant directement quand ils travaillent ou non. Vous voyez \xE9galement
+      le quota que doit atteindre chaque p\xF4le."
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 0
+  - text: "Attention, si vous envoyez trop de documents d'un coup dans un p\xF4le,
+      ce dernier risque de se retrouver en surcharge."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 1

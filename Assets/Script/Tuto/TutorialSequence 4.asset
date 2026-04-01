@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a21360199fbacb4aa0c6262bb4d5816, type: 3}
+  m_Name: TutorialSequence 4
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  triggerType: 3
+  triggerDelay: 10
+  steps:
+  - text: "Mais si jamais un p\xF4le se retrouve surcharg\xE9, vous pouvez contrebalancer
+      \xE7a en s\xE9lectionnant un employ\xE9 d'un autre p\xF4le et en le d\xE9posant
+      sur une case vide dans le p\xF4le surcharg\xE9."
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 0
+  - text: "Vous pouvez \xE0 tout moment de la journ\xE9e changer vos employ\xE9s
+      de p\xF4le. \xC0 vous de g\xE9rer au mieux vos \xE9quipes."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 1

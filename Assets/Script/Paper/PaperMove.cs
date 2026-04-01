@@ -1,7 +1,5 @@
 using System.Collections;
-
 using UnityEngine;
-
 
 public class PaperMove : MonoBehaviour
 {
@@ -17,7 +15,7 @@ public class PaperMove : MonoBehaviour
     [Header("Reste")]
     [SerializeField] public Vector3 spawnPos;
     bool validPaper = false;
-     public bool OnPile = false;
+    public bool OnPile = false;
     bool Launch = false;
 
     public PaperType paperType;
@@ -27,16 +25,17 @@ public class PaperMove : MonoBehaviour
     public Pile pileRef;
     [SerializeField] public DayManager dayManager;
     private bool CanThrow = true;
-    public void Awake()
-    {
-        
-       
-    }
+
+    private static bool _firstPaperSentNotified = false;
+
+    public void Awake() { }
+
     public void Subscribe()
     {
-        if (dayManager != null)   
-        dayManager.DayEnd += DisableThrow;
+        if (dayManager != null)
+            dayManager.DayEnd += DisableThrow;
     }
+
     public void OnDisable()
     {
         dayManager.DayEnd -= DisableThrow;
@@ -46,89 +45,54 @@ public class PaperMove : MonoBehaviour
     {
         myself = this.gameObject;
         StartCoroutine(SpawnPosition());
-        TutorialManager.NotifyFirstPaperSent();
-
     }
+
     public void DisableThrow()
     {
         CanThrow = false;
     }
+
     public void MoveRightTuyaux()
     {
-        if (!CanThrow)
-            return;
-        if (OnPile == true)
-        {
-            return;
-        }
-        else
-        {
-            StartCoroutine(MoveToTuyaux(Tuyauxright.transform.position, Tuyauxright));
-            if (Tuyauxright.tuyauxType == paperType)
-            {
-                validPaper = true;
-            }
-            else
-            {
-                validPaper = false;
-            }
-        }
-      
-    }
+        if (!CanThrow) return;
+        if (OnPile == true) return;
 
-  
+        NotifyFirstPaperSentOnce();
+        StartCoroutine(MoveToTuyaux(Tuyauxright.transform.position, Tuyauxright));
+        validPaper = Tuyauxright.tuyauxType == paperType;
+    }
 
     public void MoveUpTuyaux()
     {
+        if (!CanThrow) return;
+        if (OnPile == true) return;
 
-        if (!CanThrow)
-            return;
-        if (OnPile == true)
-        {
-            return;
-        }
-        else
-        {
-            StartCoroutine(MoveToTuyaux(Tuyauxup.transform.position, Tuyauxup));
-            if (Tuyauxup.tuyauxType == paperType)
-            {
-                validPaper = true;
-            }
-            else
-            {
-                validPaper = false;
-            }
-        }
-        
+        NotifyFirstPaperSentOnce();
+        StartCoroutine(MoveToTuyaux(Tuyauxup.transform.position, Tuyauxup));
+        validPaper = Tuyauxup.tuyauxType == paperType;
     }
 
     public void MoveLeftTuyaux()
     {
-        if (!CanThrow)
-            return;
-        if (OnPile == true)
-        {
-            return;
-        }
-        else
-        {
-            StartCoroutine(MoveToTuyaux(Tuyauxleft.transform.position, Tuyauxleft));
-            if (Tuyauxleft.tuyauxType == paperType)
-            {
-                validPaper = true;
-            }
-            else
-            {
-                validPaper = false;
-            }
-        }
-       
+        if (!CanThrow) return;
+        if (OnPile == true) return;
 
+        NotifyFirstPaperSentOnce();
+        StartCoroutine(MoveToTuyaux(Tuyauxleft.transform.position, Tuyauxleft));
+        validPaper = Tuyauxleft.tuyauxType == paperType;
     }
+
+    /// <summary>Notifie le TutorialManager du premier swipe, une seule fois par session.</summary>
+    private static void NotifyFirstPaperSentOnce()
+    {
+        if (_firstPaperSentNotified) return;
+        _firstPaperSentNotified = true;
+        TutorialManager.NotifyFirstPaperSent();
+    }
+
     public void MoveToPile()
     {
-        if (!CanThrow)
-            return;
+        if (!CanThrow) return;
         if (OnPile == false)
         {
             Debug.Log("Pile");
@@ -137,86 +101,68 @@ public class PaperMove : MonoBehaviour
                 case PaperType.Red:
                     pileRef = PileRed;
                     pileTarget = PileRed.transform.position;
-                     break;
+                    break;
                 case PaperType.Green:
                     pileRef = PileGreen;
                     pileTarget = PileGreen.transform.position;
-                     break;
+                    break;
                 case PaperType.Blue:
                     pileRef = PileBlue;
                     pileTarget = PileBlue.transform.position;
-                     break;
+                    break;
             }
             OnPile = true;
             StartCoroutine(MoveToPileCo(pileTarget, pileRef));
         }
     }
+
     public void RemoveFromPile()
     {
-        if (!CanThrow)
-            return;
+        if (!CanThrow) return;
         if (OnPile == true)
+        {
+            switch (paperType)
             {
-                switch (paperType)
-                {
-                    case PaperType.Red:
+                case PaperType.Red:
                     PileRed.RemoveFromPile();
-                            break;
-                    case PaperType.Green:
+                    break;
+                case PaperType.Green:
                     PileGreen.RemoveFromPile();
-                            break;
-                    case PaperType.Blue:
+                    break;
+                case PaperType.Blue:
                     PileBlue.RemoveFromPile();
-                             break;
-                }
-                StartCoroutine(SpawnPosition());
+                    break;
             }
-     }
+            StartCoroutine(SpawnPosition());
+        }
+    }
 
-       
-     
- 
-
-
-
-    IEnumerator MoveToTuyaux(Vector3 target ,Tuyaux tuyaux)
+    IEnumerator MoveToTuyaux(Vector3 target, Tuyaux tuyaux)
     {
         Vector3 start = transform.position;
         float t = 0f;
-        float duration = 0.3f;//Speed de l'anim
-
-        // Calcul de la direction et angle vers le tuyau 
+        float duration = 0.3f;
 
         Vector3 direction = target - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        float Offset = 90f;//offset rotation
-        float randomValue = Random.Range(1, 5);//random pour l'angle
-        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle - Offset + randomValue); // Rotation  atteindre 
-        
+        float Offset = 90f;
+        float randomValue = Random.Range(1, 5);
+        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle - Offset + randomValue);
 
-
-        // --- Randomisation ---
-        float arcHeight = Random.Range(0.3f, 0.7f);          // hauteur de l'arc
-        float rotationAmplitude = Random.Range(5f, 15f);     // amplitude de rotation
-        float oscillationSpeed = Random.Range(3f, 6f);       // vitesse d'oscillation
+        float arcHeight = Random.Range(0.3f, 0.7f);
+        float rotationAmplitude = Random.Range(5f, 15f);
+        float oscillationSpeed = Random.Range(3f, 6f);
 
         while (t < 1f)
         {
             t += Time.deltaTime / duration;
             Vector3 basePos = Vector3.Lerp(start, target, t);
-
             basePos.y += Mathf.Sin(t * Mathf.PI) * arcHeight;
-
             transform.position = basePos;
-            float oscillation = Mathf.Sin(t * Mathf.PI * 4f) * rotationAmplitude; // 4 oscillations max
+            float oscillation = Mathf.Sin(t * Mathf.PI * 4f) * rotationAmplitude;
             Quaternion dynamicRot = Quaternion.Euler(0f, 0f, angle + Offset + oscillation);
-
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * 10f);
-            transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            dynamicRot,
-            120f * Time.deltaTime // vitesse de rotation en degr�s / seconde
-        );
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, dynamicRot, 120f * Time.deltaTime);
             yield return null;
             transform.position = target;
             transform.rotation = targetRot;
@@ -226,12 +172,11 @@ public class PaperMove : MonoBehaviour
         float durationScale = 0.15f;
         Vector3 scalePaper = transform.localScale;
         Vector3 TargetScale = new Vector3(0f, 0f, 0f);
-        Vector3 targetpos = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z) ;
+        Vector3 targetpos = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
         while (t < 1f)
         {
             t += Time.deltaTime / durationScale;
             transform.localScale = Vector3.Lerp(scalePaper, TargetScale, t);
-
             transform.position = Vector3.Lerp(target, targetpos, t);
             yield return null;
         }
@@ -254,99 +199,67 @@ public class PaperMove : MonoBehaviour
         sprite.color = Color.white;
         Vector3 start = transform.position;
         float t = 0f;
-        float duration = 0.3f;//Speed de l'anim
-
-        // Calcul de la direction et angle vers le tuyau 
+        float duration = 0.3f;
 
         Vector3 direction = spawnPos - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        float Offset = 90f;//offset rotation
-        float randomValue = Random.Range(1, 5);//random pour l'angle
-        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle - Offset + randomValue); // Rotation  atteindre 
+        float Offset = 90f;
+        float randomValue = Random.Range(1, 5);
+        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle - Offset + randomValue);
 
-
-
-        // --- Randomisation ---
-        float arcHeight = Random.Range(-0.5f, 0.9f);          // hauteur de l'arc
-        float rotationAmplitude = Random.Range(-15f, 25f);     // amplitude de rotation
-        float oscillationSpeed = Random.Range(3f, 6f);       // vitesse d'oscillation
+        float arcHeight = Random.Range(-0.5f, 0.9f);
+        float rotationAmplitude = Random.Range(-15f, 25f);
+        float oscillationSpeed = Random.Range(3f, 6f);
 
         while (t < 1f)
         {
             t += Time.deltaTime / duration;
             Vector3 basePos = Vector3.Lerp(start, spawnPos, t);
-
             basePos.y += Mathf.Sin(t * Mathf.PI) * arcHeight;
-
             transform.position = basePos;
-            float oscillation = Mathf.Sin(t * Mathf.PI * 4f) * rotationAmplitude; // 4 oscillations max
+            float oscillation = Mathf.Sin(t * Mathf.PI * 4f) * rotationAmplitude;
             Quaternion dynamicRot = Quaternion.Euler(0f, 0f, angle + Offset + oscillation);
-
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * 10f);
-            transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            dynamicRot,
-            120f * Time.deltaTime // vitesse de rotation en degr�s / seconde
-        );
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, dynamicRot, 120f * Time.deltaTime);
             yield return null;
             transform.position = spawnPos;
-            //transform.rotation = targetRot;
             OnPile = false;
         }
-        
     }
-
 
     public IEnumerator MoveToPileCo(Vector3 target, Pile pile)
     {
         Vector3 start = transform.position;
         float t = 0f;
-        float duration = 0.3f;//Speed de l'anim
-
-        // Calcul de la direction et angle vers le tuyau 
+        float duration = 0.3f;
 
         Vector3 direction = target - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        float Offset = 90f;//offset rotation
-        float randomValue = Random.Range(-5, 5);//random pour l'angle
-        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle - Offset + randomValue); // Rotation  atteindre 
+        float Offset = 90f;
+        float randomValue = Random.Range(-5, 5);
+        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle - Offset + randomValue);
 
-
-
-        // --- Randomisation ---
-        float arcHeight = Random.Range(0.3f, 0.7f);          // hauteur de l'arc
-        float rotationAmplitude = Random.Range(5f, 15f);     // amplitude de rotation
-        float oscillationSpeed = Random.Range(3f, 6f);       // vitesse d'oscillation
+        float arcHeight = Random.Range(0.3f, 0.7f);
+        float rotationAmplitude = Random.Range(5f, 15f);
+        float oscillationSpeed = Random.Range(3f, 6f);
 
         while (t < 1f)
         {
             t += Time.deltaTime / duration;
             Vector3 basePos = Vector3.Lerp(start, target, t);
-
             basePos.y += Mathf.Sin(t * Mathf.PI) * arcHeight;
-
             transform.position = basePos;
-            float oscillation = Mathf.Sin(t * Mathf.PI * 4f) * rotationAmplitude; // 4 oscillations max
+            float oscillation = Mathf.Sin(t * Mathf.PI * 4f) * rotationAmplitude;
             Quaternion dynamicRot = Quaternion.Euler(0f, 0f, angle + Offset + oscillation);
-
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * 10f);
-            transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            dynamicRot,
-            120f * Time.deltaTime // vitesse de rotation en degr�s / seconde
-        );
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, dynamicRot, 120f * Time.deltaTime);
             yield return null;
             transform.position = target;
             transform.rotation = targetRot;
         }
 
-        SpriteRenderer  sprite = GetComponent< SpriteRenderer > ();
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
         sprite.color = new Color(0f, 0f, 0f, 0f);
-       
-
-        
-            pile.AddToPile();
-            
-
+        pile.AddToPile();
     }
 }

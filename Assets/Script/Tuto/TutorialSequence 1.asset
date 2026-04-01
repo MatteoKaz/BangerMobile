@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a21360199fbacb4aa0c6262bb4d5816, type: 3}
+  m_Name: TutorialSequence 1
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  triggerType: 0
+  triggerDelay: 10
+  steps:
+  - text: Les papiers administratifs arrivent sur votre bureau par ce tuyau. Ils
+      ont trois couleurs distinctes.
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 0
+  - text: "Ici, voici les tuyaux par lesquels vous devez envoyer les documents \xE0
+      vos employ\xE9s."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 1

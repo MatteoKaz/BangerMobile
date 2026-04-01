@@ -12,4 +12,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a21360199fbacb4aa0c6262bb4d5816, type: 3}
   m_Name: TutorialSequence
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
-  steps: []
+  triggerType: 0
+  triggerDelay: 10
+  steps:
+  - text: "Les papiers administratifs arrivent sur votre bureau par ce tuyau.\r\n
+      Ils ont trois couleurs distinctes."
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 0
+  - text: "Ici, voici les tuyaux par lesquels vous devez envoyer les documents \xE0
+      vos employ\xE9s.\r\n"
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 0
+  - text: Vous devez ainsi les trier en les swipant vers les tuyaux avec les couleurs
+      correspondantes
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 1
+  - text: "Attention ! Si vous les triez mal, cela sera consid\xE9r\xE9 comme une
+      erreur, et chaque erreur sera d\xE9duite de votre salaire \xE0 la fin de la
+      journ\xE9e."
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 0
+  - text: "Une fois envoy\xE9s, ces derniers sont analys\xE9s et trait\xE9s par les
+      p\xF4les d'employ\xE9s correspondants."
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 0
+  - text: "Comme vous pouvez le constater sur votre ordinateur, le document que vous
+      venez d'envoyer est actuellement en train d'\xEAtre trait\xE9 par le p\xF4le"
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 1
+  - text: "Sur votre ordinateur, vous pouvez donc suivre l'avanc\xE9e de vos employ\xE9s,
+      en voyant directement sur votre \xE9cran quand ils travaillent ou non."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 1
+  - text: "Attention, si vous envoyez trop de documents d'un coup dans un p\xF4le,
+      ce dernier risque de se retrouver avec une charge de travail sup\xE9rieure
+      \xE0 ce qu'il peut g\xE9rer, et peut alors se retrouver en \"surcharge\"."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 0
+  - text: "Mais si jamais un p\xF4le se retrouve surcharg\xE9, vous pouvez contrebalancer
+      \xE7a en venant s\xE9lectionner un employ\xE9 d'un autre p\xF4le et en le d\xE9posant
+      sur une case vide dans le p\xF4le surcharg\xE9."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 0
+  - text: "Vous pouvez \xE0 tout moment de la journ\xE9e changer vos employ\xE9s
+      de p\xF4le. \xC0 vous de g\xE9rer au mieux vos \xE9quipes."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 0
+  - text: "Une fois la journ\xE9e finie, vous recevez votre fiche de paie. Sur celle-ci
+      se trouve le quota journalier que vous avez atteint, ainsi que le salaire gagn\xE9
+      affili\xE9."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 0

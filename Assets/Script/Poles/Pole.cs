@@ -36,11 +36,11 @@ public class Pole : MonoBehaviour
     [Header("Surcharge")]
     public float surchargeValue = 0f;             // Valeur actuelle
     public float maxSurcharge = 100f;        // Surcharge maximale
-    public float surchargeStep = 5f;         // Valeur ajoutée à chaque incrément
-    public float baseDelay = 0.01f;           // Délai initial entre incréments
-    public int[] surchargeThresholds = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }; // Paliers pour déclencher malus
+    public float surchargeStep = 5f;         // Valeur ajoutï¿½e ï¿½ chaque incrï¿½ment
+    public float baseDelay = 0.01f;           // Dï¿½lai initial entre incrï¿½ments
+    public int[] surchargeThresholds = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }; // Paliers pour dï¿½clencher malus
     public int nextThresholdIndex = 0;      // Pour savoir quel palier est le prochain
-    public Coroutine SurchargeRef;      // Pour gérer la coroutine
+    public Coroutine SurchargeRef;      // Pour gï¿½rer la coroutine
     public float decayRate = 7f;
     [SerializeField] Slider surchargeProgress;
     public float sliderSpeed = 10f;
@@ -201,7 +201,7 @@ public class Pole : MonoBehaviour
     }
     IEnumerator RebuildAfterLoad()
     {
-        yield return new WaitForEndOfFrame(); // attend que tout soit initialisé
+        yield return new WaitForEndOfFrame(); // attend que tout soit initialisï¿½
         employeList.Clear();
 
         List<InventorySlot> slots = new List<InventorySlot>();
@@ -239,12 +239,13 @@ public class Pole : MonoBehaviour
     }
     public void BeginSurcharge()
     {
-
-
         if (waitingPaper > 0 && employeList.Count > 0)
         {
             if (SurchargeRef == null)
+            {
+                TutorialManager.NotifyFirstOverload();
                 SurchargeRef = StartCoroutine(Surcharge());
+            }
         }
         else if (SurchargeRef != null && surchargeValue <= 0)
         {
@@ -275,7 +276,7 @@ public class Pole : MonoBehaviour
 
                 }
 
-                // Délai dynamique selon charge
+                // Dï¿½lai dynamique selon charge
                 float delay = baseDelay / (1f + (waitingPaper / Mathf.Max(1, totalPaper)));
                 yield return new WaitForSeconds(delay);
             }
@@ -292,7 +293,7 @@ public class Pole : MonoBehaviour
                 }
 
                 surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
-                yield return null; // une seule fois par frame, après avoir traité tous les paliers
+                yield return null; // une seule fois par frame, aprï¿½s avoir traitï¿½ tous les paliers
             }
             else // surchargeValue == 0 et waitingPaper == 0
             {
@@ -305,7 +306,7 @@ public class Pole : MonoBehaviour
 
     private void ApplyMalus(int i)
     {
-        Debug.Log($"ApplyMalus appelé avec i={i} | nextThresholdIndex={nextThresholdIndex}");
+        Debug.Log($"ApplyMalus appelï¿½ avec i={i} | nextThresholdIndex={nextThresholdIndex}");
         foreach (Employe emp in employeList)
         {
             switch (i)

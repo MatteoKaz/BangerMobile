@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a21360199fbacb4aa0c6262bb4d5816, type: 3}
+  m_Name: TutorialSequence 2
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  triggerType: 1
+  triggerDelay: 10
+  steps:
+  - text: Vous devez ainsi les trier en les swipant vers les tuyaux avec les couleurs
+      correspondantes.
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 1
+  - text: "Attention ! Si vous les triez mal, cela sera consid\xE9r\xE9 comme une
+      erreur, et chaque erreur sera d\xE9duite de votre salaire \xE0 la fin de la
+      journ\xE9e."
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 1
+  - text: "Une fois envoy\xE9s, ces derniers sont analys\xE9s et trait\xE9s par les
+      p\xF4les d'employ\xE9s correspondants."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 0
+  - text: "Comme vous pouvez le constater sur votre ordinateur, le document que vous
+      venez d'envoyer est actuellement en train d'\xEAtre trait\xE9 par le p\xF4le
+      correspondant."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 1
