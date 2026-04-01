@@ -102,6 +102,12 @@ MonoBehaviour:
   - audioType: 41
     audioClips:
     - {fileID: 8300000, guid: 34f349da5d4b7ba4c843dc2a6324cfc0, type: 3}
+  - audioType: 32
+    audioClips:
+    - {fileID: 8300000, guid: 0d14c13ad3f5f15428d953070c40ea06, type: 3}
+  - audioType: 33
+    audioClips:
+    - {fileID: 8300000, guid: 675c56d5592b86a4f82360dfda83e4a4, type: 3}
   - audioType: 42
     audioClips:
     - {fileID: 8300000, guid: f6c5a78a6f5475640879dfa583016f02, type: 3}
