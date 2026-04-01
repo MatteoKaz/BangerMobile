@@ -68,7 +68,7 @@ public class AudioEventDispatcher : ScriptableObject
     /// <summary>Joue un son one-shot (interrompt le précédent).</summary>
     public void PlayAudio(AudioType audioType)
     {
-        AudioClip clip = FindRandomClip(audioType);
+        AudioClip clip = GetClip(audioType);
         if (clip != null)
             OnAudioEvent?.Invoke(clip);
     }
@@ -120,7 +120,6 @@ public class AudioEventDispatcher : ScriptableObject
         }
         return null;
     }
-    // Remplace "private" par "public"
     public AudioClip GetClip(AudioType audioType)
     {
         for (int i = 0; i < audioClips.Length; i++)

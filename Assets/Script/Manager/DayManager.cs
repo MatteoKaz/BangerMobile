@@ -23,6 +23,7 @@ public class DayManager : MonoBehaviour
     [SerializeField] private TimeManager timeManager;
     [SerializeField] RankingManager rankingManager;
     [SerializeField] QuotatManager quotatManager;
+    [SerializeField] AudioEventDispatcher audioEventDispatcher;
     public void OnEnable()
     {
         timeManager.TimerEnded += DayOver;

@@ -14,7 +14,8 @@ public class EmployeFicheMove : MonoBehaviour
 
     int currentPage = 0;
     bool isMoving = false;
-
+    
+[SerializeField] AudioEventDispatcher audioEventDispatcher;
     void OnEnable()
     {
         inputPlayerManagerCustom.OnMoveLeft += LeftSwipe;
@@ -31,7 +32,8 @@ public class EmployeFicheMove : MonoBehaviour
     {
         if (!Parent.activeInHierarchy || isMoving)
             return;
-
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.TurnPageLeft);
         currentPage = (currentPage + 1) % (maxPage + 1);
 
         StartCoroutine(MoveToPage());
@@ -41,7 +43,8 @@ public class EmployeFicheMove : MonoBehaviour
     {
         if (!Parent.activeInHierarchy || isMoving)
             return;
-
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.TurnPageRight);
         currentPage--;
         if (currentPage < 0)
             currentPage = maxPage;

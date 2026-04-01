@@ -9,7 +9,7 @@ public class ScoreManager : MonoBehaviour
     public int playerQuotat = 0;
     public int quotatOfTheDay = 0;
     public int WeekMedianQuotat = 0;
-
+[SerializeField] AudioEventDispatcher audioEventDispatcher;
     [Header("Références")]
     [SerializeField] DayManager dayManager;
     [SerializeField] PoleManager poleManager;
@@ -115,6 +115,8 @@ public class ScoreManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         LaunchScoreAnim?.Invoke();
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.End);
     }
 
     public void ResetDay()

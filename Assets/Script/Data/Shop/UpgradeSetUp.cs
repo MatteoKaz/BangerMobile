@@ -151,133 +151,133 @@ public class UpgradeSetUp : MonoBehaviour
 
     }
 
-    public void Buy()
+   public void Buy()
+{
+    if (currentRefOfItem == null)
     {
-        if (currentRefOfItem == null)
-        {
-            if (audioEventDispatcher != null)
-                audioEventDispatcher.PlayAudio(AudioType.BuyShop);
-            buttonBuy.sprite = CannotBuy;
-            return;
-        }
-           
-       
-       
-
-        RefOfItem roi = currentRefOfItem;
-
-
-        if (roi.categoryUpgrade == CategoryUpgrade.Usable)
-        {
-            if (roi.priceOfItem <= scoreManager.playerMoney)
-            {
-                switch (roi.type)
-                {
-                    case TypeOfUpgrade.Swat:
-                        swatManager.numberOfUtilisation += Mathf.RoundToInt(roi.upgradeValue);
-                        swatManager.OnBuyActivation();
-                        break;
-                }
-            }
-        }
-
-        if (roi.categoryUpgrade == CategoryUpgrade.Employe)
-        {
-            if (roi.priceOfItem <= scoreManager.playerMoney)
-            {
-                if (emp == null)
-                {
-                    buttonBuy.sprite = CannotBuy;
-                    return;
-                }
-                scoreManager.playerMoney -= roi.priceOfItem;
-                scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
-                roi.priceOfItem += roi.inflation;
-                shopUpgrade.allUpgrade[roi.index].price = roi.priceOfItem;
-                popUPPrice.text = $"{roi.priceOfItem}$";
-                if (!emp.upgradeCounts.ContainsKey(roi.iconeRef))
-                    emp.upgradeCounts[roi.iconeRef] = 0;
-                emp.upgradeCounts[roi.iconeRef]++;
-                if (empLink != null)
-                {
-                    if (!emp.upgradesImages.Contains(roi.iconeRef))
-                    {
-                        emp.upgradesImages.Add(roi.iconeRef);
-
-                        empLink.upgradesImages.Add(roi.iconeRef);
-                        empLink.SetIcone();
-                    }
-                }
-                else
-                {
-
-                }
-
-                switch (roi.type)
-                {
-                    case TypeOfUpgrade.BoostErrorRate:
-                        emp.employeErrorPercenBonus += roi.upgradeValue; Debug.Log($"upgradeValue: {roi.upgradeValue}");
-                        break;
-                    case TypeOfUpgrade.BoostSpeed:
-                        emp.employeWorkRateBonus += roi.upgradeValue; break;
-                    case TypeOfUpgrade.BoostSurchargeResistance:
-                        emp.StressBonus += roi.upgradeValue; break;
-                    case TypeOfUpgrade.DoublePaperDone:
-                        emp.BonusPaperDone = roi.upgradeValue; break;
-
-
-                }
-
-            }
-        }
-           
-        
-        if (roi.categoryUpgrade == CategoryUpgrade.Pole)
-        {
-            if (roi.priceOfItem <= scoreManager.playerMoney)
-            {
-                if (poleRef == null)
-                {
-                    buttonBuy.sprite = CannotBuy;
-                    return;
-                }
-
-                scoreManager.playerMoney -= roi.priceOfItem;
-                scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
-                roi.priceOfItem += roi.inflation;
-                shopUpgrade.allUpgrade[roi.index].price = roi.priceOfItem;
-                popUPPrice.text = $"{roi.priceOfItem}$";
-
-                if (!poleRef.upgradeCounts.ContainsKey(roi.iconeRef))
-                    poleRef.upgradeCounts[roi.iconeRef] = 0;
-                poleRef.upgradeCounts[roi.iconeRef]++;
-
-                poleLink.timedUpgrades.Add(new TimedUpgrade
-                {
-                    icon = roi.iconeRef,
-                    type = roi.type,
-                    value = roi.upgradeValue,
-                    daysRemaining = roi.durationInDays
-                });
-                
-                poleLink.SetIcone();
-
-                switch (roi.type)
-                {
-                    case TypeOfUpgrade.BoostSpeedPole: poleRef.BoostEmployeSpeed += roi.upgradeValue; break;
-                    case TypeOfUpgrade.BoostErrorPole: poleRef.BoostEmployeError += roi.upgradeValue; break;
-                    case TypeOfUpgrade.PrimePole: poleRef.BonusRevenus += roi.upgradeValue; break;
-                    case TypeOfUpgrade.CigarettePole: poleRef.BoostTimeForSurcharge += roi.upgradeValue; break;
-                }
-            }
-        }
-
-
-
-
-
-
+        audioEventDispatcher?.PlayAudio(AudioType.CannotBuy);
+        return;
     }
+
+    RefOfItem roi = currentRefOfItem;
+    
+    if (roi.priceOfItem > scoreManager.playerMoney)
+    {
+        audioEventDispatcher?.PlayAudio(AudioType.CannotBuy);
+        buttonBuy.sprite = CannotBuy;
+        return;
+    }
+    
+    switch (roi.categoryUpgrade)
+    {
+        case CategoryUpgrade.Usable:
+
+            switch (roi.type)
+            {
+                case TypeOfUpgrade.Swat:
+                    swatManager.numberOfUtilisation += Mathf.RoundToInt(roi.upgradeValue);
+                    swatManager.OnBuyActivation();
+                    break;
+            }
+
+            break;
+
+        case CategoryUpgrade.Employe:
+            
+            if (emp == null)
+            {
+                audioEventDispatcher?.PlayAudio(AudioType.CannotBuy);
+                buttonBuy.sprite = CannotBuy;
+                return;
+            }
+
+            if (!emp.upgradeCounts.ContainsKey(roi.iconeRef))
+                emp.upgradeCounts[roi.iconeRef] = 0;
+
+            emp.upgradeCounts[roi.iconeRef]++;
+
+            if (empLink != null)
+            {
+                if (!emp.upgradesImages.Contains(roi.iconeRef))
+                {
+                    emp.upgradesImages.Add(roi.iconeRef);
+                    empLink.upgradesImages.Add(roi.iconeRef);
+                    empLink.SetIcone();
+                }
+            }
+
+            switch (roi.type)
+            {
+                case TypeOfUpgrade.BoostErrorRate:
+                    emp.employeErrorPercenBonus += roi.upgradeValue;
+                    break;
+                case TypeOfUpgrade.BoostSpeed:
+                    emp.employeWorkRateBonus += roi.upgradeValue;
+                    break;
+                case TypeOfUpgrade.BoostSurchargeResistance:
+                    emp.StressBonus += roi.upgradeValue;
+                    break;
+                case TypeOfUpgrade.DoublePaperDone:
+                    emp.BonusPaperDone = roi.upgradeValue;
+                    break;
+            }
+
+            break;
+
+        case CategoryUpgrade.Pole:
+            
+            if (poleRef == null)
+            {
+                audioEventDispatcher?.PlayAudio(AudioType.CannotBuy);
+                buttonBuy.sprite = CannotBuy;
+                return;
+            }
+
+            if (!poleRef.upgradeCounts.ContainsKey(roi.iconeRef))
+                poleRef.upgradeCounts[roi.iconeRef] = 0;
+
+            poleRef.upgradeCounts[roi.iconeRef]++;
+
+            poleLink.timedUpgrades.Add(new TimedUpgrade
+            {
+                icon = roi.iconeRef,
+                type = roi.type,
+                value = roi.upgradeValue,
+                daysRemaining = roi.durationInDays
+            });
+
+            poleLink.SetIcone();
+
+            switch (roi.type)
+            {
+                case TypeOfUpgrade.BoostSpeedPole:
+                    poleRef.BoostEmployeSpeed += roi.upgradeValue;
+                    break;
+                case TypeOfUpgrade.BoostErrorPole:
+                    poleRef.BoostEmployeError += roi.upgradeValue;
+                    break;
+                case TypeOfUpgrade.PrimePole:
+                    poleRef.BonusRevenus += roi.upgradeValue;
+                    break;
+                case TypeOfUpgrade.CigarettePole:
+                    poleRef.BoostTimeForSurcharge += roi.upgradeValue;
+                    break;
+            }
+
+            break;
+    }
+    
+    scoreManager.playerMoney -= roi.priceOfItem;
+    scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
+
+    roi.priceOfItem += roi.inflation;
+    shopUpgrade.allUpgrade[roi.index].price = roi.priceOfItem;
+    popUPPrice.text = $"{roi.priceOfItem}$";
+    
+    audioEventDispatcher?.PlayAudio(AudioType.BuyShop);
+    
+    buttonBuy.sprite = CannotBuy;
+}
     public void Update()
     {
         if(open)
