@@ -46,6 +46,8 @@ public class PaperMove : MonoBehaviour
     {
         myself = this.gameObject;
         StartCoroutine(SpawnPosition());
+        TutorialManager.NotifyFirstPaperSent();
+
     }
     public void DisableThrow()
     {
@@ -213,7 +215,7 @@ public class PaperMove : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(
             transform.rotation,
             dynamicRot,
-            120f * Time.deltaTime // vitesse de rotation en degrés / seconde
+            120f * Time.deltaTime // vitesse de rotation en degrï¿½s / seconde
         );
             yield return null;
             transform.position = target;
@@ -284,7 +286,7 @@ public class PaperMove : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(
             transform.rotation,
             dynamicRot,
-            120f * Time.deltaTime // vitesse de rotation en degrés / seconde
+            120f * Time.deltaTime // vitesse de rotation en degrï¿½s / seconde
         );
             yield return null;
             transform.position = spawnPos;
@@ -331,7 +333,7 @@ public class PaperMove : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(
             transform.rotation,
             dynamicRot,
-            120f * Time.deltaTime // vitesse de rotation en degrés / seconde
+            120f * Time.deltaTime // vitesse de rotation en degrï¿½s / seconde
         );
             yield return null;
             transform.position = target;
