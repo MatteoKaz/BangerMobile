@@ -84,3 +84,24 @@ MonoBehaviour:
   - audioType: 38
     audioClips:
     - {fileID: 8300000, guid: 739b68a56a82c8d46b1ab83a6c83c2b5, type: 3}
+  - audioType: 34
+    audioClips:
+    - {fileID: 8300000, guid: 65ddb1cafdd1bfe4cb3999d6ced2b2c1, type: 3}
+  - audioType: 37
+    audioClips:
+    - {fileID: 8300000, guid: ecef3ab304c8aa440b6ed65dd03ff438, type: 3}
+  - audioType: 36
+    audioClips:
+    - {fileID: 8300000, guid: 5b0459cd8357e794f808965a9d2c5c34, type: 3}
+  - audioType: 39
+    audioClips:
+    - {fileID: 8300000, guid: f41f195601d3bed499fe13785ab759d8, type: 3}
+  - audioType: 40
+    audioClips:
+    - {fileID: 8300000, guid: cff4b9473bfbcf9478d332755df1134a, type: 3}
+  - audioType: 41
+    audioClips:
+    - {fileID: 8300000, guid: 34f349da5d4b7ba4c843dc2a6324cfc0, type: 3}
+  - audioType: 42
+    audioClips:
+    - {fileID: 8300000, guid: f6c5a78a6f5475640879dfa583016f02, type: 3}

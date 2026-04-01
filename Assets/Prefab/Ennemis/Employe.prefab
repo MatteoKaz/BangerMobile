@@ -60,6 +60,7 @@ MonoBehaviour:
   Image: {fileID: 8835013632445871525}
   UiManager: {fileID: 0}
   rouletteWheel: {fileID: 0}
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!1 &900026499959986600
 GameObject:
   m_ObjectHideFlags: 0
@@ -1401,6 +1402,7 @@ MonoBehaviour:
   actionMode: 2
   popup: {fileID: 1185402316846297099}
   popupImage: {fileID: 3684031215865982104}
+  autoHideDelay: 0
   stampLight: {fileID: -2390820086626876488, guid: 81b14822a75d51644a298e67c2610801, type: 3}
   stampMedium: {fileID: 7261223510755608039, guid: 67d7708a6bba8f34ea7712edddfddcab, type: 3}
   stampDark: {fileID: 7261223510755608039, guid: 67d7708a6bba8f34ea7712edddfddcab, type: 3}
@@ -1411,6 +1413,7 @@ MonoBehaviour:
   targetSceneName: 
   targetPanel: {fileID: 0}
   parentPanel: {fileID: 0}
+  audioEventDispatcher: {fileID: 0}
 --- !u!1 &7196130600249192795
 GameObject:
   m_ObjectHideFlags: 0
@@ -1967,6 +1970,7 @@ MonoBehaviour:
   actionMode: 2
   popup: {fileID: 1185402316846297099}
   popupImage: {fileID: 3684031215865982104}
+  autoHideDelay: 0
   stampLight: {fileID: -2390820086626876488, guid: 81b14822a75d51644a298e67c2610801, type: 3}
   stampMedium: {fileID: 7261223510755608039, guid: 67d7708a6bba8f34ea7712edddfddcab, type: 3}
   stampDark: {fileID: 7261223510755608039, guid: 67d7708a6bba8f34ea7712edddfddcab, type: 3}
@@ -1977,6 +1981,7 @@ MonoBehaviour:
   targetSceneName: 
   targetPanel: {fileID: 0}
   parentPanel: {fileID: 0}
+  audioEventDispatcher: {fileID: 0}
 --- !u!1 &8544996126185810254
 GameObject:
   m_ObjectHideFlags: 0

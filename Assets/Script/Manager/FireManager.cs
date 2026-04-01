@@ -122,7 +122,6 @@ public class FireManager : MonoBehaviour
         {
             yield return null;
         }
-        audioEventDispatcher?.PlayLoopAudio(AudioType.Walk);
         yield return new WaitForSeconds(0.25f);
         RectTransform rectDialogue = dialogueCase.GetComponent<RectTransform>();
 
