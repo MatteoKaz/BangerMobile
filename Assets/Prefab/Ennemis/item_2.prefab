@@ -304,7 +304,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DraggableItems
   image: {fileID: 0}
+  originalParent: {fileID: 0}
   parentAfterDrag: {fileID: 0}
+  linkedEmploye: {fileID: 0}
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!1 &6021534878231679294
 GameObject:
   m_ObjectHideFlags: 0

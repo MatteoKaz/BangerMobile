@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,7 @@ public class EmployeFicheInfo : MonoBehaviour
 
     [SerializeField] UiManager UiManager;
     [SerializeField] RouletteWheel rouletteWheel;
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     private void OnEnable()
     {
         UiManager.ScoreAnim += SetUpText;

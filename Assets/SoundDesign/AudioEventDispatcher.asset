@@ -81,3 +81,6 @@ MonoBehaviour:
   - audioType: 31
     audioClips:
     - {fileID: 8300000, guid: edcfe02682cc2074a9c9dfc0f62c7311, type: 3}
+  - audioType: 38
+    audioClips:
+    - {fileID: 8300000, guid: 739b68a56a82c8d46b1ab83a6c83c2b5, type: 3}

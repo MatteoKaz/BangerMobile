@@ -21,9 +21,13 @@ public class RefOfItem : MonoBehaviour
     public string nameEncadre;
     public int durationInDays;
 
+    [SerializeField] public AudioEventDispatcher audioEventDispatcher;
+
     public void OpenPopUP()
     {
       //Effet
+      if (audioEventDispatcher != null)
+          audioEventDispatcher.PlayAudio(AudioType.ClickShopIcon);
       upgradeSetUp.SetPopUp(this);
     }
    

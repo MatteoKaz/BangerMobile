@@ -156,6 +156,7 @@ MonoBehaviour:
   numberText: {fileID: 8038351919201292926}
   NameUI: {fileID: 2061660954085828753}
   icone: {fileID: 7032504131980684284}
+  index: 0
   priceOfItem: 0
   UpgradeName: 
   type: 0
@@ -165,6 +166,8 @@ MonoBehaviour:
   description: 
   categoryUpgrade: 0
   nameEncadre: 
+  durationInDays: 0
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!95 &3523390624745739593
 Animator:
   serializedVersion: 7

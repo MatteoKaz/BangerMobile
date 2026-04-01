@@ -44,6 +44,8 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         transform.SetAsLastSibling();
 
         _canvasGroup.blocksRaycasts = false;
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.MouseClick);
 
         if (image != null)
             image.raycastTarget = false;
@@ -54,8 +56,6 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (audioEventDispatcher != null)
-            audioEventDispatcher.PlayAudio(AudioType.Drag);
         transform.position = eventData.position;
     }
 
@@ -72,6 +72,9 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             image.raycastTarget = true;
         
         AnimateScale(WorldToLocalScale(parentAfterDrag, _originalWorldScale), DropAnimDuration);
+      //  if (audioEventDispatcher != null)
+           // audioEventDispatcher.PlayAudio(AudioType.MouseClick);
+
     }
 
     private Vector3 WorldToLocalScale(Transform parent, Vector3 worldScale)

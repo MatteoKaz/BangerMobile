@@ -23,7 +23,6 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] GameObject ScrollEmploye;
     [SerializeField] GameObject scrollPole;
 
-
     [SerializeField] TextMeshProUGUI popUPPrice;
     [SerializeField] Image buttonBuy;
     [SerializeField] Sprite CanBuy;
@@ -35,7 +34,7 @@ public class UpgradeSetUp : MonoBehaviour
     public EmployeLink empLink;
     public PoleLink poleLink;
     private bool open = false;
-
+    [SerializeField] public AudioEventDispatcher audioEventDispatcher;
 
 
     public event Action EmployeSet;
@@ -61,6 +60,7 @@ public class UpgradeSetUp : MonoBehaviour
             refitem.categoryUpgrade = shopUpgrade.allUpgrade[i].category;
             refitem.NameUI.text = shopUpgrade.allUpgrade[i].UpgradeName;
             refitem.index = i;
+            refitem.audioEventDispatcher = audioEventDispatcher; 
             refitem.durationInDays = shopUpgrade.allUpgrade[i].duration;
         }
         myScrollRect.verticalNormalizedPosition = 1f;
@@ -72,7 +72,9 @@ public class UpgradeSetUp : MonoBehaviour
     {
         
             Popup.SetActive(true);
-            
+            if (audioEventDispatcher != null)
+                audioEventDispatcher.PlayAudio(AudioType.OpenPopUp);
+
             Popupname.text = roi.UpgradeName;
             PopUPdescription.text = roi.description;
             PopUPicon.sprite = roi.iconeRef;
@@ -103,6 +105,8 @@ public class UpgradeSetUp : MonoBehaviour
     {
 
         Popup.SetActive(false);
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.ClosePopUp);
         open = false;
         currentRefOfItem.priceText.text = $"{currentRefOfItem.priceOfItem}$"; 
         currentRefOfItem = null;
@@ -123,6 +127,8 @@ public class UpgradeSetUp : MonoBehaviour
         RefOfItem roi = currentRefOfItem;
         if (roi.priceOfItem <= scoreManager.playerMoney)
             buttonBuy.sprite = CanBuy;
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.Pop);
     }
 
 
@@ -135,6 +141,8 @@ public class UpgradeSetUp : MonoBehaviour
         RefOfItem roi = currentRefOfItem;
         if (roi.priceOfItem <= scoreManager.playerMoney)
             buttonBuy.sprite = CanBuy;
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.Pop);
 
     }
 
@@ -142,6 +150,8 @@ public class UpgradeSetUp : MonoBehaviour
     {
         if (currentRefOfItem == null)
         {
+            if (audioEventDispatcher != null)
+                audioEventDispatcher.PlayAudio(AudioType.BuyShop);
             buttonBuy.sprite = CannotBuy;
             return;
         }

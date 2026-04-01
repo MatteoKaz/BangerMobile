@@ -35,6 +35,13 @@ public enum AudioType
     Levier,
     Bouton,
     Spin,
+    SpinSlow,
+    SpinEnd,
+    BuyShop,
+    OpenPopUp,
+    ClosePopUp,
+    ClickShopIcon,
+    MouseClick,
 }
 [System.Serializable]
 public struct AudioInfos
