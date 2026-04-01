@@ -22,7 +22,7 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] ScoreManager scoreManager;
     [SerializeField] GameObject ScrollEmploye;
     [SerializeField] GameObject scrollPole;
-
+    [SerializeField] SwatManager swatManager;
     [SerializeField] TextMeshProUGUI popUPPrice;
     [SerializeField] Image buttonBuy;
     [SerializeField] Sprite CanBuy;
@@ -97,6 +97,11 @@ public class UpgradeSetUp : MonoBehaviour
             PoleSet?.Invoke();
         }
 
+        if (roi.categoryUpgrade == CategoryUpgrade.Usable)
+        {
+            if (roi.priceOfItem <= scoreManager.playerMoney)
+                buttonBuy.sprite = CanBuy;
+        }
 
 
 
@@ -160,6 +165,22 @@ public class UpgradeSetUp : MonoBehaviour
        
 
         RefOfItem roi = currentRefOfItem;
+
+
+        if (roi.categoryUpgrade == CategoryUpgrade.Usable)
+        {
+            if (roi.priceOfItem <= scoreManager.playerMoney)
+            {
+                switch (roi.type)
+                {
+                    case TypeOfUpgrade.Swat:
+                        swatManager.numberOfUtilisation += Mathf.RoundToInt(roi.upgradeValue);
+                        swatManager.OnBuyActivation();
+                        break;
+                }
+            }
+        }
+
         if (roi.categoryUpgrade == CategoryUpgrade.Employe)
         {
             if (roi.priceOfItem <= scoreManager.playerMoney)
@@ -182,14 +203,14 @@ public class UpgradeSetUp : MonoBehaviour
                     if (!emp.upgradesImages.Contains(roi.iconeRef))
                     {
                         emp.upgradesImages.Add(roi.iconeRef);
-                        
+
                         empLink.upgradesImages.Add(roi.iconeRef);
                         empLink.SetIcone();
                     }
                 }
                 else
                 {
-                    
+
                 }
 
                 switch (roi.type)
@@ -203,12 +224,14 @@ public class UpgradeSetUp : MonoBehaviour
                         emp.StressBonus += roi.upgradeValue; break;
                     case TypeOfUpgrade.DoublePaperDone:
                         emp.BonusPaperDone = roi.upgradeValue; break;
-                    
-                        
+
+
                 }
-               
+
             }
         }
+           
+        
         if (roi.categoryUpgrade == CategoryUpgrade.Pole)
         {
             if (roi.priceOfItem <= scoreManager.playerMoney)
