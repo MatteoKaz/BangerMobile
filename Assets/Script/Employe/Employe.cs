@@ -3,7 +3,9 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using static Pole;
@@ -90,7 +92,8 @@ public class Employe : MonoBehaviour
     public GameObject GrilleSwat;
     public float swatBoostSpeed = 0;
     public float swatBoostError = 0;
-    public float swatBoostTimeBeetweenWork = 0; 
+    public float swatBoostTimeBeetweenWork = 0;
+    public AnimationCurve swatAnim;
     public void OnEnable()
     {
         timemanager.TimerEnded += StopWorking;
@@ -490,22 +493,129 @@ public class Employe : MonoBehaviour
 
     public IEnumerator SwatCoroutine()
     {
+        Color color = new Color(0x8C / 255f, 0x8C / 255f, 0x8C / 255f);
+        employeImage.sprite = idleSprite;
         animator.SetTrigger("Swat");
-        yield return new WaitForSeconds(2f);
-        foreach(Transform child in GrilleSwat.transform)
+        yield return new WaitForSeconds(1.5f);
+       
+        float t = 0;
+        t = 0;
+        foreach (Transform child in GrilleSwat.transform)
         {
             GameObject go = child.gameObject;
             go.GetComponent<Image>().enabled = true;
-            yield return new WaitForSeconds(0.02f);
+
+        }
+        while (t < 1f)
+        {
+            for (int i = GrilleSwat.transform.childCount - 1; i >= 0; i--)
+            {
+                Image grille = GrilleSwat.transform.GetChild(i).GetComponent<Image>();
+
+
+                t += Time.deltaTime / 0.4f;
+                float normalized = Mathf.Clamp01(t);
+
+
+
+
+                grille.color = Color.Lerp(Color.clear, color, normalized);
+                yield return null;
+            }
+
+
+        }
+        yield return new WaitForSeconds(0.1f);
+        t = 0;
+        while (t< 0.75f)
+        {
+            t += Time.deltaTime/0.75f;
+            VerticalLayoutGroup vlg =GrilleSwat.GetComponent<VerticalLayoutGroup>();
+            float normalized = t / 0.75f;
+
+            float curve = swatAnim.Evaluate(normalized);
+            vlg.spacing = Mathf.Lerp(-99.1f, -47.7f, curve);
+            yield return null;
+
+        }
+        yield return new WaitForSeconds(1.5f);
+        Vector3 originalPos = GrilleSwat.transform.localPosition;
+        for (int i = 0; i< 3; i++)
+        {
+            t = 0f;
+            
+            while (t < 1f)
+            {
+                t += Time.deltaTime / Random.Range(0.5f,0.75f);
+                float normalized = Mathf.Clamp01(t);
+
+                // Shake position
+                float shakeStrength = Mathf.Lerp(8f, 0f, normalized);
+                Vector3 shakeOffset = new Vector3(
+                    Random.Range(-1f, 1f) * shakeStrength,
+                    Random.Range(-1f, 1f) * shakeStrength,
+                    0f
+                );
+
+                // Punch scale
+                float punch = Mathf.Sin(normalized * Mathf.PI * 4f) * Mathf.Lerp(0.15f, 0f, normalized);
+                Vector3 punchScale = Vector3.one * (1f + punch);
+
+                GrilleSwat.transform.localPosition = originalPos + shakeOffset;
+                GrilleSwat.transform.localScale = punchScale;
+
+                yield return null;
+            }
+        }
+        
+
+        // Reset
+        GrilleSwat.transform.localPosition = originalPos;
+        GrilleSwat.transform.localScale = Vector3.one;
+    
+        yield return new WaitForSeconds(3f);
+
+        t = 0;
+        while (t < 1f)
+        {
+            t += Time.deltaTime/0.75f ;
+            float normalized = Mathf.Clamp01(t);
+            VerticalLayoutGroup vlg = GrilleSwat.GetComponent<VerticalLayoutGroup>();
+           
+
+            
+            vlg.spacing = Mathf.Lerp(-47.7f,  - 99.1f, normalized);
+            yield return null;
         }
 
-        
-        yield return new WaitForSeconds(9f);
-        for (int i = GrilleSwat.transform.childCount - 1; i >= 0; i--)
+        yield return new WaitForSeconds(0.5f);
+        t = 0;
+        while (t < 1f)
         {
-            GrilleSwat.transform.GetChild(i).GetComponent<Image>().enabled = false;
-            yield return new WaitForSeconds(0.02f);
+            for (int i = GrilleSwat.transform.childCount - 1; i >= 0; i--)
+             {
+            Image grille = GrilleSwat.transform.GetChild(i).GetComponent<Image>();
+           
+            
+                t += Time.deltaTime / 0.3f;
+                float normalized = Mathf.Clamp01(t);
+                
+
+
+
+                grille.color = Color.Lerp(color, Color.clear, normalized);
+                yield return null;
+            }
+            
+
         }
+        foreach (Transform child in GrilleSwat.transform)
+        {
+            GameObject go = child.gameObject;
+            go.GetComponent<Image>().enabled = false;
+            
+        }
+        yield return new WaitForSeconds(7f);
         HasBeenSwat = true;
         SwatGoing = false;
         occupied = false;

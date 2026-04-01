@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   allUpgrade:
   - UpgradeName: La carotte
-    price: 150
+    price: 450
     type: 0
     category: 0
     upgradeValue: 0.25
@@ -24,7 +24,7 @@ MonoBehaviour:
       d'un employ\xE9"
     duration: 0
   - UpgradeName: Promesse de Promotion
-    price: 150
+    price: 475
     type: 1
     category: 0
     upgradeValue: 0.05
@@ -52,7 +52,7 @@ MonoBehaviour:
     Description: "Permet \xE0 un employ\xE9 de traiter 2 dossier \xE0 la fois."
     duration: 0
   - UpgradeName: La Prime
-    price: 200
+    price: 325
     type: 4
     category: 1
     upgradeValue: 0.25
@@ -62,7 +62,7 @@ MonoBehaviour:
       d'un p\xF4le"
     duration: 5
   - UpgradeName: Cigarette offerte
-    price: 150
+    price: 225
     type: 5
     category: 1
     upgradeValue: 0.25
@@ -72,7 +72,7 @@ MonoBehaviour:
       d'un p\xF4le."
     duration: 5
   - UpgradeName: Carotte Multiple
-    price: 150
+    price: 325
     type: 6
     category: 1
     upgradeValue: 0.25
@@ -90,3 +90,14 @@ MonoBehaviour:
     inflation: 20
     Description: "Permet de baisser le pourcentage d'erreurs d'un p\xF4le."
     duration: 3
+  - UpgradeName: Le S.W.A.T
+    price: 350
+    type: 8
+    category: 2
+    upgradeValue: 1
+    icone: {fileID: 7605283500736555, guid: de47872bfe853f84293cedc52f917316, type: 3}
+    inflation: 20
+    Description: "Permet de faire intervenir une \xE9quipe de force sp\xE9ciale afin
+      de forcer les employ\xE9es \xE0 se remettre au travail s'ils \xE9taient \xE0
+      l'arr\xEAt, et leurs ajoutent un boost temporaire."
+    duration: 0
