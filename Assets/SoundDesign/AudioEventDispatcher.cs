@@ -46,6 +46,8 @@ public enum AudioType
     Fired,
     Talk,
     CannotBuy,
+    FlyMouche,
+    MoucheDead,
 }
 [System.Serializable]
 public struct AudioInfos

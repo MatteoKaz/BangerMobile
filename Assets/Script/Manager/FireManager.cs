@@ -138,7 +138,7 @@ public class FireManager : MonoBehaviour
 
             yield return null;
         }
-        
+        audioEventDispatcher?.StopLoopAudio();
         yield return new WaitForSeconds(0.75f);
         typeWriter.StartDialogue(empFiche.employe.firelines, animator);
         launch = false;

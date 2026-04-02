@@ -17,6 +17,7 @@ public class FlyTapDetector : MonoBehaviour
     private FlyController _flyController;
     private Collider2D _collider;
     private Camera _mainCamera;
+    [SerializeField] AudioEventDispatcher audioEventDispatcher;
 
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class FlyTapDetector : MonoBehaviour
     private void Start()
     {
         _mainCamera = Camera.main;
+        audioEventDispatcher?.PlayLoopAudio(AudioType.FlyMouche);
     }
 
     private void Update()
@@ -71,6 +73,8 @@ public class FlyTapDetector : MonoBehaviour
     {
         if (_collider.OverlapPoint(worldPosition))
         {
+            audioEventDispatcher?.StopLoopAudio();         
+            audioEventDispatcher?.PlayAudio(AudioType.MoucheDead);
             _flyController.OnTapped();
             return;
         }
@@ -81,9 +85,11 @@ public class FlyTapDetector : MonoBehaviour
             _flyController.Flee(worldPosition);
         }
     }
+    
 
     private void OnDestroy()
     {
+        audioEventDispatcher.PlayAudio(AudioType.MoucheDead);
         EnhancedTouchSupport.Disable();
     }
 }
