@@ -49,6 +49,9 @@ public class Pole : MonoBehaviour
     public List<Sprite> upgradesImages = new List<Sprite>();
     public Dictionary<Sprite, int> upgradeCounts = new Dictionary<Sprite, int>();
 
+
+    public Transform quotatTextTarget;
+
     public bool Stop;
     public event Action UpdatePaperCount;
     public event Action UpdatePaperFond;
@@ -135,14 +138,20 @@ public class Pole : MonoBehaviour
         LaunchWorker();
         UpdatePaperCount?.Invoke();
         BeginSurcharge();
+        UpdatePaperFond?.Invoke();
     }
 
     public void WinMoney()
     {
         localAdvencement += paperValue * Mathf.RoundToInt(BonusRevenus);
-        eventWinMoney?.Invoke();
-    }
 
+        
+    }
+    public void LooseMoney(int value)
+    {
+        localAdvencement -= value;
+        
+    }
     public void UpdateUI()
     {
         eventWinMoney?.Invoke();
@@ -246,8 +255,9 @@ public class Pole : MonoBehaviour
             {
                 float employeeCount = Mathf.Max(1, employeList.Count);
 
-                // Plus d'employés = surcharge monte moins vite
-                surchargeValue += (surchargeStep / employeeCount) / (1f + BoostTimeForSurcharge);
+
+                float chargePerEmployee = (float)waitingPaper / Mathf.Pow(employeeCount, 1.5f);
+                surchargeValue += (surchargeStep * chargePerEmployee) / (1f + BoostTimeForSurcharge);
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                 Debug.LogWarning($"Surcharge {surchargeValue}");
                 surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);

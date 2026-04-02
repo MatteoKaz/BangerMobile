@@ -5,12 +5,12 @@ public class UiTimer : MonoBehaviour
 {
     [SerializeField] TimeManager timeManager;
     [SerializeField] TextMeshProUGUI textMeshPro;
-
+    [SerializeField] PaperSpawner spawner;
     public void Update()
     {
         if (timeManager != null)
         {
-            textMeshPro.text = $"{timeManager.DayDurationToShow}";
+            textMeshPro.text = $"{spawner.papersRemaining}";
         }
     }
 }

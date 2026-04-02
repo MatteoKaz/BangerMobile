@@ -65,7 +65,7 @@ public class SaveManager : MonoBehaviour
     /// <summary>Initialise une toute nouvelle partie sans save.</summary>
     private void InitNewGame()
     {
-        scoreManager.playerMoney = 0;
+        //scoreManager.playerMoney = 0;
     }
 
     /// <summary>Découvre automatiquement tous les Pole et Employe de la scène.</summary>

@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public int playerMoney = 0;
+    [SerializeField] public int playerMoney = 250;
     public int playerQuotat = 0;
     public int quotatOfTheDay = 0;
     public int WeekMedianQuotat = 0;
-[SerializeField] AudioEventDispatcher audioEventDispatcher;
+    [SerializeField] AudioEventDispatcher audioEventDispatcher;
     [Header("Références")]
     [SerializeField] DayManager dayManager;
     [SerializeField] PoleManager poleManager;
@@ -74,6 +74,70 @@ public class ScoreManager : MonoBehaviour
     /// <summary>Calcule l'argent de base puis les bonus par pôle ayant atteint son quota.</summary>
     public void CalculateMoney()
     {
+        poleResults.Clear();
+        float bonusPercent = GetBonusForCurrentDifficulty();
+        baseMoney = 0;
+
+        if (poleManager != null)
+        {
+            for (int i = 0; i < poleManager.poles.Length; i++)
+            {
+                Pole pole = poleManager.poles[i];
+                bool reached = pole.localAdvencement >= pole.localQuotat;
+                string name = !string.IsNullOrEmpty(pole.PoleName) ? pole.PoleName : $"Pôle {i + 1}";
+
+                // Différence positive ou négative par pôle
+                int diff = pole.localAdvencement - pole.localQuotat;
+                baseMoney += diff; // additionne les gains ET les pertes
+
+                poleResults.Add(new PoleResult
+                {
+                    poleName = name,
+                    quotaReached = reached,
+                    bonusPercent = reached ? bonusPercent : 0f,
+                    advancement = pole.localAdvencement,
+                    quota = pole.localQuotat
+                });
+            }
+        }
+
+        // Bonus uniquement si baseMoney positif
+        int totalBonus = 0;
+        if (baseMoney > 0)
+        {
+            foreach (PoleResult r in poleResults)
+            {
+                if (r.quotaReached)
+                    totalBonus += Mathf.RoundToInt(baseMoney * r.bonusPercent);
+            }
+        }
+
+        playerMoney += baseMoney + totalBonus;
+        // Pas de Mathf.Max ici — le joueur peut tomber en négatif
+        StartCoroutine(AnimLauncher());
+    }
+
+    public IEnumerator AnimLauncher()
+    {
+        yield return new WaitForSeconds(1f);
+        LaunchScoreAnim?.Invoke();
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(AudioType.End);
+    }
+
+    public void ResetDay()
+    {
+        playerQuotat = 0;
+    }
+
+
+
+
+
+    /* old calculate money 
+
+    public void CalculateMoney()
+    {
         int earned = Mathf.Max(0, playerQuotat - quotatOfTheDay);
         baseMoney = earned;
 
@@ -93,11 +157,11 @@ public class ScoreManager : MonoBehaviour
 
                 poleResults.Add(new PoleResult
                 {
-                    poleName     = name,
+                    poleName = name,
                     quotaReached = reached,
                     bonusPercent = reached ? bonusPercent : 0f,
-                    advancement  = pole.localAdvencement,
-                    quota        = pole.localQuotat
+                    advancement = pole.localAdvencement,
+                    quota = pole.localQuotat
                 });
 
                 if (reached)
@@ -109,18 +173,5 @@ public class ScoreManager : MonoBehaviour
         playerMoney = Mathf.Max(0, playerMoney);
 
         StartCoroutine(AnimLauncher());
-    }
-
-    public IEnumerator AnimLauncher()
-    {
-        yield return new WaitForSeconds(1f);
-        LaunchScoreAnim?.Invoke();
-        if (audioEventDispatcher != null)
-            audioEventDispatcher.PlayAudio(AudioType.End);
-    }
-
-    public void ResetDay()
-    {
-        playerQuotat = 0;
-    }
+    }*/
 }

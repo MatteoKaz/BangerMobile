@@ -1,15 +1,15 @@
 
-using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
+
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
+
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using static Pole;
-
+using Random = UnityEngine.Random;
 
 public class Employe : MonoBehaviour
 {
@@ -51,6 +51,7 @@ public class Employe : MonoBehaviour
     public Dictionary<Sprite, int> upgradeCounts = new Dictionary<Sprite, int>();
 
     [Header("Malus")]
+    public int StunMalus = 5;
     public float errorPercentMalus = 0f;
     public float employeWorkRateMalus = 0f;
     public float RankingWorkRateMalus = 0f;
@@ -96,6 +97,11 @@ public class Employe : MonoBehaviour
     public AnimationCurve swatAnim;
     public Image FondSwat;
     public Image InteractiveImage;
+
+
+    public event Action ScoreWinAnim;
+    public event Action LooseMoney;
+
     public void OnEnable()
     {
         timemanager.TimerEnded += StopWorking;
@@ -282,6 +288,7 @@ public class Employe : MonoBehaviour
         if (roll < successChance)
         {
             mypole.WinMoney();
+            ScoreWinAnim?.Invoke();
             moneyMake += mypole.paperValue;
             succeedPaper += 1 + Mathf.RoundToInt(BonusPaperDone);
         }
@@ -325,7 +332,9 @@ public class Employe : MonoBehaviour
         employeWorkRateMalus = 0f;
         errorPercentMalus = 0f;
         mypole = pole;
+        if (isStunned == false)
         employeImage.sprite = idleSprite;
+
         Working();
     }
 
@@ -368,7 +377,9 @@ public class Employe : MonoBehaviour
     }
     public IEnumerator StunCoroutine(float duration)
     {
-        
+
+        mypole.LooseMoney(StunMalus);
+        LooseMoney?.Invoke();
         isStunned = true;
         employeImage.sprite = Surcharge;
         Light.intensity = 0.3f;
@@ -456,6 +467,12 @@ public class Employe : MonoBehaviour
     private void Update()
     {
         if (mypole == null) return;
+        if (HasBeenSwat )
+        {
+            float hue = Mathf.Repeat(Time.time * 0.9f, 1f); // vitesse du cycle
+            employeImage.color = Color.HSVToRGB(hue, 0.25f, 1f);
+            return;
+        }
         if (isStunned == true)
             { employeImage.color = Color.white; return; }
            

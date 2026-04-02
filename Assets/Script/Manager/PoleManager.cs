@@ -52,20 +52,15 @@ public class PoleManager : MonoBehaviour
 
         foreach (Employe employe in employes)
         {
-            // Boucle jusqu'à trouver un pole qui n'a pas 2 employés
-            while (i < poles.Length && poles[i].employeList.Count >= 2)
-                i++;
-
-            if (i >= poles.Length)
+            if (employe.mypole != null)
             {
-                Debug.Log("Plus de place pour les employés restants");
-                break;
+                employe.mypole.employeList.Add(employe);
+                employe.InitialSetIdentity();
             }
-
-            // Assignation
-            poles[i].employeList.Add(employe);
-            employe.mypole = poles[i];
-            employe.InitialSetIdentity();
+            else
+            {
+                Debug.LogWarning($"Employé {employe.name} n'a pas de pôle assigné dans la map !");
+            }
         }
     }
 

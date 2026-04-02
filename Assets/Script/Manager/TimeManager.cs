@@ -9,20 +9,33 @@ public class TimeManager : MonoBehaviour
     public event Action TimerEnded;
     [SerializeField] QuotatManager QuotatManager;
     Coroutine currentTimer;
-
+    [SerializeField] PaperSpawner spawnerpaper;
 
     public void OnEnable()
     {
-        QuotatManager.QuotatChosen += LaunchTimer;
+        //QuotatManager.QuotatChosen += LaunchTimer;
+        spawnerpaper.AllPapersSpawned += OnAllPapersSpawned;
     }
 
-    public void LaunchTimer()
+    void OnDisable()
+    {
+        //QuotatManager.QuotatChosen -= LaunchTimer;
+        spawnerpaper.AllPapersSpawned -= OnAllPapersSpawned;
+    }
+
+    private void OnAllPapersSpawned()
+    {
+        TimerEnded?.Invoke();
+    }
+
+ 
+    /*public void LaunchTimer()
     {
         if (currentTimer != null)
             StopCoroutine(currentTimer);
         currentTimer = StartCoroutine(DayTimer());
     }
-    public IEnumerator DayTimer()
+    /*public IEnumerator DayTimer()
     {
         yield return new WaitForSeconds(2f);
         DayDurationToShow = DayDuration;
@@ -37,5 +50,6 @@ public class TimeManager : MonoBehaviour
         currentTimer = null;
         TimerEnded?.Invoke();
 
-    }
+    }*/
+
 }

@@ -58,9 +58,15 @@ public class PileBackEmploye : MonoBehaviour
 
     private void Start()
     {
-       
+        StartCoroutine(InitAfterFrame());
     }
 
+    private IEnumerator InitAfterFrame()
+    {
+        yield return new WaitForSeconds(1f);
+       
+        OnPoleChanged();
+    }
     private void OnDestroy()
     {
         if (_activeTuyaux  != null)

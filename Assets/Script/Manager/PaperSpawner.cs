@@ -1,8 +1,9 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Random = UnityEngine.Random;
 public class PaperSpawner : MonoBehaviour
 {
     [Header("PapierRef")]
@@ -23,7 +24,7 @@ public class PaperSpawner : MonoBehaviour
     [SerializeField] public Pile RefPileBlue;
     [SerializeField] public Pile RefPileGreen;
 
-
+    public int papersRemaining;
     public float spawnDelay = 0.65f;
     public float DelayBeforeStart = 2f;
 
@@ -41,11 +42,13 @@ public class PaperSpawner : MonoBehaviour
     public int minPerType = 18; // quota min 
     public int typesCount = 3; //NombreDeType
 
+    private int lastRhythm = -1;
+
     private Coroutine spawnRoutine;
     [SerializeField] DayManager dayManager;
     private bool canSpawn = true;
     [SerializeField] private AudioEventDispatcher audioEventDispatcher;
-
+    public event Action AllPapersSpawned;
     public void OnEnable()
     {
         quotatManager.QuotatChosen += StartSpawn;
@@ -108,7 +111,7 @@ public class PaperSpawner : MonoBehaviour
             spawnList[i] = spawnList[random];
             spawnList[random] = tempPlace;
         }
-
+        papersRemaining = spawnList.Count;
     }
 
 
@@ -124,25 +127,38 @@ public class PaperSpawner : MonoBehaviour
             if (!canSpawn)
                 break;
             audioEventDispatcher.PlayAudio(AudioType.Pop);
-
-            if (spawnCount % 10 == 0)
+            if (papersRemaining <= 15)
             {
-                int rhythm = Random.Range(0, 3);
+                currentRhythm = 1f;
+            }
+
+            else if (spawnCount % 30 == 0 && spawnCount > 0)
+            {
+                float pauseDuration = Random.Range(12f, 20f);
+                Debug.Log($"Pause de {pauseDuration}s");
+                yield return new WaitForSeconds(pauseDuration);
+            }
+            else if (spawnCount % 10 == 0)
+            {
+                int rhythm;
+                do
+                {
+                    rhythm = Random.Range(0, 3);
+                } while (rhythm == lastRhythm);
+
+                lastRhythm = rhythm;
+
                 switch (rhythm)
                 {
-                    case 0: currentRhythm = 2f; break;  // lent
-                    case 1: currentRhythm = 1.25f; break;  // moyen
-                    case 2: currentRhythm = 0.75f; break; // rapide
+                    case 0: currentRhythm = 6f; break;  // lent
+                    case 1: currentRhythm = 4f; break;  // moyen
+                    case 2: currentRhythm = 2f; break;  // rapide
                 }
                 Debug.Log($"Nouveau rythme: {rhythm}");
             }
-            if (spawnCount % 30 == 0 && spawnCount > 0)
-            {
-                float pauseDuration = Random.Range(12f, 12f);
-               
-                yield return new WaitForSeconds(pauseDuration);
-            }
-
+            papersRemaining--;
+            if (papersRemaining <= 0)
+                AllPapersSpawned?.Invoke();
             // petit random local � rythme global
             float spawntiming = Random.Range(spawnDelay, spawnDelay + 0.5f) * currentRhythm;
             GameObject prefab = spawnList[0];

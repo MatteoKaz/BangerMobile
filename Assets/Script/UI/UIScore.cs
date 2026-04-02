@@ -16,6 +16,8 @@ public class UIScore : MonoBehaviour
     [Header("Total argent joueur")]
     [SerializeField] TextMeshProUGUI totalMoneyLabel;
 
+    [SerializeField] GameOverManager gameOverManager;
+
     [Header("Timings")]
     [SerializeField] float delayBeforeStart       = 1.5f;
     [SerializeField] float quotaCountDuration     = 1.0f;
@@ -72,8 +74,11 @@ public class UIScore : MonoBehaviour
                 if (poleQuotaLabels[i] == null || i >= scoreManager.poleResults.Count) continue;
 
                 ScoreManager.PoleResult r = scoreManager.poleResults[i];
-                int displayed = Mathf.RoundToInt(Mathf.Lerp(0, r.advancement, ratio));
-                poleQuotaLabels[i].text = $"{r.poleName} : {displayed} / {r.quota}";
+                int delta = r.advancement - r.quota;
+                int displayed = Mathf.RoundToInt(Mathf.Lerp(0, delta, ratio));
+                string sign = displayed >= 0 ? "+" : "";
+                poleQuotaLabels[i].text = $"{r.poleName} : {sign}{displayed}$";
+                //poleQuotaLabels[i].text = $"{r.poleName} : {displayed} / {r.quota}";
             }
 
             yield return null;
@@ -85,7 +90,11 @@ public class UIScore : MonoBehaviour
             if (poleQuotaLabels[i] == null || i >= scoreManager.poleResults.Count) continue;
 
             ScoreManager.PoleResult r = scoreManager.poleResults[i];
-            poleQuotaLabels[i].text = $"{r.poleName} : {r.advancement} / {r.quota}";
+
+            int delta = r.advancement - r.quota;
+            string sign = delta >= 0 ? "+" : "";
+            poleQuotaLabels[i].text = $"{r.poleName} : {sign}{delta}$";
+            // poleQuotaLabels[i].text = $"{r.poleName} : {r.advancement} / {r.quota}";
         }
 
         yield return new WaitForSeconds(pauseAfterQuota);
@@ -146,7 +155,14 @@ public class UIScore : MonoBehaviour
         }
         if (totalMoneyLabel != null) totalMoneyLabel.text = $"Total : {finalMoney}";
 
+      
         // ── Animation terminée — déclenche le tuto OnDayEnd ──────────────
         TutorialManager.NotifyDayEnd();
+
+        yield return new WaitForSeconds(1f);
+        if (scoreManager.playerMoney <= 0)
+        {
+            gameOverManager.ShowGameOverHud();
+        }
     }
 }

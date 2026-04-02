@@ -29,7 +29,8 @@ public class PoleCounterUI : MonoBehaviour
 
     private void UpdateCounter()
     {
-        counterText.text = $"{pole.localAdvencement.ToString()}/{pole.localQuotat.ToString()}";
+        int  currentmoney=  pole.localAdvencement - pole.localQuotat;
+        counterText.text = $"{currentmoney}$";
 
         if (animRoutine != null)
             StopCoroutine(animRoutine);
