@@ -1185,7 +1185,7 @@ GameObject:
   - component: {fileID: 1777559901403130053}
   - component: {fileID: 5573623258426083793}
   m_Layer: 5
-  m_Name: FondSombre
+  m_Name: FondSombreInteraction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1431,6 +1431,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   FondSwat: {fileID: 4098065681636851574}
+  InteractiveImage: {fileID: 5573623258426083793}
 --- !u!114 &2700297029104301821
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -16,12 +17,14 @@ public class SwatManager : MonoBehaviour
     [SerializeField] Image highglightsRouge;
     [SerializeField] Image highglightsBleu;
     [SerializeField] Image highglightsVert;
-
+    [SerializeField] Button[] buttons;
+    [SerializeField] Image[] images;
     [SerializeField] Color redcolor;
     [SerializeField] Color bleucolor;
     [SerializeField] Color vertcolor;
 
     private Coroutine HighlightCoroutine;
+    private Coroutine SwatLightLittle;
     public event Action SwatModeStart;
     public event Action SwatModeEnd;
 
@@ -40,6 +43,7 @@ public class SwatManager : MonoBehaviour
     {
         
         lightGO();
+
     }
     public void ActivateButton()
     {
@@ -56,7 +60,14 @@ public class SwatManager : MonoBehaviour
     {
         if (numberOfUtilisation <= 0) return;
         numberOfUtilisation--;
-
+        foreach (Button buton in buttons)
+        {
+            buton.enabled = false;
+        }
+        foreach (Image image in images)
+        {
+            image.enabled = false;
+        }
         StopCoroutine(HighlightCoroutine);
         StartCoroutine(StopPulse());
         foreach (Employe emp in pole.employeList)
@@ -111,7 +122,7 @@ public class SwatManager : MonoBehaviour
     {
         if (numberOfUtilisation <= 0)
             return;
-        StartCoroutine(Light());
+        SwatLightLittle = StartCoroutine(Light());
     }
 
     public IEnumerator Light()
@@ -128,7 +139,16 @@ public class SwatManager : MonoBehaviour
 
     public void StartPulse()
     {
+        if (numberOfUtilisation <= 0) return;
         HighlightCoroutine = StartCoroutine(PulseHighlight());
+        foreach (Button buton in buttons)
+        {
+            buton.enabled = true;
+        }
+        foreach (Image image in images)
+        {
+            image.enabled = true;
+        }
     }
     public IEnumerator PulseHighlight()
     {
@@ -137,7 +157,7 @@ public class SwatManager : MonoBehaviour
             while (true)
             {
                 
-                float t = (Mathf.Sin(Time.time * 3f) + 1f) / 2f;
+                float t = (Mathf.Sin(Time.time * 2f) + 1f) / 2f;
                 highglightsBleu.color = new Color(bleucolor.r, bleucolor.g, bleucolor.b, Mathf.Lerp(0f, 0.3f, t));
                 highglightsRouge.color = new Color(redcolor.r, redcolor.g,redcolor.b, Mathf.Lerp(0f, 0.3f, t));
                 highglightsVert.color = new Color(vertcolor.r,vertcolor.g, vertcolor.b  , Mathf.Lerp(0f, 0.3f, t));
@@ -158,5 +178,16 @@ public class SwatManager : MonoBehaviour
             highglightsVert.color = new Color(vertcolor.r, vertcolor.g, vertcolor.b, Mathf.Lerp(0.3f, 0.0f, t));
             yield return null;
         }
+        if (SwatLightLittle != null)
+        {
+            if (numberOfUtilisation <= 0)
+            {
+                StopCoroutine(SwatLightLittle);
+                SwatLightLittle = null;
+                lightblue.intensity = 0f;
+                lightred.intensity = 0f;
+            }
+        }
+            
     }
 }

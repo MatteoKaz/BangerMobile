@@ -95,6 +95,7 @@ public class Employe : MonoBehaviour
     public float swatBoostTimeBeetweenWork = 0;
     public AnimationCurve swatAnim;
     public Image FondSwat;
+    public Image InteractiveImage;
     public void OnEnable()
     {
         timemanager.TimerEnded += StopWorking;
@@ -256,6 +257,7 @@ public class Employe : MonoBehaviour
                     if (wasStunned == false) // changement d'état  on trigger une seule fois
                     {
                         employeImage.sprite = Surcharge;
+
                         Light.intensity = 0.3f;
                         Light.color = Color.indianRed;
                         animator.SetTrigger("Surcharge");
@@ -487,13 +489,15 @@ public class Employe : MonoBehaviour
             StunRef = null;
             isStunned = false; 
         }
-
+        InteractiveImage.raycastTarget = false; 
         SwatGoing = true;
+
         StartCoroutine(SwatCoroutine());
     }
 
     public IEnumerator SwatCoroutine()
     {
+        Light.intensity = 0.0f;
         Color ColorFond = new Color(0x82 / 255f, 0x82 / 255f, 0x82 / 255f, 0.6f);
         Color color = new Color(0x8C / 255f, 0x8C / 255f, 0x8C / 255f);
         employeImage.sprite = idleSprite;
@@ -635,19 +639,23 @@ public class Employe : MonoBehaviour
             go.GetComponent<Image>().enabled = false;
             
         }
-        yield return new WaitForSeconds(7f);
+
+        yield return new WaitForSeconds(0.25f);
+
+        InteractiveImage.raycastTarget = true;
         HasBeenSwat = true;
         SwatGoing = false;
         occupied = false;
+        
         StartCoroutine(SwatBuff());
         yield return null;  
     }
 
     public IEnumerator SwatBuff()
     {
-        swatBoostError = 0.1f;
+        swatBoostError = 0.15f;
         swatBoostTimeBeetweenWork = 1.5f;
-        swatBoostSpeed = 1.5f;
+        swatBoostSpeed = 2f;
         yield return new WaitForSeconds(25f);
         swatBoostError = 0f;
         swatBoostSpeed = 0f;
