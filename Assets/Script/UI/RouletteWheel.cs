@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -29,6 +30,9 @@ public class RouletteWheel : MonoBehaviour
 
     [Tooltip("Texte affiché après la pause de révélation avec le nom de l'employé sélectionné.")]
     [SerializeField] private TextMeshProUGUI resultLabel;
+
+    [Tooltip("RectTransform du CenterMarker — définit la position Y d'arrêt du slot gagnant.")]
+    [SerializeField] private RectTransform winnerTargetMarker;
 
     [Header("Paramètres")]
     [Tooltip("Hauteur d'un slot en pixels (sizeDelta Y appliqué au RectTransform du slot).")]
@@ -59,6 +63,22 @@ public class RouletteWheel : MonoBehaviour
 
     [Tooltip("Fréquence du tremblement en Hz (oscillations par seconde).")]
     [SerializeField] private float shakeFrequency = 30f;
+
+    [Tooltip("Angle maximal de rotation (degrés) du CenterMarker pendant le spin.")]
+    [SerializeField] private float maxShakeRotation = 15f;
+
+    [Tooltip("Fréquence de la rotation oscillante en Hz.")]
+    [SerializeField] private float shakeRotationFrequency = 8f;
+
+    [Header("Lumières")]
+    [Tooltip("Lumières 2D qui alternent en séquence pendant le spin.")]
+    [SerializeField] private List<Light2D> spinLights = new();
+
+    [Tooltip("Fréquence d'alternance à vitesse maximale (changements de lumière par seconde).")]
+    [SerializeField] private float maxLightFrequency = 12f;
+
+    [Tooltip("Fréquence d'alternance à vitesse minimale (début de décélération).")]
+    [SerializeField] private float minLightFrequency = 2f;
 
     [Header("Pulse du gagnant")]
     [Tooltip("Scale maximal atteint lors du grossissement du slot gagnant.")]
@@ -93,14 +113,16 @@ public class RouletteWheel : MonoBehaviour
     private Coroutine _pulseCoroutine;
     private RouletteSlot _promotedSlot;
 
+    private int _currentLightIndex;
+    private float _lightTimer;
+
     [Header("Audio")]
     [SerializeField] private AudioEventDispatcher audioEventDispatcher;
-    [SerializeField] private AudioSource spinLoopSource; // Source dédiée roulette, ne pas partager
+    [SerializeField] private AudioSource spinLoopSource;
 
-    
     /// <summary>Invoqué après la pause de révélation avec l'employé sélectionné.</summary>
-    public event System.Action<EmployeDataz> OnEmployeSelected;
-    public event System.Action EmployeSelected;
+    public event Action<EmployeDataz> OnEmployeSelected;
+    public event Action EmployeSelected;
 
     // ── Unity ─────────────────────────────────────────────────────────────────
 
@@ -127,9 +149,11 @@ public class RouletteWheel : MonoBehaviour
         _rouletteWinnerIndices.Clear();
         BuildAvailableList();
     }
+
     private void OnDisable()
     {
         StopSpinLoop();
+        TurnOffAllLights();
     }
 
     private void OnDestroy()
@@ -149,15 +173,12 @@ public class RouletteWheel : MonoBehaviour
         _hasSpunToday = false;
         spinButton.interactable = true;
 
-        // Nouveau jour : on repart d'un pool propre en relisant TakenEmployeIndex.
-        // Les gagnants de la veille sont oubliés — seuls les pôles font foi.
         _rouletteWinnerIndices.Clear();
         BuildAvailableList();
 
         Debug.Log($"[RouletteWheel] Nouveau jour — {_employees.Count} employés disponibles.");
     }
 
-    /// <summary>Lance la roulette. Ignoré si un spin est en cours ou déjà fait aujourd'hui.</summary>
     /// <summary>Lance la roulette. Ignoré si un spin est en cours ou déjà fait aujourd'hui.</summary>
     public void Spin()
     {
@@ -185,7 +206,6 @@ public class RouletteWheel : MonoBehaviour
         BuildSlots();
         StartCoroutine(SpinCoroutine());
     }
-
 
     // ── Construction ──────────────────────────────────────────────────────────
 
@@ -274,24 +294,75 @@ public class RouletteWheel : MonoBehaviour
     // ── Tremblement ───────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Applique un tremblement horizontal proportionnel à normalizedSpeed [0..1].
-    /// Travaille depuis _shakeBasePosition pour éviter toute dérive de layout.
+    /// Applique un tremblement horizontal, vertical et une rotation oscillante
+    /// proportionnels à normalizedSpeed [0..1].
     /// </summary>
     private void ApplyShake(float normalizedSpeed)
     {
         if (shakeTarget == null) return;
 
         _shakeTime += Time.unscaledDeltaTime * shakeFrequency;
+
         float offsetX = Mathf.Sin(_shakeTime * Mathf.PI * 2f) * (normalizedSpeed * maxShakeAmplitude);
-        shakeTarget.anchoredPosition = new Vector2(_shakeBasePosition.x + offsetX, _shakeBasePosition.y);
+        float offsetY = Mathf.Cos(_shakeTime * Mathf.PI * 2.7f) * (normalizedSpeed * maxShakeAmplitude * 0.6f);
+        shakeTarget.anchoredPosition = new Vector2(
+            _shakeBasePosition.x + offsetX,
+            _shakeBasePosition.y + offsetY
+        );
+
+        float rotationAngle = Mathf.Sin(_shakeTime * Mathf.PI * 2f * shakeRotationFrequency / shakeFrequency)
+                              * (normalizedSpeed * maxShakeRotation);
+        shakeTarget.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
     }
 
-    /// <summary>Remet le shakeTarget à sa position de base.</summary>
+    /// <summary>Remet le shakeTarget à sa position et rotation de base.</summary>
     private void ResetShake()
     {
         if (shakeTarget == null) return;
         _shakeTime = 0f;
         shakeTarget.anchoredPosition = _shakeBasePosition;
+        shakeTarget.localRotation = Quaternion.identity;
+    }
+
+    // ── Lumières ─────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Avance le clignotement des lumières en séquence.
+    /// normalizedSpeed [0..1] pilote la fréquence entre minLightFrequency et maxLightFrequency.
+    /// </summary>
+    private void StepLights(float normalizedSpeed)
+    {
+        if (spinLights == null || spinLights.Count == 0) return;
+
+        float frequency = Mathf.Lerp(minLightFrequency, maxLightFrequency, normalizedSpeed);
+        float interval = 1f / frequency;
+
+        _lightTimer += Time.unscaledDeltaTime;
+        if (_lightTimer < interval) return;
+
+        _lightTimer -= interval;
+
+        // Éteint la lumière courante, allume la suivante
+        if (spinLights[_currentLightIndex] != null)
+            spinLights[_currentLightIndex].enabled = false;
+
+        _currentLightIndex = (_currentLightIndex + 1) % spinLights.Count;
+
+        if (spinLights[_currentLightIndex] != null)
+            spinLights[_currentLightIndex].enabled = true;
+    }
+
+    /// <summary>Éteint toutes les lumières et réinitialise l'index.</summary>
+    private void TurnOffAllLights()
+    {
+        if (spinLights == null) return;
+        foreach (Light2D light in spinLights)
+        {
+            if (light != null)
+                light.enabled = false;
+        }
+        _currentLightIndex = 0;
+        _lightTimer = 0f;
     }
 
     // ── Pulse du gagnant ──────────────────────────────────────────────────────
@@ -397,107 +468,111 @@ public class RouletteWheel : MonoBehaviour
     // ── Animation principale ──────────────────────────────────────────────────
 
     private IEnumerator SpinCoroutine()
-{
-    _isSpinning = true;
-    _hasSpunToday = true;
-    spinButton.interactable = false;
-    _shakeTime = 0f;
-
-    // Phase 1 — Son rapide en boucle, synchronisé avec le début du défilement
-    PlaySpinLoop(AudioType.Spin);
-
-    float elapsed = 0f;
-    while (elapsed < constantDuration)
     {
-        float dt = Time.unscaledDeltaTime;
-        elapsed += dt;
-        ScrollSlots(maxSpeed * dt);
-        ApplyShake(1f);
-        yield return null;
+        _isSpinning = true;
+        _hasSpunToday = true;
+        spinButton.interactable = false;
+        _shakeTime = 0f;
+
+        TurnOffAllLights();
+
+        // Phase 1 — Son rapide en boucle, synchronisé avec le début du défilement
+        PlaySpinLoop(AudioType.Spin);
+
+        float elapsed = 0f;
+        while (elapsed < constantDuration)
+        {
+            float dt = Time.unscaledDeltaTime;
+            elapsed += dt;
+            ScrollSlots(maxSpeed * dt);
+            ApplyShake(1f);
+            StepLights(1f);
+            yield return null;
+        }
+
+        // Phase 2 — Transition son : Spin s'arrête, SpinSlow démarre en même temps
+        // que la décélération visuelle commence
+        StopSpinLoop();
+        PlaySpinLoop(AudioType.SpinSlow);
+
+        float centerY = GetWinnerTargetY();
+        int topIdx = GetTopmostSlotIndex();
+        int bottomIdx = GetBottommostSlotIndex();
+        float winnerStartY = _slotPositions[topIdx] - _stepHeight;
+
+        _slotPositions[bottomIdx] = winnerStartY;
+        _slotEmployeeIndices[bottomIdx] = _selectedIndex;
+        _slots[bottomIdx].Setup(_employees[_selectedIndex]);
+        _slots[bottomIdx].SetHighlight(false);
+        _slotRects[bottomIdx].anchoredPosition = new Vector2(0f, -winnerStartY);
+
+        float totalDecelerationDist = centerY - winnerStartY;
+        float adaptedDuration = Mathf.Max(decelerationDuration, 3f * totalDecelerationDist / maxSpeed);
+
+        float winnerTrackedY = winnerStartY;
+        float scrolledSoFar = 0f;
+        elapsed = 0f;
+
+        while (elapsed < adaptedDuration)
+        {
+            float dt = Time.unscaledDeltaTime;
+            elapsed += dt;
+            float t = Mathf.Clamp01(elapsed / adaptedDuration);
+            float tInv = 1f - t;
+            float progress = 1f - (tInv * tInv * tInv);
+            float delta = progress * totalDecelerationDist - scrolledSoFar;
+            scrolledSoFar = progress * totalDecelerationDist;
+
+            float normalizedSpeed = tInv * tInv;
+            ApplyShake(normalizedSpeed);
+            StepLights(normalizedSpeed);
+            winnerTrackedY += delta;
+            ScrollSlots(delta);
+            yield return null;
+        }
+
+        // Snap pixel-perfect — la roulette est visuellement arrêtée
+        float snapDelta = centerY - winnerTrackedY;
+        for (int i = 0; i < _slots.Count; i++)
+        {
+            _slotPositions[i] += snapDelta;
+            _slotRects[i].anchoredPosition = new Vector2(0f, -_slotPositions[i]);
+        }
+
+        ResetShake();
+        TurnOffAllLights();
+
+        int finalWinnerSlot = 0;
+        float closestDist = float.MaxValue;
+        for (int i = 0; i < _slotPositions.Count; i++)
+        {
+            float dist = Mathf.Abs(_slotPositions[i] - centerY);
+            if (dist < closestDist) { closestDist = dist; finalWinnerSlot = i; }
+        }
+
+        _slots[finalWinnerSlot].Setup(_employees[_selectedIndex]);
+        _slots[finalWinnerSlot].SetHighlight(true, highlightColor);
+
+        RegisterWinnerAsTaken(_selectedIndex);
+
+        // Phase 3 — Arrêt total : SpinSlow coupe, SpinEnd joue en one-shot
+        StopSpinLoop();
+        audioEventDispatcher?.PlayAudio(AudioType.SpinEnd);
+
+        PromoteWinnerSlot(_slots[finalWinnerSlot]);
+        StartPulse(_slots[finalWinnerSlot].transform);
+
+        yield return new WaitForSeconds(revealDelay);
+
+        if (resultLabel != null)
+            resultLabel.text = _employees[_selectedIndex].EmployeName;
+
+        _isSpinning = false;
+
+        OnEmployeSelected?.Invoke(_employees[_selectedIndex]);
+        EmployeSelected?.Invoke();
+        Debug.Log($"[RouletteWheel] Sélectionné : {_employees[_selectedIndex].EmployeName}");
     }
-
-    // Phase 2 — Transition son : Spin s'arrête, SpinSlow démarre en même temps
-    // que la décélération visuelle commence
-    StopSpinLoop();
-    PlaySpinLoop(AudioType.SpinSlow);
-
-    float centerY = _maskHeight * 0.5f;
-    int topIdx = GetTopmostSlotIndex();
-    int bottomIdx = GetBottommostSlotIndex();
-    float winnerStartY = _slotPositions[topIdx] - _stepHeight;
-
-    _slotPositions[bottomIdx] = winnerStartY;
-    _slotEmployeeIndices[bottomIdx] = _selectedIndex;
-    _slots[bottomIdx].Setup(_employees[_selectedIndex]);
-    _slots[bottomIdx].SetHighlight(false);
-    _slotRects[bottomIdx].anchoredPosition = new Vector2(0f, -winnerStartY);
-
-    float totalDecelerationDist = centerY - winnerStartY;
-    float adaptedDuration = Mathf.Max(decelerationDuration, 3f * totalDecelerationDist / maxSpeed);
-
-    float winnerTrackedY = winnerStartY;
-    float scrolledSoFar = 0f;
-    elapsed = 0f;
-
-    while (elapsed < adaptedDuration)
-    {
-        float dt = Time.unscaledDeltaTime;
-        elapsed += dt;
-        float t = Mathf.Clamp01(elapsed / adaptedDuration);
-        float tInv = 1f - t;
-        float progress = 1f - (tInv * tInv * tInv);
-        float delta = progress * totalDecelerationDist - scrolledSoFar;
-        scrolledSoFar = progress * totalDecelerationDist;
-
-        ApplyShake(tInv * tInv);
-        winnerTrackedY += delta;
-        ScrollSlots(delta);
-        yield return null;
-    }
-
-    // Snap pixel-perfect — la roulette est visuellement arrêtée
-    float snapDelta = centerY - winnerTrackedY;
-    for (int i = 0; i < _slots.Count; i++)
-    {
-        _slotPositions[i] += snapDelta;
-        _slotRects[i].anchoredPosition = new Vector2(0f, -_slotPositions[i]);
-    }
-
-    ResetShake();
-
-    int finalWinnerSlot = 0;
-    float closestDist = float.MaxValue;
-    for (int i = 0; i < _slotPositions.Count; i++)
-    {
-        float dist = Mathf.Abs(_slotPositions[i] - centerY);
-        if (dist < closestDist) { closestDist = dist; finalWinnerSlot = i; }
-    }
-
-    _slots[finalWinnerSlot].Setup(_employees[_selectedIndex]);
-    _slots[finalWinnerSlot].SetHighlight(true, highlightColor);
-
-    RegisterWinnerAsTaken(_selectedIndex);
-
-    // Phase 3 — Arrêt total : SpinSlow coupe, SpinEnd joue en one-shot
-    // Ces deux appels sont dos à dos : le cut est immédiat, le one-shot part dans la même frame
-    StopSpinLoop();
-    audioEventDispatcher?.PlayAudio(AudioType.SpinEnd);
-
-    PromoteWinnerSlot(_slots[finalWinnerSlot]);
-    StartPulse(_slots[finalWinnerSlot].transform);
-
-    yield return new WaitForSeconds(revealDelay);
-
-    if (resultLabel != null)
-        resultLabel.text = _employees[_selectedIndex].EmployeName;
-
-    _isSpinning = false;
-
-    OnEmployeSelected?.Invoke(_employees[_selectedIndex]);
-    EmployeSelected?.Invoke();
-    Debug.Log($"[RouletteWheel] Sélectionné : {_employees[_selectedIndex].EmployeName}");
-}
-
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -525,6 +600,20 @@ public class RouletteWheel : MonoBehaviour
         }
         return idx;
     }
+
+    /// <summary>
+    /// Retourne la position Y cible dans l'espace local du Mask (positif vers le bas depuis le haut)
+    /// correspondant au winnerTargetMarker. Fallback sur le centre du masque si non assigné.
+    /// </summary>
+    private float GetWinnerTargetY()
+    {
+        if (winnerTargetMarker == null)
+            return _maskHeight * 0.5f;
+
+        Vector3 localPos = maskRect.InverseTransformPoint(winnerTargetMarker.position);
+        return _maskHeight * 0.5f - localPos.y;
+    }
+
     /// <summary>Démarre le son de boucle spin sur la source dédiée.</summary>
     private void PlaySpinLoop(AudioType audioType)
     {
@@ -543,5 +632,4 @@ public class RouletteWheel : MonoBehaviour
         spinLoopSource.Stop();
         spinLoopSource.clip = null;
     }
-
 }

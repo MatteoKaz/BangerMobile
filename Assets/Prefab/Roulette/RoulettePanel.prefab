@@ -557,6 +557,7 @@ MonoBehaviour:
   itemsContainer: {fileID: 5480232244426603146}
   slotPrefab: {fileID: 4022736069846536601, guid: 37ec08a4353f29c42b66a0d8d4350795, type: 3}
   spinButton: {fileID: 4605873120498975920}
+  overlayContainer: {fileID: 0}
   resultLabel: {fileID: 7231083548232802652}
   slotHeight: 120
   maxSpeed: 1500
@@ -564,6 +565,14 @@ MonoBehaviour:
   decelerationDuration: 2
   revealDelay: 1.5
   highlightColor: {r: 1, g: 0.85, b: 0, a: 1}
+  shakeTarget: {fileID: 0}
+  maxShakeAmplitude: 8
+  shakeFrequency: 30
+  pulseMaxScale: 1.15
+  pulseMinScale: 0.95
+  pulseHalfDuration: 0.35
+  audioEventDispatcher: {fileID: 0}
+  spinLoopSource: {fileID: 0}
 --- !u!1 &8162378227935204631
 GameObject:
   m_ObjectHideFlags: 0
