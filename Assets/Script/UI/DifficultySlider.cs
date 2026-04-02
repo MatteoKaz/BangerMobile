@@ -157,11 +157,12 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
         DifficultyChanged?.Invoke(index);
 
         if (audioEventDispatcher != null)
-            audioEventDispatcher.PlayAudio(AudioType.Levier); // one-shot immédiat
+            audioEventDispatcher.PlayAudio(AudioType.Levier);
 
         StopCurrentSpring();
         _springCoroutine = StartCoroutine(SpringCoroutine());
     }
+
     private IEnumerator SpringCoroutine()
     {
         float omega      = snapSpeed;
@@ -196,6 +197,7 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
     /// <summary>
     /// Branche cette méthode sur ButtonGo.onClick.
     /// N'est actif qu'une seule fois par jour ; se réarme sur DayBegin.
+    /// Déclenche le tutoriel uniquement au jour 1 de la semaine 1.
     /// </summary>
     public void OnGoPressed()
     {
@@ -206,11 +208,13 @@ public class DifficultySlider : MonoBehaviour, IPointerDownHandler, IDragHandler
         if (goButton != null) goButton.interactable = false;
 
         if (audioEventDispatcher != null)
-            audioEventDispatcher.PlayAudio(AudioType.Bouton); // one-shot immédiat
+            audioEventDispatcher.PlayAudio(AudioType.Bouton);
 
         quotatManager.SelectQuotat(CurrentDifficulty);
-    }
 
+        if (dayManager != null && dayManager.currentDay == 1 && dayManager.currentWeek == 1)
+            TutorialManager.NotifyFirstDifficultyChosen();
+    }
 
     private void ResetGoButton()
     {

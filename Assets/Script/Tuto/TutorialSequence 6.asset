@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a21360199fbacb4aa0c6262bb4d5816, type: 3}
-  m_Name: TutorialSequence 4
+  m_Name: TutorialSequence 6
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
-  triggerType: 3
-  triggerDelay: 10
+  triggerType: 6
+  triggerDelay: 1.5
   steps:
-  - text: "Vous pouvez \xE0 tout moment de la journ\xE9e changer vos employ\xE9s
-      de p\xF4le. \xC0 vous de g\xE9rer au mieux vos \xE9quipes."
+  - text: "Une fois la journ\xE9e termin\xE9e et votre salaire re\xE7u, vous pouvez
+      acheter des am\xE9liorations pour vos employ\xE9s, ou pour un p\xF4le directement."
     stepType: 0
     pauseOnShow: 1
     unpauseOnClose: 1
@@ -26,4 +26,5 @@ MonoBehaviour:
     overrideButtonSize: 1
     buttonSize: {x: 300, y: 300}
     overrideButtonPosition: 1
-    buttonPosition: {x: -100, y: 0}
+    buttonPosition: {x: 0, y: 0}
+    showBackButton: 0

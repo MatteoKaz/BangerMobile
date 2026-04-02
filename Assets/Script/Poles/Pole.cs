@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,11 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
-
-
 public class Pole : MonoBehaviour
 {
-
     [SerializeField] DayManager dayManager;
     [SerializeField] TimeManager timemanager;
     public int localQuotat;
@@ -34,19 +30,18 @@ public class Pole : MonoBehaviour
     public int papertoadd = 5;
 
     [Header("Surcharge")]
-    public float surchargeValue = 0f;             // Valeur actuelle
-    public float maxSurcharge = 100f;        // Surcharge maximale
-    public float surchargeStep = 5f;         // Valeur ajout�e � chaque incr�ment
-    public float baseDelay = 0.01f;           // D�lai initial entre incr�ments
-    public int[] surchargeThresholds = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }; // Paliers pour d�clencher malus
-    public int nextThresholdIndex = 0;      // Pour savoir quel palier est le prochain
-    public Coroutine SurchargeRef;      // Pour g�rer la coroutine
+    public float surchargeValue = 0f;
+    public float maxSurcharge = 100f;
+    public float surchargeStep = 5f;
+    public float baseDelay = 0.01f;
+    public int[] surchargeThresholds = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+    public int nextThresholdIndex = 0;
+    public Coroutine SurchargeRef;
     public float decayRate = 7f;
     [SerializeField] Slider surchargeProgress;
     public float sliderSpeed = 10f;
 
     [Header("Bonus")]
-
     public float BonusRevenus = 1f;
     public float BoostEmployeSpeed;
     public float BoostEmployeError;
@@ -66,30 +61,32 @@ public class Pole : MonoBehaviour
 
     [SerializeField] public GameObject contentparent;
     [SerializeField] Tuyaux myTuyaux;
-
     [SerializeField] public string PoleName;
 
     public event Action eventWinMoney;
+
+    private static bool _firstOverloadNotified = false;
 
     public void Start()
     {
         UpdatePaperCount?.Invoke();
     }
+
     public void OnEnable()
     {
         myTuyaux.AddPaper += AddPaper;
         dayManager.ResetValueBeforeNextDay += ResetAllValue;
         dayManager.NewWeekReset += EndWeekReset;
-
+        dayManager.FirstDayInitialization += ResetFirstOverloadFlag;
         timemanager.TimerEnded += StopWorking;
-
     }
+
     public void OnDisable()
     {
         myTuyaux.AddPaper -= AddPaper;
         dayManager.ResetValueBeforeNextDay -= ResetAllValue;
         dayManager.NewWeekReset -= EndWeekReset;
-
+        dayManager.FirstDayInitialization -= ResetFirstOverloadFlag;
         timemanager.TimerEnded -= StopWorking;
     }
 
@@ -98,20 +95,24 @@ public class Pole : MonoBehaviour
         ResetSurcharge();
         Stop = true;
     }
-    
+
+    /// <summary>Remet à zéro le flag de première surcharge au début du premier jour.</summary>
+    private static void ResetFirstOverloadFlag()
+    {
+        _firstOverloadNotified = false;
+    }
 
     public void EndWeekReset()
     {
-        foreach(Employe emp in employeList)
+        foreach (Employe emp in employeList)
         {
             emp.EndWeekReset();
         }
     }
+
     public void AddPaper()
     {
-       
         totalPaper += papertoadd;
-        
         waitingPaper = totalPaper - activepaper;
         waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
         if (Stop == true)
@@ -119,64 +120,52 @@ public class Pole : MonoBehaviour
         LaunchWorker();
         BeginSurcharge();
         UpdatePaperCount?.Invoke();
-
     }
 
     public void DecrementPaper()
     {
         totalPaper -= 1;
-        totalPaper = Mathf.Clamp(totalPaper , 0, totalPaper);
+        totalPaper = Mathf.Clamp(totalPaper, 0, totalPaper);
         activepaper--;
         activepaper = Mathf.Clamp(activepaper, 0, activepaper);
         waitingPaper = totalPaper - activepaper;
         waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
         if (Stop == true)
             return;
-        LaunchWorker() ;
+        LaunchWorker();
         UpdatePaperCount?.Invoke();
-
         BeginSurcharge();
-
-
-
     }
 
     public void WinMoney()
     {
         localAdvencement += paperValue * Mathf.RoundToInt(BonusRevenus);
-        
         eventWinMoney?.Invoke();
     }
 
     public void UpdateUI()
     {
         eventWinMoney?.Invoke();
-        
     }
+
     public void UpdatePaperUI()
     {
         UpdatePaperCount?.Invoke();
     }
+
     public void LaunchWorker()
     {
-   
         foreach (Employe employe in employeList)
         {
-            if (employe.iamWorking == false && waitingPaper >0 )
+            if (employe.iamWorking == false && waitingPaper > 0)
             {
-                
                 employe.Working();
                 waitingPaper = Mathf.Max(0, totalPaper - activepaper);
                 BeginSurcharge();
-                
-
-
             }
-            
         }
         UpdatePaperCount?.Invoke();
     }
-
 
     public void ResetAllValue()
     {
@@ -184,24 +173,24 @@ public class Pole : MonoBehaviour
         totalPaper = 0;
         waitingPaper = 0;
         activepaper = 0;
-        localQuotat = 0; 
+        localQuotat = 0;
         localAdvencement = 0;
         UpdatePaperCount?.Invoke();
         ResetSurcharge();
-        foreach (Employe emp in  employeList)
+        foreach (Employe emp in employeList)
         {
             emp.EndDayResetStat();
         }
-        
     }
+
     public void RebuildEmployeList()
     {
         StartCoroutine(RebuildAfterLoad());
-       
     }
+
     IEnumerator RebuildAfterLoad()
     {
-        yield return new WaitForEndOfFrame(); // attend que tout soit initialis�
+        yield return new WaitForEndOfFrame();
         employeList.Clear();
 
         List<InventorySlot> slots = new List<InventorySlot>();
@@ -213,8 +202,6 @@ public class Pole : MonoBehaviour
                 slots.Add(slot);
         }
 
-
-        // tri explicite
         slots.Sort((a, b) => a.slotIndex.CompareTo(b.slotIndex));
 
         foreach (var slot in slots)
@@ -234,18 +221,15 @@ public class Pole : MonoBehaviour
                 if (pile != null)
                     pile.OnPoleChanged();
             }
-
         }
     }
+
     public void BeginSurcharge()
     {
         if (waitingPaper > 0 && employeList.Count > 0)
         {
             if (SurchargeRef == null)
-            {
-                TutorialManager.NotifyFirstOverload();
                 SurchargeRef = StartCoroutine(Surcharge());
-            }
         }
         else if (SurchargeRef != null && surchargeValue <= 0)
         {
@@ -253,30 +237,27 @@ public class Pole : MonoBehaviour
             SurchargeRef = null;
         }
     }
+
     public IEnumerator Surcharge()
     {
-        
         while (true)
         {
             if (waitingPaper > 0)
             {
-                
-                // Augmentation progressive
-                surchargeValue += surchargeStep /(1f + BoostTimeForSurcharge);
+                surchargeValue += surchargeStep / (1f + BoostTimeForSurcharge);
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                 Debug.LogWarning($"Surcharge {surchargeValue}");
-                surchargeProgress.value = surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
-                
+                surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
+
                 if (nextThresholdIndex < surchargeThresholds.Length && surchargeValue >= surchargeThresholds[nextThresholdIndex])
                 {
-                    
+                    // Notifie le tuto à la première fois qu'un palier est atteint
+                    NotifyFirstOverloadOnce();
+
                     ApplyMalus(nextThresholdIndex);
                     nextThresholdIndex++;
-                    
-
                 }
 
-                // D�lai dynamique selon charge
                 float delay = baseDelay / (1f + (waitingPaper / Mathf.Max(1, totalPaper)));
                 yield return new WaitForSeconds(delay);
             }
@@ -285,7 +266,6 @@ public class Pole : MonoBehaviour
                 surchargeValue -= decayRate * Time.deltaTime;
                 surchargeValue = Mathf.Max(surchargeValue, 0f);
 
-                // Descend tous les paliers franchis d'un coup, sans yield entre
                 while (nextThresholdIndex > 0 && surchargeValue < surchargeThresholds[nextThresholdIndex - 1])
                 {
                     nextThresholdIndex--;
@@ -293,40 +273,46 @@ public class Pole : MonoBehaviour
                 }
 
                 surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
-                yield return null; // une seule fois par frame, apr�s avoir trait� tous les paliers
+                yield return null;
             }
-            else // surchargeValue == 0 et waitingPaper == 0
+            else
             {
                 ApplyMalus(-1);
-                yield break; // on sort proprement
+                yield break;
             }
-
         }
+    }
+
+    /// <summary>Notifie le TutorialManager de la première surcharge, une seule fois par session.</summary>
+    private static void NotifyFirstOverloadOnce()
+    {
+        if (_firstOverloadNotified) return;
+        _firstOverloadNotified = true;
+        TutorialManager.NotifyFirstOverload();
     }
 
     private void ApplyMalus(int i)
     {
-        Debug.Log($"ApplyMalus appel� avec i={i} | nextThresholdIndex={nextThresholdIndex}");
+        Debug.Log($"ApplyMalus appelé avec i={i} | nextThresholdIndex={nextThresholdIndex}");
         foreach (Employe emp in employeList)
         {
             switch (i)
             {
-                case -1: emp.ResetMalus(); break;                          // reset explicite
-                case 0: emp.Malus(TypeOfMalus.WorkRate, 0.25f); break;    // palier 10
-                case 1: emp.Malus(TypeOfMalus.ErrorPercent, 0.05f); break; // palier 20
-                case 2: emp.Malus(TypeOfMalus.WorkRate, 0.5f); break;     // palier 30
-                case 3: emp.Malus(TypeOfMalus.ErrorPercent, 0.1f); break;   // palier 40
-                case 4: emp.Malus(TypeOfMalus.WorkRate, 1f); break;       // palier 50
-                case 5: emp.Malus(TypeOfMalus.ErrorPercent, 0.15f); break;   // palier 60
-                case 6: emp.Malus(TypeOfMalus.WorkRate, 2f); break;       // palier 70
-                case 7: emp.Malus(TypeOfMalus.ErrorPercent, 0.25f); break;  // palier 80
-                case 8: emp.Malus(TypeOfMalus.WorkRate, 3f); break;       // palier 90
-                case 9: emp.Malus(TypeOfMalus.Stun, 8f); break;           // palier 100
+                case -1: emp.ResetMalus(); break;
+                case 0: emp.Malus(TypeOfMalus.WorkRate, 0.25f); break;
+                case 1: emp.Malus(TypeOfMalus.ErrorPercent, 0.05f); break;
+                case 2: emp.Malus(TypeOfMalus.WorkRate, 0.5f); break;
+                case 3: emp.Malus(TypeOfMalus.ErrorPercent, 0.1f); break;
+                case 4: emp.Malus(TypeOfMalus.WorkRate, 1f); break;
+                case 5: emp.Malus(TypeOfMalus.ErrorPercent, 0.15f); break;
+                case 6: emp.Malus(TypeOfMalus.WorkRate, 2f); break;
+                case 7: emp.Malus(TypeOfMalus.ErrorPercent, 0.25f); break;
+                case 8: emp.Malus(TypeOfMalus.WorkRate, 3f); break;
+                case 9: emp.Malus(TypeOfMalus.Stun, 8f); break;
             }
         }
         if (i == 9) ResetSurcharge();
     }
-
 
     public void ResetSurcharge()
     {
@@ -338,11 +324,10 @@ public class Pole : MonoBehaviour
         {
             emp.ResetMalus();
         }
-        if (SurchargeRef != null)      
+        if (SurchargeRef != null)
         {
             StopCoroutine(SurchargeRef);
             SurchargeRef = null;
         }
-
     }
 }

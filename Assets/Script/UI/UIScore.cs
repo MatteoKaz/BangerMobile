@@ -17,14 +17,14 @@ public class UIScore : MonoBehaviour
     [SerializeField] TextMeshProUGUI totalMoneyLabel;
 
     [Header("Timings")]
-    [SerializeField] float delayBeforeStart      = 1.5f;
-    [SerializeField] float quotaCountDuration    = 1.0f;
-    [SerializeField] float pauseAfterQuota       = 0.4f;
+    [SerializeField] float delayBeforeStart       = 1.5f;
+    [SerializeField] float quotaCountDuration     = 1.0f;
+    [SerializeField] float pauseAfterQuota        = 0.4f;
     [SerializeField] float baseMoneyCountDuration = 1.0f;
-    [SerializeField] float pauseBetweenBonuses   = 0.4f;
-    [SerializeField] float bonusCountDuration    = 0.6f;
-    [SerializeField] float pauseBeforeTotal      = 0.4f;
-    [SerializeField] float totalCountDuration    = 1.0f;
+    [SerializeField] float pauseBetweenBonuses    = 0.4f;
+    [SerializeField] float bonusCountDuration     = 0.6f;
+    [SerializeField] float pauseBeforeTotal       = 0.4f;
+    [SerializeField] float totalCountDuration     = 1.0f;
 
     private void OnEnable()
     {
@@ -44,7 +44,7 @@ public class UIScore : MonoBehaviour
         foreach (TextMeshProUGUI label in poleQuotaLabels)
             if (label != null) label.text = string.Empty;
 
-        if (beneficeLabel  != null) beneficeLabel.text  = string.Empty;
+        if (beneficeLabel   != null) beneficeLabel.text   = string.Empty;
         if (totalMoneyLabel != null) totalMoneyLabel.text = string.Empty;
     }
 
@@ -54,12 +54,13 @@ public class UIScore : MonoBehaviour
         StartCoroutine(ScoreAnim());
     }
 
-    /// <summary>Anime séquentiellement les quotas de pôle, le bénéfice, puis le total joueur.</summary>
+    /// <summary>Anime séquentiellement les quotas de pôle, le bénéfice, puis le total joueur.
+    /// Notifie le TutorialManager à la fin de l'animation.</summary>
     public IEnumerator ScoreAnim()
     {
         yield return new WaitForSeconds(delayBeforeStart);
 
-        // ── Quotas par pôle ─────────────────────────────────────────────
+        // ── Quotas par pôle ──────────────────────────────────────────────
         float t = 0f;
         while (t < quotaCountDuration)
         {
@@ -144,5 +145,8 @@ public class UIScore : MonoBehaviour
             yield return null;
         }
         if (totalMoneyLabel != null) totalMoneyLabel.text = $"Total : {finalMoney}";
+
+        // ── Animation terminée — déclenche le tuto OnDayEnd ──────────────
+        TutorialManager.NotifyDayEnd();
     }
 }

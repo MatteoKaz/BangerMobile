@@ -13,27 +13,56 @@ MonoBehaviour:
   m_Name: TutorialSequence 2
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
   triggerType: 1
-  triggerDelay: 10
+  triggerDelay: 1
   steps:
-  - text: Vous devez ainsi les trier en les swipant vers les tuyaux avec les couleurs
-      correspondantes.
-    stepType: 0
-    pauseOnShow: 1
-    unpauseOnClose: 1
-  - text: "Attention ! Si vous les triez mal, cela sera consid\xE9r\xE9 comme une
-      erreur, et chaque erreur sera d\xE9duite de votre salaire \xE0 la fin de la
-      journ\xE9e."
-    stepType: 0
-    pauseOnShow: 1
-    unpauseOnClose: 1
   - text: "Une fois envoy\xE9s, ces derniers sont analys\xE9s et trait\xE9s par les
       p\xF4les d'employ\xE9s correspondants."
     stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 0
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 0}
+    pressedButtonSprite: {fileID: 0}
+    overrideButtonSize: 0
+    buttonSize: {x: 0, y: 0}
+    overrideButtonPosition: 0
+    buttonPosition: {x: 0, y: 0}
+    showBackButton: 0
+  - text: "Sur votre ordinateur, vous pouvez suivre l'avanc\xE9e de vos employ\xE9s,
+      en voyant directement quand ils travaillent ou non."
+    stepType: 0
     pauseOnShow: 0
     unpauseOnClose: 0
-  - text: "Comme vous pouvez le constater sur votre ordinateur, le document que vous
-      venez d'envoyer est actuellement en train d'\xEAtre trait\xE9 par le p\xF4le
-      correspondant."
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 0}
+    pressedButtonSprite: {fileID: 0}
+    overrideButtonSize: 0
+    buttonSize: {x: 0, y: 0}
+    overrideButtonPosition: 0
+    buttonPosition: {x: 0, y: 0}
+    showBackButton: 1
+  - text: "Vous voyez \xE9galement le quota que doit atteindre chaque p\xF4le."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 0
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 0}
+    pressedButtonSprite: {fileID: 0}
+    overrideButtonSize: 0
+    buttonSize: {x: 0, y: 0}
+    overrideButtonPosition: 0
+    buttonPosition: {x: 0, y: 0}
+    showBackButton: 1
+  - text: "Attention, si vous envoyez trop de documents d'un coup dans un p\xF4le,
+      ce dernier risque de se retrouver en surcharge."
     stepType: 0
     pauseOnShow: 0
     unpauseOnClose: 1
+    overrideButtonSprite: 1
+    buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
+    pressedButtonSprite: {fileID: 21300000, guid: d06654f2adf418e4192ccf8c2d3d6ec8, type: 3}
+    overrideButtonSize: 1
+    buttonSize: {x: 300, y: 300}
+    overrideButtonPosition: 1
+    buttonPosition: {x: -100, y: 0}
+    showBackButton: 1

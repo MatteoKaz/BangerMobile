@@ -11,11 +11,13 @@ public enum TutorialStepType
 
 public enum TutorialTriggerType
 {
-    OnFirstDayStart,       // Tutos 1 & 2 — DayManager.FirstDayInitialization
-    OnFirstPaperSent,      // Tuto 3 — premier swipe vers un tuyau
-    OnFirstPaperProcessed, // Tuto 4 — délai après tuto 3
-    OnFirstOverload,       // Tuto 5 — premier seuil de surcharge atteint
-    OnDayEnd               // Tuto 6 — DayManager.DayEnd
+    OnFirstDifficultyChosen,
+    OnFirstPaperSent,
+    OnFirstPaperProcessed,
+    OnFirstOverload,
+    OnDayEnd,
+    OnEmployeeFicheReached,
+    OnShopOpened
 }
 
 [System.Serializable]
@@ -26,6 +28,22 @@ public class TutorialStepData
     public TutorialStepType stepType;
     public bool pauseOnShow;
     public bool unpauseOnClose;
+
+    [Header("Image du bouton Suivant")]
+    public bool overrideButtonSprite;
+    public Sprite buttonSprite;
+    public Sprite pressedButtonSprite;
+
+    [Header("Taille du bouton Suivant")]
+    public bool overrideButtonSize;
+    public Vector2 buttonSize;
+
+    [Header("Position du bouton Suivant")]
+    public bool overrideButtonPosition;
+    public Vector2 buttonPosition;
+
+    [Header("Bouton Précédent")]
+    public bool showBackButton;
 }
 
 [CreateAssetMenu(fileName = "TutorialSequence", menuName = "Scriptable Objects/TutorialSequence")]

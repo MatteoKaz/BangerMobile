@@ -33,12 +33,19 @@ public class PaperMove : MonoBehaviour
     public void Subscribe()
     {
         if (dayManager != null)
+        {
             dayManager.DayEnd += DisableThrow;
+            dayManager.FirstDayInitialization += ResetFirstPaperSentFlag;
+        }
     }
 
     public void OnDisable()
     {
-        dayManager.DayEnd -= DisableThrow;
+        if (dayManager != null)
+        {
+            dayManager.DayEnd -= DisableThrow;
+            dayManager.FirstDayInitialization -= ResetFirstPaperSentFlag;
+        }
     }
 
     public void SetInitialPose()
@@ -50,6 +57,12 @@ public class PaperMove : MonoBehaviour
     public void DisableThrow()
     {
         CanThrow = false;
+    }
+
+    /// <summary>Remet à zéro le flag du premier papier envoyé au début du premier jour.</summary>
+    private static void ResetFirstPaperSentFlag()
+    {
+        _firstPaperSentNotified = false;
     }
 
     public void MoveRightTuyaux()
