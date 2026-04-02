@@ -244,34 +244,32 @@ public class Pole : MonoBehaviour
         {
             if (waitingPaper > 0)
             {
-                surchargeValue += surchargeStep / (1f + BoostTimeForSurcharge);
+                float employeeCount = Mathf.Max(1, employeList.Count);
+
+                // Plus d'employés = surcharge monte moins vite
+                surchargeValue += (surchargeStep / employeeCount) / (1f + BoostTimeForSurcharge);
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                 Debug.LogWarning($"Surcharge {surchargeValue}");
                 surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
-
                 if (nextThresholdIndex < surchargeThresholds.Length && surchargeValue >= surchargeThresholds[nextThresholdIndex])
                 {
-                    // Notifie le tuto à la première fois qu'un palier est atteint
                     NotifyFirstOverloadOnce();
-
                     ApplyMalus(nextThresholdIndex);
                     nextThresholdIndex++;
                 }
-
-                float delay = baseDelay / (1f + (waitingPaper / Mathf.Max(1, totalPaper)));
+                // Plus d'employés = delay plus long = surcharge monte moins fréquemment
+                float delay = baseDelay / (1f + (waitingPaper / (Mathf.Max(1, totalPaper) * employeeCount)));
                 yield return new WaitForSeconds(delay);
             }
             else if (surchargeValue > 0)
             {
                 surchargeValue -= decayRate * Time.deltaTime;
                 surchargeValue = Mathf.Max(surchargeValue, 0f);
-
                 while (nextThresholdIndex > 0 && surchargeValue < surchargeThresholds[nextThresholdIndex - 1])
                 {
                     nextThresholdIndex--;
                     ApplyMalus(nextThresholdIndex);
                 }
-
                 surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
                 yield return null;
             }

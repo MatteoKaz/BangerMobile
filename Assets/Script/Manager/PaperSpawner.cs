@@ -130,11 +130,17 @@ public class PaperSpawner : MonoBehaviour
                 int rhythm = Random.Range(0, 3);
                 switch (rhythm)
                 {
-                    case 0: currentRhythm = 1.5f; break;  // lent
-                    case 1: currentRhythm = 1f; break;  // moyen
-                    case 2: currentRhythm = 0.5f; break; // rapide
+                    case 0: currentRhythm = 2f; break;  // lent
+                    case 1: currentRhythm = 1.25f; break;  // moyen
+                    case 2: currentRhythm = 0.75f; break; // rapide
                 }
                 Debug.Log($"Nouveau rythme: {rhythm}");
+            }
+            if (spawnCount % 30 == 0 && spawnCount > 0)
+            {
+                float pauseDuration = Random.Range(12f, 12f);
+               
+                yield return new WaitForSeconds(pauseDuration);
             }
 
             // petit random local � rythme global
