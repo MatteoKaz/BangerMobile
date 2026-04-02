@@ -14,6 +14,9 @@ public class EmployeFicheMove : MonoBehaviour
 
     [SerializeField] AudioEventDispatcher audioEventDispatcher;
 
+    /// <summary>Bloque tout swipe quand la scène Fire est active.</summary>
+    public static bool IsLocked = false;
+
     private int _currentPage = 0;
     private bool _isMoving = false;
     private bool _ficheReachedNotified = false;
@@ -32,22 +35,19 @@ public class EmployeFicheMove : MonoBehaviour
 
     public void LeftSwipe()
     {
-        if (!Parent.activeInHierarchy || _isMoving)
-            return;
+        if (!Parent.activeInHierarchy || _isMoving || IsLocked) return;
 
         if (audioEventDispatcher != null)
             audioEventDispatcher.PlayAudio(AudioType.TurnPageLeft);
 
         _currentPage = (_currentPage + 1) % (maxPage + 1);
-
         NotifyFicheReachedOnce();
         StartCoroutine(MoveToPage());
     }
 
     void RightSwipe()
     {
-        if (!Parent.activeInHierarchy || _isMoving)
-            return;
+        if (!Parent.activeInHierarchy || _isMoving || IsLocked) return;
 
         if (audioEventDispatcher != null)
             audioEventDispatcher.PlayAudio(AudioType.TurnPageRight);
@@ -64,7 +64,6 @@ public class EmployeFicheMove : MonoBehaviour
     private void NotifyFicheReachedOnce()
     {
         if (_ficheReachedNotified) return;
-
         _ficheReachedNotified = true;
         TutorialManager.NotifyEmployeeFicheReached();
     }

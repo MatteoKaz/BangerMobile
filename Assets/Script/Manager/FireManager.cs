@@ -72,14 +72,14 @@ public class FireManager : MonoBehaviour
     }
     public void Click(EmployeFicheInfo emp)
     {
-        if (DayLaunch == true)// feedbackPeutPAS
-            return;
-        if (launch == true)
-            return;
-        
+        if (DayLaunch == true) return;
+        if (launch == true) return;
+
         launch = true;
         empFiche = emp;
         LaunchFire = false;
+
+        EmployeFicheMove.IsLocked = true; // ← verrouille le swipe
 
         FiredScene.SetActive(true);
         typeWriter.dialogueText.text = null;
@@ -200,7 +200,7 @@ public class FireManager : MonoBehaviour
 
             yield return null;
         }
-
+        EmployeFicheMove.IsLocked = false;
     }
     public void FiredLauncher()
     {
@@ -321,6 +321,7 @@ public class FireManager : MonoBehaviour
 
             yield return null;
         }
+            EmployeFicheMove.IsLocked = false; 
         FiredScene.SetActive(false);
         
     }
