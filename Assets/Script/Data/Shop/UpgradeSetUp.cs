@@ -152,7 +152,7 @@ public class UpgradeSetUp : MonoBehaviour
     }
 
    public void Buy()
-{
+    {
     if (currentRefOfItem == null)
     {
         audioEventDispatcher?.PlayAudio(AudioType.CannotBuy);
@@ -164,7 +164,8 @@ public class UpgradeSetUp : MonoBehaviour
     if (roi.priceOfItem > scoreManager.playerMoney)
     {
         audioEventDispatcher?.PlayAudio(AudioType.CannotBuy);
-        buttonBuy.sprite = CannotBuy;
+            if (currentRefOfItem.priceOfItem > scoreManager.playerMoney)
+                buttonBuy.sprite = CannotBuy;
         return;
     }
     
@@ -182,7 +183,7 @@ public class UpgradeSetUp : MonoBehaviour
 
             break;
 
-        case CategoryUpgrade.Employe:
+           case CategoryUpgrade.Employe:
             
             if (emp == null)
             {
@@ -224,7 +225,7 @@ public class UpgradeSetUp : MonoBehaviour
 
             break;
 
-        case CategoryUpgrade.Pole:
+            case CategoryUpgrade.Pole:
             
             if (poleRef == null)
             {
@@ -267,17 +268,21 @@ public class UpgradeSetUp : MonoBehaviour
             break;
     }
     
-    scoreManager.playerMoney -= roi.priceOfItem;
-    scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
+            scoreManager.playerMoney -= roi.priceOfItem;
+             scoreManager.playerMoney = Mathf.Max(scoreManager.playerMoney, 0);
 
-    roi.priceOfItem += roi.inflation;
-    shopUpgrade.allUpgrade[roi.index].price = roi.priceOfItem;
-    popUPPrice.text = $"{roi.priceOfItem}$";
+             roi.priceOfItem += roi.inflation;
+            shopUpgrade.allUpgrade[roi.index].price = roi.priceOfItem;
+            popUPPrice.text = $"{roi.priceOfItem}$";
     
-    audioEventDispatcher?.PlayAudio(AudioType.BuyShop);
+            audioEventDispatcher?.PlayAudio(AudioType.BuyShop);
+            if(currentRefOfItem.priceOfItem > scoreManager.playerMoney)
+                {
+            buttonBuy.sprite = CannotBuy;
+            }
+           
+         }
     
-    buttonBuy.sprite = CannotBuy;
-}
     public void Update()
     {
         if(open)

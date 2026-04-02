@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class SwatManager : MonoBehaviour
 {
     public int numberOfUtilisation = 0;
-    
+   
     public float SwatDuration = 14f;
     public Light2D light;
     [SerializeField] DayManager dayManager;
@@ -156,8 +156,8 @@ public class SwatManager : MonoBehaviour
    
             while (true)
             {
-                
-                float t = (Mathf.Sin(Time.time * 2f) + 1f) / 2f;
+
+                float t = (Mathf.Sin(Time.time * 5f) + 1f) / 2f;
                 highglightsBleu.color = new Color(bleucolor.r, bleucolor.g, bleucolor.b, Mathf.Lerp(0f, 0.3f, t));
                 highglightsRouge.color = new Color(redcolor.r, redcolor.g,redcolor.b, Mathf.Lerp(0f, 0.3f, t));
                 highglightsVert.color = new Color(vertcolor.r,vertcolor.g, vertcolor.b  , Mathf.Lerp(0f, 0.3f, t));

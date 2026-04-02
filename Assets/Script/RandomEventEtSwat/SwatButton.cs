@@ -13,15 +13,16 @@ public class SwatButton : MonoBehaviour
     public bool OnGoing = false;
     public void OnClick()
     {
+        if (OnGoing == true)
+            return;
+        OnGoing = true;
         StartCoroutine(ClickAnim());
         swatManager.StartPulse();
     }
 
     public IEnumerator ClickAnim()
     {
-        if (OnGoing == true)
-            yield return null;
-        OnGoing = true;
+       
         Vector2 originalPos = button.transform.localPosition;
         float t = 0f;
 
