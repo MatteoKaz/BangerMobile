@@ -51,6 +51,8 @@ public enum AudioType
     Surcharge,
     Gain,
     Perte,
+    Swat,
+    Alert,
 }
 [System.Serializable]
 public struct AudioInfos

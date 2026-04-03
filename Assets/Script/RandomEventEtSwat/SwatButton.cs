@@ -9,10 +9,12 @@ public class SwatButton : MonoBehaviour
     public AnimationCurve bounceCurve;
 
     [SerializeField] SwatManager swatManager;
+    [SerializeField] AudioEventDispatcher audioEventManager;
 
     public bool OnGoing = false;
     public void OnClick()
     {
+        audioEventManager.PlayAudio(AudioType.Alert);
         if (OnGoing == true)
             return;
         OnGoing = true;

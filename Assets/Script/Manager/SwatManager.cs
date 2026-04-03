@@ -25,6 +25,8 @@ public class SwatManager : MonoBehaviour
 
     private Coroutine HighlightCoroutine;
     private Coroutine SwatLightLittle;
+    
+    [SerializeField] private AudioEventDispatcher audioEventManager;
     public event Action SwatModeStart;
     public event Action SwatModeEnd;
 
@@ -74,10 +76,10 @@ public class SwatManager : MonoBehaviour
         {
             emp.OnSwat(); // ou via event
         }
-
+        audioEventManager.PlayAudio(AudioType.Swat);
         DeactivateButton();
         StartCoroutine(SwatLight());
-        // désactive les boutons
+        // dï¿½sactive les boutons
     }
 
     public IEnumerator SwatLight()

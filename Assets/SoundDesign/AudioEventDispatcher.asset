@@ -74,7 +74,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 634c28fef00999a48b557b878dcbfd3a, type: 3}
   - audioType: 5
     audioClips:
-    - {fileID: 8300000, guid: 4c4e0d6d7f729de44906dc2ba5fe3e86, type: 3}
+    - {fileID: 8300000, guid: 55eb28b5a8f44ff40af2e2f1f5dac288, type: 3}
+    - {fileID: 8300000, guid: e18564d0b26ea8143906547a9ee28f2b, type: 3}
   - audioType: 10
     audioClips:
     - {fileID: 8300000, guid: 7a06ac4366cc1a9438b1fe1f5b9c590b, type: 3}
@@ -126,3 +127,9 @@ MonoBehaviour:
   - audioType: 45
     audioClips:
     - {fileID: 8300000, guid: 8e30959c7ddafb348875d39baa5603ab, type: 3}
+  - audioType: 48
+    audioClips:
+    - {fileID: 8300000, guid: c2e29bbb0addc6f4e802f4324b0d415c, type: 3}
+  - audioType: 49
+    audioClips:
+    - {fileID: 8300000, guid: 961118e8da38a784fad3a00d2f8aa969, type: 3}

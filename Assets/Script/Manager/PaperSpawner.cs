@@ -126,7 +126,7 @@ public class PaperSpawner : MonoBehaviour
         {
             if (!canSpawn)
                 break;
-            audioEventDispatcher.PlayAudio(AudioType.Pop);
+           // audioEventDispatcher.PlayAudio(AudioType.Pop);
             if (papersRemaining <= 15)
             {
                 currentRhythm = 1f;
