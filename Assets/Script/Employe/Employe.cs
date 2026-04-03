@@ -98,7 +98,7 @@ public class Employe : MonoBehaviour
     public Image FondSwat;
     public Image InteractiveImage;
 
-
+    private PoleTask currentTask;
     public event Action ScoreWinAnim;
     public event Action LooseMoney;
 
@@ -197,9 +197,12 @@ public class Employe : MonoBehaviour
     // fonction  lancer lorsqu'il commence a work 
     public void Working()
     {
-        if (mypole.waitingPaper > 0 && iamWorking == false)
+        PoleTask myTask = mypole.taskQueue.Find(t => !t.isActive);
+        if (myTask != null && iamWorking == false)
         {
+            myTask.isActive = true;
             iamWorking = true;
+            currentTask = myTask;
             mypole.activepaper++;
             mypole.UpdatePaperUI();
             WorkRoutine = StartCoroutine(Work());
@@ -303,6 +306,8 @@ public class Employe : MonoBehaviour
             employeImage.sprite = idleSprite;
             animator.SetTrigger("Idle");
         }
+        mypole.DecrementPaper(currentTask);
+        currentTask = null;
         yield return new WaitForSeconds(Mathf.Max(timeBeetwennWork - StressBonus - swatBoostTimeBeetweenWork, 0));
         if (isStunned)
         {
@@ -312,10 +317,11 @@ public class Employe : MonoBehaviour
             animator.SetTrigger("Surcharge");
         }
         iamWorking = false;
-      
-        mypole.DecrementPaper();
+
+       
         
-        
+        Working();
+
 
 
     }

@@ -182,6 +182,8 @@ public class PaperSpawner : MonoBehaviour
             pm.PileRed = RefPileRed;
             pm.PileGreen = RefPileGreen;
             pm.PileBlue = RefPileBlue;
+            pm.Paperduration = Random.Range(20f, 30f);
+            pm.value = 10;
             GameObject parentObj = paperSpawn;
             SpriteRenderer spriteRenderer = parentObj.GetComponent<SpriteRenderer>();
             spriteRenderer.sortingOrder = globalSorting--;

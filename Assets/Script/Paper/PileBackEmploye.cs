@@ -70,13 +70,13 @@ public class PileBackEmploye : MonoBehaviour
     private void OnDestroy()
     {
         if (_activeTuyaux  != null)
-        _activeTuyaux.AddPaper -= OnCountUpdated;
+        _activeTuyaux.AddPaperUi -= OnCountUpdated;
     }
 
     public void OnDisable()
     {
         if (_activeTuyaux != null)
-        _activeTuyaux.AddPaper -= OnCountUpdated;
+        _activeTuyaux.AddPaperUi -= OnCountUpdated;
         if (employe?.mypole != null)
             employe.mypole.UpdatePaperFond -= UpdateVisual;
     }
@@ -200,7 +200,7 @@ public class PileBackEmploye : MonoBehaviour
     {
         // Désabonne l'ancien
         if (_activeTuyaux != null)
-            _activeTuyaux.AddPaper -= OnCountUpdated;
+            _activeTuyaux.AddPaperUi -= OnCountUpdated;
         if (employe?.mypole != null)
             employe.mypole.UpdatePaperFond -= UpdateVisual;
 
@@ -209,7 +209,7 @@ public class PileBackEmploye : MonoBehaviour
 
         // Abonne au nouveau
         if (_activeTuyaux != null)
-            _activeTuyaux.AddPaper += OnCountUpdated;
+            _activeTuyaux.AddPaperUi += OnCountUpdated;
         if (employe?.mypole != null)
             employe.mypole.UpdatePaperFond += UpdateVisual;
 

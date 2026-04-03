@@ -19,7 +19,6 @@ public class Pole : MonoBehaviour
     [Header("Employe")]
     public int maxEmploye = 4;
     public int currentEmploye;
-
     public List<Employe> employeList = new List<Employe>();
 
     [Header("Papier")]
@@ -49,12 +48,19 @@ public class Pole : MonoBehaviour
     public List<Sprite> upgradesImages = new List<Sprite>();
     public Dictionary<Sprite, int> upgradeCounts = new Dictionary<Sprite, int>();
 
+    [Header("Tasks")]
+    public List<PoleTask> taskQueue = new List<PoleTask>();
+    public float defaultTaskDuration = 15f;
+    [SerializeField] private GameObject postItPrefab;
+    [SerializeField] private Transform[] postItSlots;
+    private int postItSortingOrder = 0;
+    private Coroutine taskTimerRef;
 
     public Transform quotatTextTarget;
-
     public bool Stop;
     public event Action UpdatePaperCount;
     public event Action UpdatePaperFond;
+
     public enum TypeOfMalus
     {
         WorkRate,
@@ -65,9 +71,7 @@ public class Pole : MonoBehaviour
     [SerializeField] public GameObject contentparent;
     [SerializeField] Tuyaux myTuyaux;
     [SerializeField] public string PoleName;
-
     public event Action eventWinMoney;
-
     private static bool _firstOverloadNotified = false;
 
     public void Start()
@@ -99,7 +103,6 @@ public class Pole : MonoBehaviour
         Stop = true;
     }
 
-    /// <summary>Remet à zéro le flag de première surcharge au début du premier jour.</summary>
     private static void ResetFirstOverloadFlag()
     {
         _firstOverloadNotified = false;
@@ -108,50 +111,138 @@ public class Pole : MonoBehaviour
     public void EndWeekReset()
     {
         foreach (Employe emp in employeList)
-        {
             emp.EndWeekReset();
-        }
     }
 
-    public void AddPaper()
+    public void AddPaper(float duration, int value)
     {
-        totalPaper += papertoadd;
+        PoleTask task = new PoleTask
+        {
+            timeLimit = duration,
+            timeRemaining = duration,
+            value = value,
+            isActive = false
+        };
+        taskQueue.Add(task);
+        totalPaper++;
         waitingPaper = totalPaper - activepaper;
-        waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
-        if (Stop == true)
-            return;
+        if (Stop) return;
+        SpawnPostIt(task);
+        StartTaskTimers();
         LaunchWorker();
         BeginSurcharge();
         UpdatePaperCount?.Invoke();
     }
 
-    public void DecrementPaper()
+    public void DecrementPaper(PoleTask task)
     {
-        totalPaper -= 1;
-        totalPaper = Mathf.Clamp(totalPaper, 0, totalPaper);
-        activepaper--;
-        activepaper = Mathf.Clamp(activepaper, 0, activepaper);
-        waitingPaper = totalPaper - activepaper;
-        waitingPaper = Mathf.Clamp(waitingPaper, 0, waitingPaper);
-        if (Stop == true)
-            return;
+        totalPaper = Mathf.Clamp(totalPaper - 1, 0, int.MaxValue);
+        activepaper = Mathf.Clamp(activepaper - 1, 0, int.MaxValue);
+        waitingPaper = Mathf.Max(0, totalPaper - activepaper);
+
+        if (task != null)
+        {
+            if (task.postItObject != null)
+                Destroy(task.postItObject);
+            taskQueue.Remove(task);
+        }
+
+        if (Stop) return;
         LaunchWorker();
         UpdatePaperCount?.Invoke();
         BeginSurcharge();
         UpdatePaperFond?.Invoke();
     }
 
+    private Color GetPoleColor()
+    {
+        return type switch
+        {
+            PoleType.RedPole => new Color(1f, UnityEngine.Random.Range(0.75f, 0.90f), UnityEngine.Random.Range(0.75f, 0.90f)),
+            PoleType.BluePole => new Color(UnityEngine.Random.Range(0.75f, 0.90f), UnityEngine.Random.Range(0.75f, 0.90f), 1f),
+            PoleType.GreenPole => new Color(UnityEngine.Random.Range(0.75f, 0.90f), 1f, UnityEngine.Random.Range(0.75f, 0.90f)),
+            _ => Color.white
+        };
+    }
+
+    private void SpawnPostIt(PoleTask task)
+    {
+        if (postItPrefab == null) return;
+
+        int slotIndex = (taskQueue.Count - 1) % postItSlots.Length;
+        Transform slot = postItSlots[slotIndex];
+
+        GameObject go = Instantiate(postItPrefab, slot);
+
+        int index = Mathf.Clamp(taskQueue.Count - 1, 0, 2);
+        go.transform.localPosition = new Vector3(
+            UnityEngine.Random.Range(-20f, 20f),
+            index * -30f,
+            0f
+        );
+
+        go.transform.SetAsFirstSibling();
+
+        Image img = go.transform.Find("FondPostIt")?.GetComponent<Image>();
+        if (img != null)
+            img.color = GetPoleColor();
+
+        Canvas canvas = go.GetComponent<Canvas>();
+        if (canvas != null)
+        {
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = postItSortingOrder--;
+        }
+
+        PostItUI postIt = go.GetComponent<PostItUI>();
+        postIt.linkedTask = task;
+        task.postItObject = go;
+    }
+
+    public void StartTaskTimers()
+    {
+        if (taskTimerRef == null)
+            taskTimerRef = StartCoroutine(TaskTimerTick());
+    }
+
+    private IEnumerator TaskTimerTick()
+    {
+        while (true)
+        {
+            for (int i = taskQueue.Count - 1; i >= 0; i--)
+            {
+                PoleTask task = taskQueue[i];
+                task.timeRemaining -= Time.deltaTime;
+
+                if (task.timeRemaining <= 0)
+                {
+                    taskQueue.RemoveAt(i);
+                    totalPaper--;
+                    waitingPaper = Mathf.Max(0, totalPaper - activepaper);
+                    if (task.postItObject != null)
+                        Destroy(task.postItObject);
+                    UpdatePaperCount?.Invoke();
+                }
+            }
+            if (taskQueue.Count == 0)
+            {
+                taskTimerRef = null;
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
     public void WinMoney()
     {
         localAdvencement += paperValue * Mathf.RoundToInt(BonusRevenus);
-
-        
     }
+
     public void LooseMoney(int value)
     {
         localAdvencement -= value;
-        
     }
+
     public void UpdateUI()
     {
         eventWinMoney?.Invoke();
@@ -184,12 +275,22 @@ public class Pole : MonoBehaviour
         activepaper = 0;
         localQuotat = 0;
         localAdvencement = 0;
+        postItSortingOrder = 0;
         UpdatePaperCount?.Invoke();
         ResetSurcharge();
-        foreach (Employe emp in employeList)
+
+        if (taskTimerRef != null)
         {
-            emp.EndDayResetStat();
+            StopCoroutine(taskTimerRef);
+            taskTimerRef = null;
         }
+        foreach (PoleTask task in taskQueue)
+            if (task.postItObject != null)
+                Destroy(task.postItObject);
+        taskQueue.Clear();
+
+        foreach (Employe emp in employeList)
+            emp.EndDayResetStat();
     }
 
     public void RebuildEmployeList()
@@ -203,7 +304,6 @@ public class Pole : MonoBehaviour
         employeList.Clear();
 
         List<InventorySlot> slots = new List<InventorySlot>();
-
         foreach (Transform child in contentparent.transform)
         {
             var slot = child.GetComponent<InventorySlot>();
@@ -217,14 +317,12 @@ public class Pole : MonoBehaviour
         {
             var draggable = slot.GetComponentInChildren<DraggableItems>();
             if (draggable != null)
-            {
                 employeList.Add(draggable.linkedEmploye);
-            }
+
             draggable = slot.GetComponentInChildren<DraggableItems>();
             if (draggable != null && draggable.linkedEmploye != null)
             {
                 employeList.Add(draggable.linkedEmploye);
-
                 yield return new WaitForSeconds(0.015f);
                 var pile = draggable.linkedEmploye.GetComponentInChildren<PileBackEmploye>(true);
                 if (pile != null)
@@ -254,8 +352,6 @@ public class Pole : MonoBehaviour
             if (waitingPaper > 0)
             {
                 float employeeCount = Mathf.Max(1, employeList.Count);
-
-
                 float chargePerEmployee = (float)waitingPaper / Mathf.Pow(employeeCount, 1.5f);
                 surchargeValue += (surchargeStep * chargePerEmployee) / (1f + BoostTimeForSurcharge);
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
@@ -267,7 +363,6 @@ public class Pole : MonoBehaviour
                     ApplyMalus(nextThresholdIndex);
                     nextThresholdIndex++;
                 }
-                // Plus d'employés = delay plus long = surcharge monte moins fréquemment
                 float delay = baseDelay / (1f + (waitingPaper / (Mathf.Max(1, totalPaper) * employeeCount)));
                 yield return new WaitForSeconds(delay);
             }
@@ -291,7 +386,6 @@ public class Pole : MonoBehaviour
         }
     }
 
-    /// <summary>Notifie le TutorialManager de la première surcharge, une seule fois par session.</summary>
     private static void NotifyFirstOverloadOnce()
     {
         if (_firstOverloadNotified) return;
@@ -329,13 +423,12 @@ public class Pole : MonoBehaviour
         nextThresholdIndex = 0;
         surchargeProgress.value = 0f;
         foreach (Employe emp in employeList)
-        {
             emp.ResetMalus();
-        }
+
         if (SurchargeRef != null)
         {
             StopCoroutine(SurchargeRef);
             SurchargeRef = null;
         }
     }
-}   
+}

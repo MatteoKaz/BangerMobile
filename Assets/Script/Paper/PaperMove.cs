@@ -18,6 +18,8 @@ public class PaperMove : MonoBehaviour
     public bool OnPile = false;
     bool Launch = false;
 
+    public float Paperduration = 6f;
+    public int value = 10;
     public PaperType paperType;
     public GameObject myself;
 
@@ -196,7 +198,7 @@ public class PaperMove : MonoBehaviour
 
         if (validPaper == true)
         {
-            tuyaux.GoodPaper();
+            tuyaux.GoodPaper(Paperduration, value);
             Destroy(myself);
         }
         else
