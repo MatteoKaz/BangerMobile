@@ -2143,11 +2143,11 @@ MonoBehaviour:
   papertoadd: 3
   surchargeValue: 0
   maxSurcharge: 100
-  surchargeStep: 1
+  surchargeStep: 1.5
   baseDelay: 0.25
   surchargeThresholds: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
   nextThresholdIndex: 0
-  decayRate: 5
+  decayRate: 8
   surchargeProgress: {fileID: 1472176941}
   sliderSpeed: 15
   BonusRevenus: 1
@@ -33402,11 +33402,11 @@ MonoBehaviour:
   papertoadd: 3
   surchargeValue: 0
   maxSurcharge: 100
-  surchargeStep: 1
+  surchargeStep: 1.5
   baseDelay: 0.25
   surchargeThresholds: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
   nextThresholdIndex: 0
-  decayRate: 5
+  decayRate: 8
   surchargeProgress: {fileID: 1928201354}
   sliderSpeed: 15
   BonusRevenus: 1
@@ -54321,11 +54321,11 @@ MonoBehaviour:
   papertoadd: 3
   surchargeValue: 0
   maxSurcharge: 100
-  surchargeStep: 1
+  surchargeStep: 1.5
   baseDelay: 0.25
   surchargeThresholds: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
   nextThresholdIndex: 0
-  decayRate: 5
+  decayRate: 8
   surchargeProgress: {fileID: 868995111}
   sliderSpeed: 15
   BonusRevenus: 1

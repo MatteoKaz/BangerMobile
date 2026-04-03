@@ -352,7 +352,7 @@ public class Pole : MonoBehaviour
             if (waitingPaper > 0)
             {
                 float employeeCount = Mathf.Max(1, employeList.Count);
-                float chargePerEmployee = (float)waitingPaper / Mathf.Pow(employeeCount, 3.5f);
+                float chargePerEmployee = (float)waitingPaper / Mathf.Pow(employeeCount, 2.5f);
                 surchargeValue += (surchargeStep * chargePerEmployee) / (1f + BoostTimeForSurcharge);
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                 Debug.LogWarning($"Surcharge {surchargeValue}");

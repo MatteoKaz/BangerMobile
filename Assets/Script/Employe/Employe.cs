@@ -76,6 +76,7 @@ public class Employe : MonoBehaviour
     public Color baseColor;
     private float timeBeetwennWork = 4f;
     [SerializeField] Animator animator;
+    [SerializeField] Animator paperDechirer;
 
     public bool iamWorking = false;
     private Coroutine WorkRoutine;
@@ -297,9 +298,12 @@ public class Employe : MonoBehaviour
             moneyMake += mypole.paperValue;
             succeedPaper += 1 + Mathf.RoundToInt(BonusPaperDone);
         }
+        else
+        {
+            paperDechirer.SetTrigger("Launch");
+        }
 
-
-        numberOfPaperDone += 1 + Mathf.RoundToInt(BonusPaperDone);
+            numberOfPaperDone += 1 + Mathf.RoundToInt(BonusPaperDone);
         workAdvancement.value = 0;
        
         Light.intensity = 0.0f;
@@ -334,6 +338,9 @@ public class Employe : MonoBehaviour
         {
             if (currentTask!= null)
             {
+                
+                currentTask.isActive = false;
+
                 Image img = currentTask.postItObject.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
                 img.enabled = false;
             }
@@ -465,13 +472,13 @@ public class Employe : MonoBehaviour
     private static readonly Color[] SurchargeColors = new Color[]
     {
     Color.white,                        // 0     - pas de surcharge
-    new Color(1f, 0.95f, 0.95f),       // palier 10
-    new Color(1f, 0.90f, 0.90f),       // palier 20
-    new Color(1f, 0.85f, 0.85f),       // palier 30
-    new Color(1f, 0.80f, 0.80f),       // palier 40  → FFCCCC
-    new Color(1f, 0.75f, 0.75f),       // palier 50
-    new Color(1f, 0.65f, 0.65f),       // palier 60
-    new Color(1f, 0.55f, 0.55f),       // palier 70
+    Color.white,        // palier 10
+    Color.white,        // palier 20
+    Color.white,       // palier 30
+    new Color(1f, 0.85f, 0.85f),       // palier 40  → FFCCCC
+    new Color(1f, 0.80f, 0.80f),       // palier 50
+    new Color(1f, 0.75f, 0.75f),       // palier 60
+    new Color(1f, 0.65f, 0.65f),       // palier 70
     new Color(1f, 0.47f, 0.47f),       // palier 80
     new Color(0.97f, 0.40f, 0.40f),    // palier 90
     new Color(0.97f, 0.38f, 0.38f),    // palier 100 → F86262

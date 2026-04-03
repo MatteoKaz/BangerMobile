@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 929d29406748adb4b8527cb56ddb9240
+guid: 8a3f5094639479444872d240a071a08f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3135812922859790811
-    second: PapiersBleu - Copy_0
+      213: 8266629345752648566
+    second: Image (64)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PapiersBleu - Copy_0
+      name: Image (64)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 159
-        height: 218
+        x: 122
+        y: 59
+        width: 296
+        height: 365
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bd123253d35a48b20800000000000000
-      internalID: 3135812922859790811
+      spriteID: 67b086b6797f8b270800000000000000
+      internalID: 8266629345752648566
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PapiersBleu - Copy_0: 3135812922859790811
+      Image (64)_0: 8266629345752648566
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
