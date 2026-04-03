@@ -101,7 +101,7 @@ public class Employe : MonoBehaviour
     private PoleTask currentTask;
     public event Action ScoreWinAnim;
     public event Action LooseMoney;
-
+    
     public void OnEnable()
     {
         timemanager.TimerEnded += StopWorking;
@@ -201,6 +201,8 @@ public class Employe : MonoBehaviour
         if (myTask != null && iamWorking == false)
         {
             myTask.isActive = true;
+            Image img = myTask.postItObject.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
+            img.enabled = true; 
             iamWorking = true;
             currentTask = myTask;
             mypole.activepaper++;
@@ -330,6 +332,11 @@ public class Employe : MonoBehaviour
     {
         if (WorkRoutine != null)
         {
+            if (currentTask!= null)
+            {
+                Image img = currentTask.postItObject.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
+                img.enabled = false;
+            }
             StopCoroutine(WorkRoutine);
             WorkRoutine = null;
         }
