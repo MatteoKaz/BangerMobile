@@ -8,7 +8,7 @@ public class FeedbackMoneyEmploye : MonoBehaviour
     [SerializeField] Transform scoreTarget;
     [SerializeField] Canvas canvas;
     [SerializeField] GameObject popupTextPrefab;
-
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     private void OnEnable()
     {
         employe.ScoreWinAnim += OnScoreWinAnim;
@@ -21,6 +21,7 @@ public class FeedbackMoneyEmploye : MonoBehaviour
 
     private void OnScoreWinAnim()
     {
+        audioEventDispatcher.PlayAudio(AudioType.Gain);
         Transform target = employe.mypole?.quotatTextTarget ?? scoreTarget;
         StartCoroutine(PopAndMoveToScore($"+{employe.mypole.paperValue}$", transform.position, target));
     }

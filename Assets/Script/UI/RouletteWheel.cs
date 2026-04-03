@@ -182,6 +182,7 @@ public class RouletteWheel : MonoBehaviour
     /// <summary>Lance la roulette. Ignoré si un spin est en cours ou déjà fait aujourd'hui.</summary>
     public void Spin()
     {
+        audioEventDispatcher.PlayAudio(AudioType.Spin);
         if (_isSpinning) return;
 
         if (_hasSpunToday)
@@ -477,7 +478,7 @@ public class RouletteWheel : MonoBehaviour
         TurnOffAllLights();
 
         // Phase 1 — Son rapide en boucle, synchronisé avec le début du défilement
-        PlaySpinLoop(AudioType.Spin);
+        
 
         float elapsed = 0f;
         while (elapsed < constantDuration)
@@ -492,8 +493,8 @@ public class RouletteWheel : MonoBehaviour
 
         // Phase 2 — Transition son : Spin s'arrête, SpinSlow démarre en même temps
         // que la décélération visuelle commence
-        StopSpinLoop();
-        PlaySpinLoop(AudioType.SpinSlow);
+       // StopSpinLoop();
+        //PlaySpinLoop(AudioType.SpinSlow);
 
         float centerY = GetWinnerTargetY();
         int topIdx = GetTopmostSlotIndex();
@@ -556,7 +557,7 @@ public class RouletteWheel : MonoBehaviour
         RegisterWinnerAsTaken(_selectedIndex);
 
         // Phase 3 — Arrêt total : SpinSlow coupe, SpinEnd joue en one-shot
-        StopSpinLoop();
+       // StopSpinLoop();
         audioEventDispatcher?.PlayAudio(AudioType.SpinEnd);
 
         PromoteWinnerSlot(_slots[finalWinnerSlot]);

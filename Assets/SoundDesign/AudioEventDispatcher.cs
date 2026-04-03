@@ -48,6 +48,9 @@ public enum AudioType
     CannotBuy,
     FlyMouche,
     MoucheDead,
+    Surcharge,
+    Gain,
+    Perte,
 }
 [System.Serializable]
 public struct AudioInfos
