@@ -37621,6 +37621,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4540976496562926226, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: audioEventDispatcher
+      value: 
+      objectReference: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
     - target: {fileID: 4684604137237567183, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
@@ -37761,6 +37765,10 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8125630918485114994, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: audioEventDispatcher
+      value: 
+      objectReference: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
     - target: {fileID: 8439866691068579048, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -238.8
@@ -42415,6 +42423,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4540976496562926226, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: audioEventDispatcher
+      value: 
+      objectReference: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
     - target: {fileID: 4684604137237567183, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
@@ -42543,6 +42555,10 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8125630918485114994, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: audioEventDispatcher
+      value: 
+      objectReference: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
     - target: {fileID: 8439866691068579048, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -238

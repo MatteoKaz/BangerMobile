@@ -21,9 +21,9 @@ public class FeedbackMoneyEmploye : MonoBehaviour
 
     private void OnScoreWinAnim()
     {
-        audioEventDispatcher.PlayAudio(AudioType.Gain);
         Transform target = employe.mypole?.quotatTextTarget ?? scoreTarget;
         StartCoroutine(PopAndMoveToScore($"+{employe.mypole.paperValue}$", transform.position, target));
+        audioEventDispatcher.PlayAudio(AudioType.Gain);
     }
 
     private IEnumerator PopAndMoveToScore(string text, Vector3 spawnPosition, Transform target)
