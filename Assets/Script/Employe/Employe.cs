@@ -77,6 +77,8 @@ public class Employe : MonoBehaviour
     private float timeBeetwennWork = 4f;
     [SerializeField] Animator animator;
     [SerializeField] Animator paperDechirer;
+    [SerializeField] ParticleSystem smoke;
+    [SerializeField] Image cigarette;
 
     public bool iamWorking = false;
     private Coroutine WorkRoutine;
@@ -192,18 +194,21 @@ public class Employe : MonoBehaviour
             polemanager.TakenEmployeIndex.Add(employeIndex);
 
         Debug.Log("SetEmploye");
+        cigarette.enabled = true;
+        smoke.Play();
     }
 
 
     // fonction  lancer lorsqu'il commence a work 
-    public void Working()
+    public void Working(PoleTask task)
     {
-        PoleTask myTask = mypole.taskQueue.Find(t => !t.isActive);
+        PoleTask myTask = task;
         if (myTask != null && iamWorking == false)
         {
-            myTask.isActive = true;
+           
             Image img = myTask.postItObject.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
-            img.enabled = true; 
+            if (img != null)
+                img.enabled = true; 
             iamWorking = true;
             currentTask = myTask;
             mypole.activepaper++;
@@ -211,7 +216,8 @@ public class Employe : MonoBehaviour
             WorkRoutine = StartCoroutine(Work());
             
             Light.intensity = 0.3f;
-            
+            cigarette.enabled = false;
+            smoke.Stop();
         }
         
         else
@@ -223,6 +229,11 @@ public class Employe : MonoBehaviour
             {
                 animator.SetTrigger("Idle");
                 employeImage.sprite = idleSprite;
+            }
+            else
+            {
+                cigarette.enabled =true;
+                smoke.Play();
             }
            
         }
@@ -314,6 +325,8 @@ public class Employe : MonoBehaviour
         }
         mypole.DecrementPaper(currentTask);
         currentTask = null;
+        cigarette.enabled = true;
+        smoke.Play();
         yield return new WaitForSeconds(Mathf.Max(timeBeetwennWork - StressBonus - swatBoostTimeBeetweenWork, 0));
         if (isStunned)
         {
@@ -322,11 +335,11 @@ public class Employe : MonoBehaviour
             Light.color = Color.indianRed;
             animator.SetTrigger("Surcharge");
         }
+        
+
         iamWorking = false;
 
-       
-        
-        Working();
+        mypole.LaunchWorker();
 
 
 
@@ -336,17 +349,26 @@ public class Employe : MonoBehaviour
     {
         if (WorkRoutine != null)
         {
-            if (currentTask!= null)
+            if (currentTask != null)
             {
-                
-                currentTask.isActive = false;
+                Image img = currentTask.postItObject
+                    ?.transform.Find("FondPostIt")
+                    ?.Find("Perso")
+                    ?.GetComponent<Image>();
 
-                Image img = currentTask.postItObject.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
-                img.enabled = false;
+                if (img != null)
+                    img.enabled = false;
+
+                currentTask.isActive = false; // ⚠️ IMPORTANT
+                mypole.activepaper = Mathf.Max(0, mypole.activepaper - 1);
+
+                currentTask = null;
             }
             StopCoroutine(WorkRoutine);
             WorkRoutine = null;
         }
+        GetComponentInChildren<PileBackEmploye>()?.OnCountUpdated();
+        mypole.UpdateBackLog();
         iamWorking = false;        
         workAdvancement.value = 0f;
         employeWorkRateMalus = 0f;
@@ -354,8 +376,10 @@ public class Employe : MonoBehaviour
         mypole = pole;
         if (isStunned == false)
         employeImage.sprite = idleSprite;
-
-        Working();
+        
+        GetComponentInChildren<PileBackEmploye>()?.OnPoleChanged();
+        mypole.UpdateBackLog();
+        mypole.LaunchWorker();
     }
 
 
@@ -457,6 +481,8 @@ public class Employe : MonoBehaviour
             StunRef = null;
         }
         isStunned = false;
+        GetComponentInChildren<PileBackEmploye>()?.OnCountUpdated();
+        GetComponentInChildren<PileBackEmploye>()?.OnPoleChanged();
     }
     public void EndWeekReset()
     {

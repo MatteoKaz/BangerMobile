@@ -96,7 +96,7 @@ public class PileBackEmploye : MonoBehaviour
             _ => null
         };
     }
-    private void OnCountUpdated()
+    public void OnCountUpdated()
     {
         
         PlayPunch();
@@ -111,8 +111,8 @@ public class PileBackEmploye : MonoBehaviour
         PileThreshold[] thresholds = GetThresholdsForCurrentPole();
         if (thresholds == null || thresholds.Length == 0) return;
 
-        int count = employe.mypole.totalPaper;
-
+        int count = employe.mypole.waitingPaper;
+        Debug.LogWarning($"papier attente : {count}");
         Sprite selected = thresholds[0].sprite;
         float selectedScale = thresholds[0].scale;
 

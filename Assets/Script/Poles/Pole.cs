@@ -74,9 +74,12 @@ public class Pole : MonoBehaviour
     public event Action eventWinMoney;
     private static bool _firstOverloadNotified = false;
 
+    public bool launchFirst = false;
+    private Coroutine work;
     public void Start()
     {
         UpdatePaperCount?.Invoke();
+       
     }
 
     public void OnEnable()
@@ -132,6 +135,12 @@ public class Pole : MonoBehaviour
         LaunchWorker();
         BeginSurcharge();
         UpdatePaperCount?.Invoke();
+        if (launchFirst == false)
+        {
+            work = StartCoroutine(WorkerManager());
+            launchFirst = true;
+        }
+        
     }
 
     public void DecrementPaper(PoleTask task)
@@ -252,18 +261,59 @@ public class Pole : MonoBehaviour
     {
         UpdatePaperCount?.Invoke();
     }
-
-    public void LaunchWorker()
+    IEnumerator WorkerManager()
     {
-        foreach (Employe employe in employeList)
+        while (true)
         {
-            if (employe.iamWorking == false && waitingPaper > 0)
+            LaunchWorker(); // essaie d’assigner tous les employés libres
+            
+            yield return new WaitForSeconds(0.1f); // cadence de relance
+        }
+    }
+    public void UpdateBackLog()
+    {
+        foreach (Employe emp in employeList)
+            emp.GetComponentInChildren<PileBackEmploye>()?.OnCountUpdated();
+    }
+    public PoleTask GetAvailableTask()
+    {
+        foreach (var task in taskQueue)
+        {
+            if (!task.isActive)
             {
-                employe.Working();
-                waitingPaper = Mathf.Max(0, totalPaper - activepaper);
-                BeginSurcharge();
+                task.isActive = true;
+                return task;
             }
         }
+        return null;
+    }
+    public void LaunchWorker()
+    {
+        waitingPaper = Mathf.Max(0, totalPaper - activepaper);
+        foreach (Employe employe in employeList)
+        {
+            if (waitingPaper <= 0)
+                break;
+            if (employe.iamWorking)
+                continue;
+            PoleTask task = GetAvailableTask();
+
+                if (task == null)
+                    break;
+
+            
+                    task.isActive = true;
+                    employe.Working(task);
+                
+
+                waitingPaper = Mathf.Max(0, totalPaper - activepaper);
+            
+                BeginSurcharge();
+                UpdateBackLog();
+
+
+        }
+
         UpdatePaperCount?.Invoke();
     }
 
@@ -278,7 +328,11 @@ public class Pole : MonoBehaviour
         postItSortingOrder = 0;
         UpdatePaperCount?.Invoke();
         ResetSurcharge();
-
+        if (work != null)
+        {
+            StopCoroutine(work);
+            launchFirst = false;
+        }
         if (taskTimerRef != null)
         {
             StopCoroutine(taskTimerRef);
@@ -323,12 +377,14 @@ public class Pole : MonoBehaviour
             if (draggable != null && draggable.linkedEmploye != null)
             {
                 employeList.Add(draggable.linkedEmploye);
+                draggable.linkedEmploye.GetComponentInChildren<PileBackEmploye>()?.OnCountUpdated();
                 yield return new WaitForSeconds(0.015f);
                 var pile = draggable.linkedEmploye.GetComponentInChildren<PileBackEmploye>(true);
                 if (pile != null)
                     pile.OnPoleChanged();
             }
         }
+        UpdateBackLog();
     }
 
     public void BeginSurcharge()
@@ -351,8 +407,9 @@ public class Pole : MonoBehaviour
         {
             if (waitingPaper > 0)
             {
+                float normalizedPaper = (float)waitingPaper + 0.005f;
                 float employeeCount = Mathf.Max(1, employeList.Count);
-                float chargePerEmployee = (float)waitingPaper / Mathf.Pow(employeeCount, 2.5f);
+                float chargePerEmployee = Mathf.Pow(normalizedPaper, 0.55f) / Mathf.Pow(employeeCount, 1.5f);
                 surchargeValue += (surchargeStep * chargePerEmployee) / (1f + BoostTimeForSurcharge);
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                 Debug.LogWarning($"Surcharge {surchargeValue}");
