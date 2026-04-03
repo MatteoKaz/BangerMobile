@@ -9,6 +9,7 @@ public class PoleBoostOverlay : MonoBehaviour
     [SerializeField] private BoostManager boostManager;
     [SerializeField] private UnityEngine.UI.Image highlightImage;
     [SerializeField] private TextMeshProUGUI boostText;
+    [SerializeField] private ParticleSystem confettiParticles;
 
     [Header("Paramètres visuels")]
     [SerializeField] private float minAlpha = 0f;
@@ -43,6 +44,12 @@ public class PoleBoostOverlay : MonoBehaviour
     {
         if (pole != _pole) return;
 
+        if (confettiParticles != null)
+        {
+            confettiParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            confettiParticles.Play();
+        }
+
         if (_visualCoroutine != null) StopCoroutine(_visualCoroutine);
         _visualCoroutine = StartCoroutine(ShowOverlay());
     }
@@ -51,9 +58,13 @@ public class PoleBoostOverlay : MonoBehaviour
     {
         if (pole != _pole) return;
 
+        if (confettiParticles != null)
+            confettiParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
         if (_visualCoroutine != null) StopCoroutine(_visualCoroutine);
         _visualCoroutine = StartCoroutine(HideOverlay());
     }
+
 
     private IEnumerator ShowOverlay()
     {
