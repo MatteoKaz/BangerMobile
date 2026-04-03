@@ -15,11 +15,22 @@ MonoBehaviour:
   triggerType: 4
   triggerDelay: 0.5
   steps:
-  - text: "Une fois la journ\xE9e finie, vous recevez votre fiche de paie. Sur celle-ci
-      se trouve le quota journalier que vous avez atteint, ainsi que le salaire gagn\xE9
-      affili\xE9."
+  - text: "En fin de journ\xE9e, vous recevez votre fiche de paie avec les d\xE9tails
+      de votre salaire gagn\xE9."
     stepType: 0
     pauseOnShow: 1
+    unpauseOnClose: 0
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 0}
+    pressedButtonSprite: {fileID: 0}
+    overrideButtonSize: 0
+    buttonSize: {x: 0, y: 0}
+    overrideButtonPosition: 0
+    buttonPosition: {x: 0, y: 0}
+    showBackButton: 0
+  - text: "Une partie de votre salaire est d\xE9duite afin de payer vos employ\xE9s."
+    stepType: 0
+    pauseOnShow: 0
     unpauseOnClose: 1
     overrideButtonSprite: 1
     buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
@@ -28,3 +39,4 @@ MonoBehaviour:
     buttonSize: {x: 300, y: 300}
     overrideButtonPosition: 1
     buttonPosition: {x: -100, y: 0}
+    showBackButton: 1

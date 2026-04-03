@@ -46,7 +46,11 @@ public class TutorialManager : MonoBehaviour
     private Vector2 _defaultButtonPosition;
     private RectTransform _nextButtonRect;
 
-    public event Action TutorialEnded;
+    private TutorialStep _currentSequence; // ← ajouter avec les autres champs privés
+
+  
+    public event Action<TutorialStep> TutorialEnded;
+
 
     public static event Action OnFirstDifficultyChosenStatic;
     public static event Action OnFirstPaperSentStatic;
@@ -99,8 +103,15 @@ public class TutorialManager : MonoBehaviour
                     OnFirstPaperSentStatic += () => StartCoroutine(PlayWithDelay(captured));
                     break;
                 case TutorialTriggerType.OnFirstPaperProcessed:
-                    TutorialEnded += () => StartCoroutine(PlayWithDelay(captured));
+                    TutorialEnded += (completedSequence) =>
+                    {
+                        // Ne se déclenche que si c'est la séquence juste avant celle-ci dans la liste
+                        int thisIndex = sequences.IndexOf(captured);
+                        if (thisIndex > 0 && completedSequence == sequences[thisIndex - 1])
+                            StartCoroutine(PlayWithDelay(captured));
+                    };
                     break;
+
                 case TutorialTriggerType.OnFirstOverload:
                     OnFirstOverloadStatic += () => StartCoroutine(PlayWithDelay(captured));
                     break;
@@ -117,25 +128,34 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-    private IEnumerator PlayWithDelay(TutorialStep sequence)
-    {
-        if (sequence.triggerDelay > 0f)
-            yield return new WaitForSecondsRealtime(sequence.triggerDelay);
+   private IEnumerator PlayWithDelay(TutorialStep sequence)
+{
+    if (sequence.triggerDelay > 0f)
+        yield return new WaitForSecondsRealtime(sequence.triggerDelay);
 
-        PlaySequence(sequence);
-    }
+    // Attend que la séquence en cours soit terminée avant de jouer la suivante
+    yield return new WaitUntil(() => !_isPlaying);
+
+    PlaySequence(sequence);
+}
+
 
     /// <summary>Lance une séquence tutoriel.</summary>
+    /// <summary>Lance une séquence tutoriel. Ignoré si une séquence est déjà en cours.</summary>
     public void PlaySequence(TutorialStep sequence)
     {
         if (sequence == null || sequence.steps == null || sequence.steps.Count == 0) return;
+        if (_isPlaying) return;
 
+        _currentSequence  = sequence; // ← ajouter cette ligne
         _lastPlayedSteps  = sequence.steps;
         _currentSteps     = sequence.steps;
         _currentStepIndex = 0;
         _isPlaying        = true;
         ShowCurrentStep();
     }
+
+
 
     /// <summary>
     /// Appelé par le bouton Aide.
@@ -258,8 +278,12 @@ public class TutorialManager : MonoBehaviour
         _nextButtonRect.anchoredPosition = _defaultButtonPosition;
         Time.timeScale                   = 1f;
         _isPlaying                       = false;
-        TutorialEnded?.Invoke();
+
+        TutorialStep justFinished = _currentSequence;
+        _currentSequence = null;
+        TutorialEnded?.Invoke(justFinished); // ← transmet la séquence qui vient de finir
     }
+
 
     /// <summary>Appelé depuis DifficultySlider lors du premier appui GO (jour 1, semaine 1).</summary>
     public static void NotifyFirstDifficultyChosen() => OnFirstDifficultyChosenStatic?.Invoke();

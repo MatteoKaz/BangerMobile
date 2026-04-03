@@ -1067,13 +1067,13 @@ MonoBehaviour:
     - minCount: 1
       sprite: {fileID: -6369581825309701947, guid: ccf18ddb5b1c4df49b2a1b688cfe1bdf, type: 3}
       scale: 1.496517
-    - minCount: 10
+    - minCount: 4
       sprite: {fileID: 6234565859707775133, guid: ccf18ddb5b1c4df49b2a1b688cfe1bdf, type: 3}
       scale: 1.496517
-    - minCount: 20
+    - minCount: 6
       sprite: {fileID: -842362135708087000, guid: ccf18ddb5b1c4df49b2a1b688cfe1bdf, type: 3}
       scale: 1.496517
-    - minCount: 30
+    - minCount: 8
       sprite: {fileID: 2719692304471178388, guid: e87b5c5ed95eeed4d97a93811e538fff, type: 3}
       scale: 1.496517
   - poleType: 1
@@ -1084,13 +1084,13 @@ MonoBehaviour:
     - minCount: 1
       sprite: {fileID: 3764740212062632781, guid: 87599d84e6ff6ad4fab97696db8cc185, type: 3}
       scale: 1.496517
-    - minCount: 10
+    - minCount: 4
       sprite: {fileID: -8019295770073047210, guid: 87599d84e6ff6ad4fab97696db8cc185, type: 3}
       scale: 1.496517
-    - minCount: 20
+    - minCount: 6
       sprite: {fileID: 3806275141983278644, guid: 87599d84e6ff6ad4fab97696db8cc185, type: 3}
       scale: 1.496517
-    - minCount: 30
+    - minCount: 8
       sprite: {fileID: -6113703237060931365, guid: d42d0e8ad4b490a4e8cecf47502eac16, type: 3}
       scale: 1.496517
   - poleType: 2
@@ -1101,13 +1101,13 @@ MonoBehaviour:
     - minCount: 1
       sprite: {fileID: 1056056729309775311, guid: ad9bc8b1efc7392448ee8424343d54d5, type: 3}
       scale: 1.496517
-    - minCount: 10
+    - minCount: 4
       sprite: {fileID: 4827709487850986343, guid: ad9bc8b1efc7392448ee8424343d54d5, type: 3}
       scale: 1.496517
-    - minCount: 20
+    - minCount: 6
       sprite: {fileID: -374841247551510539, guid: ad9bc8b1efc7392448ee8424343d54d5, type: 3}
       scale: 1.496517
-    - minCount: 30
+    - minCount: 8
       sprite: {fileID: 21300000, guid: 27e3adf30304b464e82c7640fda2e43a, type: 3}
       scale: 1.496517
   counterCanvas: {fileID: 0}

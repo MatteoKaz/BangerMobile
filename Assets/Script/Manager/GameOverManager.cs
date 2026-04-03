@@ -10,8 +10,8 @@ public class GameOverManager : MonoBehaviour
 
     public void ShowGameOverHud()
     {
-        GameOverHud.SetActive(true);
-        savemanager.DeleteSave();
+      //  GameOverHud.SetActive(true);
+       // savemanager.DeleteSave();
 
     }
 

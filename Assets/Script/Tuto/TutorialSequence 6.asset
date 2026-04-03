@@ -12,13 +12,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a21360199fbacb4aa0c6262bb4d5816, type: 3}
   m_Name: TutorialSequence 6
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
-  triggerType: 6
+  triggerType: 5
   triggerDelay: 1.5
   steps:
-  - text: "Une fois la journ\xE9e termin\xE9e et votre salaire re\xE7u, vous pouvez
-      acheter des am\xE9liorations pour vos employ\xE9s, ou pour un p\xF4le directement."
+  - text: "Vous pouvez \xE9galement consulter les fiches de vos employ\xE9s pour
+      conna\xEEtre leurs sp\xE9cificit\xE9s."
     stepType: 0
     pauseOnShow: 1
+    unpauseOnClose: 0
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 0}
+    pressedButtonSprite: {fileID: 0}
+    overrideButtonSize: 0
+    buttonSize: {x: 0, y: 0}
+    overrideButtonPosition: 0
+    buttonPosition: {x: 0, y: 0}
+    showBackButton: 0
+  - text: "Si un employ\xE9 n'est pas assez productif, licenciez-le sans h\xE9siter.
+      Il sera alors imm\xE9diatement remplac\xE9."
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 0
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 0}
+    pressedButtonSprite: {fileID: 0}
+    overrideButtonSize: 0
+    buttonSize: {x: 0, y: 0}
+    overrideButtonPosition: 0
+    buttonPosition: {x: 0, y: 0}
+    showBackButton: 0
+  - text: "\xC0 l\u2019inverse, si un employ\xE9 se d\xE9marque particuli\xE8rement,
+      vous pouvez alors promouvoir ce dernier \u201CMVP\u201D (Most Valuable Player)."
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 0
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
+    pressedButtonSprite: {fileID: 21300000, guid: d06654f2adf418e4192ccf8c2d3d6ec8, type: 3}
+    overrideButtonSize: 0
+    buttonSize: {x: 300, y: 300}
+    overrideButtonPosition: 0
+    buttonPosition: {x: -100, y: 0}
+    showBackButton: 0
+  - text: " Il se verra alors affubl\xE9 d'un bonus d\u2019efficacit\xE9 d'une semaine."
+    stepType: 0
+    pauseOnShow: 0
     unpauseOnClose: 1
     overrideButtonSprite: 1
     buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
@@ -26,5 +64,5 @@ MonoBehaviour:
     overrideButtonSize: 1
     buttonSize: {x: 300, y: 300}
     overrideButtonPosition: 1
-    buttonPosition: {x: 0, y: 0}
-    showBackButton: 0
+    buttonPosition: {x: -100, y: 0}
+    showBackButton: 1

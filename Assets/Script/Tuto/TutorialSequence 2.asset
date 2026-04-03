@@ -15,8 +15,7 @@ MonoBehaviour:
   triggerType: 1
   triggerDelay: 1
   steps:
-  - text: "Une fois envoy\xE9s, ces derniers sont analys\xE9s et trait\xE9s par les
-      p\xF4les d'employ\xE9s correspondants."
+  - text: "Une fois envoy\xE9s, les documents sont trait\xE9s par les p\xF4les correspondants."
     stepType: 0
     pauseOnShow: 1
     unpauseOnClose: 0
@@ -28,10 +27,10 @@ MonoBehaviour:
     overrideButtonPosition: 0
     buttonPosition: {x: 0, y: 0}
     showBackButton: 0
-  - text: "Sur votre ordinateur, vous pouvez suivre l'avanc\xE9e de vos employ\xE9s,
-      en voyant directement quand ils travaillent ou non."
+  - text: "Sur votre ordinateur, vous pouvez suivre leur progression et voir quels
+      employ\xE9s travaillent et ne travaillent pas."
     stepType: 0
-    pauseOnShow: 0
+    pauseOnShow: 1
     unpauseOnClose: 0
     overrideButtonSprite: 0
     buttonSprite: {fileID: 0}
@@ -40,21 +39,9 @@ MonoBehaviour:
     buttonSize: {x: 0, y: 0}
     overrideButtonPosition: 0
     buttonPosition: {x: 0, y: 0}
-    showBackButton: 1
-  - text: "Vous voyez \xE9galement le quota que doit atteindre chaque p\xF4le."
-    stepType: 0
-    pauseOnShow: 0
-    unpauseOnClose: 0
-    overrideButtonSprite: 0
-    buttonSprite: {fileID: 0}
-    pressedButtonSprite: {fileID: 0}
-    overrideButtonSize: 0
-    buttonSize: {x: 0, y: 0}
-    overrideButtonPosition: 0
-    buttonPosition: {x: 0, y: 0}
-    showBackButton: 1
-  - text: "Attention, si vous envoyez trop de documents d'un coup dans un p\xF4le,
-      ce dernier risque de se retrouver en surcharge."
+    showBackButton: 0
+  - text: " Chaque employ\xE9 vous rapporte ainsi une certaine somme en fonction
+      de sa productivit\xE9."
     stepType: 0
     pauseOnShow: 0
     unpauseOnClose: 1
