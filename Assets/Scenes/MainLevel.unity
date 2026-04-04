@@ -18286,6 +18286,8 @@ MonoBehaviour:
   poleManager: {fileID: 641038301}
   dayManager: {fileID: 641038306}
   timeManager: {fileID: 641038307}
+  quotatManager: {fileID: 641038302}
+  paperSpawner: {fileID: 1272777329}
   minIntervalBetweenBoosts: 15
   maxIntervalBetweenBoosts: 40
   boostDuration: 10
