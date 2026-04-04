@@ -11,10 +11,12 @@ public enum TutorialStepType
 
 public enum TutorialTriggerType
 {
+    OnGameStart,
     OnFirstDifficultyChosen,
     OnFirstPaperSent,
     OnFirstPaperProcessed,
     OnFirstOverload,
+    OnAllPapersSpawned,
     OnDayEnd,
     OnEmployeeFicheReached,
     OnShopOpened
@@ -44,6 +46,13 @@ public class TutorialStepData
 
     [Header("Bouton Précédent")]
     public bool showBackButton;
+
+    [Header("Panel Popup")]
+    public bool overridePanelSize;
+    public Vector2 panelSize;
+
+    public bool overridePanelPosition;
+    public Vector2 panelPosition;
 }
 
 [CreateAssetMenu(fileName = "TutorialSequence", menuName = "Scriptable Objects/TutorialSequence")]

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a21360199fbacb4aa0c6262bb4d5816, type: 3}
   m_Name: TutorialSequence 1
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
-  triggerType: 0
+  triggerType: 1
   triggerDelay: 4
   steps:
   - text: Les papiers administratifs arrivent sur votre bureau par ce tuyau. Ils
@@ -28,6 +28,10 @@ MonoBehaviour:
     overrideButtonPosition: 0
     buttonPosition: {x: 0, y: 0}
     showBackButton: 0
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 0
+    panelPosition: {x: 0, y: 0}
   - text: Vous devez les trier en les swipant vers les tuyaux avec les couleurs correspondantes.
     stepType: 0
     pauseOnShow: 1
@@ -40,6 +44,10 @@ MonoBehaviour:
     overrideButtonPosition: 0
     buttonPosition: {x: 0, y: 0}
     showBackButton: 0
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 0
+    panelPosition: {x: 0, y: 0}
   - text: "Attention ! Une erreur de tri sera p\xE9nalis\xE9e sur votre salaire en
       fin de journ\xE9e."
     stepType: 0
@@ -53,3 +61,7 @@ MonoBehaviour:
     overrideButtonPosition: 1
     buttonPosition: {x: -100, y: 0}
     showBackButton: 1
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 0
+    panelPosition: {x: 0, y: 0}

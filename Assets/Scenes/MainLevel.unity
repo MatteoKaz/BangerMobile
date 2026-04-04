@@ -18243,12 +18243,14 @@ MonoBehaviour:
   nextButtonImage: {fileID: 1771804165}
   backButton: {fileID: 1689888642}
   sequences:
+  - {fileID: 11400000, guid: 94bcfdb81a9b84641b8a38d078380b64, type: 2}
   - {fileID: 11400000, guid: 2304bfb8018945041afad20f29b1b72f, type: 2}
   - {fileID: 11400000, guid: 1ab5f344cbc5c894ebbc283cdebcf78a, type: 2}
-  - {fileID: 11400000, guid: cdc60ce0dbc690242950439bec7fe49f, type: 2}
-  - {fileID: 11400000, guid: 57fe4770d5ef5e74cb8033a3fa891e5c, type: 2}
   - {fileID: 11400000, guid: 494591dbe92b0f04a909ba944b7bae77, type: 2}
+  - {fileID: 11400000, guid: 57fe4770d5ef5e74cb8033a3fa891e5c, type: 2}
   - {fileID: 11400000, guid: e7a803a8931074142a89c52f20ebfe74, type: 2}
+  - {fileID: 11400000, guid: 96aa932f5d05fa146945c78fdd9d6a21, type: 2}
+  - {fileID: 11400000, guid: f176f97c9c5fb0a429e0e884fa488516, type: 2}
   dayManager: {fileID: 641038306}
   aideDifficultySequence: {fileID: 0}
   aideScoreSequence: {fileID: 0}

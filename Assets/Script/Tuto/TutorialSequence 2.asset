@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a21360199fbacb4aa0c6262bb4d5816, type: 3}
   m_Name: TutorialSequence 2
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
-  triggerType: 1
+  triggerType: 2
   triggerDelay: 1
   steps:
   - text: "Une fois envoy\xE9s, les documents sont trait\xE9s par les p\xF4les correspondants."
@@ -27,6 +27,10 @@ MonoBehaviour:
     overrideButtonPosition: 0
     buttonPosition: {x: 0, y: 0}
     showBackButton: 0
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 0
+    panelPosition: {x: 0, y: 0}
   - text: "Sur votre ordinateur, vous pouvez suivre leur progression et voir quels
       employ\xE9s travaillent et ne travaillent pas."
     stepType: 0
@@ -40,6 +44,10 @@ MonoBehaviour:
     overrideButtonPosition: 0
     buttonPosition: {x: 0, y: 0}
     showBackButton: 0
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 0
+    panelPosition: {x: 0, y: 0}
   - text: " Chaque employ\xE9 vous rapporte ainsi une certaine somme en fonction
       de sa productivit\xE9."
     stepType: 0
@@ -53,3 +61,7 @@ MonoBehaviour:
     overrideButtonPosition: 1
     buttonPosition: {x: -100, y: 0}
     showBackButton: 1
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 0
+    panelPosition: {x: 0, y: 0}

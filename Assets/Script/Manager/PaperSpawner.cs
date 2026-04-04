@@ -1,9 +1,9 @@
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+
 public class PaperSpawner : MonoBehaviour
 {
     [Header("PapierRef")]
@@ -38,9 +38,9 @@ public class PaperSpawner : MonoBehaviour
     private List<GameObject> spawnnedList = new List<GameObject>();
 
     [Header("QuotaDistribution")]
-    public int totalPapers = 50;//NombreMax
-    public int minPerType = 18; // quota min 
-    public int typesCount = 3; //NombreDeType
+    public int totalPapers = 50;
+    public int minPerType = 18;
+    public int typesCount = 3;
 
     private int lastRhythm = -1;
 
@@ -48,20 +48,23 @@ public class PaperSpawner : MonoBehaviour
     [SerializeField] DayManager dayManager;
     private bool canSpawn = true;
     [SerializeField] private AudioEventDispatcher audioEventDispatcher;
+
     public event Action AllPapersSpawned;
+
     public void OnEnable()
     {
         quotatManager.QuotatChosen += StartSpawn;
-        
         dayManager.DayEnd += StopSpawn;
         dayManager.DayTransition += DestroyEverything;
     }
+
     void OnDisable()
     {
         quotatManager.QuotatChosen -= StartSpawn;
         dayManager.DayTransition -= DestroyEverything;
         dayManager.DayEnd -= StopSpawn;
     }
+
     public IEnumerator SpawnStart()
     {
         yield return new WaitForSeconds(DelayBeforeStart);
@@ -70,10 +73,11 @@ public class PaperSpawner : MonoBehaviour
         spawnRoutine = StartCoroutine(Spawn());
         Debug.Log("ddd");
     }
+
     public void StartSpawn()
     {
         canSpawn = true;
-         StartCoroutine(SpawnStart());
+        StartCoroutine(SpawnStart());
     }
 
     public void StopSpawn()
@@ -83,26 +87,20 @@ public class PaperSpawner : MonoBehaviour
             StopCoroutine(spawnRoutine);
             spawnRoutine = null;
         }
-
     }
+
     private void QuotatSetup()
     {
         spawnList.Clear();
 
-        // Ajouter le nombre exact de papiers de chaque type
         for (int i = 0; i < redQuota; i++)
-        {
             spawnList.Add(PaperRed);
-        }
-           
+
         for (int i = 0; i < blueQuota; i++)
-        {
             spawnList.Add(PaperBlue);
-        }
+
         for (int i = 0; i < greenQuota; i++)
-        { 
-            spawnList.Add(PaperGreen); 
-        }
+            spawnList.Add(PaperGreen);
 
         for (int i = 0; i < spawnList.Count; i++)
         {
@@ -111,27 +109,26 @@ public class PaperSpawner : MonoBehaviour
             spawnList[i] = spawnList[random];
             spawnList[random] = tempPlace;
         }
+
         papersRemaining = spawnList.Count;
     }
 
-
-   
     public IEnumerator Spawn()
     {
         audioEventDispatcher.PlayExclusiveAudio(AudioType.Pop);
         int globalSorting = 2;
         float currentRhythm = 1f;
         int spawnCount = 0;
+
         while (spawnList.Count > 0)
         {
             if (!canSpawn)
                 break;
-           // audioEventDispatcher.PlayAudio(AudioType.Pop);
+
             if (papersRemaining <= 8)
             {
                 currentRhythm = 2f;
             }
-
             else if (spawnCount % 15 == 0 && spawnCount > 0)
             {
                 float pauseDuration = Random.Range(20f, 25f);
@@ -150,23 +147,24 @@ public class PaperSpawner : MonoBehaviour
 
                 switch (rhythm)
                 {
-                    case 0: currentRhythm = 8f; break;  // lent
-                    case 1: currentRhythm = 5f; break;  // moyen
-                    case 2: currentRhythm = 3.5f; break;  // rapide
+                    case 0: currentRhythm = 8f; break;
+                    case 1: currentRhythm = 5f; break;
+                    case 2: currentRhythm = 3.5f; break;
                 }
                 Debug.Log($"Nouveau rythme: {rhythm}");
             }
+
             papersRemaining--;
+
             if (papersRemaining <= 0)
+            {
                 AllPapersSpawned?.Invoke();
-            // petit random local � rythme global
+                TutorialManager.NotifyAllPapersSpawned();
+            }
+
             float spawntiming = Random.Range(spawnDelay, spawnDelay + 0.5f) * currentRhythm;
             GameObject prefab = spawnList[0];
             spawnList.RemoveAt(0);
-
-
-
-
 
             GameObject paperSpawn = Instantiate(prefab, pointToSpawn.position, Quaternion.identity, parentTransform);
             spawnnedList.Add(paperSpawn);
@@ -174,7 +172,7 @@ public class PaperSpawner : MonoBehaviour
             pm.dayManager = dayManager;
             pm.Subscribe();
             paperSpawn.transform.SetAsLastSibling();
-           
+
             pm.spawnPos = pointToGo.position;
             pm.Tuyauxleft = tuyauxRed;
             pm.Tuyauxup = tuyauxBlue;
@@ -184,22 +182,20 @@ public class PaperSpawner : MonoBehaviour
             pm.PileBlue = RefPileBlue;
             pm.Paperduration = Random.Range(15f, 25f);
             pm.value = 10;
-            GameObject parentObj = paperSpawn;
-            SpriteRenderer spriteRenderer = parentObj.GetComponent<SpriteRenderer>();
+
+            SpriteRenderer spriteRenderer = paperSpawn.GetComponent<SpriteRenderer>();
             spriteRenderer.sortingOrder = globalSorting--;
             pm.SetInitialPose();
+
             spawnCount++;
             yield return new WaitForSeconds(spawntiming);
         }
-
     }
 
-    //Generation de quota
     public int[] GenerateRandomQuotas()
     {
-        minPerType = totalPapers/4;
+        minPerType = totalPapers / 4;
         int[] quotas = new int[typesCount];
-
         int remaining = totalPapers;
 
         for (int i = 0; i < typesCount - 1; i++)
@@ -209,21 +205,15 @@ public class PaperSpawner : MonoBehaviour
             remaining -= quotas[i];
         }
 
-        // Le dernier type prend le reste
         quotas[typesCount - 1] = remaining;
-
-
         return quotas;
     }
 
     public void RandomAssignation()
     {
-        int[] quotas = GenerateRandomQuotas(); // par ex [15, 20, 15]
-
-        // Liste des types
+        int[] quotas = GenerateRandomQuotas();
         PaperType[] types = { PaperType.Red, PaperType.Blue, PaperType.Green };
 
-        // M�langer la liste de types
         for (int i = 0; i < types.Length; i++)
         {
             int randomIndex = Random.Range(i, types.Length);
@@ -232,7 +222,6 @@ public class PaperSpawner : MonoBehaviour
             types[randomIndex] = temp;
         }
 
-        // Assigner les quotas al�atoirement
         redQuota = 0;
         blueQuota = 0;
         greenQuota = 0;
@@ -241,26 +230,18 @@ public class PaperSpawner : MonoBehaviour
         {
             switch (types[i])
             {
-                case PaperType.Red:
-                    redQuota = quotas[i];
-                    break;
-                case PaperType.Blue:
-                    blueQuota = quotas[i];
-                    break;
-                case PaperType.Green:
-                    greenQuota = quotas[i];
-                    break;
+                case PaperType.Red: redQuota = quotas[i]; break;
+                case PaperType.Blue: blueQuota = quotas[i]; break;
+                case PaperType.Green: greenQuota = quotas[i]; break;
             }
         }
     }
 
     public void DestroyEverything()
     {
-        for(int i = 0; i< spawnnedList.Count; i++)
-        {
+        for (int i = 0; i < spawnnedList.Count; i++)
             Destroy(spawnnedList[i].gameObject);
 
-        }
         spawnnedList.Clear();
         spawnList.Clear();
     }

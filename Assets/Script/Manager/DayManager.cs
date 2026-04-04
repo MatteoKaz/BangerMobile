@@ -139,6 +139,7 @@ public class DayManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         FirstDayInitialization?.Invoke();
+        TutorialManager.NotifyGameStart();
     }
     public IEnumerator EndDayFade()
     {

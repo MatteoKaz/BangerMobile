@@ -46,15 +46,19 @@ public class TutorialManager : MonoBehaviour
     private Vector2 _defaultButtonPosition;
     private RectTransform _nextButtonRect;
 
-    private TutorialStep _currentSequence; // ← ajouter avec les autres champs privés
+    private Vector2 _defaultPanelSize;
+    private Vector2 _defaultPanelPosition;
+    private RectTransform _popupPanelRect;
 
-  
+    private TutorialStep _currentSequence;
+
     public event Action<TutorialStep> TutorialEnded;
 
-
+    public static event Action OnGameStartStatic;
     public static event Action OnFirstDifficultyChosenStatic;
     public static event Action OnFirstPaperSentStatic;
     public static event Action OnFirstOverloadStatic;
+    public static event Action OnAllPapersSpawnedStatic;
     public static event Action OnDayEndStatic;
     public static event Action OnEmployeeFicheReachedStatic;
     public static event Action OnShopOpenedStatic;
@@ -69,11 +73,15 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        _nextButtonRect        = nextButton.GetComponent<RectTransform>();
-        _defaultButtonSprite   = nextButtonImage.sprite;
-        _defaultSpriteState    = nextButton.spriteState;
-        _defaultButtonSize     = _nextButtonRect.sizeDelta;
+        _nextButtonRect = nextButton.GetComponent<RectTransform>();
+        _defaultButtonSprite = nextButtonImage.sprite;
+        _defaultSpriteState = nextButton.spriteState;
+        _defaultButtonSize = _nextButtonRect.sizeDelta;
         _defaultButtonPosition = _nextButtonRect.anchoredPosition;
+
+        _popupPanelRect = popupPanel.GetComponent<RectTransform>();
+        _defaultPanelSize = _popupPanelRect.sizeDelta;
+        _defaultPanelPosition = _popupPanelRect.anchoredPosition;
 
         popupPanel.SetActive(false);
         backButton.gameObject.SetActive(false);
@@ -96,6 +104,9 @@ public class TutorialManager : MonoBehaviour
             TutorialStep captured = seq;
             switch (seq.triggerType)
             {
+                case TutorialTriggerType.OnGameStart:
+                    OnGameStartStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    break;
                 case TutorialTriggerType.OnFirstDifficultyChosen:
                     OnFirstDifficultyChosenStatic += () => StartCoroutine(PlayWithDelay(captured));
                     break;
@@ -105,15 +116,16 @@ public class TutorialManager : MonoBehaviour
                 case TutorialTriggerType.OnFirstPaperProcessed:
                     TutorialEnded += (completedSequence) =>
                     {
-                        // Ne se déclenche que si c'est la séquence juste avant celle-ci dans la liste
                         int thisIndex = sequences.IndexOf(captured);
                         if (thisIndex > 0 && completedSequence == sequences[thisIndex - 1])
                             StartCoroutine(PlayWithDelay(captured));
                     };
                     break;
-
                 case TutorialTriggerType.OnFirstOverload:
                     OnFirstOverloadStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    break;
+                case TutorialTriggerType.OnAllPapersSpawned:
+                    OnAllPapersSpawnedStatic += () => StartCoroutine(PlayWithDelay(captured));
                     break;
                 case TutorialTriggerType.OnDayEnd:
                     OnDayEndStatic += () => StartCoroutine(PlayWithDelay(captured));
@@ -128,39 +140,34 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-   private IEnumerator PlayWithDelay(TutorialStep sequence)
-{
-    if (sequence.triggerDelay > 0f)
-        yield return new WaitForSecondsRealtime(sequence.triggerDelay);
+    private IEnumerator PlayWithDelay(TutorialStep sequence)
+    {
+        if (sequence.triggerDelay > 0f)
+            yield return new WaitForSecondsRealtime(sequence.triggerDelay);
 
-    // Attend que la séquence en cours soit terminée avant de jouer la suivante
-    yield return new WaitUntil(() => !_isPlaying);
+        yield return new WaitUntil(() => !_isPlaying);
 
-    PlaySequence(sequence);
-}
+        PlaySequence(sequence);
+    }
 
-
-    /// <summary>Lance une séquence tutoriel.</summary>
     /// <summary>Lance une séquence tutoriel. Ignoré si une séquence est déjà en cours.</summary>
     public void PlaySequence(TutorialStep sequence)
     {
         if (sequence == null || sequence.steps == null || sequence.steps.Count == 0) return;
         if (_isPlaying) return;
 
-        _currentSequence  = sequence; // ← ajouter cette ligne
-        _lastPlayedSteps  = sequence.steps;
-        _currentSteps     = sequence.steps;
+        _currentSequence = sequence;
+        _lastPlayedSteps = sequence.steps;
+        _currentSteps = sequence.steps;
         _currentStepIndex = 0;
-        _isPlaying        = true;
+        _isPlaying = true;
         ShowCurrentStep();
     }
-
-
 
     /// <summary>
     /// Appelé par le bouton Aide.
     /// Jour 1 semaine 1 : rejoue la dernière séquence.
-    /// Autre jour : affiche la séquence contextuelle selon l'état actif (difficulté, score, boutique).
+    /// Autre jour : affiche la séquence contextuelle selon l'état actif.
     /// </summary>
     public void OpenAideHelp()
     {
@@ -188,7 +195,6 @@ public class TutorialManager : MonoBehaviour
             return;
         }
 
-        // Fallback : rejoue la dernière séquence connue
         ReplayLastSequence();
     }
 
@@ -197,9 +203,9 @@ public class TutorialManager : MonoBehaviour
     {
         if (_lastPlayedSteps == null || _lastPlayedSteps.Count == 0) return;
 
-        _currentSteps     = _lastPlayedSteps;
+        _currentSteps = _lastPlayedSteps;
         _currentStepIndex = 0;
-        _isPlaying        = true;
+        _isPlaying = true;
         ShowCurrentStep();
     }
 
@@ -209,16 +215,14 @@ public class TutorialManager : MonoBehaviour
 
         popupText.text = step.text;
 
-        // Sprite normal du bouton suivant
         nextButtonImage.sprite = step.overrideButtonSprite && step.buttonSprite != null
             ? step.buttonSprite
             : _defaultButtonSprite;
 
-        // Sprite pressé du bouton suivant
         if (step.overrideButtonSprite && step.pressedButtonSprite != null)
         {
-            SpriteState state      = nextButton.spriteState;
-            state.pressedSprite    = step.pressedButtonSprite;
+            SpriteState state = nextButton.spriteState;
+            state.pressedSprite = step.pressedButtonSprite;
             nextButton.spriteState = state;
         }
         else
@@ -226,17 +230,22 @@ public class TutorialManager : MonoBehaviour
             nextButton.spriteState = _defaultSpriteState;
         }
 
-        // Taille du bouton suivant
         _nextButtonRect.sizeDelta = step.overrideButtonSize
             ? step.buttonSize
             : _defaultButtonSize;
 
-        // Position du bouton suivant
         _nextButtonRect.anchoredPosition = step.overrideButtonPosition
             ? step.buttonPosition
             : _defaultButtonPosition;
 
-        // Visibilité du bouton précédent
+        _popupPanelRect.sizeDelta = step.overridePanelSize
+            ? step.panelSize
+            : _defaultPanelSize;
+
+        _popupPanelRect.anchoredPosition = step.overridePanelPosition
+            ? step.panelPosition
+            : _defaultPanelPosition;
+
         backButton.gameObject.SetActive(step.showBackButton && _currentStepIndex > 0);
 
         popupPanel.SetActive(true);
@@ -272,18 +281,22 @@ public class TutorialManager : MonoBehaviour
     {
         popupPanel.SetActive(false);
         backButton.gameObject.SetActive(false);
-        nextButtonImage.sprite           = _defaultButtonSprite;
-        nextButton.spriteState           = _defaultSpriteState;
-        _nextButtonRect.sizeDelta        = _defaultButtonSize;
+        nextButtonImage.sprite = _defaultButtonSprite;
+        nextButton.spriteState = _defaultSpriteState;
+        _nextButtonRect.sizeDelta = _defaultButtonSize;
         _nextButtonRect.anchoredPosition = _defaultButtonPosition;
-        Time.timeScale                   = 1f;
-        _isPlaying                       = false;
+        _popupPanelRect.sizeDelta = _defaultPanelSize;
+        _popupPanelRect.anchoredPosition = _defaultPanelPosition;
+        Time.timeScale = 1f;
+        _isPlaying = false;
 
         TutorialStep justFinished = _currentSequence;
         _currentSequence = null;
-        TutorialEnded?.Invoke(justFinished); // ← transmet la séquence qui vient de finir
+        TutorialEnded?.Invoke(justFinished);
     }
 
+    /// <summary>Appelé depuis DayManager.LaunchFirstDayInit au lancement du premier jour.</summary>
+    public static void NotifyGameStart() => OnGameStartStatic?.Invoke();
 
     /// <summary>Appelé depuis DifficultySlider lors du premier appui GO (jour 1, semaine 1).</summary>
     public static void NotifyFirstDifficultyChosen() => OnFirstDifficultyChosenStatic?.Invoke();
@@ -293,6 +306,9 @@ public class TutorialManager : MonoBehaviour
 
     /// <summary>Appelé depuis Employe lors du premier stun par surcharge.</summary>
     public static void NotifyFirstOverload() => OnFirstOverloadStatic?.Invoke();
+
+    /// <summary>Appelé depuis PaperSpawner quand tous les papiers ont été spawnés.</summary>
+    public static void NotifyAllPapersSpawned() => OnAllPapersSpawnedStatic?.Invoke();
 
     /// <summary>Appelé depuis UIScore quand l'animation de score est terminée.</summary>
     public static void NotifyDayEnd() => OnDayEndStatic?.Invoke();
