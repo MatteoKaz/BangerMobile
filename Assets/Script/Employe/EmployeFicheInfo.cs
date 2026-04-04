@@ -26,6 +26,7 @@ public class EmployeFicheInfo : MonoBehaviour
     [SerializeField] Image[] listAmelio;
     [SerializeField] RouletteWheel rouletteWheel;
     [SerializeField] private AudioEventDispatcher audioEventDispatcher;
+
     private void OnEnable()
     {
         UiManager.ScoreAnim += SetUpText;

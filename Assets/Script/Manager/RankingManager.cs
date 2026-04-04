@@ -62,6 +62,7 @@ public class RankingManager : MonoBehaviour
     {
         employe.employeWorkRateBonus += mvpWorkRateBonus;
         employe.BonusPaperDone += mvpBonusPaperDone;
+        employe.couronne.SetActive(true);
     }
 
     /// <summary>
@@ -85,6 +86,7 @@ public class RankingManager : MonoBehaviour
         employe.employeWorkRateBonus = 0f;
         employe.BonusPaperDone = 0f;
         employe.ResetRankingMalus();
+        employe.couronne.SetActive(false);
     }
 
     /// <summary>

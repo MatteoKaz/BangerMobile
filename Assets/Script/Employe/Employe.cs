@@ -80,6 +80,7 @@ public class Employe : MonoBehaviour
     [SerializeField] Image cigarette;
     [SerializeField] GameObject goutte;
     [SerializeField] GameObject angry;
+    [SerializeField] public GameObject couronne;
 
     [Header("Ui")]
     [SerializeField] TextMeshProUGUI Name;

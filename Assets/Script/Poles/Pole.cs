@@ -235,16 +235,27 @@ public class Pole : MonoBehaviour
                 PoleTask task = taskQueue[i];
                 task.timeRemaining -= Time.deltaTime;
 
-                if (task.timeRemaining <= 0)
+                if (task.timeRemaining <= 0 && !task.isExpired)
                 {
-                    taskQueue.RemoveAt(i);
-                    totalPaper--;
-                    waitingPaper = Mathf.Max(0, totalPaper - activepaper);
-                    if (task.postItObject != null)
-                        Destroy(task.postItObject);
-                    UpdatePaperCount?.Invoke();
+                    task.isExpired = true; // l'employé verra le flag à sa prochaine frame
                 }
             }
+
+            // Nettoyage des tâches expirées NON actives (personne ne travaille dessus)
+            for (int i = taskQueue.Count - 1; i >= 0; i--)
+            {
+                PoleTask task = taskQueue[i];
+                if (!task.isExpired) continue;
+                if (task.isActive) continue; // un employé travaille dessus, il nettoiera lui-même
+
+                taskQueue.RemoveAt(i);
+                totalPaper--;
+                waitingPaper = Mathf.Max(0, totalPaper - activepaper);
+                if (task.postItObject != null)
+                    Destroy(task.postItObject);
+                UpdatePaperCount?.Invoke();
+            }
+
             if (taskQueue.Count == 0)
             {
                 taskTimerRef = null;
@@ -433,7 +444,7 @@ public class Pole : MonoBehaviour
             {
                 float normalizedPaper = (float)waitingPaper + 0.005f;
                 float employeeCount = Mathf.Max(1, employeList.Count);
-                float chargePerEmployee = Mathf.Pow(normalizedPaper, 0.55f) / Mathf.Pow(employeeCount, 1.5f);
+                float chargePerEmployee = Mathf.Pow(normalizedPaper, 0.55f) / Mathf.Pow(employeeCount, 1.35f);
                 surchargeValue += (surchargeStep * chargePerEmployee) / (1f + BoostTimeForSurcharge);
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                 Debug.LogWarning($"Surcharge {surchargeValue}");

@@ -8,5 +8,5 @@ public class PoleTask
     public bool isActive; // pris par un employé
     public int value;
     public GameObject postItObject;
-   
+    public bool isExpired = false;
 }
