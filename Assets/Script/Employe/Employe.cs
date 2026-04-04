@@ -197,8 +197,7 @@ public class Employe : MonoBehaviour
             polemanager.TakenEmployeIndex.Add(employeIndex);
 
         Debug.Log("SetEmploye");
-        cigarette.enabled = true;
-        smoke.Play();
+        
         GetComponentInChildren<PileBackEmploye>()?.OnCountUpdated();
         GetComponentInChildren<PileBackEmploye>()?.OnPoleChanged();
     }
@@ -230,8 +229,7 @@ public class Employe : MonoBehaviour
             
             WorkRoutine = StartCoroutine(Work());
             Light.intensity = 0.3f;
-            cigarette.enabled = false;
-            smoke.Stop();
+            
         }
         else
         {
@@ -244,8 +242,7 @@ public class Employe : MonoBehaviour
             }
             else
             {
-                cigarette.enabled = true;
-                smoke.Play();
+                
             }
         }
     }
@@ -371,8 +368,7 @@ public class Employe : MonoBehaviour
             yield break;
         }
         bonusTasks.Clear();
-        cigarette.enabled = true;
-        smoke.Play();
+        
         yield return new WaitForSeconds(Mathf.Max(timeBeetwennWork - StressBonus - swatBoostTimeBeetweenWork, 0));
         if (isStunned)
         {

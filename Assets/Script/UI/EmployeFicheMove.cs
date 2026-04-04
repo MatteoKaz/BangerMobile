@@ -45,7 +45,7 @@ public class EmployeFicheMove : MonoBehaviour
         StartCoroutine(MoveToPage());
     }
 
-    void RightSwipe()
+    public void RightSwipe()
     {
         if (!Parent.activeInHierarchy || _isMoving || IsLocked) return;
 
@@ -67,7 +67,21 @@ public class EmployeFicheMove : MonoBehaviour
         _ficheReachedNotified = true;
         TutorialManager.NotifyEmployeeFicheReached();
     }
+    public void GoToPage(int pageIndex)
+    {
+        if (!Parent.activeInHierarchy || _isMoving || IsLocked) return;
 
+        pageIndex = Mathf.Clamp(pageIndex, 0, maxPage);
+        if (pageIndex == _currentPage) return;
+
+        AudioType audioType = pageIndex > _currentPage ? AudioType.TurnPageLeft : AudioType.TurnPageRight;
+        if (audioEventDispatcher != null)
+            audioEventDispatcher.PlayAudio(audioType);
+
+        _currentPage = pageIndex;
+        NotifyFicheReachedOnce();
+        StartCoroutine(MoveToPage());
+    }
     IEnumerator MoveToPage()
     {
         _isMoving = true;

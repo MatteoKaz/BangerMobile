@@ -108,11 +108,11 @@ public class UIScore : MonoBehaviour
         {
             t += Time.deltaTime;
             displayBenefice = Mathf.RoundToInt(Mathf.Lerp(0, baseMoney, Mathf.Clamp01(t / baseMoneyCountDuration)));
-            if (beneficeLabel != null) beneficeLabel.text = $"Bénéfice : {displayBenefice}";
+            if (beneficeLabel != null) beneficeLabel.text = $"Bénéfice : {displayBenefice}$";
             yield return null;
         }
         displayBenefice = baseMoney;
-        if (beneficeLabel != null) beneficeLabel.text = $"Bénéfice : {displayBenefice}";
+        if (beneficeLabel != null) beneficeLabel.text = $"Bénéfice : {displayBenefice}$";
 
         // ── Bonus des pôles ───────────────────────────────────────────────
         foreach (ScoreManager.PoleResult result in scoreManager.poleResults)
@@ -153,7 +153,7 @@ public class UIScore : MonoBehaviour
             if (totalMoneyLabel != null) totalMoneyLabel.text = $"Total : {displayed}";
             yield return null;
         }
-        if (totalMoneyLabel != null) totalMoneyLabel.text = $"Total : {finalMoney}";
+        if (totalMoneyLabel != null) totalMoneyLabel.text = $"Total : {finalMoney}$";
 
       
         // ── Animation terminée — déclenche le tuto OnDayEnd ──────────────

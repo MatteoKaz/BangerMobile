@@ -18,9 +18,12 @@ public class EmployeFicheInfo : MonoBehaviour
     [SerializeField] TextMeshProUGUI employeMoney;
     [SerializeField] TextMeshProUGUI tempsinEntreprise;
     [SerializeField] TextMeshProUGUI pole;
+    [SerializeField] Image poleImage;
+    [SerializeField] Image typeimage;
     [SerializeField] public Image Image;
-
+    [SerializeField] EmployeLink employeLink;
     [SerializeField] UiManager UiManager;
+    [SerializeField] Image[] listAmelio;
     [SerializeField] RouletteWheel rouletteWheel;
     [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     private void OnEnable()
@@ -41,17 +44,28 @@ public class EmployeFicheInfo : MonoBehaviour
 
     public IEnumerator TextSET()
     {
+
         yield return new WaitForSeconds(1f);
+        int missedPaper = Mathf.Abs(employe.succeedPaper - employe.numberOfPaperDone);
+        int moneyLost = missedPaper * (employe.mypole.paperValue *Mathf.RoundToInt(employe.mypole.BonusRevenus));
         if (employe != null)
         {
+            for (int i = 0; i < listAmelio.Length; i++)
+            {
+                listAmelio[i].enabled = employeLink.imagesUpgrades[i].enabled;
+                listAmelio[i].sprite = employeLink.imagesUpgrades[i].sprite;
+            }
             employeName.text        = employe.employeName;
             employeDescription.text = employe.employeDescription;
-            employeType.text        = $"Caractéristique : \n{employe.employeTypeText}";
-            employeRendement.text   = $"Papier: {employe.succeedPaper}/{employe.numberOfPaperDone}, 1/{employe.employeWorkRate}s";
-            employeMoney.text       = $"Apport: {employe.moneyMake} $";
-            tempsinEntreprise.text  = $"Temps : {employe.timeInEntreprise}";
+            employeType.text        = $"\n{employe.employeTypeText}";
+            employeRendement.text   = $"Papier raté : {missedPaper} = {moneyLost}$";
+            employeMoney.text       = $"Efficacité: 1/{employe.errorPercent + employe.employeErrorPercenBonus}s";
+            tempsinEntreprise.text  = $"Apport: {employe.moneyMake}$";
             Image.sprite            = employe.idleSprite;
-            pole.text               = $"Pole: {employe.mypole.PoleName}";
+            poleImage.sprite = employe.mypole.mySprite;
+            typeimage.sprite = employe.typeImage.sprite;
+            pole.text = $"Papier réussi :{employe.succeedPaper}/{employe.numberOfPaperDone}";
+
         }
     }
 }
