@@ -19,7 +19,10 @@ public enum TutorialTriggerType
     OnAllPapersSpawned,
     OnDayEnd,
     OnEmployeeFicheReached,
-    OnShopOpened
+    OnShopOpened,
+    OnFirstFridayScore,
+    OnFirstFridayRanking,
+    OnFirstFridayShop
 }
 
 [System.Serializable]

@@ -18088,7 +18088,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 641038300}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3d6e052ad19c72408a3e019faf5bfcf, type: 3}
   m_Name: 
@@ -18107,6 +18107,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e7a803a8931074142a89c52f20ebfe74, type: 2}
   - {fileID: 11400000, guid: 96aa932f5d05fa146945c78fdd9d6a21, type: 2}
   - {fileID: 11400000, guid: f176f97c9c5fb0a429e0e884fa488516, type: 2}
+  - {fileID: 11400000, guid: 8dfdddd0e6c0f5440abd79e0c74c0f79, type: 2}
+  - {fileID: 11400000, guid: 558a6483b9b32b04f85a5787f6ff4d45, type: 2}
+  - {fileID: 11400000, guid: 070a55287d7caf94599e339a71edb505, type: 2}
   dayManager: {fileID: 641038306}
   aideDifficultySequence: {fileID: 0}
   aideScoreSequence: {fileID: 0}

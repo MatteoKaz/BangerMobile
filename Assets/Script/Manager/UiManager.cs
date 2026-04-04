@@ -94,6 +94,9 @@ public class UiManager : MonoBehaviour
         StartCoroutine(AnimScore());
         ScoreAnim?.Invoke();
         dayResetOpacity?.Invoke();
+
+        if (dayManager.currentDay == 5 && dayManager.currentWeek == 1)
+            TutorialManager.NotifyFirstFridayScore();
     }
 
     public IEnumerator AnimScore()
@@ -130,6 +133,9 @@ public class UiManager : MonoBehaviour
         if (_shopOpenedNotified) return;
         _shopOpenedNotified = true;
         TutorialManager.NotifyShopOpened();
+
+        if (dayManager.currentDay == 5 && dayManager.currentWeek == 1)
+            TutorialManager.NotifyFirstFridayShop();
     }
 
     public IEnumerator AnimShop()

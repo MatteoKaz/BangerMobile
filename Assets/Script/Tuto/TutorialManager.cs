@@ -62,6 +62,9 @@ public class TutorialManager : MonoBehaviour
     public static event Action OnDayEndStatic;
     public static event Action OnEmployeeFicheReachedStatic;
     public static event Action OnShopOpenedStatic;
+    public static event Action OnFirstFridayScoreStatic;
+    public static event Action OnFirstFridayRankingStatic;
+    public static event Action OnFirstFridayShopStatic;
 
     private void Awake()
     {
@@ -135,6 +138,15 @@ public class TutorialManager : MonoBehaviour
                     break;
                 case TutorialTriggerType.OnShopOpened:
                     OnShopOpenedStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    break;
+                case TutorialTriggerType.OnFirstFridayScore:
+                    OnFirstFridayScoreStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    break;
+                case TutorialTriggerType.OnFirstFridayRanking:
+                    OnFirstFridayRankingStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    break;
+                case TutorialTriggerType.OnFirstFridayShop:
+                    OnFirstFridayShopStatic += () => StartCoroutine(PlayWithDelay(captured));
                     break;
             }
         }
@@ -318,4 +330,13 @@ public class TutorialManager : MonoBehaviour
 
     /// <summary>Appelé depuis UiManager lors de la première ouverture de la boutique.</summary>
     public static void NotifyShopOpened() => OnShopOpenedStatic?.Invoke();
+
+    /// <summary>Appelé depuis UiManager.EnableScore lors du premier vendredi.</summary>
+    public static void NotifyFirstFridayScore() => OnFirstFridayScoreStatic?.Invoke();
+
+    /// <summary>Appelé depuis RankingManager.SetRankingOrder lors du premier vendredi.</summary>
+    public static void NotifyFirstFridayRanking() => OnFirstFridayRankingStatic?.Invoke();
+
+    /// <summary>Appelé depuis UiManager.EnableShop lors du premier vendredi.</summary>
+    public static void NotifyFirstFridayShop() => OnFirstFridayShopStatic?.Invoke();
 }

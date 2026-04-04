@@ -166,6 +166,9 @@ public class RankingManager : MonoBehaviour
         CurrentMVP = ChooseMVP;
         CurrentTopEarner = (topEarner != ChooseMVP) ? topEarner : null;
         ChooseMVP = null;
-        
+
+        if (DayManager.currentWeek == 1)
+            TutorialManager.NotifyFirstFridayRanking();
+
     }
 }

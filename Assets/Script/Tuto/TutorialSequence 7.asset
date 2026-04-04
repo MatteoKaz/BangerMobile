@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: TutorialSequence 7
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
   triggerType: 8
-  triggerDelay: 1
+  triggerDelay: 0.5
   steps:
-  - text: "Une fois vos employ\xE9s pay\xE9s, vous pouvez acheter, avec l'argent
-      qu'il vous reste, des am\xE9liorations pour vos employ\xE9s ou vos p\xF4les."
+  - text: "Vous pouvez acheter, avec l'argent qu'il vous reste, des am\xE9liorations
+      pour vos employ\xE9s ou vos p\xF4les."
     stepType: 0
     pauseOnShow: 0
     unpauseOnClose: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
     overridePanelPosition: 0
     panelPosition: {x: 0, y: 0}
   - text: "Les am\xE9liorations se divisent en deux cat\xE9gories : celles qui boostent
-      un employ\xE9 individuel, et celles qui am\xE9liorent un p\xF4le entier."
+      un employ\xE9, et celles qui am\xE9liorent un p\xF4le."
     stepType: 0
     pauseOnShow: 0
     unpauseOnClose: 0
