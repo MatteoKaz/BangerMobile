@@ -59534,6 +59534,26 @@ PrefabInstance:
       propertyPath: m_fontSizeMin
       value: 15.46
       objectReference: {fileID: 0}
+    - target: {fileID: 1501251427802160064, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99971676
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501251427802160064, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.0035594446
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501251427802160064, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.000083789506
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501251427802160064, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.023533383
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501251427802160064, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2281779335144907052, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
       propertyPath: m_Sprite
       value: 
