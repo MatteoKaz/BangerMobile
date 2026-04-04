@@ -127,14 +127,14 @@ public class PaperSpawner : MonoBehaviour
             if (!canSpawn)
                 break;
            // audioEventDispatcher.PlayAudio(AudioType.Pop);
-            if (papersRemaining <= 15)
+            if (papersRemaining <= 8)
             {
-                currentRhythm = 1f;
+                currentRhythm = 2f;
             }
 
-            else if (spawnCount % 30 == 0 && spawnCount > 0)
+            else if (spawnCount % 15 == 0 && spawnCount > 0)
             {
-                float pauseDuration = Random.Range(12f, 20f);
+                float pauseDuration = Random.Range(20f, 25f);
                 Debug.Log($"Pause de {pauseDuration}s");
                 yield return new WaitForSeconds(pauseDuration);
             }
@@ -150,9 +150,9 @@ public class PaperSpawner : MonoBehaviour
 
                 switch (rhythm)
                 {
-                    case 0: currentRhythm = 6f; break;  // lent
-                    case 1: currentRhythm = 4f; break;  // moyen
-                    case 2: currentRhythm = 2f; break;  // rapide
+                    case 0: currentRhythm = 8f; break;  // lent
+                    case 1: currentRhythm = 5f; break;  // moyen
+                    case 2: currentRhythm = 3.5f; break;  // rapide
                 }
                 Debug.Log($"Nouveau rythme: {rhythm}");
             }
@@ -182,7 +182,7 @@ public class PaperSpawner : MonoBehaviour
             pm.PileRed = RefPileRed;
             pm.PileGreen = RefPileGreen;
             pm.PileBlue = RefPileBlue;
-            pm.Paperduration = Random.Range(20f, 30f);
+            pm.Paperduration = Random.Range(15f, 25f);
             pm.value = 10;
             GameObject parentObj = paperSpawn;
             SpriteRenderer spriteRenderer = parentObj.GetComponent<SpriteRenderer>();

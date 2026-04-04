@@ -25,7 +25,6 @@ public class Employe : MonoBehaviour
     public string employeTypeText;
     public string employeName;
     public string employeDescription;
-   
     public float employeWorkRate;
     public float errorPercent;
     public int timeInEntreprise;
@@ -79,10 +78,9 @@ public class Employe : MonoBehaviour
     [SerializeField] Animator paperDechirer;
     [SerializeField] ParticleSystem smoke;
     [SerializeField] Image cigarette;
+    [SerializeField] GameObject goutte;
+    [SerializeField] GameObject angry;
 
-    public bool iamWorking = false;
-    private Coroutine WorkRoutine;
-    private Coroutine StunRef;
     [Header("Ui")]
     [SerializeField] TextMeshProUGUI Name;
     [SerializeField] Image image;
@@ -102,6 +100,11 @@ public class Employe : MonoBehaviour
     public Image InteractiveImage;
 
     private PoleTask currentTask;
+    public bool iamWorking = false;
+    private Coroutine WorkRoutine;
+    private Coroutine StunRef;
+    private bool cancelled = false;
+
     public event Action ScoreWinAnim;
     public event Action LooseMoney;
     
@@ -114,14 +117,6 @@ public class Employe : MonoBehaviour
     {
         timemanager.TimerEnded -= StopWorking;
     }
-
-
-
-
-
-
-
-
 
 
 
@@ -204,12 +199,15 @@ public class Employe : MonoBehaviour
         Debug.Log("SetEmploye");
         cigarette.enabled = true;
         smoke.Play();
+        GetComponentInChildren<PileBackEmploye>()?.OnCountUpdated();
+        GetComponentInChildren<PileBackEmploye>()?.OnPoleChanged();
     }
 
 
     // fonction  lancer lorsqu'il commence a work 
     public void Working(PoleTask task, List<PoleTask> preloadedBonus = null)
     {
+        cancelled = false;
         PoleTask myTask = task;
         if (myTask != null && iamWorking == false)
         {
@@ -259,6 +257,12 @@ public class Employe : MonoBehaviour
         wasStunned = true;
         while (t < 1)
         {
+            if (cancelled)
+            {
+                cancelled = false;
+                iamWorking = false;
+                yield break;
+            }
             while (occupied)
             {
                 if (StunRef != null)
@@ -279,7 +283,8 @@ public class Employe : MonoBehaviour
                         wasStunned = false;
                     }
 
-                    float dt = Mathf.Min(Time.deltaTime, 0.05f);
+              
+                float dt = Mathf.Min(Time.deltaTime, 0.05f);
                     float rate = employeWorkRate
                                - mypole.BoostEmployeSpeed
                                - employeWorkRateBonus
@@ -304,6 +309,12 @@ public class Employe : MonoBehaviour
             
             
 
+        }
+        if (cancelled)
+        {
+            cancelled = false;
+            iamWorking = false;
+            yield break; // sort sans DecrementPaper
         }
         float successChance = errorPercent
                       + employeErrorPercenBonus
@@ -352,6 +363,13 @@ public class Employe : MonoBehaviour
             numberOfPaperDone++;
             mypole.DecrementPaper(bonus);
         }
+
+        if (cancelled)
+        {
+            cancelled = false;
+            iamWorking = false;
+            yield break;
+        }
         bonusTasks.Clear();
         cigarette.enabled = true;
         smoke.Play();
@@ -397,7 +415,7 @@ public class Employe : MonoBehaviour
                 mypole.activepaper = Mathf.Max(0, mypole.activepaper - 1);
             }
             bonusTasks.Clear();
-
+            cancelled = true;
             StopCoroutine(WorkRoutine);
             WorkRoutine = null;
         }
@@ -410,7 +428,7 @@ public class Employe : MonoBehaviour
         mypole = pole;
         if (isStunned == false)
         employeImage.sprite = idleSprite;
-        
+        FeedbackSurcharge(pole.nextThresholdIndex);
         GetComponentInChildren<PileBackEmploye>()?.OnPoleChanged();
         mypole.UpdateBackLog();
         mypole.LaunchWorker();
@@ -488,6 +506,7 @@ public class Employe : MonoBehaviour
         HasBeenSwat = false;
         SwatGoing = false;
         occupied = false;
+        cancelled = false;  
         iamWorking = false;
         Light.color = baseColor;
         foreach (PoleTask bonus in bonusTasks)
@@ -765,6 +784,34 @@ public class Employe : MonoBehaviour
         swatBoostSpeed = 0f;
         swatBoostTimeBeetweenWork = 0f;
         HasBeenSwat = false;
+
+    }
+
+
+    public void FeedbackSurcharge(int i)
+    {
+        if (i < 6 && i > 2)
+        {
+            goutte.SetActive(true);
+            angry.SetActive(false);
+        }
+        else if (i >= 9)
+        {
+            goutte.SetActive(false);
+            angry.SetActive(false);
+
+        }
+        else if (i >= 6)
+        {
+            goutte.SetActive(false);
+            angry.SetActive(true);
+        }
+        else if (i <= 2)
+        {
+            goutte.SetActive(false);
+            angry.SetActive(false);
+            
+        }
 
     }
 }

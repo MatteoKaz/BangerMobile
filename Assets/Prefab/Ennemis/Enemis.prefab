@@ -6823,7 +6823,8 @@ MonoBehaviour:
   paperDechirer: {fileID: 720224505636173989}
   smoke: {fileID: 8823158708376402276}
   cigarette: {fileID: 4799948404512148429}
-  iamWorking: 0
+  goutte: {fileID: 1009917245209227862}
+  angry: {fileID: 900744551544280473}
   Name: {fileID: 7991343296810344480}
   image: {fileID: 7112390082609121258}
   occupied: 0
@@ -6868,6 +6869,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   FondSwat: {fileID: 4098065681636851574}
   InteractiveImage: {fileID: 5573623258426083793}
+  iamWorking: 0
 --- !u!114 &2700297029104301821
 MonoBehaviour:
   m_ObjectHideFlags: 0

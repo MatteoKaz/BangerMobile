@@ -77,7 +77,8 @@ public class Pole : MonoBehaviour
 
     public bool launchFirst = false;
     private Coroutine work;
-    private bool batchReady = false;
+    private float lastAddPaperTime = 0f;
+    private float batchWaitDelay = 0.05f;
     public void Start()
     {
         UpdatePaperCount?.Invoke();
@@ -146,9 +147,10 @@ public class Pole : MonoBehaviour
         if (pendingTaskCount >= TasksPerPaper)
         {
             pendingTaskCount = 0;
-            batchReady = true;
+            
             LaunchWorker();
         }
+        lastAddPaperTime = Time.time;
 
     }
 
@@ -166,7 +168,7 @@ public class Pole : MonoBehaviour
         }
 
         if (Stop) return;
-        batchReady = true;
+        
         LaunchWorker();
         UpdatePaperCount?.Invoke();
         BeginSurcharge();
@@ -275,9 +277,16 @@ public class Pole : MonoBehaviour
     {
         while (true)
         {
-            if (batchReady)
-                LaunchWorker();
             yield return new WaitForSeconds(0.1f);
+
+            // Lance seulement si aucun AddPaper récent
+            if (Time.time - lastAddPaperTime < batchWaitDelay) continue;
+
+            bool hasWaiting = taskQueue.Exists(t => !t.isActive);
+            bool hasFreeWorker = employeList.Exists(e => !e.iamWorking);
+
+            if (hasWaiting && hasFreeWorker)
+                LaunchWorker();
         }
     }
     public void UpdateBackLog()
@@ -338,8 +347,8 @@ public class Pole : MonoBehaviour
         localQuotat = 0;
         localAdvencement = 0;
         postItSortingOrder = 0;
-     
-        batchReady = false;
+
+        lastAddPaperTime = 0f;
         pendingTaskCount = 0;
         UpdatePaperCount?.Invoke();
         ResetSurcharge();
@@ -472,17 +481,17 @@ public class Pole : MonoBehaviour
         {
             switch (i)
             {
-                case -1: emp.ResetMalus(); break;
-                case 0: emp.Malus(TypeOfMalus.WorkRate, 0.25f); break;
-                case 1: emp.Malus(TypeOfMalus.ErrorPercent, 0.05f); break;
-                case 2: emp.Malus(TypeOfMalus.WorkRate, 0.5f); break;
-                case 3: emp.Malus(TypeOfMalus.ErrorPercent, 0.1f); break;
-                case 4: emp.Malus(TypeOfMalus.WorkRate, 1f); break;
-                case 5: emp.Malus(TypeOfMalus.ErrorPercent, 0.15f); break;
-                case 6: emp.Malus(TypeOfMalus.WorkRate, 2f); break;
-                case 7: emp.Malus(TypeOfMalus.ErrorPercent, 0.25f); break;
-                case 8: emp.Malus(TypeOfMalus.WorkRate, 3f); break;
-                case 9: emp.Malus(TypeOfMalus.Stun, 8f); break;
+                case -1: emp.ResetMalus();emp.FeedbackSurcharge(i); break;
+                case 0: emp.Malus(TypeOfMalus.WorkRate, 0.25f); emp.FeedbackSurcharge(i); break;
+                case 1: emp.Malus(TypeOfMalus.ErrorPercent, 0.05f); emp.FeedbackSurcharge(i); break;
+                case 2: emp.Malus(TypeOfMalus.WorkRate, 0.5f); emp.FeedbackSurcharge(i); break;
+                case 3: emp.Malus(TypeOfMalus.ErrorPercent, 0.1f); emp.FeedbackSurcharge(i); break;
+                case 4: emp.Malus(TypeOfMalus.WorkRate, 1f); emp.FeedbackSurcharge(i); break;
+                case 5: emp.Malus(TypeOfMalus.ErrorPercent, 0.15f); emp.FeedbackSurcharge(i); break;
+                case 6: emp.Malus(TypeOfMalus.WorkRate, 2f); emp.FeedbackSurcharge(i); break;
+                case 7: emp.Malus(TypeOfMalus.ErrorPercent, 0.25f); emp.FeedbackSurcharge(i); break;
+                case 8: emp.Malus(TypeOfMalus.WorkRate, 3f); emp.FeedbackSurcharge(i); break;
+                case 9: emp.Malus(TypeOfMalus.Stun, 8f); emp.FeedbackSurcharge(i); break;
             }
         }
         if (i == 9) ResetSurcharge();

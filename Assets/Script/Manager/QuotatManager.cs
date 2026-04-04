@@ -105,7 +105,7 @@ public class QuotatManager : MonoBehaviour
         DayQuotat = quotatChosen;
         scoreManager.quotatOfTheDay = quotatChosen;
         int valueToSpawn = DayQuotat / 10;
-        paperSpawner.totalPapers = Mathf.RoundToInt(multToBalance * valueToSpawn) ;
+        paperSpawner.totalPapers = Mathf.RoundToInt(multToBalance * valueToSpawn)/3 ;
         StartCoroutine(StartWave());
         
         Debug.Log($"Quotat manager {DayQuotat}");

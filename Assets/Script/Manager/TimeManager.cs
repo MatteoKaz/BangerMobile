@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TimeManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] QuotatManager QuotatManager;
     Coroutine currentTimer;
     [SerializeField] PaperSpawner spawnerpaper;
+    [SerializeField] Button button;
 
     public void OnEnable()
     {
@@ -25,9 +27,14 @@ public class TimeManager : MonoBehaviour
 
     private void OnAllPapersSpawned()
     {
+        button.interactable = true;
+       
+    }
+    public void EndDay()
+    {
+        button.interactable = false;
         TimerEnded?.Invoke();
     }
-
  
     /*public void LaunchTimer()
     {
