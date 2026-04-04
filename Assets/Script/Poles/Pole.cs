@@ -60,7 +60,8 @@ public class Pole : MonoBehaviour
     public bool Stop;
     public event Action UpdatePaperCount;
     public event Action UpdatePaperFond;
-
+    private int pendingTaskCount = 0;
+    private const int TasksPerPaper = 3;
     public enum TypeOfMalus
     {
         WorkRate,
@@ -76,6 +77,7 @@ public class Pole : MonoBehaviour
 
     public bool launchFirst = false;
     private Coroutine work;
+    private bool batchReady = false;
     public void Start()
     {
         UpdatePaperCount?.Invoke();
@@ -132,7 +134,7 @@ public class Pole : MonoBehaviour
         if (Stop) return;
         SpawnPostIt(task);
         StartTaskTimers();
-        LaunchWorker();
+        
         BeginSurcharge();
         UpdatePaperCount?.Invoke();
         if (launchFirst == false)
@@ -140,7 +142,14 @@ public class Pole : MonoBehaviour
             work = StartCoroutine(WorkerManager());
             launchFirst = true;
         }
-        
+        pendingTaskCount++;
+        if (pendingTaskCount >= TasksPerPaper)
+        {
+            pendingTaskCount = 0;
+            batchReady = true;
+            LaunchWorker();
+        }
+
     }
 
     public void DecrementPaper(PoleTask task)
@@ -157,6 +166,7 @@ public class Pole : MonoBehaviour
         }
 
         if (Stop) return;
+        batchReady = true;
         LaunchWorker();
         UpdatePaperCount?.Invoke();
         BeginSurcharge();
@@ -265,9 +275,9 @@ public class Pole : MonoBehaviour
     {
         while (true)
         {
-            LaunchWorker(); // essaie d’assigner tous les employés libres
-            
-            yield return new WaitForSeconds(0.1f); // cadence de relance
+            if (batchReady)
+                LaunchWorker();
+            yield return new WaitForSeconds(0.1f);
         }
     }
     public void UpdateBackLog()
@@ -275,15 +285,15 @@ public class Pole : MonoBehaviour
         foreach (Employe emp in employeList)
             emp.GetComponentInChildren<PileBackEmploye>()?.OnCountUpdated();
     }
-    public PoleTask GetAvailableTask()
+    public PoleTask GetAvailableTask(List<PoleTask> exclude = null)
     {
+
         foreach (var task in taskQueue)
         {
-            if (!task.isActive)
-            {
-                task.isActive = true;
-                return task;
-            }
+            if (task.isActive) continue;
+            if (exclude != null && exclude.Contains(task)) continue;
+            task.isActive = true;
+            return task;
         }
         return null;
     }
@@ -292,28 +302,30 @@ public class Pole : MonoBehaviour
         waitingPaper = Mathf.Max(0, totalPaper - activepaper);
         foreach (Employe employe in employeList)
         {
-            if (waitingPaper <= 0)
-                break;
-            if (employe.iamWorking)
-                continue;
+            if (waitingPaper <= 0) break;
+            if (employe.iamWorking) continue;
+
             PoleTask task = GetAvailableTask();
+            if (task == null) break;
 
-                if (task == null)
-                    break;
+            // Collecte les bonus ici avant d'appeler Working
+            List<PoleTask> bonus = new List<PoleTask>();
+            int bonusCount = Mathf.RoundToInt(employe.BonusPaperDone);
+            List<PoleTask> exclude = new List<PoleTask> { task };
+            for (int i = 0; i < bonusCount; i++)
+            {
+                PoleTask b = GetAvailableTask(exclude);
+                if (b == null) break;
+                bonus.Add(b);
+                exclude.Add(b);
+            }
 
-            
-                    task.isActive = true;
-                    employe.Working(task);
-                
+            employe.Working(task, bonus);
 
-                waitingPaper = Mathf.Max(0, totalPaper - activepaper);
-            
-                BeginSurcharge();
-                UpdateBackLog();
-
-
+            waitingPaper = Mathf.Max(0, totalPaper - activepaper);
+            BeginSurcharge();
+            UpdateBackLog();
         }
-
         UpdatePaperCount?.Invoke();
     }
 
@@ -326,6 +338,9 @@ public class Pole : MonoBehaviour
         localQuotat = 0;
         localAdvencement = 0;
         postItSortingOrder = 0;
+     
+        batchReady = false;
+        pendingTaskCount = 0;
         UpdatePaperCount?.Invoke();
         ResetSurcharge();
         if (work != null)

@@ -46,7 +46,7 @@ public class Employe : MonoBehaviour
     public float employeErrorPercenBonus = 0f;
     public float StressBonus = 0f;
     public float BonusPaperDone = 0f;
-
+    private List<PoleTask> bonusTasks = new List<PoleTask>();
     public List<Sprite> upgradesImages = new List<Sprite>();
     public Dictionary<Sprite, int> upgradeCounts = new Dictionary<Sprite, int>();
 
@@ -132,6 +132,14 @@ public class Employe : MonoBehaviour
             StopCoroutine(WorkRoutine);
             WorkRoutine = null;
         }
+        if (currentTask != null)
+        {
+            currentTask.isActive = false;
+            currentTask = null;
+        }
+        foreach (PoleTask bonus in bonusTasks)
+            if (bonus != null) bonus.isActive = false;
+        bonusTasks.Clear();
 
     }
     public void InitialSetIdentity()
@@ -200,30 +208,36 @@ public class Employe : MonoBehaviour
 
 
     // fonction  lancer lorsqu'il commence a work 
-    public void Working(PoleTask task)
+    public void Working(PoleTask task, List<PoleTask> preloadedBonus = null)
     {
         PoleTask myTask = task;
         if (myTask != null && iamWorking == false)
         {
-           
-            Image img = myTask.postItObject.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
-            if (img != null)
-                img.enabled = true; 
+            bonusTasks.Clear();
+            if (preloadedBonus != null)
+                bonusTasks.AddRange(preloadedBonus);
+
+            foreach (PoleTask b in bonusTasks)
+            {
+                Image imge = b.postItObject?.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
+                if (imge != null) imge.enabled = true;
+            }
+            Image img = myTask.postItObject?.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
+            if (img != null) img.enabled = true;
+
             iamWorking = true;
             currentTask = myTask;
             mypole.activepaper++;
             mypole.UpdatePaperUI();
-            WorkRoutine = StartCoroutine(Work());
             
+            WorkRoutine = StartCoroutine(Work());
             Light.intensity = 0.3f;
             cigarette.enabled = false;
             smoke.Stop();
         }
-        
         else
         {
             iamWorking = false;
-
             Light.intensity = 0.0f;
             if (isStunned == false)
             {
@@ -232,10 +246,9 @@ public class Employe : MonoBehaviour
             }
             else
             {
-                cigarette.enabled =true;
+                cigarette.enabled = true;
                 smoke.Play();
             }
-           
         }
     }
 
@@ -307,14 +320,14 @@ public class Employe : MonoBehaviour
             mypole.WinMoney();
             ScoreWinAnim?.Invoke();
             moneyMake += mypole.paperValue;
-            succeedPaper += 1 + Mathf.RoundToInt(BonusPaperDone);
+            succeedPaper = 1;
         }
         else
         {
             paperDechirer.SetTrigger("Launch");
         }
 
-            numberOfPaperDone += 1 + Mathf.RoundToInt(BonusPaperDone);
+            numberOfPaperDone += 1 ;
         workAdvancement.value = 0;
        
         Light.intensity = 0.0f;
@@ -325,6 +338,21 @@ public class Employe : MonoBehaviour
         }
         mypole.DecrementPaper(currentTask);
         currentTask = null;
+        foreach (PoleTask bonus in bonusTasks)
+        {
+            roll = Random.Range(0f, 1f);
+           
+            if (roll < successChance)
+            {
+                mypole.WinMoney();
+                ScoreWinAnim?.Invoke();
+                moneyMake += mypole.paperValue;
+                succeedPaper++;
+            }
+            numberOfPaperDone++;
+            mypole.DecrementPaper(bonus);
+        }
+        bonusTasks.Clear();
         cigarette.enabled = true;
         smoke.Play();
         yield return new WaitForSeconds(Mathf.Max(timeBeetwennWork - StressBonus - swatBoostTimeBeetweenWork, 0));
@@ -352,18 +380,24 @@ public class Employe : MonoBehaviour
             if (currentTask != null)
             {
                 Image img = currentTask.postItObject
-                    ?.transform.Find("FondPostIt")
-                    ?.Find("Perso")
-                    ?.GetComponent<Image>();
-
-                if (img != null)
-                    img.enabled = false;
-
-                currentTask.isActive = false; // ⚠️ IMPORTANT
+                    ?.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
+                if (img != null) img.enabled = false;
+                currentTask.isActive = false;
                 mypole.activepaper = Mathf.Max(0, mypole.activepaper - 1);
-
                 currentTask = null;
             }
+
+            foreach (PoleTask bonus in bonusTasks)
+            {
+                if (bonus == null) continue;
+                Image img = bonus.postItObject
+                    ?.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
+                if (img != null) img.enabled = false;
+                bonus.isActive = false;
+                mypole.activepaper = Mathf.Max(0, mypole.activepaper - 1);
+            }
+            bonusTasks.Clear();
+
             StopCoroutine(WorkRoutine);
             WorkRoutine = null;
         }
@@ -456,6 +490,13 @@ public class Employe : MonoBehaviour
         occupied = false;
         iamWorking = false;
         Light.color = baseColor;
+        foreach (PoleTask bonus in bonusTasks)
+        {
+            if (bonus == null) continue;
+            bonus.isActive = false;
+        }
+        bonusTasks.Clear();
+        currentTask = null;
         if (WorkRoutine != null)
         {
             StopCoroutine(WorkRoutine);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PoleTask
@@ -7,4 +8,5 @@ public class PoleTask
     public bool isActive; // pris par un employé
     public int value;
     public GameObject postItObject;
+   
 }
