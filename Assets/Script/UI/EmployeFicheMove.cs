@@ -20,6 +20,7 @@ public class EmployeFicheMove : MonoBehaviour
     private int _currentPage = 0;
     private bool _isMoving = false;
     private bool _ficheReachedNotified = false;
+    [SerializeField] float[] pageOffsets; // un offset par page
 
     void OnEnable()
     {
@@ -85,10 +86,12 @@ public class EmployeFicheMove : MonoBehaviour
     IEnumerator MoveToPage()
     {
         _isMoving = true;
-
+        float offset = (pageOffsets != null && _currentPage < pageOffsets.Length)
+         ? pageOffsets[_currentPage]
+            : 0f;
         Vector2 startPos  = content.anchoredPosition;
         float baseX       = baseParentPose;
-        Vector2 targetPos = new Vector2(baseX - _currentPage * pageWidth, startPos.y);
+        Vector2 targetPos = new Vector2(baseX - _currentPage * pageWidth + offset, startPos.y);
 
         float t = 0f;
 
