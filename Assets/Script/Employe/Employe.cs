@@ -109,7 +109,8 @@ public class Employe : MonoBehaviour
 
     public event Action ScoreWinAnim;
     public event Action LooseMoney;
-    
+
+    [SerializeField] private AudioEventDispatcher audioeventdispatcher;
     public void OnEnable()
     {
         timemanager.TimerEnded += StopWorking;
@@ -370,6 +371,7 @@ public class Employe : MonoBehaviour
         }
         else
         {
+            audioeventdispatcher.PlayAudio(AudioType.RippingPaper);
             paperDechirer.SetTrigger("Launch");
             LoosePaper += 1;
         }

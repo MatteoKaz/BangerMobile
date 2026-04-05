@@ -9595,6 +9595,10 @@ PrefabInstance:
       propertyPath: timeBeetwennWork
       value: 1.25
       objectReference: {fileID: 0}
+    - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: audioeventdispatcher
+      value: 
+      objectReference: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
     - target: {fileID: 5986552488937771178, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -16071,6 +16075,10 @@ PrefabInstance:
       propertyPath: timeBeetwennWork
       value: 1.25
       objectReference: {fileID: 0}
+    - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: audioeventdispatcher
+      value: 
+      objectReference: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
     - target: {fileID: 5986552488937771178, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -17757,6 +17765,7 @@ MonoBehaviour:
   uiscore: {fileID: 415495376}
   GameOverHud: {fileID: 747242160}
   savemanager: {fileID: 1573853484}
+  audioeventdispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &641038317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25576,6 +25585,10 @@ PrefabInstance:
       propertyPath: timeBeetwennWork
       value: 1.25
       objectReference: {fileID: 0}
+    - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: audioeventdispatcher
+      value: 
+      objectReference: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
     - target: {fileID: 5732041455928602576, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
       propertyPath: m_Color.a
       value: 0
@@ -37235,6 +37248,10 @@ PrefabInstance:
       propertyPath: timeBeetwennWork
       value: 1.25
       objectReference: {fileID: 0}
+    - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: audioeventdispatcher
+      value: 
+      objectReference: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
     - target: {fileID: 5732041455928602576, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
@@ -42450,6 +42467,10 @@ PrefabInstance:
       propertyPath: timeBeetwennWork
       value: 1.25
       objectReference: {fileID: 0}
+    - target: {fileID: 5534161824411419701, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
+      propertyPath: audioeventdispatcher
+      value: 
+      objectReference: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
     - target: {fileID: 5573623258426083793, guid: c1f9014b948b9ee4f8411e8738385670, type: 3}
       propertyPath: m_RaycastTarget
       value: 1
