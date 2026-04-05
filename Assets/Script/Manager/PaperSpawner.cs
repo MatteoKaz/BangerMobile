@@ -131,7 +131,7 @@ public class PaperSpawner : MonoBehaviour
             }
             else if (spawnCount % 15 == 0 && spawnCount > 0)
             {
-                float pauseDuration = Random.Range(20f, 25f);
+                float pauseDuration = Random.Range(15f, 20f);
                 Debug.Log($"Pause de {pauseDuration}s");
                 yield return new WaitForSeconds(pauseDuration);
             }
@@ -148,7 +148,7 @@ public class PaperSpawner : MonoBehaviour
                 switch (rhythm)
                 {
                     case 0: currentRhythm = 8f; break;
-                    case 1: currentRhythm = 5f; break;
+                    case 1: currentRhythm = 4f; break;
                     case 2: currentRhythm = 3.5f; break;
                 }
                 Debug.Log($"Nouveau rythme: {rhythm}");
