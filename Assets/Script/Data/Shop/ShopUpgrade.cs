@@ -11,7 +11,8 @@ public enum TypeOfUpgrade
     CigarettePole,
     BoostSpeedPole,
     BoostErrorPole,
-    Swat
+    Swat,
+    Billet
     
 
 }

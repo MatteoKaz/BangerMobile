@@ -119,6 +119,7 @@ public class SaveManager : MonoBehaviour
                 workRateBonus         = emp.employeWorkRateBonus,
                 errorPercentBonus     = emp.employeErrorPercenBonus,
                 stressBonus           = emp.StressBonus,
+                isMVP = emp.couronne != null && emp.couronne.activeSelf,
                 BonusPaperDone        = emp.BonusPaperDone
 
             };
@@ -230,6 +231,8 @@ public class SaveManager : MonoBehaviour
             emp.employeErrorPercenBonus = empData.errorPercentBonus;
             emp.StressBonus             = empData.stressBonus;
             emp.BonusPaperDone          = empData.BonusPaperDone;
+            if (emp.couronne != null)
+                emp.couronne.SetActive(empData.isMVP);
             InventorySlot targetSlot = FindSlot(empData.poleType, empData.slotIndex);
             if (targetSlot == null) continue;
 

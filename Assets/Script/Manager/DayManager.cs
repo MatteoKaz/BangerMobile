@@ -83,8 +83,18 @@ public class DayManager : MonoBehaviour
     public void NewWeek()
     {
         rankingManager.rankingFolder.SetActive(false);
-        NewWeekReset?.Invoke();
-        StartCoroutine(NextDaySetup());
+        currentWeek += 1;    
+        currentDay = 1;
+        DayNameChange();
+        NewWeekReset?.Invoke(); 
+        StartCoroutine(NextDaySetupFromNewWeek());
+    }
+
+    public IEnumerator NextDaySetupFromNewWeek()
+    {
+        ResetValueBeforeNextDay?.Invoke();
+        yield return new WaitForSeconds(1f);
+        DayBegin?.Invoke(); 
     }
     public IEnumerator NextDaySetup()
     {

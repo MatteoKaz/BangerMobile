@@ -7,7 +7,7 @@ public class QuotatManager : MonoBehaviour
 {
     public int WeekQuotat = 250;
     public int BaseQuotat = 250;
-    public float exposant = 2f;
+    private float exposant = 3f;
     public int DayQuotat ;
     [SerializeField] DayManager dayManager;
     public event Action QuotatChosen;
@@ -55,7 +55,7 @@ public class QuotatManager : MonoBehaviour
             case 2:
                 DayQuotat = Mathf.RoundToInt(WeekQuotat * 1f); break;
             case 3:
-                DayQuotat = Mathf.RoundToInt(WeekQuotat * 1.1f); break;
+                DayQuotat = Mathf.RoundToInt(WeekQuotat * 1.2f); break;
             case 4:
                 DayQuotat = Mathf.RoundToInt(WeekQuotat * 0.8f); break;
             case 5:

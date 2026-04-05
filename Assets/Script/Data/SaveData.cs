@@ -26,6 +26,7 @@ public class EmployeSaveData
     public int sceneEmployeIndex;
     public int employeIndex;
     public int timeInEntreprise;
+    public bool isMVP;
 
     // Placement dans les poles
     public PoleType poleType;
