@@ -19,24 +19,24 @@ public class UIScore : MonoBehaviour
     [SerializeField] GameOverManager gameOverManager;
 
     [Header("Timings")]
-    [SerializeField] float delayBeforeStart       = 1.5f;
-    [SerializeField] float quotaCountDuration     = 1.0f;
-    [SerializeField] float pauseAfterQuota        = 0.4f;
+    [SerializeField] float delayBeforeStart = 1.5f;
+    [SerializeField] float quotaCountDuration = 1.0f;
+    [SerializeField] float pauseAfterQuota = 0.4f;
     [SerializeField] float baseMoneyCountDuration = 1.0f;
-    [SerializeField] float pauseBetweenBonuses    = 0.4f;
-    [SerializeField] float bonusCountDuration     = 0.6f;
-    [SerializeField] float pauseBeforeTotal       = 0.4f;
-    [SerializeField] float totalCountDuration     = 1.0f;
+    [SerializeField] float pauseBetweenBonuses = 0.4f;
+    [SerializeField] float bonusCountDuration = 0.6f;
+    [SerializeField] float pauseBeforeTotal = 0.4f;
+    [SerializeField] float totalCountDuration = 1.0f;
 
     private void OnEnable()
     {
-        uiManager.ScoreAnim  += LaunchAnim;
+        uiManager.ScoreAnim += LaunchAnim;
         uiManager.ScoreReset += ResetScore;
     }
 
     private void OnDisable()
     {
-        uiManager.ScoreAnim  -= LaunchAnim;
+        uiManager.ScoreAnim -= LaunchAnim;
         uiManager.ScoreReset -= ResetScore;
     }
 
@@ -46,7 +46,7 @@ public class UIScore : MonoBehaviour
         foreach (TextMeshProUGUI label in poleQuotaLabels)
             if (label != null) label.text = string.Empty;
 
-        if (beneficeLabel   != null) beneficeLabel.text   = string.Empty;
+        if (beneficeLabel != null) beneficeLabel.text = string.Empty;
         if (totalMoneyLabel != null) totalMoneyLabel.text = string.Empty;
     }
 
@@ -78,7 +78,6 @@ public class UIScore : MonoBehaviour
                 int displayed = Mathf.RoundToInt(Mathf.Lerp(0, delta, ratio));
                 string sign = displayed >= 0 ? "+" : "";
                 poleQuotaLabels[i].text = $"{r.poleName} : {sign}{displayed}$";
-                //poleQuotaLabels[i].text = $"{r.poleName} : {displayed} / {r.quota}";
             }
 
             yield return null;
@@ -90,17 +89,15 @@ public class UIScore : MonoBehaviour
             if (poleQuotaLabels[i] == null || i >= scoreManager.poleResults.Count) continue;
 
             ScoreManager.PoleResult r = scoreManager.poleResults[i];
-
             int delta = r.advancement - r.quota;
             string sign = delta >= 0 ? "+" : "";
             poleQuotaLabels[i].text = $"{r.poleName} : {sign}{delta}$";
-            // poleQuotaLabels[i].text = $"{r.poleName} : {r.advancement} / {r.quota}";
         }
 
         yield return new WaitForSeconds(pauseAfterQuota);
 
         // ── Bénéfice de base ─────────────────────────────────────────────
-        int baseMoney       = scoreManager.baseMoney;
+        int baseMoney = scoreManager.baseMoney;
         int displayBenefice = 0;
 
         t = 0f;
@@ -115,16 +112,19 @@ public class UIScore : MonoBehaviour
         if (beneficeLabel != null) beneficeLabel.text = $"Bénéfice : {displayBenefice}$";
 
         // ── Bonus des pôles ───────────────────────────────────────────────
+        // Le bonus est toujours positif : il s'additionne pour réduire la perte si baseMoney est négatif.
+        int absMoney = Mathf.Abs(baseMoney);
+
         foreach (ScoreManager.PoleResult result in scoreManager.poleResults)
         {
             if (!result.quotaReached) continue;
 
             yield return new WaitForSeconds(pauseBetweenBonuses);
 
-            int bonusAmount    = Mathf.RoundToInt(baseMoney * result.bonusPercent);
-            int startBenefice  = displayBenefice;
+            int bonusAmount = Mathf.RoundToInt(absMoney * result.bonusPercent);
+            int startBenefice = displayBenefice;
             int targetBenefice = displayBenefice + bonusAmount;
-            int bonusPct       = Mathf.RoundToInt(result.bonusPercent * 100f);
+            int bonusPct = Mathf.RoundToInt(result.bonusPercent * 100f);
 
             t = 0f;
             while (t < bonusCountDuration)
@@ -143,7 +143,7 @@ public class UIScore : MonoBehaviour
 
         // ── Total argent joueur ───────────────────────────────────────────
         int previousMoney = scoreManager.playerMoney - displayBenefice;
-        int finalMoney    = scoreManager.playerMoney;
+        int finalMoney = scoreManager.playerMoney;
 
         t = 0f;
         while (t < totalCountDuration)
@@ -155,7 +155,6 @@ public class UIScore : MonoBehaviour
         }
         if (totalMoneyLabel != null) totalMoneyLabel.text = $"Total : {finalMoney}$";
 
-      
         // ── Animation terminée — déclenche le tuto OnDayEnd ──────────────
         TutorialManager.NotifyDayEnd();
 

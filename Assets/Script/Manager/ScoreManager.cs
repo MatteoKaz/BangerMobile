@@ -71,7 +71,8 @@ public class ScoreManager : MonoBehaviour
         };
     }
 
-    /// <summary>Calcule l'argent de base puis les bonus par pôle ayant atteint son quota.</summary>
+    /// <summary>Calcule l'argent de base puis les bonus par pôle ayant atteint son quota.
+    /// Le bonus est toujours positif : il réduit la perte si baseMoney est négatif.</summary>
     public void CalculateMoney()
     {
         poleResults.Clear();
@@ -86,9 +87,8 @@ public class ScoreManager : MonoBehaviour
                 bool reached = pole.localAdvencement >= pole.localQuotat;
                 string name = !string.IsNullOrEmpty(pole.PoleName) ? pole.PoleName : $"Pôle {i + 1}";
 
-                // Différence positive ou négative par pôle
                 int diff = pole.localAdvencement - pole.localQuotat;
-                baseMoney += diff; // additionne les gains ET les pertes
+                baseMoney += diff;
 
                 poleResults.Add(new PoleResult
                 {
@@ -101,19 +101,21 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-        // Bonus uniquement si baseMoney positif
+        // Le bonus est calculé sur la valeur absolue du score,
+        // donc il est toujours positif et réduit la perte si baseMoney est négatif.
         int totalBonus = 0;
-        if (baseMoney > 0)
+        if (baseMoney != 0)
         {
+            int absMoney = Mathf.Abs(baseMoney);
+
             foreach (PoleResult r in poleResults)
             {
                 if (r.quotaReached)
-                    totalBonus += Mathf.RoundToInt(baseMoney * r.bonusPercent);
+                    totalBonus += Mathf.RoundToInt(absMoney * r.bonusPercent);
             }
         }
 
         playerMoney += baseMoney + totalBonus;
-        // Pas de Mathf.Max ici — le joueur peut tomber en négatif
         StartCoroutine(AnimLauncher());
     }
 
@@ -129,49 +131,4 @@ public class ScoreManager : MonoBehaviour
     {
         playerQuotat = 0;
     }
-
-
-
-
-
-    /* old calculate money 
-
-    public void CalculateMoney()
-    {
-        int earned = Mathf.Max(0, playerQuotat - quotatOfTheDay);
-        baseMoney = earned;
-
-        poleResults.Clear();
-
-        float bonusPercent = GetBonusForCurrentDifficulty();
-        int totalBonus = 0;
-
-        if (poleManager != null)
-        {
-            for (int i = 0; i < poleManager.poles.Length; i++)
-            {
-                Pole pole = poleManager.poles[i];
-                bool reached = pole.localAdvencement >= pole.localQuotat;
-
-                string name = !string.IsNullOrEmpty(pole.PoleName) ? pole.PoleName : $"Pôle {i + 1}";
-
-                poleResults.Add(new PoleResult
-                {
-                    poleName = name,
-                    quotaReached = reached,
-                    bonusPercent = reached ? bonusPercent : 0f,
-                    advancement = pole.localAdvencement,
-                    quota = pole.localQuotat
-                });
-
-                if (reached)
-                    totalBonus += Mathf.RoundToInt(baseMoney * bonusPercent);
-            }
-        }
-
-        playerMoney += baseMoney + totalBonus;
-        playerMoney = Mathf.Max(0, playerMoney);
-
-        StartCoroutine(AnimLauncher());
-    }*/
 }

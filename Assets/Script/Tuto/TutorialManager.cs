@@ -52,6 +52,8 @@ public class TutorialManager : MonoBehaviour
 
     private TutorialStep _currentSequence;
 
+    private readonly HashSet<TutorialStep> _playedSequences = new HashSet<TutorialStep>();
+
     public event Action<TutorialStep> TutorialEnded;
 
     public static event Action OnGameStartStatic;
@@ -154,6 +156,9 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator PlayWithDelay(TutorialStep sequence)
     {
+        if (_playedSequences.Contains(sequence))
+            yield break;
+
         if (sequence.triggerDelay > 0f)
             yield return new WaitForSecondsRealtime(sequence.triggerDelay);
 
@@ -162,11 +167,12 @@ public class TutorialManager : MonoBehaviour
         PlaySequence(sequence);
     }
 
-    /// <summary>Lance une séquence tutoriel. Ignoré si une séquence est déjà en cours.</summary>
+    /// <summary>Lance une séquence tutoriel. Ignoré si déjà jouée ou si une séquence est en cours.</summary>
     public void PlaySequence(TutorialStep sequence)
     {
         if (sequence == null || sequence.steps == null || sequence.steps.Count == 0) return;
         if (_isPlaying) return;
+        if (_playedSequences.Contains(sequence)) return;
 
         _currentSequence = sequence;
         _lastPlayedSteps = sequence.steps;
@@ -210,7 +216,7 @@ public class TutorialManager : MonoBehaviour
         ReplayLastSequence();
     }
 
-    /// <summary>Rejoue la dernière séquence tutoriel depuis le début.</summary>
+    /// <summary>Rejoue la dernière séquence tutoriel depuis le début, sans bloquer sur le HashSet.</summary>
     public void ReplayLastSequence()
     {
         if (_lastPlayedSteps == null || _lastPlayedSteps.Count == 0) return;
@@ -303,6 +309,9 @@ public class TutorialManager : MonoBehaviour
         _isPlaying = false;
 
         TutorialStep justFinished = _currentSequence;
+        if (justFinished != null)
+            _playedSequences.Add(justFinished);
+
         _currentSequence = null;
         TutorialEnded?.Invoke(justFinished);
     }
