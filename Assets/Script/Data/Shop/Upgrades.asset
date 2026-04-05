@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: Upgrades
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   allUpgrade:
+  - UpgradeName: Billet de mes reves
+    price: 10000
+    type: 9
+    category: 2
+    upgradeValue: 1
+    icone: {fileID: 21300000, guid: 45bcb5311120ab546af40f6e70121a9d, type: 3}
+    inflation: 20
+    Description: "Un nouveau d\xE9part loin de cette entreprises et de tous ces papiers"
+    duration: 0
   - UpgradeName: La carotte
     price: 150
     type: 0
