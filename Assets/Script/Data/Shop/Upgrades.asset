@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   allUpgrade:
   - UpgradeName: La carotte
-    price: 450
+    price: 150
     type: 0
     category: 0
     upgradeValue: 0.25
@@ -24,7 +24,7 @@ MonoBehaviour:
       d'un employ\xE9"
     duration: 0
   - UpgradeName: Promesse de Promotion
-    price: 475
+    price: 150
     type: 1
     category: 0
     upgradeValue: 0.05

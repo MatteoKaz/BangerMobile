@@ -47,8 +47,8 @@ public class EmployeFicheInfo : MonoBehaviour
     {
 
         yield return new WaitForSeconds(1f);
-        int missedPaper = Mathf.Abs(employe.succeedPaper - employe.numberOfPaperDone);
-        int moneyLost = missedPaper * (employe.mypole.paperValue *Mathf.RoundToInt(employe.mypole.BonusRevenus));
+        int missedPaper = employe.LoosePaper;
+        int moneyLost = missedPaper * (employe.mypole.paperValue );
         if (employe != null)
         {
             for (int i = 0; i < listAmelio.Length; i++)
@@ -60,7 +60,7 @@ public class EmployeFicheInfo : MonoBehaviour
             employeDescription.text = employe.employeDescription;
             employeType.text        = $"\n{employe.employeTypeText}";
             employeRendement.text   = $"Papier raté : {missedPaper} = {moneyLost}$";
-            employeMoney.text       = $"Efficacité: 1/{employe.errorPercent + employe.employeErrorPercenBonus}s";
+            employeMoney.text       = $"Efficacité: 1/{employe.employeWorkRate}s";
             tempsinEntreprise.text  = $"Apport: {employe.moneyMake}$";
             Image.sprite            = employe.idleSprite;
             poleImage.sprite = employe.mypole.mySprite;

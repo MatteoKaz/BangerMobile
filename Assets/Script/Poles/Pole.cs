@@ -423,7 +423,7 @@ public class Pole : MonoBehaviour
                     pile.OnPoleChanged();
             }
         }
-        UpdateBackLog();
+       
     }
 
     public void BeginSurcharge()
@@ -448,7 +448,13 @@ public class Pole : MonoBehaviour
             {
                 float normalizedPaper = (float)waitingPaper + 0.005f;
                 float employeeCount = Mathf.Max(1, employeList.Count);
-                float chargePerEmployee = Mathf.Pow(normalizedPaper, 0.55f) / Mathf.Pow(employeeCount, 1.45f);
+
+                // seuil dur — en dessous de 3 papiers, charge réduite drastiquement
+                float paperFactor = waitingPaper <= 3
+                    ? Mathf.Pow(normalizedPaper, 1f) * 0.5f
+                    : Mathf.Pow(normalizedPaper, 1.25f);
+
+                float chargePerEmployee = paperFactor / Mathf.Pow(employeeCount, 0.8f);
                 surchargeValue += (surchargeStep * chargePerEmployee) / (1f + BoostTimeForSurcharge);
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                 Debug.LogWarning($"Surcharge {surchargeValue}");

@@ -62,6 +62,7 @@ public class Employe : MonoBehaviour
     [Header("MyStatDay")]
     public int numberOfPaperDone;
     public int succeedPaper;
+    public int LoosePaper;
     public int moneyMake;
 
     [Header("MyForWeek")]
@@ -282,8 +283,13 @@ public class Employe : MonoBehaviour
             if (currentTask == null || currentTask.isExpired)
             {
                 if (currentTask != null)
-                    mypole.DecrementPaper(currentTask); 
+                    mypole.DecrementPaper(currentTask);
                 currentTask = null;
+
+                foreach (PoleTask bonus in bonusTasks)
+                    if (bonus != null) mypole.DecrementPaper(bonus);
+                bonusTasks.Clear();
+
                 iamWorking = false;
                 workAdvancement.value = 0;
                 Light.intensity = 0.0f;
@@ -292,7 +298,6 @@ public class Employe : MonoBehaviour
                     employeImage.sprite = idleSprite;
                     animator.SetTrigger("Idle");
                 }
-                
                 yield break;
             }
             if (isStunned == false)
@@ -355,17 +360,18 @@ public class Employe : MonoBehaviour
         successChance = Mathf.Clamp01(successChance);
 
         float roll = Random.Range(0f, 1f);
-
+        Debug.LogWarning($"error percent = {successChance}");
         if (roll < successChance)
         {
             mypole.WinMoney();
             ScoreWinAnim?.Invoke();
             moneyMake += mypole.paperValue;
-            succeedPaper = 1;
+            succeedPaper += 1;
         }
         else
         {
             paperDechirer.SetTrigger("Launch");
+            LoosePaper += 1;
         }
 
             numberOfPaperDone += 1 ;
@@ -398,7 +404,11 @@ public class Employe : MonoBehaviour
                 moneyMake += mypole.paperValue;
                 succeedPaper++;
             }
-            numberOfPaperDone++;
+            else
+            {
+                LoosePaper += 1;
+            }
+                numberOfPaperDone++;
             mypole.DecrementPaper(bonus);
         }
 
@@ -421,7 +431,7 @@ public class Employe : MonoBehaviour
         
 
         iamWorking = false;
-
+        WorkRoutine = null;
         mypole.LaunchWorker();
 
 
@@ -437,8 +447,7 @@ public class Employe : MonoBehaviour
                 Image img = currentTask.postItObject
                     ?.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
                 if (img != null) img.enabled = false;
-
-                currentTask.isActive = false; // remet disponible pour ce pole
+                currentTask.isActive = false;
                 mypole.activepaper = Mathf.Max(0, mypole.activepaper - 1);
                 currentTask = null;
             }
@@ -452,23 +461,33 @@ public class Employe : MonoBehaviour
                 mypole.activepaper = Mathf.Max(0, mypole.activepaper - 1);
             }
             bonusTasks.Clear();
-            cancelled = true;
-            StopCoroutine(WorkRoutine);
+            StopCoroutine(WorkRoutine); // ← StopCoroutine SANS cancelled=true
             WorkRoutine = null;
         }
-        GetComponentInChildren<PileBackEmploye>()?.OnCountUpdated();
-        mypole.UpdateBackLog();
-        iamWorking = false;        
+
+        iamWorking = false;
         workAdvancement.value = 0f;
         employeWorkRateMalus = 0f;
         errorPercentMalus = 0f;
+
+        Pole oldPole = mypole;
+
+        // Retire l'employé de l'ancien pole IMMÉDIATEMENT sans attendre RebuildAfterLoad
+        oldPole.employeList.Remove(this);
+        oldPole.UpdateBackLog(); // ← maintenant employeList est déjà à jour
+        oldPole.LaunchWorker();
+
         mypole = pole;
-        if (isStunned == false)
-        employeImage.sprite = idleSprite;
+
+        if (!isStunned)
+            employeImage.sprite = idleSprite;
         FeedbackSurcharge(pole.nextThresholdIndex);
-        GetComponentInChildren<PileBackEmploye>()?.OnPoleChanged();
+       
         mypole.UpdateBackLog();
         mypole.LaunchWorker();
+        GetComponentInChildren<PileBackEmploye>()?.OnPoleChanged();
+        GetComponentInChildren<PileBackEmploye>()?.OnCountUpdated();
+        GetComponentInChildren<PileBackEmploye>()?.OnPoleChanged();
     }
 
 
@@ -518,22 +537,22 @@ public class Employe : MonoBehaviour
         Light.intensity = 0.3f;
         Light.color = Color.indianRed;
         animator.SetTrigger("Surcharge");
-        
+
         yield return new WaitForSeconds(duration);
         isStunned = false;
         if (iamWorking)
         {
-        Light.color = baseColor;
-        employeImage.sprite = working;
-        animator.SetTrigger("Working");
+            Light.color = baseColor;
+            employeImage.sprite = working;
+            animator.SetTrigger("Working");
         }
-         else
+        else
         {
-        Light.intensity = 0.0f;
-        employeImage.sprite = idleSprite;
-        animator.SetTrigger("Idle");
-         }
-        
+            Light.intensity = 0.0f;
+            employeImage.sprite = idleSprite; // ← remet idle même si Work() est déjà terminé
+            animator.SetTrigger("Idle");
+        }
+
     }
 
     
@@ -564,6 +583,7 @@ public class Employe : MonoBehaviour
         isStunned = false;
         employeWorkRateMalus = 0f;
         errorPercentMalus = 0f;
+        LoosePaper = 0;
         timeInEntreprise += 1;
         workAdvancement.value = 0;
         WeekmoneyMake += moneyMake;

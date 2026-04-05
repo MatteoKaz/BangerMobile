@@ -49,21 +49,15 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         // LOGIQUE GAMEPLAY
         if (oldPole != newPole)
         {
-            newPole.RebuildEmployeList();
-            oldPole.RebuildEmployeList();
-            newPole.UpdatePaperUI();
-            oldPole.activepaper--;
-            oldPole.activepaper = Mathf.Max(oldPole.activepaper, 0);
-            oldPole.UpdatePaperUI();
-
-
             employe.SwitchPole(newPole);
+            newPole.RebuildEmployeList(); 
+            newPole.UpdatePaperUI();
+            oldPole.UpdatePaperUI();
+            
         }
         else
         {
-
             newPole.RebuildEmployeList();
-         
         }
     }
 

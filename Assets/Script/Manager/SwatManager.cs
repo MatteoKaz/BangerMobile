@@ -22,6 +22,7 @@ public class SwatManager : MonoBehaviour
     [SerializeField] Color redcolor;
     [SerializeField] Color bleucolor;
     [SerializeField] Color vertcolor;
+    [SerializeField] GameObject PostIt;
 
     private Coroutine HighlightCoroutine;
     private Coroutine SwatLightLittle;
@@ -51,6 +52,7 @@ public class SwatManager : MonoBehaviour
     {
         if (numberOfUtilisation <= 0) return;
         SwatModeStart?.Invoke();
+        PostIt.SetActive(true);
     }
     public void DeactivateButton()
     {
@@ -62,6 +64,7 @@ public class SwatManager : MonoBehaviour
     {
         if (numberOfUtilisation <= 0) return;
         numberOfUtilisation--;
+        PostIt.SetActive(false);
         foreach (Button buton in buttons)
         {
             buton.enabled = false;
