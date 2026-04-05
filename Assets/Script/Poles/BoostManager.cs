@@ -156,6 +156,29 @@ public class BoostManager : MonoBehaviour
 
     private IEnumerator ApplyBoost(Pole pole)
     {
+    _boostedPoles.Add(pole);
+    float previousBoostSpeed = pole.BoostEmployeSpeed;
+    float chosenMultiplier = BoostMultipliers[UnityEngine.Random.Range(0, BoostMultipliers.Length)];
+    
+    pole.CurrentBoostMultiplier = chosenMultiplier;
+    pole.BoostEmployeSpeed = previousBoostSpeed + boostSpeedBonus;
+
+    BoostStarted?.Invoke(pole);
+    yield return new WaitForSeconds(boostDuration);
+
+    if (_boostedPoles.Contains(pole))
+    {
+        pole.CurrentBoostMultiplier = 1f;
+        pole.BoostEmployeSpeed = previousBoostSpeed;
+        _boostedPoles.Remove(pole);
+        BoostEnded?.Invoke(pole);
+    }
+    }
+
+
+    /* old code
+    private IEnumerator ApplyBoost(Pole pole)
+    {
         _boostedPoles.Add(pole);
 
         float previousBonusRevenus = pole.BonusRevenus;
@@ -184,5 +207,5 @@ public class BoostManager : MonoBehaviour
 
             BoostEnded?.Invoke(pole);
         }
-    }
+    }*/
 }
