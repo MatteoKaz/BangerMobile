@@ -3,11 +3,10 @@ using System.Collections;
 using UnityEngine.UI;
 
 /// <summary>
-/// Change le sprite et la taille du SpriteRenderer de la pile selon le nombre de papiers.
+/// Change le sprite et la taille de l'Image de la pile selon le nombre de papiers.
 /// Anime un punch de scale à chaque changement de count.
 /// Contre-scale le Canvas enfant pour que le compteur garde toujours la même taille.
 /// </summary>
-
 public class PileBackEmploye : MonoBehaviour
 {
     [System.Serializable]
@@ -26,6 +25,7 @@ public class PileBackEmploye : MonoBehaviour
         public PoleType poleType;
         public PileThreshold[] thresholds;
     }
+
     private const float PunchScaleMultiplier = 1.2f;
     private const float PunchGrowDuration = 0.12f;
     private const float PunchShrinkDuration = 0.2f;
@@ -35,25 +35,37 @@ public class PileBackEmploye : MonoBehaviour
     [SerializeField] private Tuyaux tuyauxBlue;
 
     private Tuyaux _activeTuyaux;
+
     [SerializeField] private Employe employe;
     [SerializeField] private PoleThresholdSet[] thresholdsByPole;
 
     [Tooltip("Canvas enfant contenant le compteur — son scale sera compensé automatiquement.")]
     [SerializeField] private Transform counterCanvas;
 
-    private Image _spriteRenderer;
+    private Image _image;
     private Vector3 _originalCanvasLocalScale;
     private Vector3 _targetScale;
     private Coroutine _punchCoroutine;
 
     private void Awake()
     {
-        _spriteRenderer = GetComponent<Image>();
+        _image = GetComponent<Image>();
+
+        // Supprime tout Canvas parasite qui pourrait avoir été ajouté
+        // par une ancienne version du script — il casse le tri par sibling index.
+        Canvas parasiteCanvas = GetComponent<Canvas>();
+        if (parasiteCanvas != null)
+            Destroy(parasiteCanvas);
+
+        GraphicRaycaster parasiteRaycaster = GetComponent<GraphicRaycaster>();
+        if (parasiteRaycaster != null)
+            Destroy(parasiteRaycaster);
+
+        // Force FondPapier en premier sibling pour qu'il soit toujours derrière Image
+        transform.SetAsFirstSibling();
 
         if (counterCanvas != null)
             _originalCanvasLocalScale = counterCanvas.localScale;
-        
-
     }
 
     private void Start()
@@ -64,22 +76,24 @@ public class PileBackEmploye : MonoBehaviour
     private IEnumerator InitAfterFrame()
     {
         yield return new WaitForSeconds(1f);
-       
         OnPoleChanged();
     }
+
     private void OnDestroy()
     {
-        if (_activeTuyaux  != null)
-        _activeTuyaux.AddPaperUi -= OnCountUpdated;
+        if (_activeTuyaux != null)
+            _activeTuyaux.AddPaperUi -= OnCountUpdated;
     }
 
     public void OnDisable()
     {
         if (_activeTuyaux != null)
-        _activeTuyaux.AddPaperUi -= OnCountUpdated;
+            _activeTuyaux.AddPaperUi -= OnCountUpdated;
+
         if (employe?.mypole != null)
             employe.mypole.UpdatePaperFond -= UpdateVisual;
     }
+
     private Tuyaux GetTuyauxForPole()
     {
         if (employe?.mypole == null)
@@ -96,9 +110,9 @@ public class PileBackEmploye : MonoBehaviour
             _ => null
         };
     }
+
     public void OnCountUpdated()
     {
-        
         PlayPunch();
         UpdateVisual();
     }
@@ -107,12 +121,14 @@ public class PileBackEmploye : MonoBehaviour
     private void UpdateVisual()
     {
         if (employe?.mypole == null) return;
+
         GetTuyauxForPole();
         PileThreshold[] thresholds = GetThresholdsForCurrentPole();
         if (thresholds == null || thresholds.Length == 0) return;
 
         int count = employe.mypole.waitingPaper;
         Debug.LogWarning($"papier attente : {count}");
+
         Sprite selected = thresholds[0].sprite;
         float selectedScale = thresholds[0].scale;
 
@@ -125,7 +141,7 @@ public class PileBackEmploye : MonoBehaviour
             }
         }
 
-        _spriteRenderer.sprite = selected;
+        _image.sprite = selected;
         _targetScale = Vector3.one * selectedScale;
         ApplyScale(_targetScale);
     }
@@ -143,10 +159,7 @@ public class PileBackEmploye : MonoBehaviour
     {
         Vector3 punchTarget = _targetScale * PunchScaleMultiplier;
 
-        // Grossissement
         yield return StartCoroutine(ScaleRoutine(punchTarget, PunchGrowDuration));
-
-        // Retour à la taille normale
         yield return StartCoroutine(ScaleRoutine(_targetScale, PunchShrinkDuration));
 
         _punchCoroutine = null;
@@ -177,9 +190,7 @@ public class PileBackEmploye : MonoBehaviour
         if (counterCanvas != null && scale.x != 0f)
             counterCanvas.localScale = _originalCanvasLocalScale / scale.x;
     }
-    
 
-    // Remplace l'ancien tableau 'thresholds'
     private PileThreshold[] GetThresholdsForCurrentPole()
     {
         if (employe?.mypole == null) return null;
@@ -196,20 +207,20 @@ public class PileBackEmploye : MonoBehaviour
         return null;
     }
 
+    /// <summary>Rebind les événements quand l'employé change de pôle.</summary>
     public void OnPoleChanged()
     {
-        // Désabonne l'ancien
         if (_activeTuyaux != null)
             _activeTuyaux.AddPaperUi -= OnCountUpdated;
+
         if (employe?.mypole != null)
             employe.mypole.UpdatePaperFond -= UpdateVisual;
 
-        // Assigne toujours le nouveau tuyau
         _activeTuyaux = GetTuyauxForPole();
 
-        // Abonne au nouveau
         if (_activeTuyaux != null)
             _activeTuyaux.AddPaperUi += OnCountUpdated;
+
         if (employe?.mypole != null)
             employe.mypole.UpdatePaperFond += UpdateVisual;
 

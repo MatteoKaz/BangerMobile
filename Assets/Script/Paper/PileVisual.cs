@@ -22,6 +22,7 @@ public class PileVisual : MonoBehaviour
     private const float PunchScaleMultiplier = 1.2f;
     private const float PunchGrowDuration = 0.12f;
     private const float PunchShrinkDuration = 0.2f;
+    private const int HiddenSortingOrder = -999;
 
     [SerializeField] private Pile pile;
     [SerializeField] private PileThreshold[] thresholds;
@@ -32,6 +33,8 @@ public class PileVisual : MonoBehaviour
     private Vector3 _originalCanvasLocalScale;
     private Vector3 _targetScale;
     private Coroutine _punchCoroutine;
+    private int _originalSortingOrder;
+    private string _originalSortingLayer;
 
     private void Awake()
     {
@@ -43,19 +46,39 @@ public class PileVisual : MonoBehaviour
 
     private void Start()
     {
+        _originalSortingOrder = _spriteRenderer.sortingOrder;
+        _originalSortingLayer = _spriteRenderer.sortingLayerName;
+
         UpdateVisual();
         pile.UpdateCount += OnCountUpdated;
+        DraggableItems.OnDragStateChanged += OnDragStateChanged;
     }
 
     private void OnDestroy()
     {
         pile.UpdateCount -= OnCountUpdated;
+        DraggableItems.OnDragStateChanged -= OnDragStateChanged;
     }
 
     private void OnCountUpdated()
     {
         UpdateVisual();
         PlayPunch();
+    }
+
+    /// <summary>Abaisse le sorting order pendant le drag pour éviter que la pile passe devant l'employé.</summary>
+    private void OnDragStateChanged(bool isDragging)
+    {
+        if (isDragging)
+        {
+            _spriteRenderer.sortingLayerName = "Default";
+            _spriteRenderer.sortingOrder = HiddenSortingOrder;
+        }
+        else
+        {
+            _spriteRenderer.sortingLayerName = _originalSortingLayer;
+            _spriteRenderer.sortingOrder = _originalSortingOrder;
+        }
     }
 
     /// <summary>Sélectionne le sprite et le scale correspondant au paperCount actuel.</summary>
@@ -78,7 +101,6 @@ public class PileVisual : MonoBehaviour
 
         _spriteRenderer.sprite = selected;
         _targetScale = Vector3.one * selectedScale;
-
         ApplyScale(_targetScale);
     }
 
@@ -95,10 +117,7 @@ public class PileVisual : MonoBehaviour
     {
         Vector3 punchTarget = _targetScale * PunchScaleMultiplier;
 
-        // Grossissement
         yield return StartCoroutine(ScaleRoutine(punchTarget, PunchGrowDuration));
-
-        // Retour à la taille normale
         yield return StartCoroutine(ScaleRoutine(_targetScale, PunchShrinkDuration));
 
         _punchCoroutine = null;

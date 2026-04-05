@@ -53,6 +53,7 @@ public class TutorialManager : MonoBehaviour
     private TutorialStep _currentSequence;
 
     private readonly HashSet<TutorialStep> _playedSequences = new HashSet<TutorialStep>();
+    private const string PlayedSequencesPrefsKey = "TutorialPlayedSequences";
 
     public event Action<TutorialStep> TutorialEnded;
 
@@ -94,12 +95,39 @@ public class TutorialManager : MonoBehaviour
         nextButton.onClick.AddListener(OnNextClicked);
         backButton.onClick.AddListener(OnBackClicked);
 
+        LoadPlayedSequences();
         SubscribeToTriggers();
     }
 
     private void OnDestroy()
     {
         Time.timeScale = 1f;
+    }
+
+    /// <summary>Charge depuis PlayerPrefs les séquences déjà jouées lors d'une session précédente.</summary>
+    private void LoadPlayedSequences()
+    {
+        string saved = PlayerPrefs.GetString(PlayedSequencesPrefsKey, string.Empty);
+        if (string.IsNullOrEmpty(saved)) return;
+
+        HashSet<string> playedNames = new HashSet<string>(saved.Split(','));
+
+        foreach (TutorialStep seq in sequences)
+        {
+            if (playedNames.Contains(seq.name))
+                _playedSequences.Add(seq);
+        }
+    }
+
+    /// <summary>Persiste dans PlayerPrefs la liste des séquences déjà jouées.</summary>
+    private void SavePlayedSequences()
+    {
+        var names = new List<string>();
+        foreach (TutorialStep seq in _playedSequences)
+            names.Add(seq.name);
+
+        PlayerPrefs.SetString(PlayedSequencesPrefsKey, string.Join(",", names));
+        PlayerPrefs.Save();
     }
 
     private void SubscribeToTriggers()
@@ -310,7 +338,10 @@ public class TutorialManager : MonoBehaviour
 
         TutorialStep justFinished = _currentSequence;
         if (justFinished != null)
+        {
             _playedSequences.Add(justFinished);
+            SavePlayedSequences();
+        }
 
         _currentSequence = null;
         TutorialEnded?.Invoke(justFinished);

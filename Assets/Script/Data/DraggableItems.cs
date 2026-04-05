@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -15,6 +16,9 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     /// <summary>True pendant qu'un item est en cours de drag.</summary>
     public static bool IsDragging { get; private set; }
+
+    /// <summary>Déclenché au début et à la fin d'un drag. True = début, False = fin.</summary>
+    public static event System.Action<bool> OnDragStateChanged;
 
     [HideInInspector] public Transform originalParent;
     [HideInInspector] public Transform parentAfterDrag;
@@ -30,11 +34,13 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     [SerializeField] private AudioEventDispatcher audioEventDispatcher;
 
+    // Stocke les Canvas enfants overrideSorting et leur ordre original
+    private readonly List<(Canvas canvas, int originalOrder, string originalLayer)> _childOverrideCanvases = new();
+
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
 
-        // Trouver le canvas parent (pas soi-même)
         Canvas[] parents = GetComponentsInParent<Canvas>(true);
         _parentCanvas = parents.Length > 0 ? parents[0] : null;
 
@@ -51,6 +57,23 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             _overrideRaycaster = gameObject.AddComponent<GraphicRaycaster>();
 
         _overrideCanvas.overrideSorting = false;
+
+        // Préenregistre tous les Canvas enfants avec overrideSorting
+        // pour pouvoir les élever pendant le drag sans chercher à chaque fois
+        CacheChildOverrideCanvases();
+    }
+
+    /// <summary>Collecte tous les Canvas enfants directs ou indirects qui ont overrideSorting activé.</summary>
+    private void CacheChildOverrideCanvases()
+    {
+        _childOverrideCanvases.Clear();
+        Canvas[] childCanvases = GetComponentsInChildren<Canvas>(true);
+        foreach (Canvas c in childCanvases)
+        {
+            if (c == _overrideCanvas) continue;
+            if (!c.overrideSorting) continue;
+            _childOverrideCanvases.Add((c, c.sortingOrder, c.sortingLayerName));
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -58,20 +81,28 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         if (_parentCanvas == null) return;
 
         IsDragging = true;
+        OnDragStateChanged?.Invoke(true);
+
         originalParent = transform.parent;
         parentAfterDrag = transform.parent;
         _originalWorldScale = transform.lossyScale;
 
-        // Reparenter directement sous le canvas parent (pas de changement de canvas)
         transform.SetParent(_parentCanvas.transform, true);
         transform.SetAsLastSibling();
 
-        // Monter en sorting order au-dessus de tout dans ce canvas
+        // Élève tous les Canvas enfants (ex: SwatCharacter) au-dessus de FondPapier
+        foreach ((Canvas canvas, _, _) in _childOverrideCanvases)
+        {
+            canvas.sortingLayerName = DragSortingLayer;
+            canvas.sortingOrder = DragSortingOrder + 1;
+        }
+
         _overrideCanvas.overrideSorting = true;
         _overrideCanvas.sortingLayerName = DragSortingLayer;
         _overrideCanvas.sortingOrder = DragSortingOrder;
 
         _canvasGroup.blocksRaycasts = false;
+
         if (audioEventDispatcher != null)
             audioEventDispatcher.PlayAudio(AudioType.MouseClick);
 
@@ -84,7 +115,6 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnDrag(PointerEventData eventData)
     {
-        // Conversion correcte screen → local pour Screen Space Camera
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
             (RectTransform)_parentCanvas.transform,
             eventData.position,
@@ -98,6 +128,15 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     public void OnEndDrag(PointerEventData eventData)
     {
         IsDragging = false;
+        OnDragStateChanged?.Invoke(false);
+
+        // Restaure les Canvas enfants à leur état original
+        foreach ((Canvas canvas, int originalOrder, string originalLayer) in _childOverrideCanvases)
+        {
+            canvas.sortingLayerName = originalLayer;
+            canvas.sortingOrder = originalOrder;
+        }
+
         transform.SetParent(parentAfterDrag, false);
         transform.localPosition = Vector3.zero;
         transform.localScale = WorldToLocalScale(parentAfterDrag, _originalWorldScale * PickupScaleMultiplier);
@@ -110,8 +149,6 @@ public class DraggableItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             image.raycastTarget = true;
 
         AnimateScale(WorldToLocalScale(parentAfterDrag, _originalWorldScale), DropAnimDuration);
-        //  if (audioEventDispatcher != null)
-        //      audioEventDispatcher.PlayAudio(AudioType.MouseClick);
     }
 
     private Vector3 WorldToLocalScale(Transform parent, Vector3 worldScale)

@@ -6872,6 +6872,7 @@ MonoBehaviour:
   FondSwat: {fileID: 4098065681636851574}
   InteractiveImage: {fileID: 5573623258426083793}
   iamWorking: 0
+  audioeventdispatcher: {fileID: 0}
 --- !u!114 &2700297029104301821
 MonoBehaviour:
   m_ObjectHideFlags: 0
