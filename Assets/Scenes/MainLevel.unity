@@ -2139,6 +2139,7 @@ MonoBehaviour:
   BoostEmployeSpeed: 0
   BoostEmployeError: 0
   BoostTimeForSurcharge: 0
+  CurrentBoostMultiplier: 1
   upgradesImages: []
   defaultTaskDuration: 15
   postItPrefab: {fileID: 6226767463301291193, guid: 59e885b25acf9d54094e36b38466d3ca, type: 3}
@@ -17765,7 +17766,7 @@ MonoBehaviour:
   uiscore: {fileID: 415495376}
   GameOverHud: {fileID: 747242160}
   savemanager: {fileID: 1573853484}
-  audioeventdispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
+  audioeventdispatcher: {fileID: 0}
 --- !u!114 &641038317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32950,6 +32951,7 @@ MonoBehaviour:
   BoostEmployeSpeed: 0
   BoostEmployeError: 0
   BoostTimeForSurcharge: 0
+  CurrentBoostMultiplier: 1
   upgradesImages: []
   defaultTaskDuration: 15
   postItPrefab: {fileID: 6226767463301291193, guid: 59e885b25acf9d54094e36b38466d3ca, type: 3}
@@ -54595,6 +54597,7 @@ MonoBehaviour:
   BoostEmployeSpeed: 0
   BoostEmployeError: 0
   BoostTimeForSurcharge: 0
+  CurrentBoostMultiplier: 1
   upgradesImages: []
   defaultTaskDuration: 15
   postItPrefab: {fileID: 6226767463301291193, guid: 59e885b25acf9d54094e36b38466d3ca, type: 3}

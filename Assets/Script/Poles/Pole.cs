@@ -45,8 +45,11 @@ public class Pole : MonoBehaviour
     public float BoostEmployeSpeed;
     public float BoostEmployeError;
     public float BoostTimeForSurcharge;
+    /// <summary>Multiplicateur actif sur ce pôle (1 = pas de boost).</summary>
+    public float CurrentBoostMultiplier = 1f;
     public List<Sprite> upgradesImages = new List<Sprite>();
     public Dictionary<Sprite, int> upgradeCounts = new Dictionary<Sprite, int>();
+
 
     [Header("Tasks")]
     public List<PoleTask> taskQueue = new List<PoleTask>();

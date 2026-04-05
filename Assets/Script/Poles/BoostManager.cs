@@ -26,6 +26,8 @@ public class BoostManager : MonoBehaviour
     private readonly HashSet<Pole> _boostedPoles = new HashSet<Pole>();
     private readonly List<Coroutine> _activeBoostCoroutines = new List<Coroutine>();
 
+    private static readonly float[] BoostMultipliers = { 1.5f, 2f, 2.5f, 3f };
+
     /// <summary>Événement déclenché quand un boost commence sur un pôle.</summary>
     public event Action<Pole> BoostStarted;
     /// <summary>Événement déclenché quand un boost se termine sur un pôle.</summary>
@@ -106,6 +108,7 @@ public class BoostManager : MonoBehaviour
 
         foreach (Pole pole in _boostedPoles)
         {
+            pole.CurrentBoostMultiplier = 1f;
             BoostEnded?.Invoke(pole);
         }
 
@@ -158,10 +161,12 @@ public class BoostManager : MonoBehaviour
         float previousBonusRevenus = pole.BonusRevenus;
         float previousBoostSpeed = pole.BoostEmployeSpeed;
 
-        pole.BonusRevenus = previousBonusRevenus * 2f;
+        float chosenMultiplier = BoostMultipliers[UnityEngine.Random.Range(0, BoostMultipliers.Length)];
+        pole.CurrentBoostMultiplier = chosenMultiplier;
+        pole.BonusRevenus = previousBonusRevenus * chosenMultiplier;
         pole.BoostEmployeSpeed = previousBoostSpeed + boostSpeedBonus;
 
-        Debug.Log($"[BoostManager] Boost ON — pôle : {pole.name} | BonusRevenus : {previousBonusRevenus} → {pole.BonusRevenus} | BoostSpeed : {previousBoostSpeed} → {pole.BoostEmployeSpeed}");
+        Debug.Log($"[BoostManager] Boost ON — pôle : {pole.name} | Multiplicateur : x{chosenMultiplier} | BonusRevenus : {previousBonusRevenus} → {pole.BonusRevenus} | BoostSpeed : {previousBoostSpeed} → {pole.BoostEmployeSpeed}");
 
         BoostStarted?.Invoke(pole);
 
@@ -172,6 +177,7 @@ public class BoostManager : MonoBehaviour
         {
             pole.BonusRevenus = previousBonusRevenus;
             pole.BoostEmployeSpeed = previousBoostSpeed;
+            pole.CurrentBoostMultiplier = 1f;
             _boostedPoles.Remove(pole);
 
             Debug.Log($"[BoostManager] Boost OFF — pôle : {pole.name} | Valeurs restaurées.");

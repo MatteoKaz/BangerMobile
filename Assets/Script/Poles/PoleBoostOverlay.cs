@@ -31,13 +31,13 @@ public class PoleBoostOverlay : MonoBehaviour
     private void OnEnable()
     {
         boostManager.BoostStarted += OnBoostStarted;
-        boostManager.BoostEnded   += OnBoostEnded;
+        boostManager.BoostEnded += OnBoostEnded;
     }
 
     private void OnDisable()
     {
         boostManager.BoostStarted -= OnBoostStarted;
-        boostManager.BoostEnded   -= OnBoostEnded;
+        boostManager.BoostEnded -= OnBoostEnded;
     }
 
     private void OnBoostStarted(Pole pole)
@@ -65,12 +65,12 @@ public class PoleBoostOverlay : MonoBehaviour
         _visualCoroutine = StartCoroutine(HideOverlay());
     }
 
-
     private IEnumerator ShowOverlay()
     {
         if (boostText != null)
         {
-            boostText.text = "x2";
+            // Affiche le multiplicateur aléatoire réel du pôle
+            boostText.text = $"x{_pole.CurrentBoostMultiplier:0.#}";
             boostText.gameObject.SetActive(true);
         }
 
