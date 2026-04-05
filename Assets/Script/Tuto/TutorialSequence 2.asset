@@ -20,8 +20,8 @@ MonoBehaviour:
     pauseOnShow: 1
     unpauseOnClose: 0
     overrideButtonSprite: 0
-    buttonSprite: {fileID: 0}
-    pressedButtonSprite: {fileID: 0}
+    buttonSprite: {fileID: 21300000, guid: a6a64769997ed734985232f808762c0b, type: 3}
+    pressedButtonSprite: {fileID: 21300000, guid: c5c1ea00977a06a47895f9f5850af686, type: 3}
     overrideButtonSize: 0
     buttonSize: {x: 0, y: 0}
     overrideButtonPosition: 0
@@ -37,8 +37,8 @@ MonoBehaviour:
     pauseOnShow: 1
     unpauseOnClose: 0
     overrideButtonSprite: 0
-    buttonSprite: {fileID: 0}
-    pressedButtonSprite: {fileID: 0}
+    buttonSprite: {fileID: 21300000, guid: a6a64769997ed734985232f808762c0b, type: 3}
+    pressedButtonSprite: {fileID: 21300000, guid: c5c1ea00977a06a47895f9f5850af686, type: 3}
     overrideButtonSize: 0
     buttonSize: {x: 0, y: 0}
     overrideButtonPosition: 0

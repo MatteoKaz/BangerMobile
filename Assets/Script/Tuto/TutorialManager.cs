@@ -40,6 +40,7 @@ public class TutorialManager : MonoBehaviour
 
     private List<TutorialStepData> _lastPlayedSteps;
 
+
     private Sprite _defaultButtonSprite;
     private SpriteState _defaultSpriteState;
     private Vector2 _defaultButtonSize;
@@ -99,6 +100,7 @@ public class TutorialManager : MonoBehaviour
         SubscribeToTriggers();
     }
 
+
     private void OnDestroy()
     {
         Time.timeScale = 1f;
@@ -129,6 +131,7 @@ public class TutorialManager : MonoBehaviour
         PlayerPrefs.SetString(PlayedSequencesPrefsKey, string.Join(",", names));
         PlayerPrefs.Save();
     }
+
 
     private void SubscribeToTriggers()
     {
@@ -181,7 +184,6 @@ public class TutorialManager : MonoBehaviour
             }
         }
     }
-
     private IEnumerator PlayWithDelay(TutorialStep sequence)
     {
         if (_playedSequences.Contains(sequence))
