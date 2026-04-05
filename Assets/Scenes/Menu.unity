@@ -500,6 +500,7 @@ GameObject:
   - component: {fileID: 540167835}
   - component: {fileID: 540167834}
   - component: {fileID: 540167833}
+  - component: {fileID: 540167836}
   m_Layer: 5
   m_Name: zoneOption (1)
   m_TagString: Untagged
@@ -591,6 +592,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540167831}
   m_CullTransparentMesh: 1
+--- !u!114 &540167836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540167831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00fa69e4571375c4fbdf9e41bd778bba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SliderSound
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
+  slideAudioType: 27
 --- !u!1 &614300498
 GameObject:
   m_ObjectHideFlags: 0
@@ -2649,7 +2664,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.3
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -3038,6 +3053,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1539717609}
   - component: {fileID: 1539717610}
+  - component: {fileID: 1539717611}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -3118,6 +3134,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1539717611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539717608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00fa69e4571375c4fbdf9e41bd778bba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SliderSound
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
+  slideAudioType: 27
 --- !u!1 &1581480305
 GameObject:
   m_ObjectHideFlags: 0

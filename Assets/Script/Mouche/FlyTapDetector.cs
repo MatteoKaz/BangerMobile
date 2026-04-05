@@ -89,7 +89,7 @@ public class FlyTapDetector : MonoBehaviour
 
     private void OnDestroy()
     {
-        audioEventDispatcher.PlayAudio(AudioType.MoucheDead);
+        audioEventDispatcher?.StopLoopAudio();  
         EnhancedTouchSupport.Disable();
     }
 }
