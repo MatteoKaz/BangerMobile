@@ -156,6 +156,8 @@ public class Pole : MonoBehaviour
 
     public void DecrementPaper(PoleTask task)
     {
+        if (task == null) return;
+        if (!taskQueue.Contains(task)) return;
         totalPaper = Mathf.Clamp(totalPaper - 1, 0, int.MaxValue);
         activepaper = Mathf.Clamp(activepaper - 1, 0, int.MaxValue);
         waitingPaper = Mathf.Max(0, totalPaper - activepaper);
@@ -234,10 +236,9 @@ public class Pole : MonoBehaviour
             {
                 PoleTask task = taskQueue[i];
                 task.timeRemaining -= Time.deltaTime;
-
                 if (task.timeRemaining <= 0 && !task.isExpired)
                 {
-                    task.isExpired = true; // l'employé verra le flag à sa prochaine frame
+                    task.isExpired = true;
                 }
             }
 
@@ -246,7 +247,7 @@ public class Pole : MonoBehaviour
             {
                 PoleTask task = taskQueue[i];
                 if (!task.isExpired) continue;
-                if (task.isActive) continue; // un employé travaille dessus, il nettoiera lui-même
+                if (task.isActive) continue; // employé travaille dessus, il nettoiera via DecrementPaper
 
                 taskQueue.RemoveAt(i);
                 totalPaper--;
@@ -256,11 +257,14 @@ public class Pole : MonoBehaviour
                 UpdatePaperCount?.Invoke();
             }
 
-            if (taskQueue.Count == 0)
+            // Fix 4 : évite boucle infinie si toutes les tâches restantes sont expirées et actives
+            bool hasActiveTasks = taskQueue.Exists(t => !t.isExpired);
+            if (!hasActiveTasks)
             {
                 taskTimerRef = null;
                 yield break;
             }
+
             yield return null;
         }
     }
@@ -293,7 +297,7 @@ public class Pole : MonoBehaviour
             // Lance seulement si aucun AddPaper récent
             if (Time.time - lastAddPaperTime < batchWaitDelay) continue;
 
-            bool hasWaiting = taskQueue.Exists(t => !t.isActive);
+            bool hasWaiting = taskQueue.Exists(t => !t.isActive && !t.isExpired);
             bool hasFreeWorker = employeList.Exists(e => !e.iamWorking);
 
             if (hasWaiting && hasFreeWorker)
@@ -311,6 +315,7 @@ public class Pole : MonoBehaviour
         foreach (var task in taskQueue)
         {
             if (task.isActive) continue;
+            if (task.isExpired) continue; // ← ne pas assigner une tâche expirée
             if (exclude != null && exclude.Contains(task)) continue;
             task.isActive = true;
             return task;
@@ -405,8 +410,7 @@ public class Pole : MonoBehaviour
         foreach (var slot in slots)
         {
             var draggable = slot.GetComponentInChildren<DraggableItems>();
-            if (draggable != null)
-                employeList.Add(draggable.linkedEmploye);
+           
 
             draggable = slot.GetComponentInChildren<DraggableItems>();
             if (draggable != null && draggable.linkedEmploye != null)
@@ -444,7 +448,7 @@ public class Pole : MonoBehaviour
             {
                 float normalizedPaper = (float)waitingPaper + 0.005f;
                 float employeeCount = Mathf.Max(1, employeList.Count);
-                float chargePerEmployee = Mathf.Pow(normalizedPaper, 0.55f) / Mathf.Pow(employeeCount, 1.35f);
+                float chargePerEmployee = Mathf.Pow(normalizedPaper, 0.55f) / Mathf.Pow(employeeCount, 1.45f);
                 surchargeValue += (surchargeStep * chargePerEmployee) / (1f + BoostTimeForSurcharge);
                 surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                 Debug.LogWarning($"Surcharge {surchargeValue}");

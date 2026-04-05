@@ -259,6 +259,14 @@ public class Employe : MonoBehaviour
             {
                 cancelled = false;
                 iamWorking = false;
+                if (currentTask != null)
+                {
+                    mypole.DecrementPaper(currentTask); 
+                    currentTask = null;
+                }
+                foreach (PoleTask bonus in bonusTasks)
+                    if (bonus != null) mypole.DecrementPaper(bonus);
+                bonusTasks.Clear();
                 yield break;
             }
             while (occupied)
@@ -270,6 +278,22 @@ public class Employe : MonoBehaviour
                     isStunned = false;
                 }
                 yield return null;
+            }
+            if (currentTask == null || currentTask.isExpired)
+            {
+                if (currentTask != null)
+                    mypole.DecrementPaper(currentTask); 
+                currentTask = null;
+                iamWorking = false;
+                workAdvancement.value = 0;
+                Light.intensity = 0.0f;
+                if (!isStunned)
+                {
+                    employeImage.sprite = idleSprite;
+                    animator.SetTrigger("Idle");
+                }
+                
+                yield break;
             }
             if (isStunned == false)
                 {
@@ -312,7 +336,15 @@ public class Employe : MonoBehaviour
         {
             cancelled = false;
             iamWorking = false;
-            yield break; // sort sans DecrementPaper
+            if (currentTask != null)
+            {
+                mypole.DecrementPaper(currentTask); // ← retire de la queue proprement
+                currentTask = null;
+            }
+            foreach (PoleTask bonus in bonusTasks)
+                if (bonus != null) mypole.DecrementPaper(bonus);
+            bonusTasks.Clear();
+            yield break;
         }
         float successChance = errorPercent
                       + employeErrorPercenBonus
@@ -349,8 +381,16 @@ public class Employe : MonoBehaviour
         currentTask = null;
         foreach (PoleTask bonus in bonusTasks)
         {
+            if (bonus == null || bonus.isExpired)
+                mypole.DecrementPaper(bonus);
+        }
+        bonusTasks.RemoveAll(b => b == null || b.isExpired);
+
+        // Traitement des bonus valides
+        foreach (PoleTask bonus in bonusTasks)
+        {
             roll = Random.Range(0f, 1f);
-           
+
             if (roll < successChance)
             {
                 mypole.WinMoney();
@@ -397,11 +437,11 @@ public class Employe : MonoBehaviour
                 Image img = currentTask.postItObject
                     ?.transform.Find("FondPostIt")?.Find("Perso")?.GetComponent<Image>();
                 if (img != null) img.enabled = false;
-                currentTask.isActive = false;
+
+                currentTask.isActive = false; // remet disponible pour ce pole
                 mypole.activepaper = Mathf.Max(0, mypole.activepaper - 1);
                 currentTask = null;
             }
-
             foreach (PoleTask bonus in bonusTasks)
             {
                 if (bonus == null) continue;
