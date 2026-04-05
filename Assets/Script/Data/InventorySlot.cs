@@ -10,6 +10,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
     private Color _originalColor;
     public Pole linkedPole;
     public int slotIndex;
+
     private void Awake()
     {
         _image = GetComponent<Image>();
@@ -37,6 +38,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
 
         draggable.transform.SetParent(transform, false);
         draggable.transform.localPosition = Vector3.zero;
+
         if (occupant != null)
         {
             occupant.parentAfterDrag = draggable.originalParent;
@@ -49,11 +51,19 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         // LOGIQUE GAMEPLAY
         if (oldPole != newPole)
         {
+            // L'occupant swap vers l'ancien pôle — mis à jour avant le draggable
+            // pour que les listes employeList soient cohérentes
+            if (occupant != null)
+            {
+                Employe occupantEmploye = occupant.linkedEmploye;
+                if (occupantEmploye != null)
+                    occupantEmploye.SwitchPole(oldPole);
+            }
+
             employe.SwitchPole(newPole);
-            newPole.RebuildEmployeList(); 
+            newPole.RebuildEmployeList();
             newPole.UpdatePaperUI();
             oldPole.UpdatePaperUI();
-            
         }
         else
         {
