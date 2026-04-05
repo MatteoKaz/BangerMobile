@@ -10,8 +10,8 @@ public class GameOverManager : MonoBehaviour
 
     public void ShowGameOverHud()
     {
-        audioeventdispatcher.PlayAudio(AudioType.GameOver);
-      GameOverHud.SetActive(true);
+      GameOverHud.SetActive(true); 
+      audioeventdispatcher.PlayAudio(AudioType.GameOver);
        savemanager.DeleteSave();
 
     }
