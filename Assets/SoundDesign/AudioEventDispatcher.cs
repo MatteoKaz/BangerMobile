@@ -53,6 +53,8 @@ public enum AudioType
     Perte,
     Swat,
     Alert,
+    GameOver,
+    RippingPaper,
 }
 [System.Serializable]
 public struct AudioInfos
