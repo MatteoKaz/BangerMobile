@@ -133,3 +133,9 @@ MonoBehaviour:
   - audioType: 49
     audioClips:
     - {fileID: 8300000, guid: 961118e8da38a784fad3a00d2f8aa969, type: 3}
+  - audioType: 50
+    audioClips:
+    - {fileID: 8300000, guid: 00413013f2341764cabb38423b093cb0, type: 3}
+  - audioType: 51
+    audioClips:
+    - {fileID: 8300000, guid: 481b6cc75f0e81b47b7b156f7ca93f47, type: 3}

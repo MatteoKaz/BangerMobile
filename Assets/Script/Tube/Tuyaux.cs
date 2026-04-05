@@ -21,7 +21,6 @@ public class Tuyaux : MonoBehaviour
     {
         float taskDuration = duration;
         int taskValue = value;
-        audioEventDispatcher.PlayAudio(AudioType.Point);
         Debug.Log("+1");
         AddPaper?.Invoke(duration, value);
         AddPaper?.Invoke(duration, value);
