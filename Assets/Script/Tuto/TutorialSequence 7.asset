@@ -49,8 +49,8 @@ MonoBehaviour:
     panelSize: {x: 0, y: 0}
     overridePanelPosition: 0
     panelPosition: {x: 0, y: 0}
-  - text: "Attention, vos am\xE9liorations sont permanentes pour la semaine en cours.
-      Choisissez bien en fonction de vos points faibles."
+  - text: "Vos am\xE9liorations sont permanentes pour la semaine en cours. Choisissez
+      bien en fonction de vos points faibles."
     stepType: 0
     pauseOnShow: 0
     unpauseOnClose: 0

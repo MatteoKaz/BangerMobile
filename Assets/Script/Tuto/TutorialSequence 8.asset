@@ -32,9 +32,8 @@ MonoBehaviour:
     panelSize: {x: 0, y: 0}
     overridePanelPosition: 0
     panelPosition: {x: 0, y: 0}
-  - text: "Si vous estimez que votre \xE9quipe a assez travaill\xE9, vous pouvez
-      d\xE8s maintenant appuyer sur le bouton de fin de journ\xE9e pour passer \xE0
-      la suite sans attendre la fin du timer."
+  - text: "Vous pouvez d\xE8s maintenant appuyer sur le bouton de fin de journ\xE9e
+      pour passer \xE0 la suite."
     stepType: 0
     pauseOnShow: 0
     unpauseOnClose: 1
