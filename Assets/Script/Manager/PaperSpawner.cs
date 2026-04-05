@@ -135,7 +135,7 @@ public class PaperSpawner : MonoBehaviour
                 Debug.Log($"Pause de {pauseDuration}s");
                 yield return new WaitForSeconds(pauseDuration);
             }
-            else if (spawnCount % 10 == 0)
+            else if (spawnCount % 5 == 0)
             {
                 int rhythm;
                 do
