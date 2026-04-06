@@ -8279,6 +8279,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: c4354116a882bc64aab515531c3f058b, type: 3}
     - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: dayManager
+      value: 
+      objectReference: {fileID: 641038306}
+    - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: clickZonePopup
+      value: 
+      objectReference: {fileID: 158388490}
+    - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
       propertyPath: rankingManager
       value: 
       objectReference: {fileID: 641038309}
@@ -8377,8 +8385,65 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6853253117777054761, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 158388491}
   m_SourcePrefab: {fileID: 100100000, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+--- !u!1 &158388487 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6853253117777054761, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 158388486}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &158388488 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7214394972874682010, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 158388486}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5296dd374b24169429a56ad4a0ba7196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmployeFicheInfo
+--- !u!114 &158388489 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2980578435926664118, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 158388486}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158388487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b98b5266bc85942b46d121793a26e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickZonePopup
+--- !u!114 &158388490 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5426399989191083663, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 158388486}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b98b5266bc85942b46d121793a26e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickZonePopup
+--- !u!114 &158388491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158388487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbbe1b1f2851c6c48aa4e64abf94d696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireButton
+  fireManager: {fileID: 641038314}
+  dayManager: {fileID: 641038306}
+  ficheInfo: {fileID: 158388488}
+  clickZonePopup: {fileID: 158388489}
 --- !u!1 &168665360
 GameObject:
   m_ObjectHideFlags: 0
@@ -16747,6 +16812,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: c4354116a882bc64aab515531c3f058b, type: 3}
     - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: dayManager
+      value: 
+      objectReference: {fileID: 641038306}
+    - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: clickZonePopup
+      value: 
+      objectReference: {fileID: 596975971}
+    - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
       propertyPath: rankingManager
       value: 
       objectReference: {fileID: 641038309}
@@ -16837,8 +16910,65 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6853253117777054761, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 596975972}
   m_SourcePrefab: {fileID: 100100000, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+--- !u!1 &596975968 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6853253117777054761, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 596975967}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &596975969 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7214394972874682010, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 596975967}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5296dd374b24169429a56ad4a0ba7196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmployeFicheInfo
+--- !u!114 &596975970 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2980578435926664118, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 596975967}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596975968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b98b5266bc85942b46d121793a26e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickZonePopup
+--- !u!114 &596975971 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5426399989191083663, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 596975967}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b98b5266bc85942b46d121793a26e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickZonePopup
+--- !u!114 &596975972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596975968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbbe1b1f2851c6c48aa4e64abf94d696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireButton
+  fireManager: {fileID: 641038314}
+  dayManager: {fileID: 641038306}
+  ficheInfo: {fileID: 596975969}
+  clickZonePopup: {fileID: 596975970}
 --- !u!114 &610725236 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 228756325936379195, guid: 093ea77fc0b29e2418be645d8cf78b47, type: 3}
@@ -17928,9 +18058,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
   DayLaunch: 0
   LaunchFire: 0
-  audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &641038315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56468,6 +56598,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: c4354116a882bc64aab515531c3f058b, type: 3}
     - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: dayManager
+      value: 
+      objectReference: {fileID: 641038306}
+    - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: clickZonePopup
+      value: 
+      objectReference: {fileID: 2041885479}
+    - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
       propertyPath: rankingManager
       value: 
       objectReference: {fileID: 641038309}
@@ -56566,8 +56704,65 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6853253117777054761, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2041885480}
   m_SourcePrefab: {fileID: 100100000, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+--- !u!1 &2041885476 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6853253117777054761, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 2041885475}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2041885477 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7214394972874682010, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 2041885475}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5296dd374b24169429a56ad4a0ba7196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmployeFicheInfo
+--- !u!114 &2041885478 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2980578435926664118, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 2041885475}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041885476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b98b5266bc85942b46d121793a26e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickZonePopup
+--- !u!114 &2041885479 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5426399989191083663, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 2041885475}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b98b5266bc85942b46d121793a26e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickZonePopup
+--- !u!114 &2041885480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041885476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbbe1b1f2851c6c48aa4e64abf94d696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireButton
+  fireManager: {fileID: 641038314}
+  dayManager: {fileID: 641038306}
+  ficheInfo: {fileID: 2041885477}
+  clickZonePopup: {fileID: 2041885478}
 --- !u!1 &2042698426
 GameObject:
   m_ObjectHideFlags: 0
@@ -58276,6 +58471,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: c4354116a882bc64aab515531c3f058b, type: 3}
     - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: dayManager
+      value: 
+      objectReference: {fileID: 641038306}
+    - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: clickZonePopup
+      value: 
+      objectReference: {fileID: 2137307199}
+    - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
       propertyPath: rankingManager
       value: 
       objectReference: {fileID: 641038309}
@@ -58374,8 +58577,65 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6853253117777054761, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2137307200}
   m_SourcePrefab: {fileID: 100100000, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+--- !u!1 &2137307196 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6853253117777054761, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 2137307195}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2137307197 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7214394972874682010, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 2137307195}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5296dd374b24169429a56ad4a0ba7196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmployeFicheInfo
+--- !u!114 &2137307198 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2980578435926664118, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 2137307195}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137307196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b98b5266bc85942b46d121793a26e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickZonePopup
+--- !u!114 &2137307199 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5426399989191083663, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 2137307195}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b98b5266bc85942b46d121793a26e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickZonePopup
+--- !u!114 &2137307200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137307196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbbe1b1f2851c6c48aa4e64abf94d696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireButton
+  fireManager: {fileID: 641038314}
+  dayManager: {fileID: 641038306}
+  ficheInfo: {fileID: 2137307197}
+  clickZonePopup: {fileID: 2137307198}
 --- !u!1 &2146463109
 GameObject:
   m_ObjectHideFlags: 0
@@ -59710,6 +59970,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: c4354116a882bc64aab515531c3f058b, type: 3}
     - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: dayManager
+      value: 
+      objectReference: {fileID: 641038306}
+    - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      propertyPath: clickZonePopup
+      value: 
+      objectReference: {fileID: 1205991223245252549}
+    - target: {fileID: 2371547945499201202, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
       propertyPath: rankingManager
       value: 
       objectReference: {fileID: 641038309}
@@ -59836,8 +60104,65 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6853253117777054761, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1205991223245252550}
   m_SourcePrefab: {fileID: 100100000, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+--- !u!1 &1205991223245252546 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6853253117777054761, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 1205991223245252545}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1205991223245252547 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7214394972874682010, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 1205991223245252545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5296dd374b24169429a56ad4a0ba7196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmployeFicheInfo
+--- !u!114 &1205991223245252548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2980578435926664118, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 1205991223245252545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205991223245252546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b98b5266bc85942b46d121793a26e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickZonePopup
+--- !u!114 &1205991223245252549 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5426399989191083663, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
+  m_PrefabInstance: {fileID: 1205991223245252545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b98b5266bc85942b46d121793a26e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickZonePopup
+--- !u!114 &1205991223245252550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205991223245252546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbbe1b1f2851c6c48aa4e64abf94d696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireButton
+  fireManager: {fileID: 641038314}
+  dayManager: {fileID: 641038306}
+  ficheInfo: {fileID: 1205991223245252547}
+  clickZonePopup: {fileID: 1205991223245252548}
 --- !u!1001 &3335857594637590150
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,14 +8,16 @@ public class FireButton : MonoBehaviour
     [SerializeField] private FireManager fireManager;
     [SerializeField] private DayManager dayManager;
     [SerializeField] private EmployeFicheInfo ficheInfo;
-    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     [SerializeField] private ClickZonePopup clickZonePopup;
 
+    private static readonly List<FireButton> _allInstances = new List<FireButton>();
+    private static bool _anyFiredToday = false;
+
     private Button _button;
-    private bool _firedAlreadyToday = false;
 
     private void Awake()
     {
+        _allInstances.Add(this);
         _button = GetComponent<Button>();
         _button.onClick.AddListener(OnFireButtonClicked);
     }
@@ -31,14 +34,16 @@ public class FireButton : MonoBehaviour
 
     private void OnDestroy()
     {
+        _allInstances.Remove(this);
         _button.onClick.RemoveListener(OnFireButtonClicked);
     }
 
-    /// <summary>Réinitialise le guard et réautorise le tampon à chaque début de journée.</summary>
+    /// <summary>Réinitialise le guard partagé et réautorise tous les tampons Virer à chaque début de journée.</summary>
     private void ResetFireGuard()
     {
-        _firedAlreadyToday = false;
-        clickZonePopup?.Unblock();
+        _anyFiredToday = false;
+        foreach (FireButton instance in _allInstances)
+            instance.clickZonePopup?.Unblock();
     }
 
     /// <summary>Tente de lancer le licenciement de l'employé affiché sur la fiche.</summary>
@@ -50,10 +55,12 @@ public class FireButton : MonoBehaviour
             return;
         }
 
-        if (_firedAlreadyToday) return;
+        if (_anyFiredToday) return;
 
-        _firedAlreadyToday = true;
-        clickZonePopup?.Block();
+        _anyFiredToday = true;
+        foreach (FireButton instance in _allInstances)
+            instance.clickZonePopup?.Block();
+
         fireManager.Click(ficheInfo);
     }
 }

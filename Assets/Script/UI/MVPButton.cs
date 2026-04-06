@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,15 +7,17 @@ public class MVPButton : MonoBehaviour
 {
     [SerializeField] private RankingManager rankingManager;
     [SerializeField] private DayManager dayManager;
-    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     [SerializeField] private ClickZonePopup clickZonePopup;
+
+    private static readonly List<MVPButton> _allInstances = new List<MVPButton>();
+    private static bool _anyMVPSetToday = false;
 
     private Button _button;
     private EmployeFicheInfo _ficheInfo;
-    private bool _mvpAlreadySetToday = false;
 
     private void Awake()
     {
+        _allInstances.Add(this);
         _button    = GetComponent<Button>();
         _ficheInfo = GetComponentInParent<EmployeFicheInfo>();
         _button.onClick.AddListener(OnMVPButtonClicked);
@@ -32,14 +35,16 @@ public class MVPButton : MonoBehaviour
 
     private void OnDestroy()
     {
+        _allInstances.Remove(this);
         _button.onClick.RemoveListener(OnMVPButtonClicked);
     }
 
-    /// <summary>Réinitialise le guard et réautorise le tampon à chaque début de journée.</summary>
+    /// <summary>Réinitialise le guard partagé et réautorise tous les tampons MVP à chaque début de journée.</summary>
     private void ResetMVPGuard()
     {
-        _mvpAlreadySetToday = false;
-        clickZonePopup?.Unblock();
+        _anyMVPSetToday = false;
+        foreach (MVPButton instance in _allInstances)
+            instance.clickZonePopup?.Unblock();
     }
 
     /// <summary>Envoie l'employé de cette fiche au RankingManager comme nouveau MVP choisi.</summary>
@@ -51,10 +56,12 @@ public class MVPButton : MonoBehaviour
             return;
         }
 
-        if (_mvpAlreadySetToday) return;
+        if (_anyMVPSetToday) return;
 
-        _mvpAlreadySetToday = true;
-        clickZonePopup?.Block();
+        _anyMVPSetToday = true;
+        foreach (MVPButton instance in _allInstances)
+            instance.clickZonePopup?.Block();
+
         rankingManager.SetChooseMVP(_ficheInfo.LinkedEmploye);
     }
 }
