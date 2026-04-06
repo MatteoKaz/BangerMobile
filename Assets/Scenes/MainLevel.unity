@@ -17623,12 +17623,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0975d565c814234fb41ccd7d85f2aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeManager
-  DayDuration: 30
-  DayDurationToShow: 30
+  DayDuration: 45
+  DayDurationToShow: 45
   QuotatManager: {fileID: 641038302}
   spawnerpaper: {fileID: 1272777329}
   button: {fileID: 1330883077}
   timer: {fileID: 1835703884}
+  poleManager: {fileID: 641038301}
 --- !u!4 &641038308
 Transform:
   m_ObjectHideFlags: 0

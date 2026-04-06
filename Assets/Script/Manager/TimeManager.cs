@@ -13,6 +13,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] PaperSpawner spawnerpaper;
     [SerializeField] Button button;
     [SerializeField] GameObject timer;
+    [SerializeField] PoleManager poleManager;
     public void OnEnable()
     {
         //QuotatManager.QuotatChosen += LaunchTimer;
@@ -38,7 +39,7 @@ public class TimeManager : MonoBehaviour
         //button.interactable = false;
         TimerEnded?.Invoke();
     }
- 
+
     /*public void LaunchTimer()
     {
         if (currentTimer != null)
@@ -55,9 +56,21 @@ public class TimeManager : MonoBehaviour
         {
             T += Time.deltaTime;
             DayDurationToShow = Mathf.CeilToInt(DayDuration - T);
-            
-            yield return null;  
+
+            // Vérifie si plus rien dans la scène
+            bool noPapers = FindObjectsByType<PaperMove>(FindObjectsSortMode.None).Length == 0;
+            bool noTasks = true;
+            foreach (Pole pole in poleManager.poles)
+            {
+                if (pole.totalPaper > 0) { noTasks = false; break; }
+            }
+
+            if (noPapers && noTasks)
+                break; 
+
+            yield return null;
         }
+        yield return new WaitForSeconds(0.5f);
         currentTimer = null;
         TimerEnded?.Invoke();
         yield return new WaitForSeconds(0.5f);
