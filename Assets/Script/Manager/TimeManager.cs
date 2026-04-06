@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class TimeManager : MonoBehaviour
 {
-    [SerializeField] public int DayDuration = 60;
-    public int DayDurationToShow = 180;
+    [SerializeField] public int DayDuration = 25;
+    public int DayDurationToShow = 25;
     public event Action TimerEnded;
     [SerializeField] QuotatManager QuotatManager;
     Coroutine currentTimer;
     [SerializeField] PaperSpawner spawnerpaper;
     [SerializeField] Button button;
-
+    [SerializeField] GameObject timer;
     public void OnEnable()
     {
         //QuotatManager.QuotatChosen += LaunchTimer;
@@ -27,12 +27,15 @@ public class TimeManager : MonoBehaviour
 
     private void OnAllPapersSpawned()
     {
-        button.interactable = true;
-       
+        //button.interactable = true;
+        if (currentTimer != null)
+            StopCoroutine(currentTimer);
+        timer.SetActive(true);
+        currentTimer = StartCoroutine(DayTimer());
     }
     public void EndDay()
     {
-        button.interactable = false;
+        //button.interactable = false;
         TimerEnded?.Invoke();
     }
  
@@ -42,7 +45,8 @@ public class TimeManager : MonoBehaviour
             StopCoroutine(currentTimer);
         currentTimer = StartCoroutine(DayTimer());
     }
-    /*public IEnumerator DayTimer()
+    */
+    public IEnumerator DayTimer()
     {
         yield return new WaitForSeconds(2f);
         DayDurationToShow = DayDuration;
@@ -56,7 +60,8 @@ public class TimeManager : MonoBehaviour
         }
         currentTimer = null;
         TimerEnded?.Invoke();
-
-    }*/
+        yield return new WaitForSeconds(0.5f);
+        timer.SetActive(false);
+    }
 
 }
