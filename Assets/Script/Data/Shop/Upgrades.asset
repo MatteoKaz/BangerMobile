@@ -23,45 +23,45 @@ MonoBehaviour:
     Description: "Un nouveau d\xE9part loin de cette entreprises et de tous ces papiers"
     duration: 0
   - UpgradeName: La carotte
-    price: 150
+    price: 90
     type: 0
     category: 0
     upgradeValue: 0.25
     icone: {fileID: 6150637912722642187, guid: ada59ad41c1fb8f40a2c82097a34bc63, type: 3}
-    inflation: 25
+    inflation: 20
     Description: "Permet d'augmenter la rapidit\xE9 d\u2019ex\xE9cution des t\xE2ches
       d'un employ\xE9"
     duration: 0
   - UpgradeName: Promesse de Promotion
-    price: 150
+    price: 75
     type: 1
     category: 0
     upgradeValue: 0.05
     icone: {fileID: -3893841673118602047, guid: d90c09f3675ea334d89a9e524360ea2b, type: 3}
-    inflation: 25
+    inflation: 15
     Description: "Permet de baisser le pourcentage d'erreurs d'un employ\xE9."
     duration: 0
   - UpgradeName: "La cam\xE9ra "
-    price: 150
+    price: 80
     type: 2
     category: 0
     upgradeValue: 0.25
     icone: {fileID: 55277595470563842, guid: d1906c2ca286a2544856ddd54c4663c8, type: 3}
-    inflation: 25
+    inflation: 15
     Description: "Permet de surveiller un employ\xE9, lorsque ce dernier ne travaille
       pas, et le force \xE0 se remettre au travail temporairement."
     duration: 0
   - UpgradeName: "Caf\xE9 \xE0 volont\xE9"
-    price: 150
+    price: 120
     type: 3
     category: 0
     upgradeValue: 1
     icone: {fileID: -7378038606456990723, guid: 4f80c60a3925cdd49b799b86b1ae0769, type: 3}
-    inflation: 25
+    inflation: 20
     Description: "Permet \xE0 un employ\xE9 de traiter 2 dossier \xE0 la fois."
     duration: 0
   - UpgradeName: La Prime
-    price: 325
+    price: 250
     type: 4
     category: 1
     upgradeValue: 0.25
@@ -71,17 +71,17 @@ MonoBehaviour:
       d'un p\xF4le"
     duration: 5
   - UpgradeName: Cigarette offerte
-    price: 225
+    price: 215
     type: 5
     category: 1
     upgradeValue: 0.25
     icone: {fileID: -7290461428519605451, guid: 866e8e08b2ee897459744bf37c3af77b, type: 3}
-    inflation: 25
+    inflation: 20
     Description: "Permet d'apaiser les employ\xE9s, et ainsi de repousser la surcharge
       d'un p\xF4le."
     duration: 5
   - UpgradeName: Carotte Multiple
-    price: 325
+    price: 240
     type: 6
     category: 1
     upgradeValue: 0.25
@@ -91,7 +91,7 @@ MonoBehaviour:
       d'un p\xF4le."
     duration: 5
   - UpgradeName: Pole promo
-    price: 150
+    price: 200
     type: 7
     category: 1
     upgradeValue: 0.05
@@ -100,7 +100,7 @@ MonoBehaviour:
     Description: "Permet de baisser le pourcentage d'erreurs d'un p\xF4le."
     duration: 3
   - UpgradeName: Le S.W.A.T
-    price: 350
+    price: 300
     type: 8
     category: 2
     upgradeValue: 1
