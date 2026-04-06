@@ -267,8 +267,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
+  m_sharedMaterial: {fileID: -8593135305691747632, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -559,6 +559,7 @@ MonoBehaviour:
   spinButton: {fileID: 4605873120498975920}
   overlayContainer: {fileID: 0}
   resultLabel: {fileID: 7231083548232802652}
+  winnerTargetMarker: {fileID: 0}
   slotHeight: 120
   maxSpeed: 1500
   constantDuration: 2.5
@@ -568,6 +569,11 @@ MonoBehaviour:
   shakeTarget: {fileID: 0}
   maxShakeAmplitude: 8
   shakeFrequency: 30
+  maxShakeRotation: 15
+  shakeRotationFrequency: 8
+  spinLights: []
+  maxLightFrequency: 12
+  minLightFrequency: 2
   pulseMaxScale: 1.15
   pulseMinScale: 0.95
   pulseHalfDuration: 0.35

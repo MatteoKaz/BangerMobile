@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Green Pole
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
+  m_sharedMaterial: {fileID: -8593135305691747632, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -174,7 +174,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -2689.0417}
+  m_AnchoredPosition: {x: 0, y: -299.75052}
   m_SizeDelta: {x: -650, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1826278290807903278
@@ -367,8 +367,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Blue Pole
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
+  m_sharedMaterial: {fileID: -8593135305691747632, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -489,6 +489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PoleLink
   pole: {fileID: 0}
+  DayManager: {fileID: 0}
   upgradeSet: {fileID: 0}
   myCase: {fileID: 732626822674849208}
   allempImage:
@@ -496,6 +497,8 @@ MonoBehaviour:
   - {fileID: 5411645724201677682}
   upgradesImages: []
   imagesUpgrades: []
+  daysRemaining: 0
+  timedUpgrades: []
 --- !u!222 &4405247299104580792
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -718,6 +721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PoleLink
   pole: {fileID: 0}
+  DayManager: {fileID: 0}
   upgradeSet: {fileID: 0}
   myCase: {fileID: 7771665185644146842}
   allempImage:
@@ -725,6 +729,8 @@ MonoBehaviour:
   - {fileID: 732626822674849208}
   upgradesImages: []
   imagesUpgrades: []
+  daysRemaining: 0
+  timedUpgrades: []
 --- !u!222 &2798314191720246777
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -994,7 +1000,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Benjamin
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ba97df5173c18384cbf63a4ea5e1dc07, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: ba97df5173c18384cbf63a4ea5e1dc07, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1025,7 +1031,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1061,7 +1067,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &2570873188347667789
@@ -1647,6 +1653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PoleLink
   pole: {fileID: 0}
+  DayManager: {fileID: 0}
   upgradeSet: {fileID: 0}
   myCase: {fileID: 5411645724201677682}
   allempImage:
@@ -1654,6 +1661,8 @@ MonoBehaviour:
   - {fileID: 732626822674849208}
   upgradesImages: []
   imagesUpgrades: []
+  daysRemaining: 0
+  timedUpgrades: []
 --- !u!222 &3661995499875148598
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1834,7 +1843,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Benjamin
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ba97df5173c18384cbf63a4ea5e1dc07, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: ba97df5173c18384cbf63a4ea5e1dc07, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1865,7 +1874,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1901,7 +1910,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &5146636619752659327
@@ -2422,8 +2431,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Le chapeau magnifique
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 225f2f2ea597ca54287b94c153675769, type: 2}
+  m_sharedMaterial: {fileID: 2477716627499512285, guid: 225f2f2ea597ca54287b94c153675769, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2559,7 +2568,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Benjamin
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ba97df5173c18384cbf63a4ea5e1dc07, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: ba97df5173c18384cbf63a4ea5e1dc07, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2590,7 +2599,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -2626,7 +2635,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &6336251897103562281
@@ -3236,7 +3245,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Benjamin
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ba97df5173c18384cbf63a4ea5e1dc07, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: ba97df5173c18384cbf63a4ea5e1dc07, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3267,7 +3276,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -3303,7 +3312,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &7320069500318953859
@@ -3373,8 +3382,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Red Pole
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
+  m_sharedMaterial: {fileID: -8593135305691747632, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3834,7 +3843,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Benjamin
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ba97df5173c18384cbf63a4ea5e1dc07, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: ba97df5173c18384cbf63a4ea5e1dc07, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3865,7 +3874,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -3901,7 +3910,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &8128255887338554961
@@ -4091,8 +4100,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 150$
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
+  m_sharedMaterial: {fileID: -8593135305691747632, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4122,11 +4131,11 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -16
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -4303,8 +4312,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
+  m_sharedMaterial: {fileID: -8593135305691747632, guid: c1e1a710b3ea6654f95d5987e40a824a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
