@@ -121,6 +121,7 @@ public class PaperSpawner : MonoBehaviour
         float currentRhythm = 1f;
         int spawnCount = 0;
         pauseDone = false;
+        GetRhythmValues(quotatManager.currentDifficulty, dayManager.currentWeek, out float slowR, out float midR, out float fastR);
         while (spawnList.Count > 0)
         {
             if (!canSpawn)
@@ -137,23 +138,20 @@ public class PaperSpawner : MonoBehaviour
                 Debug.Log($"Pause milieu de spawn : {pauseDuration}s");
                 yield return new WaitForSeconds(pauseDuration);
             }
+           
             else if (spawnCount % 5 == 0)
             {
                 int rhythm;
-                do
-                {
-                    rhythm = Random.Range(0, 3);
-                } while (rhythm == lastRhythm);
-
+                do { rhythm = Random.Range(0, 3); }
+                while (rhythm == lastRhythm);
                 lastRhythm = rhythm;
 
                 switch (rhythm)
                 {
-                    case 0: currentRhythm = 6f; break;
-                    case 1: currentRhythm = 4f; break;
-                    case 2: currentRhythm = 3.5f; break;
+                    case 0: currentRhythm = slowR; break;
+                    case 1: currentRhythm = midR; break;
+                    case 2: currentRhythm = fastR; break;
                 }
-                Debug.Log($"Nouveau rythme: {rhythm}");
             }
 
             papersRemaining--;
@@ -288,5 +286,35 @@ public class PaperSpawner : MonoBehaviour
         float max = Mathf.Lerp(startMax, targetMax, t);
 
         return Random.Range(min, max);
+    }
+
+
+    private void GetRhythmValues(int difficulty, int week, out float slow, out float mid, out float fast)
+    {
+        float weekReduction = (week - 1) * 0.2f;
+
+        switch (difficulty)
+        {
+            case 0: // Easy
+                slow = Mathf.Max(7f - weekReduction, 4f);
+                mid = Mathf.Max(4.5f - weekReduction, 2f);
+                fast = Mathf.Max(3f - weekReduction, 1.5f);
+                break;
+            case 1: // Mid
+                slow = Mathf.Max(6f - weekReduction, 3f);
+                mid = Mathf.Max(4f - weekReduction, 1.75f);
+                fast = Mathf.Max(2.5f - weekReduction, 1.5f);
+                break;
+            case 2: // Hard
+                slow = Mathf.Max(4f - weekReduction, 2.5f);
+                mid = Mathf.Max(2.5f - weekReduction, 1.5f);
+                fast = Mathf.Max(2f - weekReduction, 1.25f);
+                break;
+            default:
+                slow = Mathf.Max(6f - weekReduction, 2f);
+                mid = Mathf.Max(4f - weekReduction, 1.5f);
+                fast = Mathf.Max(3.5f - weekReduction, 1f);
+                break;
+        }
     }
 }
