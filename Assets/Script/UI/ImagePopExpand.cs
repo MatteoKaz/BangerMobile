@@ -99,8 +99,11 @@ public class ImagePopExpand : MonoBehaviour
         if (_currentOpen == this)
             _currentOpen = null;
 
-        // Restaure le sibling index et toutes les propriétés du RectTransform
-        transform.SetSiblingIndex(_originalIndex);
+        // SetSiblingIndex est interdit pendant l'activation/désactivation d'un parent
+        // On vérifie que le parent est actif avant d'appeler cette méthode
+        if (transform.parent != null && transform.parent.gameObject.activeInHierarchy)
+            transform.SetSiblingIndex(_originalIndex);
+
         _rectTransform.anchoredPosition = _originalAnchoredPosition;
         _rectTransform.sizeDelta = _originalSizeDelta;
         _rectTransform.localScale = _originalLocalScale;
