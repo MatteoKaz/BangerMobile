@@ -342,7 +342,7 @@ public class FireManager : MonoBehaviour
         RectTransform rectBouttons = choiceButtons.GetComponent<RectTransform>();
 
         Vector2 startposBouttons = new Vector2(rectBouttons.anchoredPosition.x, -1372.7f);
-        Vector2 targetPosBouttons = new Vector2(rectBouttons.anchoredPosition.x, -850.3f);
+        Vector2 targetPosBouttons = new Vector2(rectBouttons.anchoredPosition.x, -711.3f);
         float t = 0;
 
         while (t < animDurationDialogue)
