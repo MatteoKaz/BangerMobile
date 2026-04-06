@@ -30,7 +30,7 @@ public class SwatManager : MonoBehaviour
     [SerializeField] private AudioEventDispatcher audioEventManager;
     public event Action SwatModeStart;
     public event Action SwatModeEnd;
-
+    private bool swatModeActive = false;
 
     public void OnEnable()
     {
@@ -52,11 +52,17 @@ public class SwatManager : MonoBehaviour
     {
         if (numberOfUtilisation <= 0) return;
         SwatModeStart?.Invoke();
+        swatModeActive = true;
         PostIt.SetActive(true);
     }
     public void DeactivateButton()
     {
-
+        if (swatModeActive) 
+        {
+            numberOfUtilisation++; 
+            swatModeActive = false;
+            PostIt.SetActive(false);
+        }
         SwatModeEnd?.Invoke();
     }
 
@@ -64,6 +70,7 @@ public class SwatManager : MonoBehaviour
     {
         if (numberOfUtilisation <= 0) return;
         numberOfUtilisation--;
+        swatModeActive = false;
         PostIt.SetActive(false);
         foreach (Button buton in buttons)
         {
