@@ -265,15 +265,15 @@ public class PaperSpawner : MonoBehaviour
         {
             case 0: // Easy — papiers durent longtemps
                 startMin = 35f; startMax = 45f;
-                targetMin = 25f; targetMax = 35f;
+                targetMin = 15f; targetMax = 25f;
                 break;
             case 1: // Mid
                 startMin = 25f; startMax = 35f;
-                targetMin = 18f; targetMax = 25f;
+                targetMin = 11f; targetMax = 20f;
                 break;
             case 2: // Hard — papiers disparaissent vite
                 startMin = 18f; startMax = 25f;
-                targetMin = 10f; targetMax = 15f;
+                targetMin = 5f; targetMax = 15f;
                 break;
             default:
                 startMin = 25f; startMax = 35f;

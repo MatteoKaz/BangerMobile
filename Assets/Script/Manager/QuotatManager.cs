@@ -110,15 +110,15 @@ public class QuotatManager : MonoBehaviour
         {
             case 0: // Easy
                 startMult = 1.0f;
-                targetMult = 1.4f;
+                targetMult = 2f;
                 break;
             case 1: // Mid
                 startMult = 1.3f;
-                targetMult = 1.5f;
+                targetMult = 3f;
                 break;
             case 2: // Hard
                 startMult = 1.5f;
-                targetMult = 1.8f;
+                targetMult = 4f;
                 break;
             default:
                 startMult = 1.5f;
@@ -138,9 +138,9 @@ public class QuotatManager : MonoBehaviour
         float t = Mathf.Clamp01((week - 1f) / 9f);
         switch (difficulty)
         {
-            case 0: return Mathf.Lerp(2.0f, 1.5f, t); // Easy S12x, S10 1.5x
-            case 1: return Mathf.Lerp(1.7f, 1.0f, t); // Mid  S11.5x, S10 1x
-            case 2: return Mathf.Lerp(1.4f, 0.7f, t); // Hard S11.1x, S100.6x
+            case 0: return Mathf.Lerp(2.0f, 1.3f, t); // Easy S12x, S10 1.5x
+            case 1: return Mathf.Lerp(1.7f, 0.8f, t); // Mid  S11.5x, S10 1x
+            case 2: return Mathf.Lerp(1.4f, 0.5f, t); // Hard S11.1x, S100.6x
             default: return 1f;
         }
     }

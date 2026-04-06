@@ -360,6 +360,7 @@ public class Pole : MonoBehaviour
 
     public void ResetAllValue()
     {
+
         Stop = false;
         totalPaper = 0;
         waitingPaper = 0;
@@ -367,8 +368,8 @@ public class Pole : MonoBehaviour
         localQuotat = 0;
         localAdvencement = 0;
         postItSortingOrder = 0;
-
-        lastAddPaperTime = 0f;
+       CurrentBoostMultiplier = 1f;
+    lastAddPaperTime = 0f;
         pendingTaskCount = 0;
         UpdatePaperCount?.Invoke();
         ResetSurcharge();

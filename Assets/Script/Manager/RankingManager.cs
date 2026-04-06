@@ -61,7 +61,7 @@ public class RankingManager : MonoBehaviour
     private void SetBonus(Employe employe)
     {
         employe.employeWorkRateBonus += mvpWorkRateBonus;
-        employe.BonusPaperDone += mvpBonusPaperDone;
+        employe.BonusPaperDone += Mathf.Min(mvpBonusPaperDone,3);
         employe.couronne.SetActive(true);
     }
 

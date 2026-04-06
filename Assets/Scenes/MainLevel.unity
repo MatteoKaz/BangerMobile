@@ -13209,6 +13209,7 @@ MonoBehaviour:
   targetSceneName: Menu
   targetPanel: {fileID: 766714362}
   parentPanel: {fileID: 657688266}
+  _stampGroup: 
   audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &403076139
 MonoBehaviour:
@@ -14492,6 +14493,7 @@ MonoBehaviour:
   targetSceneName: 
   targetPanel: {fileID: 657688266}
   parentPanel: {fileID: 657688266}
+  _stampGroup: 
   audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &535065207
 MonoBehaviour:
@@ -16471,6 +16473,7 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 766714362}
   parentPanel: {fileID: 766714362}
+  _stampGroup: 
   audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &594114245
 MonoBehaviour:
@@ -18840,6 +18843,7 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 766714362}
   parentPanel: {fileID: 766714362}
+  _stampGroup: 
   audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &741747460
 MonoBehaviour:
@@ -38422,6 +38426,7 @@ MonoBehaviour:
   targetSceneName: MainLevel
   targetPanel: {fileID: 657688266}
   parentPanel: {fileID: 657688266}
+  _stampGroup: 
   audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
 --- !u!114 &1276049217
 MonoBehaviour:

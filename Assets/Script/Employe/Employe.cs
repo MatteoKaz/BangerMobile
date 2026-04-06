@@ -212,11 +212,14 @@ public class Employe : MonoBehaviour
     // fonction  lancer lorsqu'il commence a work 
     public void Working(PoleTask task, List<PoleTask> preloadedBonus = null)
     {
+        
         cancelled = false;
         PoleTask myTask = task;
         if (myTask != null && iamWorking == false)
         {
             bonusTasks.Clear();
+            validBonus.Clear();
+            invalidBonus.Clear();
             if (preloadedBonus != null)
                 bonusTasks.AddRange(preloadedBonus);
 
