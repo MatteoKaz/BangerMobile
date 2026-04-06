@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TutorialSequence 1
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
   triggerType: 1
-  triggerDelay: 4
+  triggerDelay: 3.5
   steps:
   - text: Les papiers administratifs arrivent sur votre bureau par ce tuyau. Ils
       ont trois couleurs distinctes.
