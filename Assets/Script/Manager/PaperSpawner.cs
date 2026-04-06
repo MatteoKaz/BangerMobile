@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class PaperSpawner : MonoBehaviour
@@ -50,7 +51,7 @@ public class PaperSpawner : MonoBehaviour
     [SerializeField] private AudioEventDispatcher audioEventDispatcher;
 
     public event Action AllPapersSpawned;
-
+    private bool pauseDone = false;
     public void OnEnable()
     {
         quotatManager.QuotatChosen += StartSpawn;
@@ -119,7 +120,7 @@ public class PaperSpawner : MonoBehaviour
         int globalSorting = 2;
         float currentRhythm = 1f;
         int spawnCount = 0;
-
+        pauseDone = false;
         while (spawnList.Count > 0)
         {
             if (!canSpawn)
@@ -129,10 +130,11 @@ public class PaperSpawner : MonoBehaviour
             {
                 currentRhythm = 2f;
             }
-            else if (spawnCount % 15 == 0 && spawnCount > 0)
+            if (!pauseDone && papersRemaining <= totalPapers / 2)
             {
-                float pauseDuration = Random.Range(15f, 20f);
-                Debug.Log($"Pause de {pauseDuration}s");
+                pauseDone = true;
+                float pauseDuration = Random.Range(4f, 8);
+                Debug.Log($"Pause milieu de spawn : {pauseDuration}s");
                 yield return new WaitForSeconds(pauseDuration);
             }
             else if (spawnCount % 5 == 0)
@@ -147,7 +149,7 @@ public class PaperSpawner : MonoBehaviour
 
                 switch (rhythm)
                 {
-                    case 0: currentRhythm = 8f; break;
+                    case 0: currentRhythm = 6f; break;
                     case 1: currentRhythm = 4f; break;
                     case 2: currentRhythm = 3.5f; break;
                 }
@@ -180,11 +182,15 @@ public class PaperSpawner : MonoBehaviour
             pm.PileRed = RefPileRed;
             pm.PileGreen = RefPileGreen;
             pm.PileBlue = RefPileBlue;
-            pm.Paperduration = Random.Range(15f, 25f);
+            pm.Paperduration = GetPaperDuration(quotatManager.currentDifficulty, dayManager.currentWeek);
             pm.value = 10;
 
             SpriteRenderer spriteRenderer = paperSpawn.GetComponent<SpriteRenderer>();
-            spriteRenderer.sortingOrder = globalSorting--;
+            spriteRenderer.sortingOrder = globalSorting;
+            if (pm.timerImage != null)
+                pm.timerImage.sortingOrder = globalSorting;
+            pm.textcanvas.sortingOrder = globalSorting + 1;
+            globalSorting--;
             pm.SetInitialPose();
 
             spawnCount++;
@@ -244,5 +250,43 @@ public class PaperSpawner : MonoBehaviour
 
         spawnnedList.Clear();
         spawnList.Clear();
+    }
+
+
+   
+
+
+    private float GetPaperDuration(int difficulty, int week)
+    {
+        // min et max de la durée du papier
+        float startMin, startMax, targetMin, targetMax;
+
+        switch (difficulty)
+        {
+            case 0: // Easy — papiers durent longtemps
+                startMin = 35f; startMax = 45f;
+                targetMin = 25f; targetMax = 35f;
+                break;
+            case 1: // Mid
+                startMin = 25f; startMax = 35f;
+                targetMin = 18f; targetMax = 25f;
+                break;
+            case 2: // Hard — papiers disparaissent vite
+                startMin = 18f; startMax = 25f;
+                targetMin = 10f; targetMax = 15f;
+                break;
+            default:
+                startMin = 25f; startMax = 35f;
+                targetMin = 18f; targetMax = 25f;
+                break;
+        }
+
+        float maxWeek = 10f;
+        float t = Mathf.Clamp01((week - 1f) / (maxWeek - 1f));
+
+        float min = Mathf.Lerp(startMin, targetMin, t);
+        float max = Mathf.Lerp(startMax, targetMax, t);
+
+        return Random.Range(min, max);
     }
 }

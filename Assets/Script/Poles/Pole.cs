@@ -42,6 +42,7 @@ public class Pole : MonoBehaviour
 
     [Header("Bonus")]
     public float BonusRevenus = 1f;
+    public float BoostEmployeSpeedTemp;
     public float BoostEmployeSpeed;
     public float BoostEmployeError;
     public float BoostTimeForSurcharge;
@@ -274,7 +275,7 @@ public class Pole : MonoBehaviour
 
     public void WinMoney()
     {
-        localAdvencement += paperValue * Mathf.RoundToInt(BonusRevenus);
+        localAdvencement += Mathf.RoundToInt(paperValue * BonusRevenus * CurrentBoostMultiplier);
     }
 
     public void LooseMoney(int value)

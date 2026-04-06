@@ -26,7 +26,7 @@ MonoBehaviour:
     type: 0
     TypeText: 
     workRythme: 4
-    errorPercent: 0.7
+    errorPercent: 0.65
     timeInEntreprise: 0
     typeSprite: {fileID: -9205446280149291036, guid: 2661d2b11b84bee4e891387ac5b7bd0f, type: 3}
     firelines:
@@ -55,7 +55,7 @@ MonoBehaviour:
       le seul endroit o\xF9 ce dernier puisse \xEAtre lui-m\xEAme."
     type: 2
     TypeText: 
-    workRythme: 5
+    workRythme: 5.5
     errorPercent: 0.8
     timeInEntreprise: 0
     typeSprite: {fileID: 7174708238663027378, guid: 7ded8aa5b57241041a3741eab8ae02dc, type: 3}
@@ -83,7 +83,7 @@ MonoBehaviour:
       de cette vieille branche maintenant, non ?"
     type: 1
     TypeText: 
-    workRythme: 6
+    workRythme: 7
     errorPercent: 0.9
     timeInEntreprise: 0
     typeSprite: {fileID: 402761151100828559, guid: 8e8f8647c2b0bd74d930e847c2cd4a68, type: 3}
@@ -112,7 +112,7 @@ MonoBehaviour:
     type: 0
     TypeText: 
     workRythme: 4
-    errorPercent: 0.7
+    errorPercent: 0.65
     timeInEntreprise: 0
     typeSprite: {fileID: -9205446280149291036, guid: 2661d2b11b84bee4e891387ac5b7bd0f, type: 3}
     firelines:
@@ -139,7 +139,7 @@ MonoBehaviour:
       m\xE8re, est devenu une opportunit\xE9 plus que vitale."
     type: 1
     TypeText: 
-    workRythme: 6
+    workRythme: 7
     errorPercent: 0.9
     timeInEntreprise: 0
     typeSprite: {fileID: 402761151100828559, guid: 8e8f8647c2b0bd74d930e847c2cd4a68, type: 3}
@@ -168,7 +168,7 @@ MonoBehaviour:
       est fortement appr\xE9ci\xE9e par ses sup\xE9rieurs."
     type: 2
     TypeText: 
-    workRythme: 5
+    workRythme: 5.5
     errorPercent: 0.8
     timeInEntreprise: 0
     typeSprite: {fileID: 7174708238663027378, guid: 7ded8aa5b57241041a3741eab8ae02dc, type: 3}
@@ -196,7 +196,7 @@ MonoBehaviour:
     type: 0
     TypeText: 
     workRythme: 4
-    errorPercent: 0.7
+    errorPercent: 0.65
     timeInEntreprise: 0
     typeSprite: {fileID: -9205446280149291036, guid: 2661d2b11b84bee4e891387ac5b7bd0f, type: 3}
     firelines:
@@ -223,7 +223,7 @@ MonoBehaviour:
       Ainsi, perdre son travail serait un profond drame pour elle."
     type: 1
     TypeText: 
-    workRythme: 6
+    workRythme: 7
     errorPercent: 0.9
     timeInEntreprise: 0
     typeSprite: {fileID: 402761151100828559, guid: 8e8f8647c2b0bd74d930e847c2cd4a68, type: 3}
@@ -251,7 +251,7 @@ MonoBehaviour:
       la licencier, n'avez-vous donc pas de c\u0153ur ?"
     type: 2
     TypeText: 
-    workRythme: 5
+    workRythme: 5.5
     errorPercent: 0.8
     timeInEntreprise: 0
     typeSprite: {fileID: 7174708238663027378, guid: 7ded8aa5b57241041a3741eab8ae02dc, type: 3}
@@ -278,7 +278,7 @@ MonoBehaviour:
     type: 0
     TypeText: 
     workRythme: 4
-    errorPercent: 0.7
+    errorPercent: 0.65
     timeInEntreprise: 0
     typeSprite: {fileID: -9205446280149291036, guid: 2661d2b11b84bee4e891387ac5b7bd0f, type: 3}
     firelines:

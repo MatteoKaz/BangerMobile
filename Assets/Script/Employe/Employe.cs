@@ -106,9 +106,12 @@ public class Employe : MonoBehaviour
     private Coroutine WorkRoutine;
     private Coroutine StunRef;
     private bool cancelled = false;
-
+    private bool wasWorking = false;
     public event Action ScoreWinAnim;
     public event Action LooseMoney;
+
+    List<PoleTask> validBonus = new List<PoleTask>();
+    List<PoleTask> invalidBonus = new List<PoleTask>();
 
     [SerializeField] private AudioEventDispatcher audioeventdispatcher;
     public void OnEnable()
@@ -129,16 +132,16 @@ public class Employe : MonoBehaviour
         {
             StopCoroutine(WorkRoutine);
             WorkRoutine = null;
+            wasWorking = false;
         }
         if (currentTask != null)
         {
-            currentTask.isActive = false;
+            currentTask.isActive = false; // ← libère sans DecrementPaper (reset jour)
             currentTask = null;
         }
         foreach (PoleTask bonus in bonusTasks)
-            if (bonus != null) bonus.isActive = false;
+            if (bonus != null) bonus.isActive = false; // ← idem
         bonusTasks.Clear();
-
     }
     public void InitialSetIdentity()
     {
@@ -228,6 +231,7 @@ public class Employe : MonoBehaviour
             iamWorking = true;
             currentTask = myTask;
             mypole.activepaper++;
+            wasWorking = false;
             mypole.UpdatePaperUI();
             
             WorkRoutine = StartCoroutine(Work());
@@ -254,7 +258,9 @@ public class Employe : MonoBehaviour
     {
        
         float t = 0f;
-        wasStunned = true;
+        wasStunned = false;
+        wasWorking = false;
+        
         while (t < 1)
         {
             if (cancelled)
@@ -266,6 +272,8 @@ public class Employe : MonoBehaviour
                     mypole.DecrementPaper(currentTask); 
                     currentTask = null;
                 }
+                validBonus.Clear();
+                invalidBonus.Clear();
                 foreach (PoleTask bonus in bonusTasks)
                     if (bonus != null) mypole.DecrementPaper(bonus);
                 bonusTasks.Clear();
@@ -302,38 +310,58 @@ public class Employe : MonoBehaviour
                 yield break;
             }
             if (isStunned == false)
+            {
+                if (wasWorking == false) // ← était pas en working, on trigger
                 {
-                    if (wasStunned == true) // changement d'état  on trigger une seule fois
-                    {
-                        Light.color = baseColor;
-                        employeImage.sprite = working;
-                        animator.SetTrigger("Working");
-                        wasStunned = false;
-                    }
+                    Light.color = baseColor;
+                    employeImage.sprite = working;
+                    animator.SetTrigger("Working");
+                    wasWorking = true;
+                    wasStunned = false;
+                }
 
-              
                 float dt = Mathf.Min(Time.deltaTime, 0.05f);
-                    float rate = employeWorkRate
-                               - mypole.BoostEmployeSpeed
-                               - employeWorkRateBonus
-                               -swatBoostSpeed  
-                               + (employeWorkRateMalus + RankingWorkRateMalus);
-                    t += dt / rate;
-                    workAdvancement.value = Mathf.Lerp(0, 1, t);
-                }
-                else
-                {
-                    if (wasStunned == false) // changement d'état  on trigger une seule fois
-                    {
-                        employeImage.sprite = Surcharge;
+                float rate = employeWorkRate
+                           - mypole.BoostEmployeSpeed
+                           - mypole.BoostEmployeSpeedTemp
+                           - employeWorkRateBonus
+                           - swatBoostSpeed
+                           + (employeWorkRateMalus + RankingWorkRateMalus);
 
-                        Light.intensity = 0.3f;
-                        Light.color = Color.indianRed;
-                        animator.SetTrigger("Surcharge");
-                        wasStunned = true;
-                    }
+                float minRate = 8f; // lent
+                float maxRate = 4f; // rapide
+
+                // remap sur [0,1] puis [-1,+1]
+                float d = Mathf.InverseLerp(minRate, maxRate, employeWorkRate);
+                float delta = d * 2f - 1f; // -1 = lent, +1 = rapide
+
+                // pas d’inversion ici : maintenant delta >0 = rapide, delta <0 = lent
+
+                float amplified;
+                if (delta > 0)
+                    amplified = Mathf.Pow(delta, 1.5f) * 1.5f;
+                else
+                    amplified = -Mathf.Pow(-delta, 1.5f) * 1.5f;
+
+                float animSpeed = 1f + amplified;
+                animSpeed = Mathf.Clamp(animSpeed, 0.5f, 6f);
+                animator.SetFloat("WorkSpeed", animSpeed);
+                t += dt / Mathf.Max(rate, 0.1f);
+                workAdvancement.value = Mathf.Lerp(0, 1, t);
+            }
+            else
+            {
+                if (wasStunned == false) // ← était pas en stun, on trigger
+                {
+                    employeImage.sprite = Surcharge;
+                    Light.intensity = 0.3f;
+                    Light.color = Color.indianRed;
+                    animator.SetTrigger("Surcharge");
+                    wasStunned = true;
+                    wasWorking = false; // ← reset pour forcer le retrigger working à la sortie du stun
                 }
-                yield return null;
+            }
+            yield return null;
             
             
 
@@ -390,15 +418,19 @@ public class Employe : MonoBehaviour
         foreach (PoleTask bonus in bonusTasks)
         {
             if (bonus == null || bonus.isExpired)
-                mypole.DecrementPaper(bonus);
+                invalidBonus.Add(bonus);
+            else
+                validBonus.Add(bonus);
         }
-        bonusTasks.RemoveAll(b => b == null || b.isExpired);
+
+        // Nettoie les invalides
+        foreach (PoleTask bonus in invalidBonus)
+            mypole.DecrementPaper(bonus);
 
         // Traitement des bonus valides
-        foreach (PoleTask bonus in bonusTasks)
+        foreach (PoleTask bonus in validBonus)
         {
             roll = Random.Range(0f, 1f);
-
             if (roll < successChance)
             {
                 mypole.WinMoney();
@@ -408,20 +440,13 @@ public class Employe : MonoBehaviour
             }
             else
             {
-                LoosePaper += 1;
+                LoosePaper++;
             }
-                numberOfPaperDone++;
-            mypole.DecrementPaper(bonus);
+            numberOfPaperDone++;
+            mypole.DecrementPaper(bonus); // ← TOUJOURS décrémenter, valide ou pas
         }
 
-        if (cancelled)
-        {
-            cancelled = false;
-            iamWorking = false;
-            yield break;
-        }
         bonusTasks.Clear();
-        
         yield return new WaitForSeconds(Mathf.Max(timeBeetwennWork - StressBonus - swatBoostTimeBeetweenWork, 0));
         if (isStunned)
         {
@@ -442,6 +467,7 @@ public class Employe : MonoBehaviour
 
     public void SwitchPole(Pole pole)
     {
+        
         if (WorkRoutine != null)
         {
             if (currentTask != null)
@@ -452,6 +478,7 @@ public class Employe : MonoBehaviour
                 currentTask.isActive = false;
                 mypole.activepaper = Mathf.Max(0, mypole.activepaper - 1);
                 currentTask = null;
+                animator.SetTrigger("Idle");
             }
             foreach (PoleTask bonus in bonusTasks)
             {
@@ -466,12 +493,13 @@ public class Employe : MonoBehaviour
             StopCoroutine(WorkRoutine); // ← StopCoroutine SANS cancelled=true
             WorkRoutine = null;
         }
-
+        wasWorking = false;
         iamWorking = false;
         workAdvancement.value = 0f;
         employeWorkRateMalus = 0f;
+        
         errorPercentMalus = 0f;
-
+        
         Pole oldPole = mypole;
 
         // Retire l'employé de l'ancien pole IMMÉDIATEMENT sans attendre RebuildAfterLoad
@@ -480,7 +508,7 @@ public class Employe : MonoBehaviour
         oldPole.LaunchWorker();
 
         mypole = pole;
-
+        if (!mypole.employeList.Contains(this)) mypole.employeList.Add(this);
         if (!isStunned)
             employeImage.sprite = idleSprite;
         FeedbackSurcharge(pole.nextThresholdIndex);
@@ -539,9 +567,11 @@ public class Employe : MonoBehaviour
         Light.intensity = 0.3f;
         Light.color = Color.indianRed;
         animator.SetTrigger("Surcharge");
-
+        animator.SetFloat("WorkSpeed", 1);
         yield return new WaitForSeconds(duration);
         isStunned = false;
+        wasStunned = false; 
+        wasWorking = false; 
         if (iamWorking)
         {
             Light.color = baseColor;
@@ -551,7 +581,7 @@ public class Employe : MonoBehaviour
         else
         {
             Light.intensity = 0.0f;
-            employeImage.sprite = idleSprite; // ← remet idle même si Work() est déjà terminé
+            employeImage.sprite = idleSprite;
             animator.SetTrigger("Idle");
         }
 
@@ -563,10 +593,12 @@ public class Employe : MonoBehaviour
         Light.intensity = 0.0f;
         HasBeenSwat = false;
         SwatGoing = false;
+        wasWorking = false;
         occupied = false;
         cancelled = false;  
         iamWorking = false;
         Light.color = baseColor;
+        animator.SetFloat("WorkSpeed",1);
         foreach (PoleTask bonus in bonusTasks)
         {
             if (bonus == null) continue;

@@ -1,5 +1,7 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PaperMove : MonoBehaviour
 {
@@ -27,8 +29,11 @@ public class PaperMove : MonoBehaviour
     public Pile pileRef;
     [SerializeField] public DayManager dayManager;
     private bool CanThrow = true;
-
+    private bool isThrown = false;
     private static bool _firstPaperSentNotified = false;
+    [SerializeField] public SpriteRenderer timerImage;
+    [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] public Canvas textcanvas;
 
     public void Awake() { }
 
@@ -71,7 +76,7 @@ public class PaperMove : MonoBehaviour
     {
         if (!CanThrow) return;
         if (OnPile == true) return;
-
+        isThrown = true;
         NotifyFirstPaperSentOnce();
         StartCoroutine(MoveToTuyaux(Tuyauxright.transform.position, Tuyauxright));
         validPaper = Tuyauxright.tuyauxType == paperType;
@@ -81,7 +86,7 @@ public class PaperMove : MonoBehaviour
     {
         if (!CanThrow) return;
         if (OnPile == true) return;
-
+        isThrown = true;
         NotifyFirstPaperSentOnce();
         StartCoroutine(MoveToTuyaux(Tuyauxup.transform.position, Tuyauxup));
         validPaper = Tuyauxup.tuyauxType == paperType;
@@ -91,7 +96,7 @@ public class PaperMove : MonoBehaviour
     {
         if (!CanThrow) return;
         if (OnPile == true) return;
-
+        isThrown = true;
         NotifyFirstPaperSentOnce();
         StartCoroutine(MoveToTuyaux(Tuyauxleft.transform.position, Tuyauxleft));
         validPaper = Tuyauxleft.tuyauxType == paperType;
@@ -239,6 +244,31 @@ public class PaperMove : MonoBehaviour
             yield return null;
             transform.position = spawnPos;
             OnPile = false;
+        }
+
+        float remaining = Paperduration ;
+        while (remaining > 0f)
+        {
+            remaining -= Time.deltaTime;
+            if (timerText != null)
+                timerText.text = Mathf.CeilToInt(remaining).ToString();
+            yield return null;
+        }
+
+        if (timerText != null)
+            timerText.text = "";
+
+        if (!OnPile && CanThrow && !isThrown)
+        {
+            // fade out optionnel
+            t = 0f;
+            while (t < 1f)
+            {
+                t += Time.deltaTime / 0.3f;
+                sprite.color = Color.Lerp(Color.white, Color.clear, t);
+                yield return null;
+            }
+            Destroy(myself);
         }
     }
 

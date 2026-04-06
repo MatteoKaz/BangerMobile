@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class QuotatManager : MonoBehaviour
 {
-    public int WeekQuotat = 250;
-    public int BaseQuotat = 250;
+     private int WeekQuotat = 250;
+     private int BaseQuotat = 250;
     private float exposant = 3f;
     public int DayQuotat ;
     [SerializeField] DayManager dayManager;
@@ -16,7 +16,7 @@ public class QuotatManager : MonoBehaviour
     public int quotatHard;
     [SerializeField] PaperSpawner paperSpawner;
     [SerializeField] ScoreManager scoreManager;
-
+    public int currentDifficulty { get; private set; }
     [Header("BalanceSpawnValue")]
     public float multToBalance = 2f;
 
@@ -42,35 +42,35 @@ public class QuotatManager : MonoBehaviour
     public void QuotatCroissance()
     {
         Debug.LogWarning(dayManager.currentWeek);
-        WeekQuotat = (int)Math.Round(BaseQuotat * Math.Pow(dayManager.currentWeek, exposant - 1));
+        //WeekQuotat = (int)Math.Round(BaseQuotat * Math.Pow(dayManager.currentWeek, exposant - 1));
     }
 
-    //Temporaire
-    public void QuotatPerDay()
+   
+
+     public void QuotatPerDay()
     {
+        // Progression semaine linéaire
+        WeekQuotat = Mathf.RoundToInt(BaseQuotat * (1f + (dayManager.currentWeek - 1f) * 0.15f));
+
+        // Variation par jour
+        float dayMult = 1f;
         switch (dayManager.currentDay)
         {
-            case 1:
-                DayQuotat = Mathf.RoundToInt(WeekQuotat * 0.75f); break;
-            case 2:
-                DayQuotat = Mathf.RoundToInt(WeekQuotat * 1f); break;
-            case 3:
-                DayQuotat = Mathf.RoundToInt(WeekQuotat * 1.2f); break;
-            case 4:
-                DayQuotat = Mathf.RoundToInt(WeekQuotat * 0.8f); break;
-            case 5:
-                DayQuotat = Mathf.RoundToInt(WeekQuotat * 1.25f); break;
-
-
+            case 1: dayMult = 0.75f; break;
+            case 2: dayMult = 1.00f; break;
+            case 3: dayMult = 1.20f; break;
+            case 4: dayMult = 0.80f; break;
+            case 5: dayMult = 1.25f; break;
         }
-        //TemporairePourTest
-        DayQuotat = WeekQuotat;
-        quotatEasy = Mathf.RoundToInt(DayQuotat * 0.75f);
-        quotatMid = Mathf.RoundToInt(DayQuotat * 1f);
-        quotatHard = Mathf.RoundToInt(DayQuotat * 1.25f);
+        DayQuotat = Mathf.RoundToInt(WeekQuotat * dayMult);
+
+        // Quotas difficulté avec convergence par semaine
+        quotatEasy = Mathf.RoundToInt(DayQuotat * GetDifficultyMultiplier(0, dayManager.currentWeek));
+        quotatMid = Mathf.RoundToInt(DayQuotat * GetDifficultyMultiplier(1, dayManager.currentWeek));
+        quotatHard = Mathf.RoundToInt(DayQuotat * GetDifficultyMultiplier(2, dayManager.currentWeek));
+
         StartCoroutine(WaitForActive());
-        Debug.Log($"QuotatPerDay {DayQuotat}");
-        
+        Debug.Log($"QuotatPerDay — Day:{dayManager.currentDay} DayQuotat:{DayQuotat} | Easy:{quotatEasy} Mid:{quotatMid} Hard:{quotatHard}");
     }
 
     public IEnumerator WaitForActive()
@@ -94,21 +94,64 @@ public class QuotatManager : MonoBehaviour
         }
 
         scoreManager.SetDifficulty(difficultySelect);
-
+        currentDifficulty = difficultySelect;
         QuotatIsSet?.Invoke();
         ChosenQuotat(DayQuotat);
     }
 
+    private float GetDifficultyMultiplier(int difficulty, int week)
+    {
+        // Valeurs de départ (semaine 1)
+        float startMult;
+        // Valeurs cibles (semaine finale ~10)
+        float targetMult;
 
+        switch (difficulty)
+        {
+            case 0: // Easy
+                startMult = 1.0f;
+                targetMult = 1.4f;
+                break;
+            case 1: // Mid
+                startMult = 1.3f;
+                targetMult = 1.5f;
+                break;
+            case 2: // Hard
+                startMult = 1.5f;
+                targetMult = 1.8f;
+                break;
+            default:
+                startMult = 1.5f;
+                targetMult = 1.0f;
+                break;
+        }
+
+        // t = 0 en semaine 1, t = 1 en semaine maxWeek
+        float maxWeek = 10f;
+        float t = Mathf.Clamp01((week - 1f) / (maxWeek - 1f));
+
+        return Mathf.Lerp(startMult, targetMult, t);
+    }
+
+    private float GetSpawnMultiplier(int difficulty, int week)
+    {
+        float t = Mathf.Clamp01((week - 1f) / 9f);
+        switch (difficulty)
+        {
+            case 0: return Mathf.Lerp(2.0f, 1.5f, t); // Easy S12x, S10 1.5x
+            case 1: return Mathf.Lerp(1.7f, 1.0f, t); // Mid  S11.5x, S10 1x
+            case 2: return Mathf.Lerp(1.4f, 0.7f, t); // Hard S11.1x, S100.6x
+            default: return 1f;
+        }
+    }
     public void ChosenQuotat(int quotatChosen)
     {
         DayQuotat = quotatChosen;
         scoreManager.quotatOfTheDay = quotatChosen;
         int valueToSpawn = DayQuotat / 10;
-        paperSpawner.totalPapers = Mathf.RoundToInt(multToBalance * valueToSpawn)/3 ;
+        float spawnMult = GetSpawnMultiplier(currentDifficulty, dayManager.currentWeek);
+        paperSpawner.totalPapers = Mathf.RoundToInt(spawnMult * valueToSpawn) / 3;
         StartCoroutine(StartWave());
-        
-        Debug.Log($"Quotat manager {DayQuotat}");
     }
     public IEnumerator StartWave()
     {

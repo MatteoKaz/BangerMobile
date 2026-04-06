@@ -26,9 +26,10 @@ public class FeedbackMoneyEmploye : MonoBehaviour
         if (employe.mypole == null) return;
 
         Transform target = employe.mypole.quotatTextTarget != null ? employe.mypole.quotatTextTarget : scoreTarget;
-        int realValue = employe.mypole.paperValue
-        * Mathf.RoundToInt(employe.mypole.BonusRevenus)
-        * Mathf.RoundToInt(employe.mypole.CurrentBoostMultiplier);
+        int realValue =  Mathf.RoundToInt(
+        employe.mypole.paperValue
+        * employe.mypole.BonusRevenus
+        * employe.mypole.CurrentBoostMultiplier);
 
         StartCoroutine(PopAndMoveToScore($"+{realValue}$", transform.position, target));
         audioEventDispatcher.PlayAudio(AudioType.Gain);

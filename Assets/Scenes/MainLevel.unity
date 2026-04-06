@@ -2136,6 +2136,7 @@ MonoBehaviour:
   surchargeProgress: {fileID: 1472176941}
   sliderSpeed: 15
   BonusRevenus: 1
+  BoostEmployeSpeedTemp: 0
   BoostEmployeSpeed: 0
   BoostEmployeError: 0
   BoostTimeForSurcharge: 0
@@ -17244,8 +17245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 595d8714713c9f54baa9bb630d029819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuotatManager
-  WeekQuotat: 450
-  BaseQuotat: 450
   DayQuotat: 0
   dayManager: {fileID: 641038306}
   quotatEasy: 0
@@ -32947,6 +32946,7 @@ MonoBehaviour:
   surchargeProgress: {fileID: 1928201354}
   sliderSpeed: 15
   BonusRevenus: 1
+  BoostEmployeSpeedTemp: 0
   BoostEmployeSpeed: 0
   BoostEmployeError: 0
   BoostTimeForSurcharge: 0
@@ -54593,6 +54593,7 @@ MonoBehaviour:
   surchargeProgress: {fileID: 868995111}
   sliderSpeed: 15
   BonusRevenus: 1
+  BoostEmployeSpeedTemp: 0
   BoostEmployeSpeed: 0
   BoostEmployeError: 0
   BoostTimeForSurcharge: 0

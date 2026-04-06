@@ -94,6 +94,7 @@ public class BoostManager : MonoBehaviour
     /// <summary>Arrête le BoostLoop et force l'arrêt immédiat de tous les boosts actifs.</summary>
     private void StopAllBoosts()
     {
+        
         if (_boostLoopCoroutine != null)
         {
             StopCoroutine(_boostLoopCoroutine);
@@ -109,6 +110,7 @@ public class BoostManager : MonoBehaviour
         foreach (Pole pole in _boostedPoles)
         {
             pole.CurrentBoostMultiplier = 1f;
+            pole.BoostEmployeSpeedTemp = 0f;
             BoostEnded?.Invoke(pole);
         }
 
@@ -157,11 +159,11 @@ public class BoostManager : MonoBehaviour
     private IEnumerator ApplyBoost(Pole pole)
     {
     _boostedPoles.Add(pole);
-    float previousBoostSpeed = pole.BoostEmployeSpeed;
+    
     float chosenMultiplier = BoostMultipliers[UnityEngine.Random.Range(0, BoostMultipliers.Length)];
     
     pole.CurrentBoostMultiplier = chosenMultiplier;
-    pole.BoostEmployeSpeed = previousBoostSpeed + boostSpeedBonus;
+    pole.BoostEmployeSpeedTemp = boostSpeedBonus;
 
     BoostStarted?.Invoke(pole);
     yield return new WaitForSeconds(boostDuration);
@@ -169,7 +171,7 @@ public class BoostManager : MonoBehaviour
     if (_boostedPoles.Contains(pole))
     {
         pole.CurrentBoostMultiplier = 1f;
-        pole.BoostEmployeSpeed = previousBoostSpeed;
+        pole.BoostEmployeSpeedTemp = 0f;
         _boostedPoles.Remove(pole);
         BoostEnded?.Invoke(pole);
     }
