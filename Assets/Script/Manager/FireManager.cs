@@ -38,13 +38,13 @@ public class FireManager : MonoBehaviour
     [SerializeField] public float animDurationDialogue;
     [SerializeField] AnimationCurve curveAnimDialogue;
     [SerializeField] AnimationCurve curveAnimDialogueBack;
+    
+    [SerializeField] public AudioEventDispatcher audioEventDispatcher;
+    
     private bool launch = false;
     public bool DayLaunch = false;
-    public bool LaunchFire = false; 
+    public bool LaunchFire = false;
     
-    [Header("Audio")]
-    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
-
     public void OnEnable()
     {
 
@@ -72,7 +72,11 @@ public class FireManager : MonoBehaviour
     }
     public void Click(EmployeFicheInfo emp)
     {
-        if (DayLaunch == true) return;
+        if (DayLaunch == true)
+        {
+            audioEventDispatcher?.PlayAudio(AudioType.Wrong); // son de refus
+            return;
+        }
         if (launch == true) return;
 
         launch = true;

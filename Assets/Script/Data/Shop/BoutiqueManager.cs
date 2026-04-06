@@ -1,4 +1,4 @@
-using NUnit.Framework.Constraints;
+
 using UnityEngine;
 
 public class BoutiqueManager : MonoBehaviour
@@ -8,7 +8,6 @@ public class BoutiqueManager : MonoBehaviour
     public void Echap()
     {
         menuBoutique.SetActive(false);
-        if (audioEventDispatcher == null)
-            audioEventDispatcher?.PlayAudio(AudioType.Click);
+        audioEventDispatcher?.PlayAudio(AudioType.ClosePopUp);
     }
 }

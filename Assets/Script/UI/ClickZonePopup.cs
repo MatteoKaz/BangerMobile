@@ -72,6 +72,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     [Tooltip("Même string sur les boutons MVP et Virer du même employé. Ex: 'Employe_01'")]
     [SerializeField] private string _stampGroup = "";
 
+    
 // Remplace l'ancien _activeToggleZone static par un dictionnaire par groupe
     private static System.Collections.Generic.Dictionary<string, ClickZonePopup> _activeByGroup
         = new System.Collections.Generic.Dictionary<string, ClickZonePopup>();
@@ -81,6 +82,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private Coroutine _autoHideCoroutine;
     private float _holdStartTime;
     private Vector2 _pressScreenPosition;
+    private bool _isBlocked = false;
 
     [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     private void Awake()
@@ -105,9 +107,21 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
                 popup.gameObject.SetActive(false);
         }
     }
+    /// <summary>Bloque l'affichage du tampon jusqu'au prochain Unblock.</summary>
+    public void Block()   => _isBlocked = true;
+
+    /// <summary>Réautorise l'affichage du tampon.</summary>
+    public void Unblock() => _isBlocked = false;
 
     public void OnPointerUp(PointerEventData eventData)
     {
+            if (_isBlocked)
+            {
+                audioEventDispatcher?.PlayAudio(AudioType.Wrong);
+                return;
+            }
+            // ... reste inchangé
+
         if (actionMode == ActionMode.ToggleStamp)
         {
             // Vérifie si une zone du même groupe est déjà active
