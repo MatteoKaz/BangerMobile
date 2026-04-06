@@ -267,11 +267,11 @@ public class PaperSpawner : MonoBehaviour
                 break;
             case 1: // Mid
                 startMin = 25f; startMax = 35f;
-                targetMin = 11f; targetMax = 20f;
+                targetMin = 11f; targetMax = 22f;
                 break;
             case 2: // Hard — papiers disparaissent vite
-                startMin = 18f; startMax = 25f;
-                targetMin = 5f; targetMax = 15f;
+                startMin = 18f; startMax = 30f;
+                targetMin = 5f; targetMax = 20f;
                 break;
             default:
                 startMin = 25f; startMax = 35f;
@@ -296,19 +296,19 @@ public class PaperSpawner : MonoBehaviour
         switch (difficulty)
         {
             case 0: // Easy
-                slow = Mathf.Max(7f - weekReduction, 4f);
-                mid = Mathf.Max(4.5f - weekReduction, 2f);
-                fast = Mathf.Max(3f - weekReduction, 1.5f);
+                slow = Mathf.Max(7f - weekReduction, 5f);
+                mid = Mathf.Max(4.5f - weekReduction, 3f);
+                fast = Mathf.Max(3f - weekReduction, 2.3f);
                 break;
             case 1: // Mid
-                slow = Mathf.Max(6f - weekReduction, 3f);
-                mid = Mathf.Max(4f - weekReduction, 1.75f);
-                fast = Mathf.Max(2.5f - weekReduction, 1.5f);
+                slow = Mathf.Max(6f - weekReduction, 4f);
+                mid = Mathf.Max(4f - weekReduction,2.5f);
+                fast = Mathf.Max(2.5f - weekReduction, 2f);
                 break;
             case 2: // Hard
-                slow = Mathf.Max(4f - weekReduction, 2.5f);
-                mid = Mathf.Max(2.5f - weekReduction, 1.5f);
-                fast = Mathf.Max(2f - weekReduction, 1.25f);
+                slow = Mathf.Max(5f - weekReduction, 3.5f);
+                mid = Mathf.Max(3f - weekReduction,2.3f);
+                fast = Mathf.Max(2f - weekReduction, 1.75f);
                 break;
             default:
                 slow = Mathf.Max(6f - weekReduction, 2f);

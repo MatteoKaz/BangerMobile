@@ -2130,7 +2130,7 @@ MonoBehaviour:
   surchargeValue: 0
   maxSurcharge: 100
   surchargeStep: 2
-  baseDelay: 2.2
+  baseDelay: 2.5
   surchargeThresholds: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
   nextThresholdIndex: 0
   decayRate: 8
@@ -18132,7 +18132,7 @@ MonoBehaviour:
   paperSpawner: {fileID: 1272777329}
   minIntervalBetweenBoosts: 15
   maxIntervalBetweenBoosts: 40
-  boostDuration: 10
+  boostDuration: 15
   boostSpeedBonus: 2
 --- !u!1 &646736019
 GameObject:
@@ -33288,7 +33288,7 @@ MonoBehaviour:
   surchargeValue: 0
   maxSurcharge: 100
   surchargeStep: 2
-  baseDelay: 2.2
+  baseDelay: 2.5
   surchargeThresholds: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
   nextThresholdIndex: 0
   decayRate: 8
@@ -34280,7 +34280,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 129.99997, y: 412.20007}
+  m_AnchoredPosition: {x: 130, y: 412.20007}
   m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1064633237
@@ -43338,7 +43338,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.409912, y: -112.099976}
+  m_AnchoredPosition: {x: 24.409912, y: -112.1001}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1421588349
@@ -55115,7 +55115,7 @@ MonoBehaviour:
   surchargeValue: 0
   maxSurcharge: 100
   surchargeStep: 2
-  baseDelay: 2.2
+  baseDelay: 2.5
   surchargeThresholds: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
   nextThresholdIndex: 0
   decayRate: 8
