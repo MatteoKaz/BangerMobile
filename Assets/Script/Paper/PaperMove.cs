@@ -188,10 +188,33 @@ public class PaperMove : MonoBehaviour
             transform.rotation = targetRot;
         }
 
+        transform.position = target;
+        transform.rotation = targetRot;
+
+        // micro stop
+        yield return new WaitForSeconds(0.03f);
+
+        // vibration
         t = 0f;
-        float durationScale = 0.15f;
+        Quaternion vibOriginRot = transform.rotation;
+        float vibDuration = 0.1f;
+        Vector3 vibOrigin = transform.position;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / vibDuration;
+            float strength = Mathf.Lerp(15f, 0f, t);
+            transform.rotation = vibOriginRot * Quaternion.Euler(0f, 0f, Random.Range(-1f, 1f) * strength);
+            
+            yield return null;
+        }
+        transform.rotation = targetRot;
+        transform.position = target;
+
+        // aspiration rapide
+        t = 0f;
+        float durationScale = 0.2f; 
         Vector3 scalePaper = transform.localScale;
-        Vector3 TargetScale = new Vector3(0f, 0f, 0f);
+        Vector3 TargetScale = Vector3.zero;
         Vector3 targetpos = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
         while (t < 1f)
         {
