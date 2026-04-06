@@ -40,7 +40,6 @@ public class TutorialManager : MonoBehaviour
 
     private List<TutorialStepData> _lastPlayedSteps;
 
-
     private Sprite _defaultButtonSprite;
     private SpriteState _defaultSpriteState;
     private Vector2 _defaultButtonSize;
@@ -100,7 +99,6 @@ public class TutorialManager : MonoBehaviour
         SubscribeToTriggers();
     }
 
-
     private void OnDestroy()
     {
         Time.timeScale = 1f;
@@ -121,6 +119,16 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
+    /// <summary>Réinitialise les séquences tutoriel jouées (PlayerPrefs + état en mémoire). Accessible via clic droit sur le composant.</summary>
+    [ContextMenu("Reset Tutorial PlayerPrefs")]
+    public void ResetTutorialPrefs()
+    {
+        PlayerPrefs.DeleteKey(PlayedSequencesPrefsKey);
+        PlayerPrefs.Save();
+        _playedSequences.Clear();
+        Debug.Log("[TutorialManager] PlayerPrefs tutoriel réinitialisés.");
+    }
+
     /// <summary>Persiste dans PlayerPrefs la liste des séquences déjà jouées.</summary>
     private void SavePlayedSequences()
     {
@@ -131,7 +139,6 @@ public class TutorialManager : MonoBehaviour
         PlayerPrefs.SetString(PlayedSequencesPrefsKey, string.Join(",", names));
         PlayerPrefs.Save();
     }
-
 
     private void SubscribeToTriggers()
     {
@@ -184,6 +191,7 @@ public class TutorialManager : MonoBehaviour
             }
         }
     }
+
     private IEnumerator PlayWithDelay(TutorialStep sequence)
     {
         if (_playedSequences.Contains(sequence))
