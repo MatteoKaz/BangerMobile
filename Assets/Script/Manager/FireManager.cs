@@ -223,8 +223,7 @@ public class FireManager : MonoBehaviour
         MusicManager.Instance?.StopFire();
         if (_ingameWasPlayingBeforeFire)
         {
-            _ingameWasPlayingBeforeFire = false;
-            MusicManager.Instance?.PlayIngame();
+            MusicManager.Instance?.StopFire();
         }
 
     }
@@ -357,8 +356,8 @@ public class FireManager : MonoBehaviour
         MusicManager.Instance?.StopFire();
         if (_ingameWasPlayingBeforeFire)
         {
-            _ingameWasPlayingBeforeFire = false;
-            MusicManager.Instance?.PlayIngame();
+            MusicManager.Instance?.StopFire();
+
         }
         FiredScene.SetActive(false);
     }

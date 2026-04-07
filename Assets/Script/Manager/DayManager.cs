@@ -40,8 +40,7 @@ public class DayManager : MonoBehaviour
     }
     public void LaunchNewDay()
     {
-        
-        if (currentDay <5)
+        if (currentDay < 5)
         {
             currentDay += 1;
             DayNameChange();
@@ -53,10 +52,10 @@ public class DayManager : MonoBehaviour
             DayNameChange();
         }
         DayBegin?.Invoke();
-            MusicManager.Instance?.StopMenu();
-            MusicManager.Instance?.PlayIngame();
-
+        MusicManager.Instance?.StopMenu();
+        MusicManager.Instance?.PlayIngame();
     }
+
     public void RestoreDay(int day, int week)
     {
         currentDay  = day;
@@ -64,8 +63,9 @@ public class DayManager : MonoBehaviour
         quotatManager.QuotatCroissance();
         DayNameChange();
         DayBegin?.Invoke();
+        MusicManager.Instance?.StopMenu();
+        MusicManager.Instance?.PlayIngame();
     }
-
     
     public void NewDaySetUp()
     {
@@ -97,8 +97,10 @@ public class DayManager : MonoBehaviour
     {
         ResetValueBeforeNextDay?.Invoke();
         yield return new WaitForSeconds(1f);
-        DayBegin?.Invoke(); 
+        DayBegin?.Invoke();
+        MusicManager.Instance?.PlayIngame();
     }
+
     public IEnumerator NextDaySetup()
     {
         
