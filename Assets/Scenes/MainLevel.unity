@@ -51936,6 +51936,7 @@ GameObject:
   - component: {fileID: 1795430757}
   - component: {fileID: 1795430758}
   - component: {fileID: 1795430759}
+  - component: {fileID: 1795430760}
   m_Layer: 0
   m_Name: ==BoutiqueUI==
   m_TagString: Untagged
@@ -52055,6 +52056,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UiScoreShop
   Uimoney: {fileID: 1696113349}
   scoreManager: {fileID: 641038303}
+--- !u!114 &1795430760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795430753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c0fdb4de05ed5b4d9d96b50b612ca31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShopPanel
+  boutiqueManager: {fileID: 641038313}
 --- !u!1 &1796691469
 GameObject:
   m_ObjectHideFlags: 0
