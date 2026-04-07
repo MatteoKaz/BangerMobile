@@ -18,9 +18,9 @@ public class ScoreManager : MonoBehaviour
     [Tooltip("Bonus appliqué par pôle ayant atteint son quota en difficulté Facile (ex: 0.05 = +5%).")]
     public float bonusPoleEasy = 0.05f;
     [Tooltip("Bonus appliqué par pôle ayant atteint son quota en difficulté Normale (ex: 0.10 = +10%).")]
-    public float bonusPoleMid = 0.10f;
+    public float bonusPoleMid = 0.35f;
     [Tooltip("Bonus appliqué par pôle ayant atteint son quota en difficulté Difficile (ex: 0.20 = +20%).")]
-    public float bonusPoleHard = 0.20f;
+    public float bonusPoleHard = 0.75f;
 
     /// <summary>Difficulté choisie par le joueur ce jour (0 = Easy, 1 = Mid, 2 = Hard).</summary>
     [HideInInspector] public int currentDifficulty = 1;

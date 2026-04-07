@@ -15,6 +15,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private ScoreManager scoreManager;
     [SerializeField] ShopUpgrade shopUpgrade;
     [SerializeField] private PoleLink[] _poleLinks;
+    [SerializeField] SwatManager swatManager;
     private Pole[]    _poles;
     private Employe[] _employes;
     private bool      _initialized = false;
@@ -120,7 +121,7 @@ public class SaveManager : MonoBehaviour
                 errorPercentBonus     = emp.employeErrorPercenBonus,
                 stressBonus           = emp.StressBonus,
                 isMVP = emp.couronne != null && emp.couronne.activeSelf,
-                BonusPaperDone        = emp.BonusPaperDone
+                BonusPaperDone        = emp.BonusPaperDone_Shop
 
             };
             foreach (var kvp in emp.upgradeCounts)
@@ -187,6 +188,7 @@ public class SaveManager : MonoBehaviour
             }
             data.poles.Add(poleSaveData);
         }
+        data.swatUtilisation = swatManager.numberOfUtilisation;
         for (int i = 0; i < shopUpgrade.allUpgrade.Count; i++)
         {
             data.upgrades.Add(new UpgradeSaveData
@@ -230,7 +232,7 @@ public class SaveManager : MonoBehaviour
             emp.employeWorkRateBonus    = empData.workRateBonus;
             emp.employeErrorPercenBonus = empData.errorPercentBonus;
             emp.StressBonus             = empData.stressBonus;
-            emp.BonusPaperDone          = empData.BonusPaperDone;
+            emp.BonusPaperDone_Shop = empData.BonusPaperDone;
             if (emp.couronne != null)
                 emp.couronne.SetActive(empData.isMVP);
             InventorySlot targetSlot = FindSlot(empData.poleType, empData.slotIndex);
@@ -296,7 +298,7 @@ public class SaveManager : MonoBehaviour
 
         foreach (Pole pole in _poles)
             pole.RebuildEmployeList();
-
+        swatManager.numberOfUtilisation = data.swatUtilisation;
         Debug.Log("[SaveManager] Chargement terminé.");
     }
 

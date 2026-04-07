@@ -262,16 +262,16 @@ public class PaperSpawner : MonoBehaviour
         switch (difficulty)
         {
             case 0: // Easy — papiers durent longtemps
-                startMin = 35f; startMax = 45f;
+                startMin = 30f; startMax = 40f;
                 targetMin = 15f; targetMax = 25f;
                 break;
             case 1: // Mid
                 startMin = 25f; startMax = 35f;
-                targetMin = 11f; targetMax = 22f;
+                targetMin = 11f; targetMax = 23f;
                 break;
             case 2: // Hard — papiers disparaissent vite
-                startMin = 18f; startMax = 30f;
-                targetMin = 5f; targetMax = 20f;
+                startMin = 15f; startMax = 25f;
+                targetMin = 10f; targetMax = 17f;
                 break;
             default:
                 startMin = 25f; startMax = 35f;
@@ -296,19 +296,19 @@ public class PaperSpawner : MonoBehaviour
         switch (difficulty)
         {
             case 0: // Easy
-                slow = Mathf.Max(7f - weekReduction, 5f);
-                mid = Mathf.Max(4.5f - weekReduction, 3f);
-                fast = Mathf.Max(3f - weekReduction, 2.3f);
+                slow = Mathf.Max(6.5f - weekReduction, 4f);
+                mid = Mathf.Max(4.5f - weekReduction, 2.75f);
+                fast = Mathf.Max(3f - weekReduction, 2f);
                 break;
             case 1: // Mid
-                slow = Mathf.Max(6f - weekReduction, 4f);
+                slow = Mathf.Max(6f - weekReduction, 3.75f);
                 mid = Mathf.Max(4f - weekReduction,2.5f);
-                fast = Mathf.Max(2.5f - weekReduction, 2f);
+                fast = Mathf.Max(2.5f - weekReduction, 1.75f);
                 break;
             case 2: // Hard
-                slow = Mathf.Max(5f - weekReduction, 3.5f);
-                mid = Mathf.Max(3f - weekReduction,2.3f);
-                fast = Mathf.Max(2f - weekReduction, 1.75f);
+                slow = Mathf.Max(5f - weekReduction, 3f);
+                mid = Mathf.Max(3f - weekReduction,1.75f);
+                fast = Mathf.Max(2f - weekReduction, 1f);
                 break;
             default:
                 slow = Mathf.Max(6f - weekReduction, 2f);

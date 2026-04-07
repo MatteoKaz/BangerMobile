@@ -29,6 +29,8 @@ public class RankingManager : MonoBehaviour
     [SerializeField] private float topEarnerErrorMalus = 0.1f;
     [SerializeField] private float topEarnerWorkRateMalus = 0.5f;
 
+    [SerializeField] ParticleSystem paper1;
+    [SerializeField] ParticleSystem paper2;
     private void OnEnable()
     {
         DayManager.RankingDay += SetRankingOrder;
@@ -60,8 +62,8 @@ public class RankingManager : MonoBehaviour
     /// </summary>
     private void SetBonus(Employe employe)
     {
-        employe.employeWorkRateBonus += mvpWorkRateBonus;
-        employe.BonusPaperDone += Mathf.Min(mvpBonusPaperDone,3);
+        employe.employeWorkRateBonus_MVP += mvpWorkRateBonus;
+        employe.BonusPaperDone_MVP += 1;
         employe.couronne.SetActive(true);
     }
 
@@ -83,8 +85,8 @@ public class RankingManager : MonoBehaviour
     {
         if (employe == null) return;
 
-        employe.employeWorkRateBonus = 0f;
-        employe.BonusPaperDone = 0f;
+        employe.employeWorkRateBonus_MVP = 0f;
+        employe.BonusPaperDone_MVP = 0f;
         employe.ResetRankingMalus();
         employe.couronne.SetActive(false);
     }
@@ -172,5 +174,11 @@ public class RankingManager : MonoBehaviour
         if (DayManager.currentWeek == 1)
             TutorialManager.NotifyFirstFridayRanking();
 
+    }
+
+    public void AnimRanking()
+    {
+        paper1.Play();
+        paper2.Play(); 
     }
 }

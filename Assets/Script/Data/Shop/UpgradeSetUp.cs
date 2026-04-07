@@ -30,6 +30,7 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] TextMeshProUGUI PopUPdescriptionPole;
     [SerializeField] Image PopUPiconPole;
     [SerializeField] Pole poleRef;
+    [SerializeField] GameObject swat;
     RefOfItem currentRefOfItem;
     public EmployeLink empLink;
     public PoleLink poleLink;
@@ -176,8 +177,10 @@ public class UpgradeSetUp : MonoBehaviour
             switch (roi.type)
             {
                 case TypeOfUpgrade.Swat:
+                        swat.SetActive(true);
                     swatManager.numberOfUtilisation += Mathf.RoundToInt(roi.upgradeValue);
-                    swatManager.OnBuyActivation();
+                        
+                        swatManager.OnBuyActivation();
                     break;
             }
 
@@ -211,15 +214,18 @@ public class UpgradeSetUp : MonoBehaviour
             {
                 case TypeOfUpgrade.BoostErrorRate:
                     emp.employeErrorPercenBonus += roi.upgradeValue;
-                    break;
+                        emp.employeErrorPercenBonus = Mathf.Min(emp.employeErrorPercenBonus, 0.25f);
+                        break;
                 case TypeOfUpgrade.BoostSpeed:
                     emp.employeWorkRateBonus += roi.upgradeValue;
-                    break;
+                        emp.employeWorkRateBonus = Mathf.Min(emp.employeWorkRateBonus, 2.5f);
+                        break;
                 case TypeOfUpgrade.BoostSurchargeResistance:
                     emp.StressBonus += roi.upgradeValue;
+                        emp.StressBonus = Mathf.Min(emp.StressBonus, 1.5f);
                     break;
                 case TypeOfUpgrade.DoublePaperDone:
-                    emp.BonusPaperDone = roi.upgradeValue;
+                    emp.BonusPaperDone_Shop = roi.upgradeValue;
                     break;
             }
 

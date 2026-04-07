@@ -20,10 +20,10 @@ MonoBehaviour:
     upgradeValue: 1
     icone: {fileID: 21300000, guid: 45bcb5311120ab546af40f6e70121a9d, type: 3}
     inflation: 20
-    Description: "Un nouveau d\xE9part loin de cette entreprises et de tous ces papiers"
+    Description: "Un nouveau d\xE9part loin de cette entreprise et de tous ces papiers."
     duration: 0
   - UpgradeName: La carotte
-    price: 90
+    price: 150
     type: 0
     category: 0
     upgradeValue: 0.25
@@ -48,8 +48,8 @@ MonoBehaviour:
     upgradeValue: 0.25
     icone: {fileID: 55277595470563842, guid: d1906c2ca286a2544856ddd54c4663c8, type: 3}
     inflation: 15
-    Description: "Permet de surveiller un employ\xE9, lorsque ce dernier ne travaille
-      pas, et le force \xE0 se remettre au travail temporairement."
+    Description: "Permet de surveiller un employ\xE9 : les temps de pause entre les
+      t\xE2ches sont r\xE9duits."
     duration: 0
   - UpgradeName: "Caf\xE9 \xE0 volont\xE9"
     price: 120

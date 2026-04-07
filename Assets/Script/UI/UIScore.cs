@@ -27,7 +27,7 @@ public class UIScore : MonoBehaviour
     [SerializeField] float bonusCountDuration = 0.6f;
     [SerializeField] float pauseBeforeTotal = 0.4f;
     [SerializeField] float totalCountDuration = 1.0f;
-
+    public bool hasFinish = false;
     private void OnEnable()
     {
         uiManager.ScoreAnim += LaunchAnim;
@@ -53,6 +53,7 @@ public class UIScore : MonoBehaviour
     /// <summary>Lance l'animation d'affichage du score.</summary>
     public void LaunchAnim()
     {
+        hasFinish = false;
         StartCoroutine(ScoreAnim());
     }
 
@@ -159,6 +160,7 @@ public class UIScore : MonoBehaviour
         TutorialManager.NotifyDayEnd();
 
         yield return new WaitForSeconds(1f);
+        hasFinish = true;
         if (scoreManager.playerMoney <= 0)
         {
             gameOverManager.ShowGameOverHud();

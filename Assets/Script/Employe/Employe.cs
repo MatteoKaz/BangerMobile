@@ -44,10 +44,13 @@ public class Employe : MonoBehaviour
     public float employeWorkRateBonus = 0f;
     public float employeErrorPercenBonus = 0f;
     public float StressBonus = 0f;
-    public float BonusPaperDone = 0f;
+    public float BonusPaperDone_MVP = 0f;
+    public float BonusPaperDone_Shop = 0f;
+    public float BonusPaperDone => BonusPaperDone_MVP + BonusPaperDone_Shop;
     private List<PoleTask> bonusTasks = new List<PoleTask>();
     public List<Sprite> upgradesImages = new List<Sprite>();
     public Dictionary<Sprite, int> upgradeCounts = new Dictionary<Sprite, int>();
+    public float employeWorkRateBonus_MVP = 0f;
 
     [Header("Malus")]
     public int StunMalus = 5;
@@ -314,13 +317,42 @@ public class Employe : MonoBehaviour
             }
             if (isStunned == false)
             {
-                if (wasWorking == false) // ← était pas en working, on trigger
+                if (wasWorking == false) 
                 {
                     Light.color = baseColor;
                     employeImage.sprite = working;
+                    float ratepreview = employeWorkRate
+                            - employeWorkRateBonus_MVP
+                           - mypole.BoostEmployeSpeed
+                           - mypole.BoostEmployeSpeedTemp
+                           - employeWorkRateBonus
+                           - swatBoostSpeed
+                           + (employeWorkRateMalus + RankingWorkRateMalus);
+                    float minRate = 8f; // lent
+                    float maxRate = 4f; // rapide
+
+
+                    float d = Mathf.InverseLerp(minRate, maxRate, ratepreview);
+                    float delta = d * 2f - 1f; // -1 = lent, +1 = rapide
+
+
+
+                    float amplified;
+                    if (delta > 0)
+                        amplified = Mathf.Pow(delta, 1.5f) * 1.5f;
+                    else
+                        amplified = -Mathf.Pow(-delta, 1.5f) * 1.5f;
+
+                    float animSpeed = 1f + amplified;
+                    animSpeed = Mathf.Clamp(animSpeed, 0.5f, 6f);
+                    animator.SetFloat("WorkSpeed", animSpeed);
+                    yield return null;
+
                     animator.SetTrigger("Working");
+
                     wasWorking = true;
                     wasStunned = false;
+
                 }
 
                 float dt = Mathf.Min(Time.deltaTime, 0.05f);
@@ -331,24 +363,7 @@ public class Employe : MonoBehaviour
                            - swatBoostSpeed
                            + (employeWorkRateMalus + RankingWorkRateMalus);
 
-                float minRate = 8f; // lent
-                float maxRate = 4f; // rapide
-
-                // remap sur [0,1] puis [-1,+1]
-                float d = Mathf.InverseLerp(minRate, maxRate, employeWorkRate);
-                float delta = d * 2f - 1f; // -1 = lent, +1 = rapide
-
-                // pas d’inversion ici : maintenant delta >0 = rapide, delta <0 = lent
-
-                float amplified;
-                if (delta > 0)
-                    amplified = Mathf.Pow(delta, 1.5f) * 1.5f;
-                else
-                    amplified = -Mathf.Pow(-delta, 1.5f) * 1.5f;
-
-                float animSpeed = 1f + amplified;
-                animSpeed = Mathf.Clamp(animSpeed, 0.5f, 6f);
-                animator.SetFloat("WorkSpeed", animSpeed);
+                
                 t += dt / Mathf.Max(rate, 0.1f);
                 workAdvancement.value = Mathf.Lerp(0, 1, t);
             }
@@ -493,11 +508,14 @@ public class Employe : MonoBehaviour
                 mypole.activepaper = Mathf.Max(0, mypole.activepaper - 1);
             }
             bonusTasks.Clear();
-            StopCoroutine(WorkRoutine); // ← StopCoroutine SANS cancelled=true
+            StopCoroutine(WorkRoutine);
+           
             WorkRoutine = null;
         }
+        
         wasWorking = false;
         iamWorking = false;
+        
         workAdvancement.value = 0f;
         employeWorkRateMalus = 0f;
         
@@ -512,8 +530,12 @@ public class Employe : MonoBehaviour
 
         mypole = pole;
         if (!mypole.employeList.Contains(this)) mypole.employeList.Add(this);
+        animator.SetFloat("WorkSpeed", 1f); 
         if (!isStunned)
+        {
+           
             employeImage.sprite = idleSprite;
+        }
         FeedbackSurcharge(pole.nextThresholdIndex);
        
         mypole.UpdateBackLog();
@@ -570,7 +592,7 @@ public class Employe : MonoBehaviour
         Light.intensity = 0.3f;
         Light.color = Color.indianRed;
         animator.SetTrigger("Surcharge");
-        animator.SetFloat("WorkSpeed", 1);
+        
         yield return new WaitForSeconds(duration);
         isStunned = false;
         wasStunned = false; 
@@ -597,11 +619,14 @@ public class Employe : MonoBehaviour
         HasBeenSwat = false;
         SwatGoing = false;
         wasWorking = false;
+        goutte.SetActive(false);
+        angry.SetActive(false);
+        wasStunned = false;
         occupied = false;
         cancelled = false;  
         iamWorking = false;
         Light.color = baseColor;
-        animator.SetFloat("WorkSpeed",1);
+       
         foreach (PoleTask bonus in bonusTasks)
         {
             if (bonus == null) continue;
@@ -615,8 +640,9 @@ public class Employe : MonoBehaviour
             WorkRoutine = null;
         }
         employeImage.sprite = idleSprite;
-        animator.SetTrigger("Idle");
-       
+        
+        animator.Play("Idle");
+        employeImage.sprite = idleSprite;
         isStunned = false;
         employeWorkRateMalus = 0f;
         errorPercentMalus = 0f;
@@ -629,6 +655,7 @@ public class Employe : MonoBehaviour
         succeedPaper = 0;
         moneyMake = 0;
         numberOfPaperDone = 0;
+        animator.SetFloat("WorkSpeed", 1f);
         if (StunRef != null)
         {
             StopCoroutine(StunRef);

@@ -23,7 +23,7 @@ public class SwatManager : MonoBehaviour
     [SerializeField] Color bleucolor;
     [SerializeField] Color vertcolor;
     [SerializeField] GameObject PostIt;
-
+    [SerializeField] GameObject parent;
     private Coroutine HighlightCoroutine;
     private Coroutine SwatLightLittle;
     
@@ -34,11 +34,13 @@ public class SwatManager : MonoBehaviour
 
     public void OnEnable()
     {
+        dayManager.DayBegin += activate;
         dayManager.DayEnd += DeactivateButton;
     }
 
     public void OnDisable()
     {
+        dayManager.DayBegin -= activate;
         dayManager.DayEnd -= DeactivateButton;
     }
 
@@ -47,6 +49,20 @@ public class SwatManager : MonoBehaviour
         
         lightGO();
 
+    }
+    public void activate()
+    {
+        StartCoroutine(Initialization());
+    }
+    public IEnumerator Initialization()
+    {
+        yield return new WaitForSeconds(0.75f);
+        if (numberOfUtilisation > 0)
+        {
+            parent.SetActive(true);
+
+            lightGO();
+        }
     }
     public void ActivateButton()
     {
@@ -57,11 +73,16 @@ public class SwatManager : MonoBehaviour
     }
     public void DeactivateButton()
     {
+        
         if (swatModeActive) 
         {
             numberOfUtilisation++; 
             swatModeActive = false;
             PostIt.SetActive(false);
+        }
+        if (numberOfUtilisation == 0)
+        {
+            parent.SetActive(false);
         }
         SwatModeEnd?.Invoke();
     }

@@ -6,7 +6,7 @@ public class SaveData
     public int currentDay;
     public int currentWeek;
     public int playerMoney;
-    
+    public int swatUtilisation;
     public List<EmployeSaveData> employes = new List<EmployeSaveData>();
     public List<UpgradeSaveData> upgrades = new List<UpgradeSaveData>();
     public List<PoleSaveData> poles = new List<PoleSaveData>();
@@ -70,6 +70,7 @@ public class PoleSaveData
     public List<TimedUpgradeSaveData> timedUpgrades = new List<TimedUpgradeSaveData>();
     public List<UpgradeCountData> upgradeCounts = new List<UpgradeCountData>();
 }
+
 
 [System.Serializable]
 public class TimedUpgradeSaveData

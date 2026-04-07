@@ -7,7 +7,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] DayManager dayManager;
     [SerializeField] QuotatManager quotatManager;
     [SerializeField] ScoreManager scoreManager;
-
+    [SerializeField] UIScore uiscore;
     [SerializeField] GameObject Day;
     [SerializeField] GameObject Score;
     [SerializeField] GameObject Difficulty;
@@ -42,7 +42,7 @@ public class UiManager : MonoBehaviour
         dayManager.DayBegin         += EnableDay;
         dayScript.EndShowing        += DisableDay;
         scoreManager.LaunchScoreAnim += EnableScore;
-        dayManager.DayBegin         += DisableScore;
+        dayManager.DayBegin         += DisableScoreDay;
     }
 
     private void OnDisable()
@@ -51,7 +51,7 @@ public class UiManager : MonoBehaviour
         dayManager.DayBegin         -= EnableDay;
         dayScript.EndShowing        -= DisableDay;
         scoreManager.LaunchScoreAnim -= EnableScore;
-        dayManager.DayBegin         -= DisableScore;
+        dayManager.DayBegin         -= DisableScoreDay;
     }
 
     public void DisableDifficultyUI()
@@ -118,24 +118,38 @@ public class UiManager : MonoBehaviour
         }
     }
 
-    public void DisableScore()
+
+    public void DisableScoreDay()
     {
         ScoreReset?.Invoke();
         Score.SetActive(false);
     }
+    public void DisableScore()
+    {
+        if (uiscore.hasFinish == true)
+        {
+            ScoreReset?.Invoke();
+            Score.SetActive(false);
+        }
+            
+       
+    }
 
-    /// <summary>Ouvre la boutique et notifie le TutorialManager lors de la première ouverture.</summary>
+    
     public void EnableShop()
     {
-        shop.SetActive(true);
-        StartCoroutine(AnimShop());
+        if (uiscore.hasFinish == true)
+        {
+            shop.SetActive(true);
+            StartCoroutine(AnimShop());
 
-        if (_shopOpenedNotified) return;
-        _shopOpenedNotified = true;
-        TutorialManager.NotifyShopOpened();
+            if (_shopOpenedNotified) return;
+            _shopOpenedNotified = true;
+            TutorialManager.NotifyShopOpened();
 
-        if (dayManager.currentDay == 5 && dayManager.currentWeek == 1)
-            TutorialManager.NotifyFirstFridayShop();
+            if (dayManager.currentDay == 5 && dayManager.currentWeek == 1)
+                TutorialManager.NotifyFirstFridayShop();
+        }
     }
 
     public IEnumerator AnimShop()

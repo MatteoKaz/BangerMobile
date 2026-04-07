@@ -76,6 +76,7 @@ public class DayManager : MonoBehaviour
         {
             ResetValueBeforeNextDay?.Invoke();
             rankingManager.rankingFolder.SetActive(true);
+            rankingManager.AnimRanking();
             RankingDay?.Invoke();
         }
 
