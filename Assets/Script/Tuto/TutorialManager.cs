@@ -9,6 +9,7 @@ using UnityEngine.UI;
 /// Gère l'affichage des pop-ups tutoriel et la mise en pause associée.
 /// Reçoit une liste de TutorialStep et s'abonne automatiquement aux bons déclencheurs.
 /// </summary>
+[RequireComponent(typeof(Animator))]
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance { get; private set; }
@@ -111,7 +112,6 @@ public class TutorialManager : MonoBehaviour
         if (string.IsNullOrEmpty(saved)) return;
 
         HashSet<string> playedNames = new HashSet<string>(saved.Split(','));
-
         foreach (TutorialStep seq in sequences)
         {
             if (playedNames.Contains(seq.name))
@@ -119,7 +119,15 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-    /// <summary>Réinitialise les séquences tutoriel jouées (PlayerPrefs + état en mémoire). Accessible via clic droit sur le composant.</summary>
+    /// <summary>Réinitialise les PlayerPrefs tutoriel SANS instance (appelable depuis Awake d'autres scripts).</summary>
+    public static void ResetTutorialPrefsStatic()
+    {
+        PlayerPrefs.DeleteKey(PlayedSequencesPrefsKey);
+        PlayerPrefs.Save();
+        Debug.Log("[TutorialManager] PlayerPrefs tutoriel réinitialisés (static).");
+    }
+
+    /// <summary>Réinitialise les PlayerPrefs ET l'état en mémoire. Accessible via clic droit sur le composant.</summary>
     [ContextMenu("Reset Tutorial PlayerPrefs")]
     public void ResetTutorialPrefs()
     {

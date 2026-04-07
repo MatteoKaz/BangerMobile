@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 /// Sauvegarde et charge l'état du jeu à chaque début de nouvelle journée.
 /// Poles et employés découverts automatiquement dans la scène.
 /// Les options audio sont gérées indépendamment par AudioManager.
+/// Réinitialise les prefs tutoriel si le jeu est lancé au lundi semaine 1.
 /// </summary>
 public class SaveManager : MonoBehaviour
 {
@@ -13,26 +15,26 @@ public class SaveManager : MonoBehaviour
 
     [SerializeField] private DayManager dayManager;
     [SerializeField] private ScoreManager scoreManager;
-    [SerializeField] ShopUpgrade shopUpgrade;
+    [SerializeField] private ShopUpgrade shopUpgrade;
     [SerializeField] private PoleLink[] _poleLinks;
-    [SerializeField] SwatManager swatManager;
-    private Pole[]    _poles;
+    [SerializeField] private SwatManager swatManager;
+
+    private Pole[] _poles;
     private Employe[] _employes;
-    private bool      _initialized = false;
+    private bool _initialized = false;
+    private bool _shouldRelaunchTutorial = false;
     private int[] _basePrices;
+
     private string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
     private void Awake()
     {
-
-        // Mémorise les prix de base AVANT tout load
         _basePrices = new int[shopUpgrade.allUpgrade.Count];
         for (int i = 0; i < shopUpgrade.allUpgrade.Count; i++)
             _basePrices[i] = shopUpgrade.allUpgrade[i].price;
-        GatherReferences();
 
-        if (HasSave())
-            dayManager.skipFirstLaunch = true;
+        GatherReferences();
+        CheckAndResetTutorialIfMonday();
     }
 
     private void OnEnable()
@@ -49,16 +51,59 @@ public class SaveManager : MonoBehaviour
     {
         if (HasSave())
         {
-            Debug.Log("[SaveManager] Save trouvée → chargement.");
             LoadGame();
+
+            if (_shouldRelaunchTutorial)
+                StartCoroutine(RelaunchTutorialNextFrame());
         }
         else
         {
-            Debug.Log("[SaveManager] Aucune save → nouvelle partie.");
             InitNewGame();
         }
 
         _initialized = true;
+    }
+
+    // ── Tutoriel ──────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Vérifie si le jeu démarre au lundi semaine 1 (avec ou sans save)
+    /// et réinitialise les prefs tutoriel dans ce cas.
+    /// </summary>
+    private void CheckAndResetTutorialIfMonday()
+    {
+        if (HasSave())
+        {
+            SaveData peekData = JsonUtility.FromJson<SaveData>(File.ReadAllText(SavePath));
+
+            if (peekData.currentDay == 1 && peekData.currentWeek == 1)
+            {
+                TutorialManager.ResetTutorialPrefsStatic();
+                _shouldRelaunchTutorial = true;
+                Debug.Log("[SaveManager] Lundi S1 détecté (save) → prefs tutoriel réinitialisés.");
+            }
+            else
+            {
+                dayManager.skipFirstLaunch = true;
+            }
+        }
+        else
+        {
+            // Nouvelle partie : jour 1, semaine 1 garanti → reset préventif.
+            TutorialManager.ResetTutorialPrefsStatic();
+            Debug.Log("[SaveManager] Nouvelle partie → prefs tutoriel réinitialisés.");
+        }
+    }
+
+    /// <summary>
+    /// Attend deux frames pour laisser tous les Start() s'exécuter
+    /// avant de relancer l'initialisation du premier jour.
+    /// </summary>
+    private IEnumerator RelaunchTutorialNextFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        StartCoroutine(dayManager.LaunchFirstDayInit());
     }
 
     // ── Initialisation ────────────────────────────────────────────────────────
@@ -66,7 +111,7 @@ public class SaveManager : MonoBehaviour
     /// <summary>Initialise une toute nouvelle partie sans save.</summary>
     private void InitNewGame()
     {
-        //scoreManager.playerMoney = 0;
+        // Réservé pour toute initialisation spécifique à une nouvelle partie.
     }
 
     /// <summary>Découvre automatiquement tous les Pole et Employe de la scène.</summary>
@@ -94,12 +139,11 @@ public class SaveManager : MonoBehaviour
 
         SaveData data = new SaveData
         {
-            currentDay  = dayManager.currentDay,
+            currentDay = dayManager.currentDay,
             currentWeek = dayManager.currentWeek,
             playerMoney = scoreManager.playerMoney
         };
 
-        // Employés
         for (int i = 0; i < _employes.Length; i++)
         {
             Employe emp = _employes[i];
@@ -109,22 +153,23 @@ public class SaveManager : MonoBehaviour
 
             EmployeSaveData empSaveData = new EmployeSaveData
             {
-                sceneEmployeIndex     = i,
-                employeIndex          = emp.employeIndex,
-                timeInEntreprise      = emp.timeInEntreprise,
-                poleType              = emp.mypole != null ? emp.mypole.type : PoleType.RedPole,
-                slotIndex             = slot != null ? slot.slotIndex : 0,
+                sceneEmployeIndex = i,
+                employeIndex = emp.employeIndex,
+                timeInEntreprise = emp.timeInEntreprise,
+                poleType = emp.mypole != null ? emp.mypole.type : PoleType.RedPole,
+                slotIndex = slot != null ? slot.slotIndex : 0,
                 weekNumberOfPaperDone = emp.WeeknumberOfPaperDone,
-                weekSucceedPaper      = emp.WeeksucceedPaper,
-                weekMoneyMake         = emp.WeekmoneyMake,
-                workRateBonus         = emp.employeWorkRateBonus,
-                errorPercentBonus     = emp.employeErrorPercenBonus,
-                stressBonus           = emp.StressBonus,
+                weekSucceedPaper = emp.WeeksucceedPaper,
+                weekMoneyMake = emp.WeekmoneyMake,
+                workRateBonus = emp.employeWorkRateBonus,
+                errorPercentBonus = emp.employeErrorPercenBonus,
+                stressBonus = emp.StressBonus,
                 isMVP = emp.couronne != null && emp.couronne.activeSelf,
-                BonusPaperDone        = emp.BonusPaperDone_Shop,
+                BonusPaperDone = emp.BonusPaperDone_Shop,
                 employeWorkRateBonus_MV = emp.employeWorkRateBonus_MVP,
-                BonusPaperDone_MVP = emp.BonusPaperDone_MVP 
+                BonusPaperDone_MVP = emp.BonusPaperDone_MVP
             };
+
             foreach (var kvp in emp.upgradeCounts)
             {
                 for (int j = 0; j < shopUpgrade.allUpgrade.Count; j++)
@@ -140,11 +185,10 @@ public class SaveManager : MonoBehaviour
                     }
                 }
             }
-        data.employes.Add(empSaveData);
 
-    }
-        // Poles
-       
+            data.employes.Add(empSaveData);
+        }
+
         foreach (PoleLink poleLink in _poleLinks)
         {
             PoleSaveData poleSaveData = new PoleSaveData
@@ -187,9 +231,12 @@ public class SaveManager : MonoBehaviour
                     }
                 }
             }
+
             data.poles.Add(poleSaveData);
         }
+
         data.swatUtilisation = swatManager.numberOfUtilisation;
+
         for (int i = 0; i < shopUpgrade.allUpgrade.Count; i++)
         {
             data.upgrades.Add(new UpgradeSaveData
@@ -198,6 +245,7 @@ public class SaveManager : MonoBehaviour
                 currentPrice = shopUpgrade.allUpgrade[i].price
             });
         }
+
         File.WriteAllText(SavePath, JsonUtility.ToJson(data, true));
         Debug.Log($"[SaveManager] Sauvegarde : Jour {data.currentDay} — Semaine {data.currentWeek}");
     }
@@ -214,7 +262,6 @@ public class SaveManager : MonoBehaviour
         dayManager.RestoreDay(data.currentDay, data.currentWeek);
         scoreManager.playerMoney = data.playerMoney;
 
-        // Employés
         foreach (EmployeSaveData empData in data.employes)
         {
             if (empData.sceneEmployeIndex < 0 || empData.sceneEmployeIndex >= _employes.Length)
@@ -225,20 +272,19 @@ public class SaveManager : MonoBehaviour
 
             emp.SetIdentity(empData.employeIndex);
             emp.timeInEntreprise = empData.timeInEntreprise;
-
             emp.WeeknumberOfPaperDone = empData.weekNumberOfPaperDone;
-            emp.WeeksucceedPaper      = empData.weekSucceedPaper;
-            emp.WeekmoneyMake         = empData.weekMoneyMake;
-
-            emp.employeWorkRateBonus    = empData.workRateBonus;
+            emp.WeeksucceedPaper = empData.weekSucceedPaper;
+            emp.WeekmoneyMake = empData.weekMoneyMake;
+            emp.employeWorkRateBonus = empData.workRateBonus;
             emp.employeErrorPercenBonus = empData.errorPercentBonus;
-            emp.StressBonus             = empData.stressBonus;
+            emp.StressBonus = empData.stressBonus;
             emp.BonusPaperDone_Shop = empData.BonusPaperDone;
             emp.employeWorkRateBonus_MVP = empData.employeWorkRateBonus_MV;
             emp.BonusPaperDone_MVP = empData.BonusPaperDone_MVP;
 
             if (emp.couronne != null)
                 emp.couronne.SetActive(empData.isMVP);
+
             InventorySlot targetSlot = FindSlot(empData.poleType, empData.slotIndex);
             if (targetSlot == null) continue;
 
@@ -247,27 +293,24 @@ public class SaveManager : MonoBehaviour
 
             draggable.transform.SetParent(targetSlot.transform, false);
             draggable.transform.localPosition = Vector3.zero;
-            draggable.parentAfterDrag         = targetSlot.transform;
+            draggable.parentAfterDrag = targetSlot.transform;
 
             if (targetSlot.linkedPole != null)
                 emp.mypole = targetSlot.linkedPole;
+
             foreach (UpgradeCountData ucd in empData.upgradeCounts)
             {
                 Sprite spr = shopUpgrade.allUpgrade[ucd.upgradeIndex].icone;
                 emp.upgradeCounts[spr] = ucd.count;
 
-                // restore les images si pas déjà présentes
                 if (!emp.upgradesImages.Contains(spr))
                     emp.upgradesImages.Add(spr);
             }
+        }
 
-        }
         foreach (UpgradeSaveData upData in data.upgrades)
-        {
             shopUpgrade.allUpgrade[upData.upgradeIndex].price = upData.currentPrice;
-        }
-        // Poles
-        
+
         foreach (PoleSaveData poleData in data.poles)
         {
             PoleLink poleLink = System.Array.Find(_poleLinks, p => p.pole.type == poleData.poleType);
@@ -297,27 +340,36 @@ public class SaveManager : MonoBehaviour
                 Sprite spr = shopUpgrade.allUpgrade[ucd.upgradeIndex].icone;
                 poleLink.pole.upgradeCounts[spr] = ucd.count;
             }
+
             poleLink.SetIcone();
         }
 
         foreach (Pole pole in _poles)
             pole.RebuildEmployeList();
+
         swatManager.numberOfUtilisation = data.swatUtilisation;
         Debug.Log("[SaveManager] Chargement terminé.");
     }
 
     // ── Utilitaires publics ───────────────────────────────────────────────────
 
-    /// <summary>Supprime le fichier de sauvegarde.</summary>
+    /// <summary>Supprime le fichier de sauvegarde et réinitialise le tutoriel.</summary>
     public void DeleteSave()
     {
-        if (HasSave())
-        {
-            File.Delete(SavePath);
-            Debug.Log("[SaveManager] Save supprimée.");
-            for (int i = 0; i < _basePrices.Length; i++)
-                shopUpgrade.allUpgrade[i].price = _basePrices[i];
-        }
+        if (!HasSave()) return;
+
+        File.Delete(SavePath);
+        Debug.Log("[SaveManager] Save supprimée.");
+
+        for (int i = 0; i < _basePrices.Length; i++)
+            shopUpgrade.allUpgrade[i].price = _basePrices[i];
+
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.ResetTutorialPrefs();
+        else
+            TutorialManager.ResetTutorialPrefsStatic();
+
+        Debug.Log("[SaveManager] Tutoriel réinitialisé suite à la suppression de la save.");
     }
 
     /// <summary>Retourne true si un fichier de sauvegarde existe.</summary>
@@ -361,7 +413,7 @@ public class SaveManager : MonoBehaviour
         string path = t.name;
         while (t.parent != null)
         {
-            t    = t.parent;
+            t = t.parent;
             path = t.name + "/" + path;
         }
         return path;

@@ -3,21 +3,28 @@ using UnityEngine;
 
 public class ButtonTimer : MonoBehaviour
 {
-    [SerializeField] GameObject button;
-    [SerializeField] AudioEventDispatcher audioEventManager;
+    [SerializeField] private GameObject button;
+    [SerializeField] private AudioEventDispatcher audioEventManager;
+    [SerializeField] private TimeManager timeManager;
+
+    [Tooltip("Délai en secondes avant de quitter le menu score après le clic.")]
+    [SerializeField] private float exitDelay = 1f;
+
     public AnimationCurve bounceCurve;
-    [SerializeField] TimeManager timeManager;
     public bool OnGoing = false;
+
+    /// <summary>Appelé par le bouton Terminer. Lance l'animation puis attend le délai avant de quitter.</summary>
     public void OnClick()
     {
-        if (OnGoing == true)
+        if (OnGoing)
             return;
+
+        OnGoing = true;
         StartCoroutine(ClickAnim());
     }
-   
-    public IEnumerator ClickAnim()
-    {
 
+    private IEnumerator ClickAnim()
+    {
         Vector2 originalPos = button.transform.localPosition;
         float t = 0f;
 
@@ -29,7 +36,7 @@ public class ButtonTimer : MonoBehaviour
             button.transform.localPosition = Vector2.Lerp(originalPos, originalPos + Vector2.down * 24f, normalized);
             yield return null;
         }
-        timeManager.EndDay();
+
         t = 0f;
 
         // Bounce up
@@ -42,6 +49,11 @@ public class ButtonTimer : MonoBehaviour
         }
 
         button.transform.localPosition = originalPos;
+
+        // Délai avant de quitter le menu score
+        yield return new WaitForSecondsRealtime(exitDelay);
+
+        timeManager.EndDay();
         OnGoing = false;
     }
 }

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a21360199fbacb4aa0c6262bb4d5816, type: 3}
+  m_Name: TutorialSequence 4
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  triggerType: 0
+  triggerDelay: 0
+  steps:
+  - text: "\"F\xE9licitations pour votre promotion.\L\xC0 pr\xE9sent je vous prierez
+      de bien faire attention \xE0 chacune de vos actions. Pour rappel, votre fonction
+      actuelle va \xEAtre de vous occuper du traitement des diff\xE9rents dossiers
+      administratifs de l'entreprise, et \xE9galement de la gestion des diff\xE9rentes
+      \xE9quipes d'employ\xE9s \xE0 votre charge.\"\LSuite \xE0 ces belles paroles,
+      nous allons pouvoir commencer votre formation."
+    stepType: 0
+    pauseOnShow: 1
+    unpauseOnClose: 1
+    overrideButtonSprite: 1
+    buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
+    pressedButtonSprite: {fileID: 21300000, guid: d06654f2adf418e4192ccf8c2d3d6ec8, type: 3}
+    overrideButtonSize: 1
+    buttonSize: {x: 300, y: 300}
+    overrideButtonPosition: 1
+    buttonPosition: {x: -100, y: 0}
+    showBackButton: 0
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 1
+    panelPosition: {x: 0, y: 0}
