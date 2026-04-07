@@ -8,7 +8,7 @@ public class MVPButton : MonoBehaviour
     [SerializeField] private RankingManager rankingManager;
     [SerializeField] private DayManager dayManager;
     [SerializeField] private ClickZonePopup clickZonePopup;
-
+    [SerializeField] private UiManager uiManager;
     private static readonly List<MVPButton> _allInstances = new List<MVPButton>();
     private static bool _anyMVPSetToday = false;
 
@@ -26,11 +26,13 @@ public class MVPButton : MonoBehaviour
     private void OnEnable()
     {
         dayManager.DayBegin += ResetMVPGuard;
+        uiManager.ScoreAnim += CheckDay;
     }
 
     private void OnDisable()
     {
         dayManager.DayBegin -= ResetMVPGuard;
+        uiManager.ScoreAnim -= CheckDay;
     }
 
     private void OnDestroy()
@@ -38,13 +40,41 @@ public class MVPButton : MonoBehaviour
         _allInstances.Remove(this);
         _button.onClick.RemoveListener(OnMVPButtonClicked);
     }
+    private void CheckDay()
+    {
 
+        if (dayManager.currentDay != 5)
+        {
+            _anyMVPSetToday = true;
+            foreach (MVPButton instance in _allInstances)
+            {
+                instance.clickZonePopup?.Block();
+                instance.clickZonePopup.HideMVP();
+            }
+             
+        }
+        else
+        {
+            _anyMVPSetToday = false;
+            foreach (MVPButton instance in _allInstances)
+            {
+                instance.clickZonePopup?.Unblock();
+                instance.clickZonePopup.HideMVP();
+            }
+              
+        }
+    }
     /// <summary>Réinitialise le guard partagé et réautorise tous les tampons MVP à chaque début de journée.</summary>
     private void ResetMVPGuard()
     {
+        
         _anyMVPSetToday = false;
         foreach (MVPButton instance in _allInstances)
-            instance.clickZonePopup?.Unblock();
+          instance.clickZonePopup?.Unblock();
+            
+            
+        
+           
     }
 
     /// <summary>Envoie l'employé de cette fiche au RankingManager comme nouveau MVP choisi.</summary>
@@ -55,7 +85,7 @@ public class MVPButton : MonoBehaviour
             Debug.LogWarning("MVPButton : aucun EmployeFicheInfo trouvé dans les parents.", this);
             return;
         }
-
+        
         if (_anyMVPSetToday) return;
 
         _anyMVPSetToday = true;

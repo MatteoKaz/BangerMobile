@@ -78,6 +78,8 @@ public class TypeWriter : MonoBehaviour
 
     private void EndDialogue()
     {
+        if (fireManager.launch == true)
+            return;
         if (phase == DialoguePhase.Base)
         {
             fireManager.ShowChoiceButtons();

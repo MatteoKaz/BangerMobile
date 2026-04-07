@@ -26,7 +26,7 @@ public class EmployeFicheInfo : MonoBehaviour
     [SerializeField] Image[] listAmelio;
     [SerializeField] RouletteWheel rouletteWheel;
     [SerializeField] private AudioEventDispatcher audioEventDispatcher;
-
+    [SerializeField] GameObject couronne;
     private void OnEnable()
     {
         UiManager.ScoreAnim += SetUpText;
@@ -66,6 +66,7 @@ public class EmployeFicheInfo : MonoBehaviour
             poleImage.sprite = employe.mypole.mySprite;
             typeimage.sprite = employe.typeImage.sprite;
             pole.text = $"Papier réussi :{employe.succeedPaper}/{employe.numberOfPaperDone}";
+            couronne.SetActive(employe.couronne.activeSelf);
 
         }
     }

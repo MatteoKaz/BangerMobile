@@ -89,6 +89,14 @@ public class RankingManager : MonoBehaviour
         employe.BonusPaperDone_MVP = 0f;
         employe.ResetRankingMalus();
         employe.couronne.SetActive(false);
+
+        foreach (Employe employe_ in employes)
+        {
+            employe_.employeWorkRateBonus_MVP = 0f;
+            employe_.BonusPaperDone_MVP = 0f;
+            employe_.ResetRankingMalus();
+            employe_.couronne.SetActive(false);
+        }
     }
 
     /// <summary>

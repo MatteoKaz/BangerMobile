@@ -43,6 +43,8 @@ public class EmployeSaveData
     public float stressBonus;
     public float BonusPaperDone;
     public List<UpgradeCountData> upgradeCounts = new List<UpgradeCountData>();
+    public float employeWorkRateBonus_MV;
+    public float BonusPaperDone_MVP;
 }
 
 [System.Serializable]
