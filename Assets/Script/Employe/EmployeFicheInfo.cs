@@ -55,6 +55,11 @@ public class EmployeFicheInfo : MonoBehaviour
             {
                 listAmelio[i].enabled = employeLink.imagesUpgrades[i].enabled;
                 listAmelio[i].sprite = employeLink.imagesUpgrades[i].sprite;
+                Sprite spr = employeLink.imagesUpgrades[i].sprite;
+                int count = employeLink.myemp.upgradeCounts.ContainsKey(spr) ?
+                                employeLink.myemp.upgradeCounts[spr] : 0;
+                var txt = listAmelio[i].GetComponentInChildren<TextMeshProUGUI>(true);
+                if (txt != null) txt.text = count >= 1 ? $"{count}" : "";
             }
             employeName.text        = employe.employeName;
             employeDescription.text = employe.employeDescription;

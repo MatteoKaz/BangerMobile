@@ -80,6 +80,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private Canvas _canvas;
     private Coroutine _actionCoroutine;
     private Coroutine _autoHideCoroutine;
+    private Coroutine _autoHideCoroutine1;
     private float _holdStartTime;
     private Vector2 _pressScreenPosition;
     private bool _isBlocked = false;
@@ -237,7 +238,32 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
         _autoHideCoroutine = null;
     }
+    public void HideMVP()
+    {
+        if (_autoHideCoroutine1 != null)
+        {
+            StopCoroutine(_autoHideCoroutine1);
+            _autoHideCoroutine1 = null;
+        }
 
+        _autoHideCoroutine1 = StartCoroutine(AutoHideStampMvp());
+    }
+
+    private IEnumerator AutoHideStampMvp()
+    {
+        yield return new WaitForSecondsRealtime(0.25f);
+        if (popup != null)
+        {
+            popup.gameObject.SetActive(false);
+            Debug.Log("HIDE");
+        }
+
+        if (!string.IsNullOrEmpty(_stampGroup)
+            && _activeByGroup.TryGetValue(_stampGroup, out var current) && current == this)
+            _activeByGroup.Remove(_stampGroup);
+
+        _autoHideCoroutine = null;
+    }
     /// <summary>Attend le délai en temps réel puis exécute l'action configurée.</summary>
     private IEnumerator ExecuteActionAfterDelay()
     {

@@ -38,10 +38,11 @@ public class FireManager : MonoBehaviour
     [SerializeField] public float animDurationDialogue;
     [SerializeField] AnimationCurve curveAnimDialogue;
     [SerializeField] AnimationCurve curveAnimDialogueBack;
-    
+    [SerializeField] AnimationCurve curveChoice;
     [SerializeField] public AudioEventDispatcher audioEventDispatcher;
-    
-    private bool launch = false;
+
+    [SerializeField] private ClickZonePopup[] clickZonePopup;
+    public bool launch = false;
     public bool DayLaunch = false;
     public bool LaunchFire = false;
     private bool _ingameWasPlayingBeforeFire = false;
@@ -61,6 +62,10 @@ public class FireManager : MonoBehaviour
     public void ResetAction()
     {
         DayLaunch = false;
+        foreach (ClickZonePopup popup in clickZonePopup)
+        {
+            popup.Unblock();
+        }
     }
     public void ChangeEmploye(EmployeDataz employeData)
     {
@@ -158,7 +163,10 @@ public class FireManager : MonoBehaviour
             LaunchFire = true;
             StartCoroutine(NotFired());
         }
-       
+        foreach (ClickZonePopup popup in clickZonePopup)
+        {
+            popup.Unblock();
+        }
 
     }
 
@@ -224,7 +232,10 @@ public class FireManager : MonoBehaviour
             LaunchFire = true;
             StartCoroutine(Fired());
         }
-        
+        foreach (ClickZonePopup popup in clickZonePopup)
+        {
+            popup.Block();
+        }
 
     }
 
