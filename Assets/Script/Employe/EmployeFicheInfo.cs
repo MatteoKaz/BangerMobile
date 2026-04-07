@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -23,7 +24,9 @@ public class EmployeFicheInfo : MonoBehaviour
     [SerializeField] public Image Image;
     [SerializeField] EmployeLink employeLink;
     [SerializeField] UiManager UiManager;
-    [SerializeField] Image[] listAmelio;
+    [SerializeField] public List<Sprite> listAmelio;
+    [SerializeField] Image[] popUPimagesgo;
+    [SerializeField] GameObject[] AmelioParent;
     [SerializeField] RouletteWheel rouletteWheel;
     [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     [SerializeField] GameObject couronne;
@@ -36,10 +39,12 @@ public class EmployeFicheInfo : MonoBehaviour
     private void OnDisable()
     {
         UiManager.ScoreAnim -= SetUpText;
+        rouletteWheel.EmployeSelected -= SetUpText;
     }
 
     public void SetUpText()
     {
+        listAmelio = new List<Sprite>(employe.upgradesImages);
         StartCoroutine(TextSET());
     }
 
@@ -51,15 +56,26 @@ public class EmployeFicheInfo : MonoBehaviour
         int moneyLost = missedPaper * (employe.mypole.paperValue );
         if (employe != null)
         {
-            for (int i = 0; i < listAmelio.Length; i++)
+            int count = Mathf.Min(popUPimagesgo.Length, AmelioParent.Length);
+            for (int i = 0; i < count; i++)
             {
-                listAmelio[i].enabled = employeLink.imagesUpgrades[i].enabled;
-                listAmelio[i].sprite = employeLink.imagesUpgrades[i].sprite;
-                Sprite spr = employeLink.imagesUpgrades[i].sprite;
-                int count = employeLink.myemp.upgradeCounts.ContainsKey(spr) ?
-                                employeLink.myemp.upgradeCounts[spr] : 0;
-                var txt = listAmelio[i].GetComponentInChildren<TextMeshProUGUI>(true);
-                if (txt != null) txt.text = count >= 1 ? $"{count}" : "";
+                if (i < listAmelio.Count)
+                {
+                    AmelioParent[i].SetActive(true);
+                    popUPimagesgo[i].enabled = true;
+                    popUPimagesgo[i].sprite = listAmelio[i];
+
+                    Sprite spr = listAmelio[i];
+                    int upgradeCount = employe.upgradeCounts.ContainsKey(spr) ?
+                                employe.upgradeCounts[spr] : 0;
+                    var txt = AmelioParent[i].GetComponentInChildren<TextMeshProUGUI>(true);
+                    if (txt != null) txt.text = upgradeCount >= 1 ? $"{upgradeCount}" : "";
+                }
+                else
+                {
+                    AmelioParent[i].SetActive(false);
+                    popUPimagesgo[i].enabled = false;
+                }
             }
             employeName.text        = employe.employeName;
             employeDescription.text = employe.employeDescription;

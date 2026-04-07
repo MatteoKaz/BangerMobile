@@ -245,7 +245,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
             StopCoroutine(_autoHideCoroutine1);
             _autoHideCoroutine1 = null;
         }
-
+        gameObject.SetActive(true);
         _autoHideCoroutine1 = StartCoroutine(AutoHideStampMvp());
     }
 
