@@ -4,18 +4,23 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
 
-    void Awake()
+    private void Awake()
     {
         if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
             Application.targetFrameRate = 60;
-            QualitySettings.vSyncCount = 0;
+            QualitySettings.vSyncCount  = 0;
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        MusicManager.Instance?.PlayMenu();
     }
 }

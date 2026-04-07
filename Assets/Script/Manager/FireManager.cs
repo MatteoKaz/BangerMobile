@@ -44,7 +44,8 @@ public class FireManager : MonoBehaviour
     private bool launch = false;
     public bool DayLaunch = false;
     public bool LaunchFire = false;
-    
+    private bool _ingameWasPlayingBeforeFire = false;
+
     public void OnEnable()
     {
 
@@ -86,6 +87,9 @@ public class FireManager : MonoBehaviour
         EmployeFicheMove.IsLocked = true; // ← verrouille le swipe
 
         FiredScene.SetActive(true);
+        _ingameWasPlayingBeforeFire = true;
+        MusicManager.Instance?.StopIngame();
+        MusicManager.Instance?.PlayFire();
         typeWriter.dialogueText.text = null;
         animator.enabled = false;
         animator.enabled = true;
@@ -205,6 +209,13 @@ public class FireManager : MonoBehaviour
             yield return null;
         }
         EmployeFicheMove.IsLocked = false;
+        MusicManager.Instance?.StopFire();
+        if (_ingameWasPlayingBeforeFire)
+        {
+            _ingameWasPlayingBeforeFire = false;
+            MusicManager.Instance?.PlayIngame();
+        }
+
     }
     public void FiredLauncher()
     {
@@ -282,7 +293,8 @@ public class FireManager : MonoBehaviour
 
             yield return null;
         }
-        yield return new WaitForSeconds(1f);
+        MusicManager.Instance?.StopFire();
+        yield return new WaitForSeconds(1.5f); // laisser le fade se terminer
         Roulette.SetActive(true);
         /*t = 0;
         RectTransform rect = ScoreScene.GetComponent<RectTransform>();
@@ -327,7 +339,13 @@ public class FireManager : MonoBehaviour
         }
             EmployeFicheMove.IsLocked = false; 
         FiredScene.SetActive(false);
-        
+        MusicManager.Instance?.StopFire();
+        if (_ingameWasPlayingBeforeFire)
+        {
+            _ingameWasPlayingBeforeFire = false;
+            MusicManager.Instance?.PlayIngame();
+        }
+
     }
 
 

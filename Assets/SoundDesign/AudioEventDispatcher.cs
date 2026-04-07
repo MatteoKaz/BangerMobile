@@ -55,6 +55,10 @@ public enum AudioType
     Alert,
     GameOver,
     RippingPaper,
+    MusicMenu,
+    MusicIngame,
+    MusicShop,
+    MusicFire,
 }
 [System.Serializable]
 public struct AudioInfos

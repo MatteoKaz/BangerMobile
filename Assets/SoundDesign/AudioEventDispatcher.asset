@@ -142,3 +142,15 @@ MonoBehaviour:
   - audioType: 4
     audioClips:
     - {fileID: 8300000, guid: f6c5a78a6f5475640879dfa583016f02, type: 3}
+  - audioType: 55
+    audioClips:
+    - {fileID: 8300000, guid: 4d17906a9732dbe4cba303a08ede766c, type: 3}
+  - audioType: 54
+    audioClips:
+    - {fileID: 8300000, guid: 7b472449c9bb473478d6590935b217d8, type: 3}
+  - audioType: 53
+    audioClips:
+    - {fileID: 8300000, guid: 6af5e0b324f59ce4dab9c1a7511bc567, type: 3}
+  - audioType: 52
+    audioClips:
+    - {fileID: 8300000, guid: 287bbc334a8d0374cbe66f7ccd567d14, type: 3}

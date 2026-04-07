@@ -52,7 +52,8 @@ public class DayManager : MonoBehaviour
             DayNameChange();
         }
         DayBegin?.Invoke();
-
+            MusicManager.Instance?.StopMenu();
+            MusicManager.Instance?.PlayIngame();
 
     }
     public void RestoreDay(int day, int week)
@@ -108,7 +109,9 @@ public class DayManager : MonoBehaviour
     public void DayOver()
     {
         DayEnd?.Invoke();
+        MusicManager.Instance?.StopIngame();
         StartCoroutine(EndDayFade());
+
     }
 
     public void DayNameChange()

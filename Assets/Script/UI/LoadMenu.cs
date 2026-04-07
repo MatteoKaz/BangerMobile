@@ -12,6 +12,7 @@ public class LoadMenu : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        MusicManager.Instance?.StopMenu();
         SceneManager.LoadScene(mainMenuSceneName);
     }
 

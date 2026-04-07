@@ -254,6 +254,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     {
         if (!string.IsNullOrEmpty(targetSceneName))
         {
+            MusicManager.Instance?.StopAll();
             Time.timeScale = 1f;
             SceneManager.LoadScene(targetSceneName);
         }
@@ -262,6 +263,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
             Debug.LogWarning("ClickZonePopup : aucune scène cible assignée.", this);
         }
     }
+
 
     /// <summary>
     /// Toggle le panel cible. Si un parentPanel est assigné,
