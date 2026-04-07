@@ -32,8 +32,8 @@ MonoBehaviour:
     panelSize: {x: 0, y: 0}
     overridePanelPosition: 0
     panelPosition: {x: 0, y: 0}
-  - text: "Vous pouvez d\xE8s maintenant appuyer sur le bouton de fin de journ\xE9e
-      pour passer \xE0 la suite."
+  - text: "La journ\xE9e se terminera lorsqu\u2019il n\u2019y aura plus aucun document
+      en cours de traitement."
     stepType: 0
     pauseOnShow: 0
     unpauseOnClose: 1
