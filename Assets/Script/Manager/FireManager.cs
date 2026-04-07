@@ -61,6 +61,7 @@ public class FireManager : MonoBehaviour
     }
     public void ResetAction()
     {
+
         DayLaunch = false;
         foreach (ClickZonePopup popup in clickZonePopup)
         {
@@ -80,6 +81,7 @@ public class FireManager : MonoBehaviour
     {
         if (DayLaunch == true)
         {
+            
             audioEventDispatcher?.PlayAudio(AudioType.Wrong); // son de refus
             return;
         }
@@ -216,6 +218,7 @@ public class FireManager : MonoBehaviour
 
             yield return null;
         }
+        FiredScene.SetActive(false);
         EmployeFicheMove.IsLocked = false;
         MusicManager.Instance?.StopFire();
         if (_ingameWasPlayingBeforeFire)
@@ -229,6 +232,7 @@ public class FireManager : MonoBehaviour
     {
         if (LaunchFire ==false)
         {
+            DayLaunch = true;
             LaunchFire = true;
             StartCoroutine(Fired());
         }
@@ -356,7 +360,7 @@ public class FireManager : MonoBehaviour
             _ingameWasPlayingBeforeFire = false;
             MusicManager.Instance?.PlayIngame();
         }
-
+        FiredScene.SetActive(false);
     }
 
 
