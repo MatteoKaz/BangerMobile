@@ -23,7 +23,7 @@ MonoBehaviour:
     Description: "Un nouveau d\xE9part loin de cette entreprise et de tous ces papiers."
     duration: 0
   - UpgradeName: La carotte
-    price: 150
+    price: 230
     type: 0
     category: 0
     upgradeValue: 0.25
@@ -33,7 +33,7 @@ MonoBehaviour:
       d'un employ\xE9"
     duration: 0
   - UpgradeName: Promesse de Promotion
-    price: 75
+    price: 120
     type: 1
     category: 0
     upgradeValue: 0.05
@@ -42,7 +42,7 @@ MonoBehaviour:
     Description: "Permet de baisser le pourcentage d'erreurs d'un employ\xE9."
     duration: 0
   - UpgradeName: "La cam\xE9ra "
-    price: 80
+    price: 95
     type: 2
     category: 0
     upgradeValue: 0.25
@@ -52,7 +52,7 @@ MonoBehaviour:
       t\xE2ches sont r\xE9duits."
     duration: 0
   - UpgradeName: "Caf\xE9 \xE0 volont\xE9"
-    price: 120
+    price: 140
     type: 3
     category: 0
     upgradeValue: 1
@@ -67,7 +67,7 @@ MonoBehaviour:
     upgradeValue: 0.25
     icone: {fileID: -4089885693471589048, guid: 498518a49f070404ca48fd2ee64c24bc, type: 3}
     inflation: 25
-    Description: "Permet de multiplier le pourcentage de revenus,  des employ\xE9es
+    Description: "Permet de multiplier le pourcentage de revenus des employ\xE9s
       d'un p\xF4le"
     duration: 5
   - UpgradeName: Cigarette offerte
@@ -91,7 +91,7 @@ MonoBehaviour:
       d'un p\xF4le."
     duration: 5
   - UpgradeName: Pole promo
-    price: 200
+    price: 240
     type: 7
     category: 1
     upgradeValue: 0.05
@@ -107,6 +107,6 @@ MonoBehaviour:
     icone: {fileID: 7605283500736555, guid: de47872bfe853f84293cedc52f917316, type: 3}
     inflation: 20
     Description: "Permet de faire intervenir une \xE9quipe de force sp\xE9ciale afin
-      de forcer les employ\xE9es \xE0 se remettre au travail s'ils \xE9taient \xE0
+      de forcer les employ\xE9s \xE0 se remettre au travail s'ils \xE9taient \xE0
       l'arr\xEAt, et leurs ajoutent un boost temporaire."
     duration: 0
