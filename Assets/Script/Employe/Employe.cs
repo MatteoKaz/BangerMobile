@@ -312,6 +312,8 @@ public class Employe : MonoBehaviour
                 {
                     employeImage.sprite = idleSprite;
                     animator.SetTrigger("Idle");
+
+                    animator.SetFloat("WorkSpeed", 1f);
                 }
                 yield break;
             }
@@ -375,6 +377,8 @@ public class Employe : MonoBehaviour
                     Light.intensity = 0.3f;
                     Light.color = Color.indianRed;
                     animator.SetTrigger("Surcharge");
+
+                    animator.SetFloat("WorkSpeed", 1f);
                     wasStunned = true;
                     wasWorking = false; // ← reset pour forcer le retrigger working à la sortie du stun
                 }
@@ -430,6 +434,8 @@ public class Employe : MonoBehaviour
         {
             employeImage.sprite = idleSprite;
             animator.SetTrigger("Idle");
+
+            animator.SetFloat("WorkSpeed", 1f);
         }
         mypole.DecrementPaper(currentTask);
         currentTask = null;
@@ -473,6 +479,8 @@ public class Employe : MonoBehaviour
             Light.intensity = 0.3f;
             Light.color = Color.indianRed;
             animator.SetTrigger("Surcharge");
+
+            animator.SetFloat("WorkSpeed", 1f);
         }
         
 
@@ -598,7 +606,9 @@ public class Employe : MonoBehaviour
         Light.intensity = 0.3f;
         Light.color = Color.indianRed;
         animator.SetTrigger("Surcharge");
-        
+
+
+        animator.SetFloat("WorkSpeed", 1f);
         yield return new WaitForSeconds(duration);
         isStunned = false;
         wasStunned = false; 
@@ -616,6 +626,8 @@ public class Employe : MonoBehaviour
             animator.SetTrigger("Idle");
         }
 
+
+       
     }
 
     

@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Fade : MonoBehaviour
+public class Fade1 : MonoBehaviour
 {
     [Header("EffectValue")]
     [SerializeField] float fadeDuration = 1.0f;
@@ -13,28 +13,21 @@ public class Fade : MonoBehaviour
     [Header("ref")]
     [SerializeField] DayManager dayManager;
     [SerializeField] UIDay uIDay;
+    [SerializeField] UiManager uiManager;
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI textMeshPro;
     private Material _mat;
     private void OnEnable()
     {
-        dayManager.DayBegin += LaunchFadeIn;
-        if(uIDay !=null)
-        {
-            uIDay.LaunchFade += LaunchFade;
-            uIDay.LaunchFadeIN += LaunchFadeIn;
-            
-        }
+        dayManager.DayBegin += LaunchFade;
+        dayManager.DayTransition += LaunchFadeIn;
+        uiManager.ScoreAnim += LaunchFadeIn;
+
     }
     private void OnDisable()
     {
-        dayManager.DayBegin -= LaunchFadeIn;
-        if (uIDay != null)
-        {
-            uIDay.LaunchFade -= LaunchFade;
-            uIDay.LaunchFadeIN -= LaunchFadeIn;
-           
-        }
+        dayManager.DayBegin -= LaunchFade;
+        dayManager.DayTransition -= LaunchFadeIn;
     }
 
     void Start()
@@ -79,7 +72,7 @@ public class Fade : MonoBehaviour
     }
     public IEnumerator FadeImage()
     {
-        yield return new WaitForSeconds(fadeImageDelay);
+        yield return new WaitForSeconds(fadeImageDelay+0.5f);
         float t = 0f;
         Color startColor = image.color;
         Color targetColor = new Color(startColor.r, startColor.g, startColor.b, 0f);
