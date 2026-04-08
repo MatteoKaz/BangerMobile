@@ -24,7 +24,7 @@ MonoBehaviour:
       Si jamais il venait \xE0 perdre son travail, cela lui ferait un sacr\xE9 coup
       \xE0 l'ego, qu'il ferait probablement payer cher \xE0 l'entreprise."
     type: 0
-    TypeText: 
+    TypeText: Rapide/fautif
     workRythme: 4
     errorPercent: 0.65
     timeInEntreprise: 0
@@ -54,7 +54,7 @@ MonoBehaviour:
       en Spider-Man.\L Ainsi, malgr\xE9 ses bizarreries, le bureau semble \xEAtre
       le seul endroit o\xF9 ce dernier puisse \xEAtre lui-m\xEAme."
     type: 2
-    TypeText: 
+    TypeText: Stable
     workRythme: 5.5
     errorPercent: 0.8
     timeInEntreprise: 0
@@ -82,7 +82,7 @@ MonoBehaviour:
       et, \xE0 seulement quelques mois de la retraite, ce serait cruel de se d\xE9barrasser
       de cette vieille branche maintenant, non ?"
     type: 1
-    TypeText: 
+    TypeText: "Lent/Appliqu\xE9"
     workRythme: 7
     errorPercent: 0.9
     timeInEntreprise: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
       il reste pour autant un tr\xE8s bon employ\xE9 et coll\xE8gue, faisant preuve
       d\u2019une grande empathie."
     type: 0
-    TypeText: 
+    TypeText: Rapide/fautif
     workRythme: 4
     errorPercent: 0.65
     timeInEntreprise: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
       a fini par d\xE9crocher un CDI qui, suite au probl\xE8me de sant\xE9 de sa
       m\xE8re, est devenu une opportunit\xE9 plus que vitale."
     type: 1
-    TypeText: 
+    TypeText: "Lent/Appliqu\xE9"
     workRythme: 7
     errorPercent: 0.9
     timeInEntreprise: 0
@@ -167,7 +167,7 @@ MonoBehaviour:
       au-del\xE0 de ses relations sociales bancales au sein de l'entreprise, sa productivit\xE9
       est fortement appr\xE9ci\xE9e par ses sup\xE9rieurs."
     type: 2
-    TypeText: 
+    TypeText: Stable
     workRythme: 5.5
     errorPercent: 0.8
     timeInEntreprise: 0
@@ -194,7 +194,7 @@ MonoBehaviour:
       son salaire \xE9tant le seul revenu pour subvenir \xE0 leurs besoins. Sans
       ce travail, elle serait probablement d\xE9j\xE0 condamn\xE9e..."
     type: 0
-    TypeText: 
+    TypeText: Rapide/fautif
     workRythme: 4
     errorPercent: 0.65
     timeInEntreprise: 0
@@ -222,7 +222,7 @@ MonoBehaviour:
       ne peut s'emp\xEAcher de parler, cela est d\xFB \xE0 sa profonde solitude personnelle.
       Ainsi, perdre son travail serait un profond drame pour elle."
     type: 1
-    TypeText: 
+    TypeText: "Lent/Appliqu\xE9"
     workRythme: 7
     errorPercent: 0.9
     timeInEntreprise: 0
@@ -250,7 +250,7 @@ MonoBehaviour:
       pour \xE9ponger ses dettes. Alors, r\xE9fl\xE9chissez bien si vous souhaitez
       la licencier, n'avez-vous donc pas de c\u0153ur ?"
     type: 2
-    TypeText: 
+    TypeText: Stable
     workRythme: 5.5
     errorPercent: 0.8
     timeInEntreprise: 0
@@ -276,7 +276,7 @@ MonoBehaviour:
       mais sa discr\xE9tion la rend bien myst\xE9rieuse : ne divulguant rien de sa
       vie personnelle, personne ne sait r\xE9ellement qui elle est."
     type: 0
-    TypeText: 
+    TypeText: Rapide/fautif
     workRythme: 4
     errorPercent: 0.65
     timeInEntreprise: 0

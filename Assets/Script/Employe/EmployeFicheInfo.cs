@@ -79,7 +79,7 @@ public class EmployeFicheInfo : MonoBehaviour
             }
             employeName.text        = employe.employeName;
             employeDescription.text = employe.employeDescription;
-            employeType.text        = $"\n{employe.employeTypeText}";
+            employeType.text        = $"{employe.employeTypeText}";
             employeRendement.text   = $"Papier raté : {missedPaper} = {moneyLost}$";
             employeMoney.text       = $"Efficacité: 1/{employe.employeWorkRate}s";
             tempsinEntreprise.text  = $"Apport: {employe.moneyMake}$";

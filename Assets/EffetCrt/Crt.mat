@@ -75,12 +75,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BloomIntensity: 0.06
+    - _BloomIntensity: 0.3
     - _BloomThreshold: 0.04
-    - _BlurSize: 0.0004
+    - _BlurSize: 0.00046
     - _Blur_Offset: 0.000207
     - _CornerRadius: 0.121
-    - _DistortionChromatic: 0.0018
+    - _DistortionChromatic: 0.0045
     - _DistortionStrength: 0.03
     - _EdgeSoftness: 0.0718
     - _EnableExternalAlpha: 0
@@ -88,10 +88,10 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ScanLine_Speed: 0.141
-    - _ScanlineCount: 1158.1
-    - _ScanlineIntensity: 0.025
+    - _ScanlineCount: 1157.58
+    - _ScanlineIntensity: 0.291
     - _ScanlineSpeed: 80.8
-    - _VignetteIntensity: 0.54
+    - _VignetteIntensity: 0.47
     - _XRMotionVectorsPass: 1
     - _ZWrite: 0
     - _ZoneH: 0.407
