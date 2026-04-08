@@ -14,4 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
   triggerType: 11
   triggerDelay: 0
-  steps: []
+  steps:
+  - text: 
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 0
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 0}
+    pressedButtonSprite: {fileID: 0}
+    overrideButtonSize: 0
+    buttonSize: {x: 0, y: 0}
+    overrideButtonPosition: 0
+    buttonPosition: {x: 0, y: 0}
+    showBackButton: 0
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 0
+    panelPosition: {x: 0, y: 0}

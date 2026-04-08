@@ -105,15 +105,52 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     }
 
     /// <summary>Bloque l'affichage du tampon jusqu'au prochain Unblock.</summary>
-    public void Block() => _isBlocked = true;
+    public void Block()
+    {
+        Debug.Log($"[ClickZonePopup] Block() appelé sur {gameObject.name}");
+        _isBlocked = true;
+    }
 
     /// <summary>Réautorise l'affichage du tampon.</summary>
-    public void Unblock() => _isBlocked = false;
+    public void Unblock()
+    {
+        Debug.Log($"[ClickZonePopup] Unblock() appelé sur {gameObject.name}");
+        _isBlocked = false;
+    }
+
+    /// <summary>Rend le tampon visible immédiatement avec le sprite léger par défaut.</summary>
+    public void ShowStamp()
+    {
+        Debug.Log($"[ClickZonePopup] ShowStamp() — popup null: {popup == null} | popupImage null: {popupImage == null} | stampLight null: {stampLight == null}");
+
+        if (_autoHideCoroutine1 != null)
+        {
+            StopCoroutine(_autoHideCoroutine1);
+            _autoHideCoroutine1 = null;
+            Debug.Log("[ClickZonePopup] ShowStamp() → _autoHideCoroutine1 annulée");
+        }
+
+        if (popupImage != null && stampLight != null)
+            popupImage.sprite = stampLight;
+
+        if (popup != null)
+        {
+            popup.gameObject.SetActive(true);
+            Debug.Log($"[ClickZonePopup] ShowStamp() → popup activé: {popup.gameObject.activeSelf}");
+        }
+        else
+        {
+            Debug.LogWarning("[ClickZonePopup] ShowStamp() → popup est null !");
+        }
+    }
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        Debug.Log($"[ClickZonePopup] OnPointerUp — _isBlocked: {_isBlocked} | popup actif: {(popup != null ? popup.gameObject.activeSelf.ToString() : "null")}");
+
         if (_isBlocked)
         {
+            Debug.LogWarning("[ClickZonePopup] Clic bloqué (_isBlocked = true)");
             audioEventDispatcher?.PlayAudio(AudioType.Wrong);
             return;
         }
@@ -133,7 +170,9 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         audioEventDispatcher?.PlayAudio(AudioType.Tampon);
 
         float holdDuration = Time.realtimeSinceStartup - _holdStartTime;
-        ApplyStamp(SelectStamp(holdDuration));
+        Sprite selectedSprite = SelectStamp(holdDuration);
+        Debug.Log($"[ClickZonePopup] Durée appui: {holdDuration:F2}s → sprite: {(selectedSprite != null ? selectedSprite.name : "null")}");
+        ApplyStamp(selectedSprite);
 
         if (actionMode == ActionMode.ToggleStamp)
         {
@@ -144,6 +183,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         {
             MovePopupToClick(_pressScreenPosition);
             popup.gameObject.SetActive(true);
+            Debug.Log($"[ClickZonePopup] popup SetActive(true) après clic. Mode: {actionMode}");
             _actionCoroutine = StartCoroutine(ExecuteActionAfterDelay());
         }
     }
@@ -229,6 +269,8 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     /// <summary>Cache le tampon MVP avec un court délai (usage MVPButton uniquement).</summary>
     public void HideMVP()
     {
+        Debug.Log($"[ClickZonePopup] HideMVP() appelé sur {gameObject.name}");
+
         if (_autoHideCoroutine1 != null)
         {
             StopCoroutine(_autoHideCoroutine1);
@@ -241,6 +283,9 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private IEnumerator AutoHideStampMvp()
     {
         yield return new WaitForSecondsRealtime(0.25f);
+
+        Debug.Log("[ClickZonePopup] AutoHideStampMvp → popup caché");
+
         if (popup != null)
             popup.gameObject.SetActive(false);
 
@@ -250,6 +295,31 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
         _autoHideCoroutine = null;
     }
+    /// <summary>Arrête toutes les coroutines en cours et cache le popup immédiatement.</summary>
+    public void ResetStamp()
+    {
+        if (_actionCoroutine != null)
+        {
+            StopCoroutine(_actionCoroutine);
+            _actionCoroutine = null;
+        }
+
+        if (_autoHideCoroutine != null)
+        {
+            StopCoroutine(_autoHideCoroutine);
+            _autoHideCoroutine = null;
+        }
+
+        if (_autoHideCoroutine1 != null)
+        {
+            StopCoroutine(_autoHideCoroutine1);
+            _autoHideCoroutine1 = null;
+        }
+
+        if (popup != null)
+            popup.gameObject.SetActive(false);
+    }
+
 
     /// <summary>Cache le tampon immédiatement sans animation ni délai.</summary>
     public void HideStamp()

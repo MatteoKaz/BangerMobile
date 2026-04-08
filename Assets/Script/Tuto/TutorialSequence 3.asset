@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TutorialSequence 3
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
   triggerType: 4
-  triggerDelay: 10
+  triggerDelay: 0
   steps:
   - text: "Mais attention \xE0 la surcharge ! Si vous envoyez trop de documents \xE0
       un p\xF4le, les employ\xE9s se retrouveront \"surcharg\xE9s\"."
@@ -51,6 +51,24 @@ MonoBehaviour:
     panelPosition: {x: 0, y: 0}
   - text: "Vous pouvez \xE0 tout moment r\xE9organiser vos employ\xE9s afin d\u2019optimiser
       votre gestion."
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 0
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
+    pressedButtonSprite: {fileID: 21300000, guid: d06654f2adf418e4192ccf8c2d3d6ec8, type: 3}
+    overrideButtonSize: 0
+    buttonSize: {x: 300, y: 300}
+    overrideButtonPosition: 0
+    buttonPosition: {x: -100, y: 0}
+    showBackButton: 1
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 0
+    panelPosition: {x: 0, y: 0}
+  - text: "Chaque papier a une dur\xE9e de vie avant qu\u2019il ne se d\xE9truise.
+      \r\nSi vous ne les triez pas dans le temps imparti, vous perdrez alors ces
+      derniers. "
     stepType: 0
     pauseOnShow: 0
     unpauseOnClose: 1

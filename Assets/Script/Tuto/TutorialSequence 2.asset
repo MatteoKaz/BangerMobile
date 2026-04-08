@@ -52,6 +52,57 @@ MonoBehaviour:
       de sa productivit\xE9."
     stepType: 0
     pauseOnShow: 0
+    unpauseOnClose: 0
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
+    pressedButtonSprite: {fileID: 21300000, guid: d06654f2adf418e4192ccf8c2d3d6ec8, type: 3}
+    overrideButtonSize: 0
+    buttonSize: {x: 300, y: 300}
+    overrideButtonPosition: 0
+    buttonPosition: {x: -100, y: 0}
+    showBackButton: 1
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 0
+    panelPosition: {x: 0, y: 0}
+  - text: "Les post-it sous l'\xE9cran montrent que des papiers ont \xE9t\xE9 envoy\xE9s
+      dans les p\xF4les. "
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 0
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
+    pressedButtonSprite: {fileID: 21300000, guid: d06654f2adf418e4192ccf8c2d3d6ec8, type: 3}
+    overrideButtonSize: 0
+    buttonSize: {x: 300, y: 300}
+    overrideButtonPosition: 0
+    buttonPosition: {x: -100, y: 0}
+    showBackButton: 1
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 0
+    panelPosition: {x: 0, y: 0}
+  - text: "La barre montre la dur\xE9e de vie du papier dans le p\xF4le avant qu'il
+      ne se d\xE9truise, s'il n'est pas trait\xE9 par un employ\xE9. "
+    stepType: 0
+    pauseOnShow: 0
+    unpauseOnClose: 0
+    overrideButtonSprite: 0
+    buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
+    pressedButtonSprite: {fileID: 21300000, guid: d06654f2adf418e4192ccf8c2d3d6ec8, type: 3}
+    overrideButtonSize: 0
+    buttonSize: {x: 300, y: 300}
+    overrideButtonPosition: 0
+    buttonPosition: {x: -100, y: 0}
+    showBackButton: 1
+    overridePanelSize: 0
+    panelSize: {x: 0, y: 0}
+    overridePanelPosition: 0
+    panelPosition: {x: 0, y: 0}
+  - text: "Quand l\u2019ic\xF4ne d'un personnage est dessus, cela signifie qu'un
+      employ\xE9 est actuellement sur la t\xE2che. "
+    stepType: 0
+    pauseOnShow: 0
     unpauseOnClose: 1
     overrideButtonSprite: 1
     buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}

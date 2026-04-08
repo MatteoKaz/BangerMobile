@@ -9,6 +9,8 @@ public class MVPButton : MonoBehaviour
     [SerializeField] private DayManager dayManager;
     [SerializeField] private ClickZonePopup clickZonePopup;
     [SerializeField] private UiManager uiManager;
+    [SerializeField] private ParticleSystem mvpParticle;
+
     private static readonly List<MVPButton> _allInstances = new List<MVPButton>();
     private static bool _anyMVPSetToday = false;
 
@@ -40,9 +42,9 @@ public class MVPButton : MonoBehaviour
         _allInstances.Remove(this);
         _button.onClick.RemoveListener(OnMVPButtonClicked);
     }
+
     private void CheckDay()
     {
-
         if (dayManager.currentDay != 5)
         {
             _anyMVPSetToday = true;
@@ -51,7 +53,6 @@ public class MVPButton : MonoBehaviour
                 instance.clickZonePopup?.Block();
                 instance.clickZonePopup.HideMVP();
             }
-             
         }
         else
         {
@@ -61,23 +62,18 @@ public class MVPButton : MonoBehaviour
                 instance.clickZonePopup?.Unblock();
                 instance.clickZonePopup.HideMVP();
             }
-              
         }
     }
+
     /// <summary>Réinitialise le guard partagé et réautorise tous les tampons MVP à chaque début de journée.</summary>
     private void ResetMVPGuard()
     {
-        
         _anyMVPSetToday = false;
         foreach (MVPButton instance in _allInstances)
-          instance.clickZonePopup?.Unblock();
-            
-            
-        
-           
+            instance.clickZonePopup?.Unblock();
     }
 
-    /// <summary>Envoie l'employé de cette fiche au RankingManager comme nouveau MVP choisi.</summary>
+    /// <summary>Envoie l'employé de cette fiche au RankingManager comme nouveau MVP choisi et joue la particule.</summary>
     private void OnMVPButtonClicked()
     {
         if (_ficheInfo == null)
@@ -85,7 +81,7 @@ public class MVPButton : MonoBehaviour
             Debug.LogWarning("MVPButton : aucun EmployeFicheInfo trouvé dans les parents.", this);
             return;
         }
-        
+
         if (_anyMVPSetToday) return;
 
         _anyMVPSetToday = true;
@@ -93,5 +89,11 @@ public class MVPButton : MonoBehaviour
             instance.clickZonePopup?.Block();
 
         rankingManager.SetChooseMVP(_ficheInfo.LinkedEmploye);
+
+        if (mvpParticle != null)
+        {
+            mvpParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            mvpParticle.Play();
+        }
     }
 }

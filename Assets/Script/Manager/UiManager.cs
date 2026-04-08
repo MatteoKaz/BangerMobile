@@ -26,7 +26,6 @@ public class UiManager : MonoBehaviour
 
     [Header("Score Button")]
     [SerializeField] Button scoreButton;
-    [SerializeField] float waitTimeBeforeButtonActive = 1f;
 
     public event Action DifficultyChosenAnim;
     public event Action DifficultyShownAnim;
@@ -39,25 +38,30 @@ public class UiManager : MonoBehaviour
     [SerializeField] public float ybasePose = 960f;
     [SerializeField] GameObject ScoreUi;
     [SerializeField] AnimationCurve curveAnim;
+
     bool doOnce = false;
     private bool _shopOpenedNotified = false;
 
+    private bool scoreAnimationFinished = false;
+
+    private const float DelayBeforeButtonOnClickActive = 1f;
+
     private void OnEnable()
     {
-        quotatManager.QuotatIsSet    += DisableDifficultyUI;
-        dayManager.DayBegin          += EnableDay;
-        dayScript.EndShowing         += DisableDay;
+        quotatManager.QuotatIsSet += DisableDifficultyUI;
+        dayManager.DayBegin += EnableDay;
+        dayScript.EndShowing += DisableDay;
         scoreManager.LaunchScoreAnim += EnableScore;
-        dayManager.DayBegin          += DisableScoreDay;
+        dayManager.DayBegin += DisableScoreDay;
     }
 
     private void OnDisable()
     {
-        quotatManager.QuotatIsSet    -= DisableDifficultyUI;
-        dayManager.DayBegin          -= EnableDay;
-        dayScript.EndShowing         -= DisableDay;
+        quotatManager.QuotatIsSet -= DisableDifficultyUI;
+        dayManager.DayBegin -= EnableDay;
+        dayScript.EndShowing -= DisableDay;
         scoreManager.LaunchScoreAnim -= EnableScore;
-        dayManager.DayBegin          -= DisableScoreDay;
+        dayManager.DayBegin -= DisableScoreDay;
     }
 
     /// <summary>Déclenche la fermeture de l'UI de difficulté.</summary>
@@ -97,10 +101,12 @@ public class UiManager : MonoBehaviour
         Day.SetActive(false);
     }
 
-    /// <summary>Active le panel de score, désactive le bouton, et lance les animations associées.</summary>
+    /// <summary>Active le panel de score et lance l'animation.</summary>
     public void EnableScore()
     {
         doOnce = false;
+        scoreAnimationFinished = false;
+
         Score.SetActive(true);
         DifficultyChoice.SetActive(true);
         Day.SetActive(true);
@@ -110,6 +116,7 @@ public class UiManager : MonoBehaviour
 
         StartCoroutine(AnimScore());
         StartCoroutine(EnableScoreButton());
+
         ScoreAnim?.Invoke();
         dayResetOpacity?.Invoke();
 
@@ -117,19 +124,13 @@ public class UiManager : MonoBehaviour
             TutorialManager.NotifyFirstFridayScore();
     }
 
-    /// <summary>Attend le délai configuré puis rend le bouton interactable.</summary>
-    private const float DelayBeforeButtonOnClickActive = 1f;
-
-    /// <summary>
-    /// Attend le délai configuré puis rend le bouton interactable,
-    /// puis attend 1 seconde supplémentaire avant de réactiver ses événements onClick.
-    /// </summary>
+    /// <summary>Attend la fin de l'animation du score pour activer le bouton.</summary>
     public IEnumerator EnableScoreButton()
     {
         if (scoreButton != null)
             scoreButton.onClick.RemoveAllListeners();
 
-        yield return new WaitForSeconds(waitTimeBeforeButtonActive);
+        yield return new WaitUntil(() => scoreAnimationFinished && uiscore.hasFinish);
 
         if (scoreButton != null)
             scoreButton.interactable = true;
@@ -143,54 +144,58 @@ public class UiManager : MonoBehaviour
         }
     }
 
-
-    /// <summary>Anime l'entrée du panel de score.</summary>
+    /// <summary>Animation d'entrée du score.</summary>
     public IEnumerator AnimScore()
     {
-        Debug.LogWarning("je lance");
         RectTransform rect = ScoreUi.GetComponent<RectTransform>();
 
-        Vector2 startpos  = new Vector2(rect.anchoredPosition.x, ybasePose);
+        Vector2 startpos = new Vector2(rect.anchoredPosition.x, ybasePose);
         Vector2 targetPos = new Vector2(rect.anchoredPosition.x, yendPose);
+
         float t = 0;
 
         while (t < animDuration)
         {
             t += Time.deltaTime;
+
             float normalized = t / animDuration;
-            float curve      = curveAnim.Evaluate(normalized);
+            float curve = curveAnim.Evaluate(normalized);
+
             rect.anchoredPosition = Vector2.Lerp(targetPos, startpos, curve);
+
             yield return null;
         }
+
+        scoreAnimationFinished = true;
     }
 
     /// <summary>Masque immédiatement le score au début d'une nouvelle journée.</summary>
     public void DisableScoreDay()
     {
-        if (doOnce ==false)
+        if (!doOnce)
         {
             doOnce = true;
             StartCoroutine(DisableScoreDayCoroutine());
         }
-       
     }
+
     public IEnumerator DisableScoreDayCoroutine()
     {
         yield return new WaitForSeconds(0.1f);
         ScoreReset?.Invoke();
         Score.SetActive(false);
     }
-    /// <summary>Lance la coroutine de fermeture du score depuis un bouton UI.</summary>
+
+    /// <summary>Lance la fermeture du score.</summary>
     public void DisableScore()
     {
-        if (doOnce == false)
+        if (!doOnce)
         {
             doOnce = true;
             StartCoroutine(WaitAndDisableScore());
         }
     }
 
-    /// <summary>Attend que l'animation du score soit terminée, puis masque le panel de score.</summary>
     public IEnumerator WaitAndDisableScore()
     {
         yield return new WaitForSeconds(0.2f);
@@ -198,17 +203,15 @@ public class UiManager : MonoBehaviour
         Score.SetActive(false);
     }
 
-    /// <summary>Lance la coroutine d'ouverture du shop depuis un bouton UI.</summary>
+    /// <summary>Ouvre le shop.</summary>
     public void EnableShop()
     {
-        if (doOnce == false)
+        if (!doOnce)
         {
-            
             StartCoroutine(WaitAndEnableShop());
         }
     }
 
-    /// <summary>Attend que l'animation du score soit terminée, puis affiche le shop et notifie le tutoriel.</summary>
     public IEnumerator WaitAndEnableShop()
     {
         yield return new WaitForSeconds(0.2f);
@@ -217,28 +220,32 @@ public class UiManager : MonoBehaviour
 
         if (_shopOpenedNotified) yield break;
         _shopOpenedNotified = true;
+
         TutorialManager.NotifyShopOpened();
 
         if (dayManager.currentDay == 5 && dayManager.currentWeek == 1)
             TutorialManager.NotifyFirstFridayShop();
     }
 
-    /// <summary>Anime l'entrée du panel de shop.</summary>
+    /// <summary>Animation d'ouverture du shop.</summary>
     public IEnumerator AnimShop()
     {
-        Debug.LogWarning("je lance");
         RectTransform rect = ShopScene.GetComponent<RectTransform>();
 
-        Vector2 startpos  = new Vector2(rect.anchoredPosition.x, 2500f);
+        Vector2 startpos = new Vector2(rect.anchoredPosition.x, 2500f);
         Vector2 targetPos = new Vector2(rect.anchoredPosition.x, 0f);
+
         float t = 0;
 
         while (t < 2f)
         {
             t += Time.deltaTime;
+
             float normalized = t / animDuration;
-            float curve      = curveAnim.Evaluate(normalized);
+            float curve = curveAnim.Evaluate(normalized);
+
             rect.anchoredPosition = Vector2.Lerp(startpos, targetPos, curve);
+
             yield return null;
         }
     }

@@ -17,7 +17,7 @@ MonoBehaviour:
   steps:
   - text: "Chaque journ\xE9e commence par le choix d'un objectif de chiffre d'affaires.\r\n"
     stepType: 0
-    pauseOnShow: 0
+    pauseOnShow: 1
     unpauseOnClose: 0
     overrideButtonSprite: 0
     buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
@@ -52,7 +52,7 @@ MonoBehaviour:
       sera important."
     stepType: 0
     pauseOnShow: 0
-    unpauseOnClose: 0
+    unpauseOnClose: 1
     overrideButtonSprite: 1
     buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
     pressedButtonSprite: {fileID: 21300000, guid: d06654f2adf418e4192ccf8c2d3d6ec8, type: 3}
