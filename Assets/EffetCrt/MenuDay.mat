@@ -101,7 +101,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Rot: 0
-    - _Scale: 1.15
+    - _Scale: 1.18
     - _ScanLine_Speed: 0.17
     - _Speed: 2.5
     - _XRMotionVectorsPass: 1
