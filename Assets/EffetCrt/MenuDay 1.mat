@@ -112,8 +112,8 @@ Material:
     - _size_1: 0.1
     - _size_2: 0.001
     m_Colors:
-    - _Color: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
-    - _Direction: {r: 0, g: 0.015, b: 0, a: 0}
+    - _Color: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
+    - _Direction: {r: 0, g: 0.019, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

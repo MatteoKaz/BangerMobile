@@ -138,7 +138,7 @@ public class QuotatManager : MonoBehaviour
         float t = Mathf.Clamp01((week - 1f) / 9f);
         switch (difficulty)
         {
-            case 0: return Mathf.Lerp(1.7f, 0.95f, t); // Easy S12x, S10 1.5x
+            case 0: return Mathf.Lerp(1.85f, 0.95f, t); // Easy S12x, S10 1.5x
             case 1: return Mathf.Lerp(1.55f, 0.65f, t); // Mid  S11.5x, S10 1x
             case 2: return Mathf.Lerp(1.25f, 0.45f, t); // Hard S11.1x, S100.6x
             default: return 1f;
