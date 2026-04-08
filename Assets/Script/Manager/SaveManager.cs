@@ -29,9 +29,8 @@ public class SaveManager : MonoBehaviour
 
     private void Awake()
     {
-        _basePrices = new int[shopUpgrade.allUpgrade.Count];
-        for (int i = 0; i < shopUpgrade.allUpgrade.Count; i++)
-            _basePrices[i] = shopUpgrade.allUpgrade[i].price;
+        
+        
 
         GatherReferences();
         CheckAndResetTutorialIfMonday();
@@ -365,7 +364,7 @@ public class SaveManager : MonoBehaviour
         Debug.Log("[SaveManager] Save supprimée.");
 
         for (int i = 0; i < _basePrices.Length; i++)
-            shopUpgrade.allUpgrade[i].price = _basePrices[i];
+            shopUpgrade.allUpgrade[i].price = shopUpgrade.allUpgrade[i].basePrice;
 
         if (TutorialManager.Instance != null)
             TutorialManager.Instance.ResetTutorialPrefs();

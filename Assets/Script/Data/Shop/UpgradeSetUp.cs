@@ -307,6 +307,16 @@ public class UpgradeSetUp : MonoBehaviour
        
         
     }
+    public void ResetPrices()
+    {
+        RefOfItem[] items = parentUpgrade.GetComponentsInChildren<RefOfItem>();
+        foreach (RefOfItem item in items)
+        {
+            item.priceOfItem = shopUpgrade.allUpgrade[item.index].price;
+            item.priceText.text = $"{item.priceOfItem}$";
+        }
+
+    }
 
 }
 

@@ -27,6 +27,7 @@ public enum CategoryUpgrade
 public class UpgradeData
 {
     public string UpgradeName;
+    public int basePrice;
     public int price ;
     public TypeOfUpgrade type;
     public CategoryUpgrade category;
