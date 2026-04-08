@@ -24,12 +24,14 @@ public class FireManager : MonoBehaviour
     [SerializeField] public float animDuration;
     [SerializeField] public float yendPose = 2890f;
     [SerializeField] public float ybasePose = 960f;
+    private float yendPoseRoulette = 0f;
+    private  float ybasePoseRoulette = 2800f;
     [SerializeField] AnimationCurve curveAnim;
 
     [Header("Tube")]
     [SerializeField] public float animDurationTube;
     [SerializeField] public float yendPoseTube = 2890f;
-    [SerializeField] public float ybasePoseTube = 960f;
+    [SerializeField] public float ybasePoseTube = 3000f;
     [SerializeField] AnimationCurve curveAnimTube;
 
     [Header("AnimScoreDialogue")]
@@ -310,6 +312,20 @@ public class FireManager : MonoBehaviour
         MusicManager.Instance?.StopFire();
         yield return new WaitForSeconds(1.5f); // laisser le fade se terminer
         Roulette.SetActive(true);
+        RectTransform rectTubeRoulette = Roulette.GetComponent<RectTransform>();
+
+        Vector2 startposRoulette = new Vector2(0, 0);
+        Vector2 targetPosRoulette = new Vector2(1, 1);
+        t = 0;
+        while (t<1)
+        {
+            t += Time.deltaTime;
+            float normalized = t / 0.1f;
+            float curve = curveAnim.Evaluate(normalized);
+            rectTubeRoulette.localScale = Vector2.Lerp(startposRoulette, targetPosRoulette, curve);
+            yield return null;
+        }
+
         /*t = 0;
         RectTransform rect = ScoreScene.GetComponent<RectTransform>();
 
@@ -333,9 +349,23 @@ public class FireManager : MonoBehaviour
     public IEnumerator QuitFired()
     {
         typeWriter.dialogueText.text = null;
-        yield return new WaitForSeconds(0.5f); 
-        Roulette.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        RectTransform rectTubeRoulette = Roulette.GetComponent<RectTransform>();
+
+        Vector2 startposRoulette = new Vector2(0, 0);
+        Vector2 targetPosRoulette = new Vector2(1, 1);
         float t = 0;
+        while (t < 1)
+        {
+            t += Time.deltaTime;
+            float normalized = t / 0.2f;
+            float curve = curveAnim.Evaluate(normalized);
+            rectTubeRoulette.localScale = Vector2.Lerp(targetPosRoulette, startposRoulette, curve);
+            yield return null;
+        }
+
+        Roulette.SetActive(false);
+         t = 0;
         RectTransform rect = ScoreScene.GetComponent<RectTransform>();
 
         Vector2 startpos = new Vector2(rect.anchoredPosition.x, ybasePose);

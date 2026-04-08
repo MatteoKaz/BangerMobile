@@ -14,6 +14,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] Button button;
     [SerializeField] GameObject timer;
     [SerializeField] PoleManager poleManager;
+    [SerializeField] GameObject NumberOfPaper;
     public void OnEnable()
     {
         //QuotatManager.QuotatChosen += LaunchTimer;
@@ -32,12 +33,14 @@ public class TimeManager : MonoBehaviour
         if (currentTimer != null)
             StopCoroutine(currentTimer);
         timer.SetActive(true);
+        NumberOfPaper.SetActive(false);
         currentTimer = StartCoroutine(DayTimer());
     }
     public void EndDay()
     {
         //button.interactable = false;
         TimerEnded?.Invoke();
+
     }
 
     /*public void LaunchTimer()
@@ -75,6 +78,7 @@ public class TimeManager : MonoBehaviour
         TimerEnded?.Invoke();
         yield return new WaitForSeconds(0.5f);
         timer.SetActive(false);
+        NumberOfPaper.SetActive(true);
     }
 
 }

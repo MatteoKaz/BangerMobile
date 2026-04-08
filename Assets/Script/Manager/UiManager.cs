@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,7 +39,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] public float ybasePose = 960f;
     [SerializeField] GameObject ScoreUi;
     [SerializeField] AnimationCurve curveAnim;
-
+    bool doOnce = false;
     private bool _shopOpenedNotified = false;
 
     private void OnEnable()
@@ -99,6 +100,7 @@ public class UiManager : MonoBehaviour
     /// <summary>Active le panel de score, désactive le bouton, et lance les animations associées.</summary>
     public void EnableScore()
     {
+        doOnce = false;
         Score.SetActive(true);
         DifficultyChoice.SetActive(true);
         Day.SetActive(true);
@@ -165,20 +167,33 @@ public class UiManager : MonoBehaviour
     /// <summary>Masque immédiatement le score au début d'une nouvelle journée.</summary>
     public void DisableScoreDay()
     {
+        if (doOnce ==false)
+        {
+            doOnce = true;
+            StartCoroutine(DisableScoreDayCoroutine());
+        }
+       
+    }
+    public IEnumerator DisableScoreDayCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
         ScoreReset?.Invoke();
         Score.SetActive(false);
     }
-
     /// <summary>Lance la coroutine de fermeture du score depuis un bouton UI.</summary>
     public void DisableScore()
     {
-        StartCoroutine(WaitAndDisableScore());
+        if (doOnce == false)
+        {
+            doOnce = true;
+            StartCoroutine(WaitAndDisableScore());
+        }
     }
 
     /// <summary>Attend que l'animation du score soit terminée, puis masque le panel de score.</summary>
     public IEnumerator WaitAndDisableScore()
     {
-        yield return new WaitUntil(() => uiscore.hasFinish == true);
+        yield return new WaitForSeconds(0.2f);
         ScoreReset?.Invoke();
         Score.SetActive(false);
     }
@@ -186,13 +201,17 @@ public class UiManager : MonoBehaviour
     /// <summary>Lance la coroutine d'ouverture du shop depuis un bouton UI.</summary>
     public void EnableShop()
     {
-        StartCoroutine(WaitAndEnableShop());
+        if (doOnce == false)
+        {
+            
+            StartCoroutine(WaitAndEnableShop());
+        }
     }
 
     /// <summary>Attend que l'animation du score soit terminée, puis affiche le shop et notifie le tutoriel.</summary>
     public IEnumerator WaitAndEnableShop()
     {
-        yield return new WaitUntil(() => uiscore.hasFinish == true);
+        yield return new WaitForSeconds(0.2f);
         shop.SetActive(true);
         StartCoroutine(AnimShop());
 

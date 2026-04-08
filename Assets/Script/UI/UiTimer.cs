@@ -7,6 +7,8 @@ public class UiTimer : MonoBehaviour
     [SerializeField] TextMeshProUGUI textMeshPro;
     [SerializeField] TextMeshProUGUI textMeshProTimerEnd;
     [SerializeField] PaperSpawner spawner;
+    
+
     public void Update()
     {
         if (timeManager != null)
