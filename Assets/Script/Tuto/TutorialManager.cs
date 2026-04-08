@@ -51,7 +51,8 @@ public class TutorialManager : MonoBehaviour
     private readonly HashSet<TutorialStep> _playedSequences = new HashSet<TutorialStep>();
     private const string PlayedSequencesPrefsKey = "TutorialPlayedSequences";
 
-    private readonly List<(Action handler, TutorialTriggerType type)> _handlers = new List<(Action, TutorialTriggerType)>();
+    private readonly List<(Action handler, TutorialTriggerType type)> _handlers
+        = new List<(Action, TutorialTriggerType)>();
 
     public event Action<TutorialStep> TutorialEnded;
 
@@ -66,6 +67,8 @@ public class TutorialManager : MonoBehaviour
     public static event Action OnFirstFridayScoreStatic;
     public static event Action OnFirstFridayRankingStatic;
     public static event Action OnFirstFridayShopStatic;
+    public static event Action OnDifficultyPanelOpenedStatic;
+    public static event Action OnDifficultyPanelClosedStatic;   // ← nouveau
 
     private void Awake()
     {
@@ -83,14 +86,14 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        _nextButtonRect        = nextButton.GetComponent<RectTransform>();
-        _defaultButtonSprite   = nextButtonImage.sprite;
-        _defaultSpriteState    = nextButton.spriteState;
-        _defaultButtonSize     = _nextButtonRect.sizeDelta;
+        _nextButtonRect = nextButton.GetComponent<RectTransform>();
+        _defaultButtonSprite = nextButtonImage.sprite;
+        _defaultSpriteState = nextButton.spriteState;
+        _defaultButtonSize = _nextButtonRect.sizeDelta;
         _defaultButtonPosition = _nextButtonRect.anchoredPosition;
 
-        _popupPanelRect       = popupPanel.GetComponent<RectTransform>();
-        _defaultPanelSize     = _popupPanelRect.sizeDelta;
+        _popupPanelRect = popupPanel.GetComponent<RectTransform>();
+        _defaultPanelSize = _popupPanelRect.sizeDelta;
         _defaultPanelPosition = _popupPanelRect.anchoredPosition;
 
         popupPanel.SetActive(false);
@@ -102,9 +105,9 @@ public class TutorialManager : MonoBehaviour
         Debug.Log($"[TutorialManager] Start — {sequences?.Count ?? 0} séquences chargées.");
 
         if (difficultyPanel == null) Debug.LogWarning("[TutorialManager] difficultyPanel non assigné.");
-        if (scorePanel == null)      Debug.LogWarning("[TutorialManager] scorePanel non assigné.");
-        if (shopPanel == null)       Debug.LogWarning("[TutorialManager] shopPanel non assigné.");
-        if (dayManager == null)      Debug.LogError("[TutorialManager] dayManager non assigné !");
+        if (scorePanel == null) Debug.LogWarning("[TutorialManager] scorePanel non assigné.");
+        if (shopPanel == null) Debug.LogWarning("[TutorialManager] shopPanel non assigné.");
+        if (dayManager == null) Debug.LogError("[TutorialManager] dayManager non assigné !");
 
         LoadPlayedSequences();
         SubscribeToTriggers();
@@ -119,17 +122,19 @@ public class TutorialManager : MonoBehaviour
         {
             switch (type)
             {
-                case TutorialTriggerType.OnGameStart:             OnGameStartStatic             -= handler; break;
+                case TutorialTriggerType.OnGameStart: OnGameStartStatic -= handler; break;
                 case TutorialTriggerType.OnFirstDifficultyChosen: OnFirstDifficultyChosenStatic -= handler; break;
-                case TutorialTriggerType.OnFirstPaperSent:        OnFirstPaperSentStatic        -= handler; break;
-                case TutorialTriggerType.OnFirstOverload:         OnFirstOverloadStatic         -= handler; break;
-                case TutorialTriggerType.OnAllPapersSpawned:      OnAllPapersSpawnedStatic      -= handler; break;
-                case TutorialTriggerType.OnDayEnd:                OnDayEndStatic                -= handler; break;
-                case TutorialTriggerType.OnEmployeeFicheReached:  OnEmployeeFicheReachedStatic  -= handler; break;
-                case TutorialTriggerType.OnShopOpened:            OnShopOpenedStatic            -= handler; break;
-                case TutorialTriggerType.OnFirstFridayScore:      OnFirstFridayScoreStatic      -= handler; break;
-                case TutorialTriggerType.OnFirstFridayRanking:    OnFirstFridayRankingStatic    -= handler; break;
-                case TutorialTriggerType.OnFirstFridayShop:       OnFirstFridayShopStatic       -= handler; break;
+                case TutorialTriggerType.OnFirstPaperSent: OnFirstPaperSentStatic -= handler; break;
+                case TutorialTriggerType.OnFirstOverload: OnFirstOverloadStatic -= handler; break;
+                case TutorialTriggerType.OnAllPapersSpawned: OnAllPapersSpawnedStatic -= handler; break;
+                case TutorialTriggerType.OnDayEnd: OnDayEndStatic -= handler; break;
+                case TutorialTriggerType.OnEmployeeFicheReached: OnEmployeeFicheReachedStatic -= handler; break;
+                case TutorialTriggerType.OnShopOpened: OnShopOpenedStatic -= handler; break;
+                case TutorialTriggerType.OnFirstFridayScore: OnFirstFridayScoreStatic -= handler; break;
+                case TutorialTriggerType.OnFirstFridayRanking: OnFirstFridayRankingStatic -= handler; break;
+                case TutorialTriggerType.OnFirstFridayShop: OnFirstFridayShopStatic -= handler; break;
+                case TutorialTriggerType.OnDifficultyPanelOpened: OnDifficultyPanelOpenedStatic -= handler; break;
+                case TutorialTriggerType.OnDifficultyPanelClosed: OnDifficultyPanelClosedStatic -= handler; break;
             }
         }
 
@@ -253,6 +258,12 @@ public class TutorialManager : MonoBehaviour
                 case TutorialTriggerType.OnFirstFridayShop:
                     OnFirstFridayShopStatic += handler;
                     break;
+                case TutorialTriggerType.OnDifficultyPanelOpened:
+                    OnDifficultyPanelOpenedStatic += handler;
+                    break;
+                case TutorialTriggerType.OnDifficultyPanelClosed:
+                    OnDifficultyPanelClosedStatic += handler;
+                    break;
             }
 
             Debug.Log($"[TutorialManager] SubscribeToTriggers — {seq.name} abonné à {seq.triggerType}");
@@ -306,20 +317,19 @@ public class TutorialManager : MonoBehaviour
         }
 
         Debug.Log($"[TutorialManager] PlaySequence — Démarrage de {sequence.name} ({sequence.steps.Count} steps)");
-        _currentSequence  = sequence;
-        _lastPlayedSteps  = sequence.steps;
-        _currentSteps     = sequence.steps;
+        _currentSequence = sequence;
+        _lastPlayedSteps = sequence.steps;
+        _currentSteps = sequence.steps;
         _currentStepIndex = 0;
-        _isPlaying        = true;
+        _isPlaying = true;
         ShowCurrentStep();
     }
 
     /// <summary>
     /// Appelé par le bouton Aide.
-    /// Jour 1 semaine 1 : rejoue la dernière séquence.
-    /// Hors jour 1 : trouve la séquence contextuelle dans la liste sequences
-    /// selon l'état actif du jeu (panel ouvert), puis la force en replay.
-    /// Repli sur ReplayLastSequence si aucun panel n'est détecté.
+    /// Jour 1 S1 : rejoue la dernière séquence.
+    /// Hors jour 1 : détecte le contexte actif et rejoue la séquence correspondante.
+    /// Aucun panel actif (gameplay) : rejoue OnDifficultyPanelClosed.
     /// </summary>
     public void OpenAideHelp()
     {
@@ -344,7 +354,11 @@ public class TutorialManager : MonoBehaviour
                                           TutorialTriggerType.OnFirstFridayScore,
                                           TutorialTriggerType.OnFirstFridayRanking);
         else if (difficultyPanel != null && difficultyPanel.activeSelf)
-            found = FindSequenceByTrigger(TutorialTriggerType.OnFirstDifficultyChosen);
+            found = FindSequenceByTrigger(TutorialTriggerType.OnDifficultyPanelOpened,
+                                          TutorialTriggerType.OnFirstDifficultyChosen);
+        else
+            // Aucun panel actif = gameplay en cours
+            found = FindSequenceByTrigger(TutorialTriggerType.OnDifficultyPanelClosed);
 
         if (found != null)
         {
@@ -353,7 +367,7 @@ public class TutorialManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("[TutorialManager] OpenAideHelp — Aucun panel actif détecté, fallback ReplayLastSequence.");
+            Debug.Log("[TutorialManager] OpenAideHelp — Aucune séquence contextuelle, fallback ReplayLastSequence.");
             ReplayLastSequence();
         }
     }
@@ -386,11 +400,11 @@ public class TutorialManager : MonoBehaviour
         }
 
         Debug.Log($"[TutorialManager] ReplaySequence — Lecture forcée de : {sequence.name} ({sequence.steps.Count} steps)");
-        _currentSequence  = sequence;
-        _lastPlayedSteps  = sequence.steps;
-        _currentSteps     = sequence.steps;
+        _currentSequence = sequence;
+        _lastPlayedSteps = sequence.steps;
+        _currentSteps = sequence.steps;
         _currentStepIndex = 0;
-        _isPlaying        = true;
+        _isPlaying = true;
         ShowCurrentStep();
     }
 
@@ -404,9 +418,9 @@ public class TutorialManager : MonoBehaviour
         }
 
         Debug.Log($"[TutorialManager] ReplayLastSequence — Rejoue {_lastPlayedSteps.Count} steps.");
-        _currentSteps     = _lastPlayedSteps;
+        _currentSteps = _lastPlayedSteps;
         _currentStepIndex = 0;
-        _isPlaying        = true;
+        _isPlaying = true;
         ShowCurrentStep();
     }
 
@@ -497,14 +511,14 @@ public class TutorialManager : MonoBehaviour
 
         popupPanel.SetActive(false);
         backButton.gameObject.SetActive(false);
-        nextButtonImage.sprite           = _defaultButtonSprite;
-        nextButton.spriteState           = _defaultSpriteState;
-        _nextButtonRect.sizeDelta        = _defaultButtonSize;
+        nextButtonImage.sprite = _defaultButtonSprite;
+        nextButton.spriteState = _defaultSpriteState;
+        _nextButtonRect.sizeDelta = _defaultButtonSize;
         _nextButtonRect.anchoredPosition = _defaultButtonPosition;
-        _popupPanelRect.sizeDelta        = _defaultPanelSize;
+        _popupPanelRect.sizeDelta = _defaultPanelSize;
         _popupPanelRect.anchoredPosition = _defaultPanelPosition;
         Time.timeScale = 1f;
-        _isPlaying     = false;
+        _isPlaying = false;
 
         TutorialStep justFinished = _currentSequence;
         if (justFinished != null)
@@ -593,5 +607,19 @@ public class TutorialManager : MonoBehaviour
     {
         Debug.Log("[TutorialManager] NotifyFirstFridayShop");
         OnFirstFridayShopStatic?.Invoke();
+    }
+
+    /// <summary>Appelé depuis UiManager.waitToShowDifficulty quand le panel de difficulté s'affiche (hors jour 1 S1).</summary>
+    public static void NotifyDifficultyPanelOpened()
+    {
+        Debug.Log("[TutorialManager] NotifyDifficultyPanelOpened");
+        OnDifficultyPanelOpenedStatic?.Invoke();
+    }
+
+    /// <summary>Appelé depuis UiManager.CloseDifficultyUI quand le panel de difficulté se ferme (hors jour 1 S1).</summary>
+    public static void NotifyDifficultyPanelClosed()
+    {
+        Debug.Log("[TutorialManager] NotifyDifficultyPanelClosed");
+        OnDifficultyPanelClosedStatic?.Invoke();
     }
 }

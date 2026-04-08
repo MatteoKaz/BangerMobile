@@ -70,13 +70,18 @@ public class UiManager : MonoBehaviour
         StartCoroutine(CloseDifficultyUI());
     }
 
-    /// <summary>Joue l'animation puis masque le panel de difficulté.</summary>
+    /// <summary>Joue l'animation puis masque le panel de difficulté,
+    /// et déclenche le tuto gameplay une seule fois après le jour 1.</summary>
     public IEnumerator CloseDifficultyUI()
     {
         DifficultyChosenAnim?.Invoke();
         yield return new WaitForSeconds(waitTimeBeforeCloseDifficulty);
         DifficultyChoice.SetActive(false);
+
+        if (!(dayManager.currentDay == 1 && dayManager.currentWeek == 1))
+            TutorialManager.NotifyDifficultyPanelClosed();
     }
+
 
     /// <summary>Active le panel de jour et lance les animations associées.</summary>
     public void EnableDay()
@@ -89,11 +94,14 @@ public class UiManager : MonoBehaviour
     }
 
     /// <summary>Attend avant d'afficher l'animation de difficulté.</summary>
+    /// <summary>Attend avant d'afficher l'animation de difficulté,
+    /// puis déclenche le tuto contextuel difficulté une seule fois après le jour 1.</summary>
     public IEnumerator waitToShowDifficulty()
     {
         yield return new WaitForSeconds(0.5f);
         DifficultyShownAnim?.Invoke();
     }
+
 
     /// <summary>Masque le panel de jour.</summary>
     public void DisableDay()

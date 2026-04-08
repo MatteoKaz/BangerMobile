@@ -10,46 +10,46 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a21360199fbacb4aa0c6262bb4d5816, type: 3}
-  m_Name: TutorialSequence 12
+  m_Name: TutorialSequence 13
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
-  triggerType: 13
-  triggerDelay: 3.5
+  triggerType: 12
+  triggerDelay: 0
   steps:
-  - text: Les papiers administratifs arrivent sur votre bureau par ce tuyau. Ils
-      ont trois couleurs distinctes.
+  - text: "Chaque journ\xE9e commence par le choix d'un objectif de chiffre d'affaires.\r\n"
     stepType: 0
     pauseOnShow: 1
     unpauseOnClose: 0
     overrideButtonSprite: 0
-    buttonSprite: {fileID: 0}
-    pressedButtonSprite: {fileID: 0}
+    buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
+    pressedButtonSprite: {fileID: 21300000, guid: d06654f2adf418e4192ccf8c2d3d6ec8, type: 3}
     overrideButtonSize: 0
-    buttonSize: {x: 0, y: 0}
+    buttonSize: {x: 300, y: 300}
     overrideButtonPosition: 0
-    buttonPosition: {x: 0, y: 0}
-    showBackButton: 0
+    buttonPosition: {x: -100, y: 0}
+    showBackButton: 1
     overridePanelSize: 0
-    panelSize: {x: 0, y: 0}
+    panelSize: {x: 10, y: 0}
     overridePanelPosition: 0
     panelPosition: {x: 0, y: 0}
-  - text: Vous devez les trier en les swipant vers les tuyaux avec les couleurs correspondantes.
+  - text: "Faites glisser le levier pour s\xE9lectionner votre niveau de difficult\xE9,
+      puis appuyez sur GO pour lancer la journ\xE9e."
     stepType: 0
-    pauseOnShow: 1
+    pauseOnShow: 0
     unpauseOnClose: 0
     overrideButtonSprite: 0
-    buttonSprite: {fileID: 0}
-    pressedButtonSprite: {fileID: 0}
+    buttonSprite: {fileID: 21300000, guid: adcee05d20d5e0b40b6c64ed512eb934, type: 3}
+    pressedButtonSprite: {fileID: 21300000, guid: d06654f2adf418e4192ccf8c2d3d6ec8, type: 3}
     overrideButtonSize: 0
-    buttonSize: {x: 0, y: 0}
+    buttonSize: {x: 300, y: 300}
     overrideButtonPosition: 0
-    buttonPosition: {x: 0, y: 0}
-    showBackButton: 0
+    buttonPosition: {x: -100, y: 0}
+    showBackButton: 1
     overridePanelSize: 0
     panelSize: {x: 0, y: 0}
     overridePanelPosition: 0
     panelPosition: {x: 0, y: 0}
-  - text: "Attention ! Une erreur de tri sera p\xE9nalis\xE9e sur votre salaire en
-      fin de journ\xE9e."
+  - text: "Plus l'objectif est \xE9lev\xE9, plus votre bonus de fin de journ\xE9e
+      sera important."
     stepType: 0
     pauseOnShow: 0
     unpauseOnClose: 1

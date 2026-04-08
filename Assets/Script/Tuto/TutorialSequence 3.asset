@@ -50,7 +50,8 @@ MonoBehaviour:
     overridePanelPosition: 0
     panelPosition: {x: 0, y: 0}
   - text: "Vous pouvez \xE0 tout moment r\xE9organiser vos employ\xE9s afin d\u2019optimiser
-      votre gestion."
+      votre gestion. \nVous pouvez d\xE9placer vos employ\xE9s en les glissant d\u2019une
+      alc\xF4ve \xE0 une autre. "
     stepType: 0
     pauseOnShow: 0
     unpauseOnClose: 0

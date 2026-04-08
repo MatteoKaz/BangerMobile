@@ -22,7 +22,9 @@ public enum TutorialTriggerType
     OnShopOpened,
     OnFirstFridayScore,
     OnFirstFridayRanking,
-    OnFirstFridayShop
+    OnFirstFridayShop,
+    OnDifficultyPanelOpened,
+    OnDifficultyPanelClosed    // ← nouveau
 }
 
 [System.Serializable]

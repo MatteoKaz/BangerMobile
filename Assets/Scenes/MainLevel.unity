@@ -12967,8 +12967,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 6.727}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 91, y: 120}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 58, y: 117}
+  m_SizeDelta: {x: 130, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &363840250
 MonoBehaviour:
@@ -23299,7 +23299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7bdcda1cdb0e7a49be00416872b2d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
-  playerMoney: 100000000
+  playerMoney: 250
   playerQuotat: 0
   quotatOfTheDay: 0
   WeekMedianQuotat: 0
@@ -23816,6 +23816,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8dfdddd0e6c0f5440abd79e0c74c0f79, type: 2}
   - {fileID: 11400000, guid: 558a6483b9b32b04f85a5787f6ff4d45, type: 2}
   - {fileID: 11400000, guid: 070a55287d7caf94599e339a71edb505, type: 2}
+  - {fileID: 11400000, guid: 905e57a315c77c74a90cd005a90e4db5, type: 2}
+  - {fileID: 11400000, guid: 070a9eaf249a40547969217c86287c86, type: 2}
+  - {fileID: 11400000, guid: 9da5896e57128e04382c5256c8b22db3, type: 2}
   dayManager: {fileID: 641038306}
   difficultyPanel: {fileID: 421191338}
   scorePanel: {fileID: 415495374}
@@ -47091,7 +47094,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1330883072
 RectTransform:
   m_ObjectHideFlags: 0

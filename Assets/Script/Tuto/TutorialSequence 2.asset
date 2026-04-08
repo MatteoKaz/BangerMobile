@@ -65,7 +65,7 @@ MonoBehaviour:
     panelSize: {x: 0, y: 0}
     overridePanelPosition: 0
     panelPosition: {x: 0, y: 0}
-  - text: "Les post-it sous l'\xE9cran montrent que des papiers ont \xE9t\xE9 envoy\xE9s
+  - text: "Les post-its sous l'\xE9cran montrent que des papiers ont \xE9t\xE9 envoy\xE9s
       dans les p\xF4les. "
     stepType: 0
     pauseOnShow: 0
