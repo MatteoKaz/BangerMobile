@@ -97,7 +97,7 @@ Material:
     m_Floats:
     - _Blur_Offset: 0
     - _EnableExternalAlpha: 0
-    - _Opacity: 1.18
+    - _Opacity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Rot: 0

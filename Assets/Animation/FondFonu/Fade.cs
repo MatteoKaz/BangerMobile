@@ -72,7 +72,9 @@ public class Fade : MonoBehaviour
         float t = 0f;
         Color startColor = image.color;
         Color targetColor = new Color(startColor.r, startColor.g, startColor.b, 0f); // alpha = 0
-        
+        float colorMatEnd = 0f;
+        float colorMatStart = 1f;
+        float ColorToUse = 0f;
             while (t < fadeDuration)
             {
                 t += Time.deltaTime;
@@ -80,8 +82,11 @@ public class Fade : MonoBehaviour
                 float normalizedTime = t / fadeDuration;
 
                 image.color = Color.Lerp(startColor, targetColor, normalizedTime);
+                if(image.material!= null)
+                ColorToUse = Mathf.Lerp(colorMatStart, colorMatEnd, normalizedTime);
+                image.material.SetFloat("Opacity",ColorToUse);
 
-                yield return null;
+            yield return null;
             }
         
     }
@@ -90,7 +95,10 @@ public class Fade : MonoBehaviour
         
         float t = 0f;
         Color startColor = image.color;
-        Color targetColor = new Color(startColor.r, startColor.g, startColor.b, 1f); // alpha = 0
+        Color targetColor = new Color(startColor.r, startColor.g, startColor.b, 1f);
+        float colorMatEnd = 1f;
+        float colorMatStart = 0f;
+        float ColorToUse = 0f;// alpha = 0
         if (startColor == image.color)
             yield break;
         while (t < fadeDuration)
@@ -100,8 +108,10 @@ public class Fade : MonoBehaviour
                 float normalizedTime = t / fadeDuration;
 
                 image.color = Color.Lerp(startColor, targetColor, normalizedTime);
-
-                yield return null;
+            if (image.material != null)
+                ColorToUse = Mathf.Lerp(colorMatStart, colorMatEnd, normalizedTime);
+            image.material.SetFloat("Opacity", ColorToUse);
+            yield return null;
             }
         
     }

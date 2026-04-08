@@ -42,7 +42,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Image:
-        m_Texture: {fileID: 2800000, guid: fb2642db4075eeb47be6a3f87161f6b0, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9ef4f0303cc8d744897c353a9bc68385, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -97,11 +97,11 @@ Material:
     m_Floats:
     - _Blur_Offset: 0
     - _EnableExternalAlpha: 0
-    - _Opacity: 1.18
+    - _Opacity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Rot: 0
-    - _Scale: 1.15
+    - _Scale: 1.8
     - _ScanLine_Speed: 0.17
     - _Speed: 2.5
     - _XRMotionVectorsPass: 1
@@ -112,8 +112,8 @@ Material:
     - _size_1: 0.1
     - _size_2: 0.001
     m_Colors:
-    - _Color: {r: 0.6797793, g: 0.7169812, b: 0.71617246, a: 1}
-    - _Direction: {r: 0, g: 0.2, b: 0, a: 0}
+    - _Color: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
+    - _Direction: {r: 0, g: 0.015, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

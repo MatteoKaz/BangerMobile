@@ -45,7 +45,7 @@ public class UIDay : MonoBehaviour
         yield return new WaitForSeconds(timeAtScreenValue);
         LaunchFade?.Invoke();
 
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2.75f);
         EndShowing?.Invoke();
 
     }
