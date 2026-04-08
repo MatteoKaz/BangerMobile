@@ -23640,7 +23640,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   animDurationTube: 0.5
-  yendPoseTube: 1127
+  yendPoseTube: 1207
   ybasePoseTube: 1725
   curveAnimTube:
     serializedVersion: 2
@@ -30837,14 +30837,14 @@ RectTransform:
   m_GameObject: {fileID: 803390895}
   m_LocalRotation: {x: -0, y: -0, z: -0.9999919, w: -0.004031308}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.85, y: 1.6, z: 1.6773973}
+  m_LocalScale: {x: 2.2, y: 2, z: 1.6773973}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1298553891}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180.462}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1775}
+  m_AnchoredPosition: {x: 0, y: 3889}
   m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &803390897
@@ -48700,7 +48700,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1375992813
 MonoBehaviour:
   m_ObjectHideFlags: 0
