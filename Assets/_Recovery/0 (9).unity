@@ -2189,11 +2189,6 @@ MonoBehaviour:
   minAlpha: 0
   maxAlpha: 0.8
   pulseSpeed: 3
-  floatAmplitude: 8
-  floatSpeed: 1.8
-  shadowColor: {r: 0, g: 0, b: 0, a: 0.6}
-  shadowOffset: {x: 0.5, y: -0.5}
-  shadowSoftness: 0
 --- !u!1 &101310683 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2884858753149714564, guid: e40697a6fc9218048ba50c7c15e43746, type: 3}
@@ -32730,8 +32725,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278241791
-  m_fontColor: {r: 1, g: 0.7882353, b: 0, a: 1}
+    rgba: 4278190268
+  m_fontColor: {r: 0.735849, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -38944,11 +38939,6 @@ MonoBehaviour:
   minAlpha: 0
   maxAlpha: 0.8
   pulseSpeed: 3
-  floatAmplitude: 8
-  floatSpeed: 1.8
-  shadowColor: {r: 0, g: 0, b: 0, a: 0.6}
-  shadowOffset: {x: 0.5, y: -0.5}
-  shadowSoftness: 0
 --- !u!1 &1031280512
 GameObject:
   m_ObjectHideFlags: 0
@@ -49521,6 +49511,18 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 641038315}
         m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+        m_MethodName: ReplayLastSequence
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 641038315}
+        m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
         m_MethodName: OpenAideHelp
         m_Mode: 1
         m_Arguments:
@@ -52579,7 +52581,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -170, y: 865}
+  m_AnchoredPosition: {x: -205, y: 885}
   m_SizeDelta: {x: 214.1, y: 109.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1543289823
@@ -52605,14 +52607,14 @@ MonoBehaviour:
   m_text: X2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: adf396ebe2648c04b9cbe18c60c37955, type: 2}
-  m_sharedMaterial: {fileID: -1640297863379488059, guid: adf396ebe2648c04b9cbe18c60c37955, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278241791
-  m_fontColor: {r: 1, g: 0.7878583, b: 0, a: 1}
+    rgba: 4278190335
+  m_fontColor: {r: 0.7372549, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -52671,7 +52673,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1543289824
@@ -61181,7 +61183,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190268
-  m_fontColor: {r: 1, g: 0.7882353, b: 0, a: 1}
+  m_fontColor: {r: 0.7372549, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -61951,11 +61953,6 @@ MonoBehaviour:
   minAlpha: 0
   maxAlpha: 0.8
   pulseSpeed: 3
-  floatAmplitude: 8
-  floatSpeed: 1.8
-  shadowColor: {r: 0, g: 0, b: 0, a: 0.6}
-  shadowOffset: {x: 0.5, y: -0.5}
-  shadowSoftness: 0
 --- !u!114 &1982864081 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6812997143144304466, guid: 25162250f9221234792a2db27aaf32aa, type: 3}

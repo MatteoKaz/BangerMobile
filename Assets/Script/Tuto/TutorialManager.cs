@@ -25,11 +25,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private List<TutorialStep> sequences;
     [SerializeField] private DayManager dayManager;
 
-    [Header("Aide contextuelle (hors jour 1)")]
-    [SerializeField] private TutorialStep aideDifficultySequence;
-    [SerializeField] private TutorialStep aideScoreSequence;
-    [SerializeField] private TutorialStep aideShopSequence;
-
     [Header("État de jeu (pour l'aide contextuelle)")]
     [SerializeField] private GameObject difficultyPanel;
     [SerializeField] private GameObject scorePanel;
@@ -56,7 +51,6 @@ public class TutorialManager : MonoBehaviour
     private readonly HashSet<TutorialStep> _playedSequences = new HashSet<TutorialStep>();
     private const string PlayedSequencesPrefsKey = "TutorialPlayedSequences";
 
-    // Stocke les handlers pour pouvoir les désabonner proprement dans OnDestroy
     private readonly List<(Action handler, TutorialTriggerType type)> _handlers = new List<(Action, TutorialTriggerType)>();
 
     public event Action<TutorialStep> TutorialEnded;
@@ -76,21 +70,27 @@ public class TutorialManager : MonoBehaviour
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            Debug.Log("[TutorialManager] Instance initialisée.");
+        }
         else
+        {
+            Debug.LogWarning("[TutorialManager] Instance dupliquée détruite.");
             Destroy(gameObject);
+        }
     }
 
     private void Start()
     {
-        _nextButtonRect      = nextButton.GetComponent<RectTransform>();
-        _defaultButtonSprite = nextButtonImage.sprite;
-        _defaultSpriteState  = nextButton.spriteState;
-        _defaultButtonSize   = _nextButtonRect.sizeDelta;
+        _nextButtonRect        = nextButton.GetComponent<RectTransform>();
+        _defaultButtonSprite   = nextButtonImage.sprite;
+        _defaultSpriteState    = nextButton.spriteState;
+        _defaultButtonSize     = _nextButtonRect.sizeDelta;
         _defaultButtonPosition = _nextButtonRect.anchoredPosition;
 
-        _popupPanelRect      = popupPanel.GetComponent<RectTransform>();
-        _defaultPanelSize    = _popupPanelRect.sizeDelta;
+        _popupPanelRect       = popupPanel.GetComponent<RectTransform>();
+        _defaultPanelSize     = _popupPanelRect.sizeDelta;
         _defaultPanelPosition = _popupPanelRect.anchoredPosition;
 
         popupPanel.SetActive(false);
@@ -99,15 +99,22 @@ public class TutorialManager : MonoBehaviour
         nextButton.onClick.AddListener(OnNextClicked);
         backButton.onClick.AddListener(OnBackClicked);
 
+        Debug.Log($"[TutorialManager] Start — {sequences?.Count ?? 0} séquences chargées.");
+
+        if (difficultyPanel == null) Debug.LogWarning("[TutorialManager] difficultyPanel non assigné.");
+        if (scorePanel == null)      Debug.LogWarning("[TutorialManager] scorePanel non assigné.");
+        if (shopPanel == null)       Debug.LogWarning("[TutorialManager] shopPanel non assigné.");
+        if (dayManager == null)      Debug.LogError("[TutorialManager] dayManager non assigné !");
+
         LoadPlayedSequences();
         SubscribeToTriggers();
     }
 
     private void OnDestroy()
     {
+        Debug.Log("[TutorialManager] OnDestroy — désabonnement des handlers.");
         Time.timeScale = 1f;
 
-        // Désabonne tous les handlers pour éviter les MissingReferenceException
         foreach (var (handler, type) in _handlers)
         {
             switch (type)
@@ -133,14 +140,23 @@ public class TutorialManager : MonoBehaviour
     private void LoadPlayedSequences()
     {
         string saved = PlayerPrefs.GetString(PlayedSequencesPrefsKey, string.Empty);
-        if (string.IsNullOrEmpty(saved)) return;
+        if (string.IsNullOrEmpty(saved))
+        {
+            Debug.Log("[TutorialManager] LoadPlayedSequences — Aucune séquence sauvegardée.");
+            return;
+        }
 
         HashSet<string> playedNames = new HashSet<string>(saved.Split(','));
         foreach (TutorialStep seq in sequences)
         {
             if (playedNames.Contains(seq.name))
+            {
                 _playedSequences.Add(seq);
+                Debug.Log($"[TutorialManager] LoadPlayedSequences — Séquence déjà jouée restaurée : {seq.name}");
+            }
         }
+
+        Debug.Log($"[TutorialManager] LoadPlayedSequences — {_playedSequences.Count} séquence(s) marquées comme jouées.");
     }
 
     /// <summary>Réinitialise les PlayerPrefs tutoriel SANS instance (appelable depuis Awake d'autres scripts).</summary>
@@ -170,10 +186,13 @@ public class TutorialManager : MonoBehaviour
 
         PlayerPrefs.SetString(PlayedSequencesPrefsKey, string.Join(",", names));
         PlayerPrefs.Save();
+        Debug.Log($"[TutorialManager] SavePlayedSequences — Sauvegardé : {string.Join(", ", names)}");
     }
 
     private void SubscribeToTriggers()
     {
+        Debug.Log("[TutorialManager] SubscribeToTriggers — Abonnement aux triggers.");
+
         foreach (TutorialStep seq in sequences)
         {
             TutorialStep captured = seq;
@@ -181,7 +200,10 @@ public class TutorialManager : MonoBehaviour
             Action handler = () =>
             {
                 if (this != null)
+                {
+                    Debug.Log($"[TutorialManager] Trigger reçu pour : {captured.name} (type : {captured.triggerType})");
                     StartCoroutine(PlayWithDelay(captured));
+                }
             };
 
             switch (seq.triggerType)
@@ -201,7 +223,10 @@ public class TutorialManager : MonoBehaviour
                         if (this == null) return;
                         int thisIndex = sequences.IndexOf(captured);
                         if (thisIndex > 0 && completedSequence == sequences[thisIndex - 1])
+                        {
+                            Debug.Log($"[TutorialManager] OnFirstPaperProcessed déclenché après : {completedSequence?.name}");
                             StartCoroutine(PlayWithDelay(captured));
+                        }
                     };
                     break;
                 case TutorialTriggerType.OnFirstOverload:
@@ -230,7 +255,8 @@ public class TutorialManager : MonoBehaviour
                     break;
             }
 
-            // OnFirstPaperProcessed utilise TutorialEnded (non statique), pas besoin de le stocker
+            Debug.Log($"[TutorialManager] SubscribeToTriggers — {seq.name} abonné à {seq.triggerType}");
+
             if (seq.triggerType != TutorialTriggerType.OnFirstPaperProcessed)
                 _handlers.Add((handler, seq.triggerType));
         }
@@ -239,70 +265,145 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator PlayWithDelay(TutorialStep sequence)
     {
         if (_playedSequences.Contains(sequence))
+        {
+            Debug.Log($"[TutorialManager] PlayWithDelay — {sequence.name} déjà jouée, ignorée.");
             yield break;
+        }
 
         if (sequence.triggerDelay > 0f)
+        {
+            Debug.Log($"[TutorialManager] PlayWithDelay — Attente de {sequence.triggerDelay}s avant {sequence.name}");
             yield return new WaitForSecondsRealtime(sequence.triggerDelay);
+        }
 
-        yield return new WaitUntil(() => !_isPlaying);
+        if (_isPlaying)
+        {
+            Debug.Log($"[TutorialManager] PlayWithDelay — {sequence.name} en attente (une séquence est déjà en cours).");
+            yield return new WaitUntil(() => !_isPlaying);
+        }
 
+        Debug.Log($"[TutorialManager] PlayWithDelay — Lancement de {sequence.name}");
         PlaySequence(sequence);
     }
 
     /// <summary>Lance une séquence tutoriel. Ignoré si déjà jouée ou si une séquence est en cours.</summary>
     public void PlaySequence(TutorialStep sequence)
     {
-        if (sequence == null || sequence.steps == null || sequence.steps.Count == 0) return;
-        if (_isPlaying) return;
-        if (_playedSequences.Contains(sequence)) return;
+        if (sequence == null || sequence.steps == null || sequence.steps.Count == 0)
+        {
+            Debug.LogWarning("[TutorialManager] PlaySequence — Séquence nulle ou sans steps.");
+            return;
+        }
+        if (_isPlaying)
+        {
+            Debug.LogWarning($"[TutorialManager] PlaySequence — {sequence.name} ignorée, une séquence est déjà en cours.");
+            return;
+        }
+        if (_playedSequences.Contains(sequence))
+        {
+            Debug.Log($"[TutorialManager] PlaySequence — {sequence.name} déjà jouée, ignorée.");
+            return;
+        }
 
-        _currentSequence   = sequence;
-        _lastPlayedSteps   = sequence.steps;
-        _currentSteps      = sequence.steps;
-        _currentStepIndex  = 0;
-        _isPlaying         = true;
+        Debug.Log($"[TutorialManager] PlaySequence — Démarrage de {sequence.name} ({sequence.steps.Count} steps)");
+        _currentSequence  = sequence;
+        _lastPlayedSteps  = sequence.steps;
+        _currentSteps     = sequence.steps;
+        _currentStepIndex = 0;
+        _isPlaying        = true;
         ShowCurrentStep();
     }
 
     /// <summary>
     /// Appelé par le bouton Aide.
     /// Jour 1 semaine 1 : rejoue la dernière séquence.
-    /// Autre jour : affiche la séquence contextuelle selon l'état actif.
+    /// Hors jour 1 : trouve la séquence contextuelle dans la liste sequences
+    /// selon l'état actif du jeu (panel ouvert), puis la force en replay.
+    /// Repli sur ReplayLastSequence si aucun panel n'est détecté.
     /// </summary>
     public void OpenAideHelp()
     {
+        Debug.Log($"[TutorialManager] OpenAideHelp — Jour {dayManager.currentDay} Semaine {dayManager.currentWeek}");
+
         if (dayManager.currentDay == 1 && dayManager.currentWeek == 1)
         {
+            Debug.Log("[TutorialManager] OpenAideHelp — Jour 1 S1 : ReplayLastSequence");
             ReplayLastSequence();
             return;
         }
 
+        Debug.Log($"[TutorialManager] OpenAideHelp — shopPanel : {(shopPanel != null ? shopPanel.activeSelf.ToString() : "NULL")} | scorePanel : {(scorePanel != null ? scorePanel.activeSelf.ToString() : "NULL")} | difficultyPanel : {(difficultyPanel != null ? difficultyPanel.activeSelf.ToString() : "NULL")}");
+
+        TutorialStep found = null;
+
         if (shopPanel != null && shopPanel.activeSelf)
+            found = FindSequenceByTrigger(TutorialTriggerType.OnShopOpened,
+                                          TutorialTriggerType.OnFirstFridayShop);
+        else if (scorePanel != null && scorePanel.activeSelf)
+            found = FindSequenceByTrigger(TutorialTriggerType.OnDayEnd,
+                                          TutorialTriggerType.OnFirstFridayScore,
+                                          TutorialTriggerType.OnFirstFridayRanking);
+        else if (difficultyPanel != null && difficultyPanel.activeSelf)
+            found = FindSequenceByTrigger(TutorialTriggerType.OnFirstDifficultyChosen);
+
+        if (found != null)
         {
-            PlaySequence(aideShopSequence);
+            Debug.Log($"[TutorialManager] OpenAideHelp — Séquence contextuelle trouvée : {found.name}");
+            ReplaySequence(found);
+        }
+        else
+        {
+            Debug.Log("[TutorialManager] OpenAideHelp — Aucun panel actif détecté, fallback ReplayLastSequence.");
+            ReplayLastSequence();
+        }
+    }
+
+    /// <summary>
+    /// Cherche dans sequences la première séquence dont le triggerType
+    /// correspond à l'un des types fournis (priorité dans l'ordre des arguments).
+    /// </summary>
+    private TutorialStep FindSequenceByTrigger(params TutorialTriggerType[] types)
+    {
+        foreach (TutorialTriggerType type in types)
+        {
+            TutorialStep match = sequences.Find(s => s.triggerType == type);
+            Debug.Log($"[TutorialManager] FindSequenceByTrigger — Recherche {type} : {(match != null ? match.name : "non trouvé")}");
+            if (match != null) return match;
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Rejoue une séquence spécifique depuis le début, sans vérification
+    /// du HashSet des séquences déjà jouées (usage bouton aide).
+    /// </summary>
+    public void ReplaySequence(TutorialStep sequence)
+    {
+        if (sequence == null || sequence.steps == null || sequence.steps.Count == 0)
+        {
+            Debug.LogWarning("[TutorialManager] ReplaySequence — Séquence nulle ou vide.");
             return;
         }
 
-        if (scorePanel != null && scorePanel.activeSelf)
-        {
-            PlaySequence(aideScoreSequence);
-            return;
-        }
-
-        if (difficultyPanel != null && difficultyPanel.activeSelf)
-        {
-            PlaySequence(aideDifficultySequence);
-            return;
-        }
-
-        ReplayLastSequence();
+        Debug.Log($"[TutorialManager] ReplaySequence — Lecture forcée de : {sequence.name} ({sequence.steps.Count} steps)");
+        _currentSequence  = sequence;
+        _lastPlayedSteps  = sequence.steps;
+        _currentSteps     = sequence.steps;
+        _currentStepIndex = 0;
+        _isPlaying        = true;
+        ShowCurrentStep();
     }
 
     /// <summary>Rejoue la dernière séquence tutoriel depuis le début, sans bloquer sur le HashSet.</summary>
     public void ReplayLastSequence()
     {
-        if (_lastPlayedSteps == null || _lastPlayedSteps.Count == 0) return;
+        if (_lastPlayedSteps == null || _lastPlayedSteps.Count == 0)
+        {
+            Debug.LogWarning("[TutorialManager] ReplayLastSequence — Aucune séquence précédente en mémoire.");
+            return;
+        }
 
+        Debug.Log($"[TutorialManager] ReplayLastSequence — Rejoue {_lastPlayedSteps.Count} steps.");
         _currentSteps     = _lastPlayedSteps;
         _currentStepIndex = 0;
         _isPlaying        = true;
@@ -312,6 +413,7 @@ public class TutorialManager : MonoBehaviour
     private void ShowCurrentStep()
     {
         TutorialStepData step = _currentSteps[_currentStepIndex];
+        Debug.Log($"[TutorialManager] ShowCurrentStep — Step {_currentStepIndex + 1}/{_currentSteps.Count} : \"{step.text}\"");
 
         popupText.text = step.text;
 
@@ -351,15 +453,22 @@ public class TutorialManager : MonoBehaviour
         popupPanel.SetActive(true);
 
         if (step.pauseOnShow)
+        {
+            Debug.Log("[TutorialManager] ShowCurrentStep — Jeu mis en pause.");
             Time.timeScale = 0f;
+        }
     }
 
     private void OnNextClicked()
     {
         TutorialStepData currentStep = _currentSteps[_currentStepIndex];
+        Debug.Log($"[TutorialManager] OnNextClicked — Step {_currentStepIndex + 1}/{_currentSteps.Count}");
 
         if (currentStep.unpauseOnClose)
+        {
+            Debug.Log("[TutorialManager] OnNextClicked — Jeu remis en marche.");
             Time.timeScale = 1f;
+        }
 
         _currentStepIndex++;
 
@@ -371,21 +480,28 @@ public class TutorialManager : MonoBehaviour
 
     private void OnBackClicked()
     {
-        if (_currentStepIndex <= 0) return;
+        if (_currentStepIndex <= 0)
+        {
+            Debug.LogWarning("[TutorialManager] OnBackClicked — Déjà au premier step.");
+            return;
+        }
 
+        Debug.Log($"[TutorialManager] OnBackClicked — Retour au step {_currentStepIndex}");
         _currentStepIndex--;
         ShowCurrentStep();
     }
 
     private void ClosePopup()
     {
+        Debug.Log($"[TutorialManager] ClosePopup — Fermeture de la séquence : {_currentSequence?.name ?? "inconnue"}");
+
         popupPanel.SetActive(false);
         backButton.gameObject.SetActive(false);
-        nextButtonImage.sprite          = _defaultButtonSprite;
-        nextButton.spriteState          = _defaultSpriteState;
-        _nextButtonRect.sizeDelta       = _defaultButtonSize;
+        nextButtonImage.sprite           = _defaultButtonSprite;
+        nextButton.spriteState           = _defaultSpriteState;
+        _nextButtonRect.sizeDelta        = _defaultButtonSize;
         _nextButtonRect.anchoredPosition = _defaultButtonPosition;
-        _popupPanelRect.sizeDelta       = _defaultPanelSize;
+        _popupPanelRect.sizeDelta        = _defaultPanelSize;
         _popupPanelRect.anchoredPosition = _defaultPanelPosition;
         Time.timeScale = 1f;
         _isPlaying     = false;
@@ -395,6 +511,7 @@ public class TutorialManager : MonoBehaviour
         {
             _playedSequences.Add(justFinished);
             SavePlayedSequences();
+            Debug.Log($"[TutorialManager] ClosePopup — {justFinished.name} marquée comme jouée.");
         }
 
         _currentSequence = null;
@@ -402,35 +519,79 @@ public class TutorialManager : MonoBehaviour
     }
 
     /// <summary>Appelé depuis DayManager.LaunchFirstDayInit au lancement du premier jour.</summary>
-    public static void NotifyGameStart() => OnGameStartStatic?.Invoke();
+    public static void NotifyGameStart()
+    {
+        Debug.Log("[TutorialManager] NotifyGameStart");
+        OnGameStartStatic?.Invoke();
+    }
 
     /// <summary>Appelé depuis DifficultySlider lors du premier appui GO (jour 1, semaine 1).</summary>
-    public static void NotifyFirstDifficultyChosen() => OnFirstDifficultyChosenStatic?.Invoke();
+    public static void NotifyFirstDifficultyChosen()
+    {
+        Debug.Log("[TutorialManager] NotifyFirstDifficultyChosen");
+        OnFirstDifficultyChosenStatic?.Invoke();
+    }
 
     /// <summary>Appelé depuis PaperMove lors du premier swipe.</summary>
-    public static void NotifyFirstPaperSent() => OnFirstPaperSentStatic?.Invoke();
+    public static void NotifyFirstPaperSent()
+    {
+        Debug.Log("[TutorialManager] NotifyFirstPaperSent");
+        OnFirstPaperSentStatic?.Invoke();
+    }
 
     /// <summary>Appelé depuis Employe lors du premier stun par surcharge.</summary>
-    public static void NotifyFirstOverload() => OnFirstOverloadStatic?.Invoke();
+    public static void NotifyFirstOverload()
+    {
+        Debug.Log("[TutorialManager] NotifyFirstOverload");
+        OnFirstOverloadStatic?.Invoke();
+    }
 
     /// <summary>Appelé depuis PaperSpawner quand tous les papiers ont été spawnés.</summary>
-    public static void NotifyAllPapersSpawned() => OnAllPapersSpawnedStatic?.Invoke();
+    public static void NotifyAllPapersSpawned()
+    {
+        Debug.Log("[TutorialManager] NotifyAllPapersSpawned");
+        OnAllPapersSpawnedStatic?.Invoke();
+    }
 
     /// <summary>Appelé depuis UIScore quand l'animation de score est terminée.</summary>
-    public static void NotifyDayEnd() => OnDayEndStatic?.Invoke();
+    public static void NotifyDayEnd()
+    {
+        Debug.Log("[TutorialManager] NotifyDayEnd");
+        OnDayEndStatic?.Invoke();
+    }
 
     /// <summary>Appelé depuis EmployeFicheMove lors du premier swipe vers les fiches employés.</summary>
-    public static void NotifyEmployeeFicheReached() => OnEmployeeFicheReachedStatic?.Invoke();
+    public static void NotifyEmployeeFicheReached()
+    {
+        Debug.Log("[TutorialManager] NotifyEmployeeFicheReached");
+        OnEmployeeFicheReachedStatic?.Invoke();
+    }
 
     /// <summary>Appelé depuis UiManager lors de la première ouverture de la boutique.</summary>
-    public static void NotifyShopOpened() => OnShopOpenedStatic?.Invoke();
+    public static void NotifyShopOpened()
+    {
+        Debug.Log("[TutorialManager] NotifyShopOpened");
+        OnShopOpenedStatic?.Invoke();
+    }
 
     /// <summary>Appelé depuis UiManager.EnableScore lors du premier vendredi.</summary>
-    public static void NotifyFirstFridayScore() => OnFirstFridayScoreStatic?.Invoke();
+    public static void NotifyFirstFridayScore()
+    {
+        Debug.Log("[TutorialManager] NotifyFirstFridayScore");
+        OnFirstFridayScoreStatic?.Invoke();
+    }
 
     /// <summary>Appelé depuis RankingManager.SetRankingOrder lors du premier vendredi.</summary>
-    public static void NotifyFirstFridayRanking() => OnFirstFridayRankingStatic?.Invoke();
+    public static void NotifyFirstFridayRanking()
+    {
+        Debug.Log("[TutorialManager] NotifyFirstFridayRanking");
+        OnFirstFridayRankingStatic?.Invoke();
+    }
 
     /// <summary>Appelé depuis UiManager.EnableShop lors du premier vendredi.</summary>
-    public static void NotifyFirstFridayShop() => OnFirstFridayShopStatic?.Invoke();
+    public static void NotifyFirstFridayShop()
+    {
+        Debug.Log("[TutorialManager] NotifyFirstFridayShop");
+        OnFirstFridayShopStatic?.Invoke();
+    }
 }

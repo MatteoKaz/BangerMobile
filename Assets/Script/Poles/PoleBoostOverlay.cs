@@ -16,9 +16,20 @@ public class PoleBoostOverlay : MonoBehaviour
     [SerializeField] private float maxAlpha = 0.25f;
     [SerializeField] private float pulseSpeed = 7f;
 
+    [Header("Flottement du texte multiplicateur")]
+    [SerializeField] private float floatAmplitude = 8f;
+    [SerializeField] private float floatSpeed = 1.8f;
+
+    [Header("Ombre du texte multiplicateur")]
+    [SerializeField] private Color shadowColor = new Color(0f, 0f, 0f, 0.6f);
+    [SerializeField] private Vector2 shadowOffset = new Vector2(0.5f, -0.5f);
+    [SerializeField] private float shadowSoftness = 0f;
+
     private Pole _pole;
     private Coroutine _visualCoroutine;
+    private Coroutine _floatCoroutine;
     private Color _baseColor;
+    private Vector2 _boostTextBasePosition;
 
     private void Awake()
     {
@@ -26,6 +37,12 @@ public class PoleBoostOverlay : MonoBehaviour
 
         if (highlightImage != null)
             _baseColor = highlightImage.color;
+
+        if (boostText != null)
+        {
+            _boostTextBasePosition = boostText.rectTransform.anchoredPosition;
+            ApplyBoostTextShadow();
+        }
     }
 
     private void OnEnable()
@@ -40,6 +57,17 @@ public class PoleBoostOverlay : MonoBehaviour
         boostManager.BoostEnded -= OnBoostEnded;
     }
 
+    /// <summary>Applique une ombre via l'Underlay TMP sur une instance de material dédiée.</summary>
+    private void ApplyBoostTextShadow()
+    {
+        Material mat = boostText.fontMaterial;
+        mat.EnableKeyword(ShaderUtilities.Keyword_Underlay);
+        mat.SetColor(ShaderUtilities.ID_UnderlayColor, shadowColor);
+        mat.SetFloat(ShaderUtilities.ID_UnderlayOffsetX, shadowOffset.x);
+        mat.SetFloat(ShaderUtilities.ID_UnderlayOffsetY, shadowOffset.y);
+        mat.SetFloat(ShaderUtilities.ID_UnderlaySoftness, shadowSoftness);
+    }
+
     private void OnBoostStarted(Pole pole)
     {
         if (pole != _pole) return;
@@ -52,6 +80,9 @@ public class PoleBoostOverlay : MonoBehaviour
 
         if (_visualCoroutine != null) StopCoroutine(_visualCoroutine);
         _visualCoroutine = StartCoroutine(ShowOverlay());
+
+        if (_floatCoroutine != null) StopCoroutine(_floatCoroutine);
+        _floatCoroutine = StartCoroutine(FloatBoostText());
     }
 
     private void OnBoostEnded(Pole pole)
@@ -63,13 +94,21 @@ public class PoleBoostOverlay : MonoBehaviour
 
         if (_visualCoroutine != null) StopCoroutine(_visualCoroutine);
         _visualCoroutine = StartCoroutine(HideOverlay());
+
+        if (_floatCoroutine != null)
+        {
+            StopCoroutine(_floatCoroutine);
+            _floatCoroutine = null;
+        }
+
+        if (boostText != null)
+            boostText.rectTransform.anchoredPosition = _boostTextBasePosition;
     }
 
     private IEnumerator ShowOverlay()
     {
         if (boostText != null)
         {
-            // Affiche le multiplicateur aléatoire réel du pôle
             boostText.text = $"x{_pole.CurrentBoostMultiplier:0.#}";
             boostText.gameObject.SetActive(true);
         }
@@ -106,5 +145,21 @@ public class PoleBoostOverlay : MonoBehaviour
 
         if (boostText != null)
             boostText.gameObject.SetActive(false);
+    }
+
+    /// <summary>Anime le texte multiplicateur avec un effet de flottement vertical.</summary>
+    private IEnumerator FloatBoostText()
+    {
+        if (boostText == null) yield break;
+
+        RectTransform rt = boostText.rectTransform;
+        float timeOffset = Time.time;
+
+        while (true)
+        {
+            float offsetY = Mathf.Sin((Time.time - timeOffset) * floatSpeed * Mathf.PI * 2f) * floatAmplitude;
+            rt.anchoredPosition = _boostTextBasePosition + new Vector2(0f, offsetY);
+            yield return null;
+        }
     }
 }
