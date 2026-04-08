@@ -38,8 +38,11 @@ public class ScoreExitButton : MonoBehaviour
         if (clickZonePopup == null)
             Debug.LogError("[ScoreExitButton] clickZonePopup est NULL ! Assigne le champ dans l'Inspector.", this);
 
+        clickZonePopup.HideScore();
         clickZonePopup?.Block();
         clickZonePopup?.ResetStamp();
+        clickZonePopup.HideScore();
+       
 
         if (_waitForAnimCoroutine != null)
             StopCoroutine(_waitForAnimCoroutine);
@@ -55,9 +58,14 @@ public class ScoreExitButton : MonoBehaviour
             StopCoroutine(_waitForAnimCoroutine);
             _waitForAnimCoroutine = null;
         }
-
+        clickZonePopup.HideScore();
         clickZonePopup?.Block();
         clickZonePopup?.ResetStamp();
+        clickZonePopup.HideScore();
+
+
+
+
     }
 
     /// <summary>Attend que l'animation des chiffres soit terminée, puis débloque et affiche le tampon.</summary>

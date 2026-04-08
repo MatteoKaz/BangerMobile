@@ -77,6 +77,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private Coroutine _actionCoroutine;
     private Coroutine _autoHideCoroutine;
     private Coroutine _autoHideCoroutine1;
+    private Coroutine _autoHideCoroutine2;
     private float _holdStartTime;
     private Vector2 _pressScreenPosition;
     private bool _isBlocked = false;
@@ -293,7 +294,36 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
             && _activeByGroup.TryGetValue(_stampGroup, out var current) && current == this)
             _activeByGroup.Remove(_stampGroup);
 
-        _autoHideCoroutine = null;
+        _autoHideCoroutine1 = null;
+    }
+
+    public void HideScore()
+    {
+        Debug.Log($"[ClickZonePopup] HideMVP() appelé sur {gameObject.name}");
+
+        if (_autoHideCoroutine2 != null)
+        {
+            StopCoroutine(_autoHideCoroutine2);
+            _autoHideCoroutine2 = null;
+        }
+        gameObject.SetActive(true);
+        _autoHideCoroutine2 = StartCoroutine(AutoHideStampScore());
+    }
+
+    private IEnumerator AutoHideStampScore()
+    {
+        yield return new WaitForSecondsRealtime(0.25f);
+
+        Debug.Log("[ClickZonePopup] AutoHideStampMvp → popup caché");
+
+        if (popup != null)
+            popup.gameObject.SetActive(false);
+
+        if (!string.IsNullOrEmpty(_stampGroup)
+            && _activeByGroup.TryGetValue(_stampGroup, out var current) && current == this)
+            _activeByGroup.Remove(_stampGroup);
+
+        _autoHideCoroutine2 = null;
     }
     /// <summary>Arrête toutes les coroutines en cours et cache le popup immédiatement.</summary>
     public void ResetStamp()
