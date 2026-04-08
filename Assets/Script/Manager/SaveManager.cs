@@ -67,8 +67,9 @@ public class SaveManager : MonoBehaviour
     // ── Tutoriel ──────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Vérifie si le jeu démarre au lundi semaine 1 (avec ou sans save)
-    /// et réinitialise les prefs tutoriel dans ce cas.
+    /// Vérifie si le jeu démarre sans save (nouvelle partie)
+    /// et réinitialise les prefs tutoriel uniquement dans ce cas.
+    /// Une save existante n'est jamais touchée, même au jour 1 semaine 1.
     /// </summary>
     private void CheckAndResetTutorialIfMonday()
     {
@@ -78,9 +79,10 @@ public class SaveManager : MonoBehaviour
 
             if (peekData.currentDay == 1 && peekData.currentWeek == 1)
             {
-                TutorialManager.ResetTutorialPrefsStatic();
+                // Save au jour 1 semaine 1 : on relance l'init du premier jour
+                // mais on ne touche PAS aux prefs tutoriel déjà enregistrés.
                 _shouldRelaunchTutorial = true;
-                Debug.Log("[SaveManager] Lundi S1 détecté (save) → prefs tutoriel réinitialisés.");
+                Debug.Log("[SaveManager] Lundi S1 détecté (save) → init premier jour relancée sans reset tutoriel.");
             }
             else
             {
@@ -89,11 +91,12 @@ public class SaveManager : MonoBehaviour
         }
         else
         {
-            // Nouvelle partie : jour 1, semaine 1 garanti → reset préventif.
+            // Nouvelle partie uniquement : reset les prefs tutoriel.
             TutorialManager.ResetTutorialPrefsStatic();
             Debug.Log("[SaveManager] Nouvelle partie → prefs tutoriel réinitialisés.");
         }
     }
+
 
     /// <summary>
     /// Attend deux frames pour laisser tous les Start() s'exécuter

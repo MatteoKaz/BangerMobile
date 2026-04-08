@@ -17903,7 +17903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7bdcda1cdb0e7a49be00416872b2d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
-  playerMoney: 250
+  playerMoney: 100000000
   playerQuotat: 0
   quotatOfTheDay: 0
   WeekMedianQuotat: 0
@@ -17958,6 +17958,8 @@ MonoBehaviour:
   animDuration: 1
   waitTimeBeforeCloseDifficulty: 2.5
   DifficultyChoice: {fileID: 421191338}
+  scoreButton: {fileID: 1664773723}
+  waitTimeBeforeButtonActive: 3
   yendPose: 2890
   ybasePose: 960
   ScoreUi: {fileID: 1023266321}
@@ -41360,7 +41362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1330883072
 RectTransform:
   m_ObjectHideFlags: 0
@@ -41540,7 +41542,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1330883075}
   m_OnClick:
     m_PersistentCalls:
@@ -49543,7 +49545,7 @@ GameObject:
   - component: {fileID: 1664773724}
   - component: {fileID: 1664773723}
   - component: {fileID: 1664773726}
-  - component: {fileID: 1664773727}
+  - component: {fileID: 1664773728}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -49704,7 +49706,7 @@ MonoBehaviour:
   parentPanel: {fileID: 0}
   _stampGroup: 
   audioEventDispatcher: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
---- !u!114 &1664773727
+--- !u!114 &1664773728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -49713,20 +49715,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1664773721}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b3f429fbe47b3442bd629d26913cafe, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d2698f2191f30a4d91f95b88e99b055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ButtonTimer
-  button: {fileID: 1664773721}
-  audioEventManager: {fileID: 11400000, guid: e534453ca570e0348b38f94dad1e0478, type: 2}
-  timeManager: {fileID: 641038307}
-  exitDelay: 0.5
-  bounceCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  OnGoing: 0
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreExitButton
+  dayManager: {fileID: 641038306}
+  uiManager: {fileID: 641038305}
+  clickZonePopup: {fileID: 1664773726}
 --- !u!1 &1666690469
 GameObject:
   m_ObjectHideFlags: 0
@@ -51766,7 +51760,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -515.84955}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 62.800003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1761464683
 MonoBehaviour:
@@ -52123,7 +52117,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1795430754
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -56,6 +56,9 @@ public class TutorialManager : MonoBehaviour
     private readonly HashSet<TutorialStep> _playedSequences = new HashSet<TutorialStep>();
     private const string PlayedSequencesPrefsKey = "TutorialPlayedSequences";
 
+    // Stocke les handlers pour pouvoir les désabonner proprement dans OnDestroy
+    private readonly List<(Action handler, TutorialTriggerType type)> _handlers = new List<(Action, TutorialTriggerType)>();
+
     public event Action<TutorialStep> TutorialEnded;
 
     public static event Action OnGameStartStatic;
@@ -80,14 +83,14 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        _nextButtonRect = nextButton.GetComponent<RectTransform>();
+        _nextButtonRect      = nextButton.GetComponent<RectTransform>();
         _defaultButtonSprite = nextButtonImage.sprite;
-        _defaultSpriteState = nextButton.spriteState;
-        _defaultButtonSize = _nextButtonRect.sizeDelta;
+        _defaultSpriteState  = nextButton.spriteState;
+        _defaultButtonSize   = _nextButtonRect.sizeDelta;
         _defaultButtonPosition = _nextButtonRect.anchoredPosition;
 
-        _popupPanelRect = popupPanel.GetComponent<RectTransform>();
-        _defaultPanelSize = _popupPanelRect.sizeDelta;
+        _popupPanelRect      = popupPanel.GetComponent<RectTransform>();
+        _defaultPanelSize    = _popupPanelRect.sizeDelta;
         _defaultPanelPosition = _popupPanelRect.anchoredPosition;
 
         popupPanel.SetActive(false);
@@ -103,6 +106,27 @@ public class TutorialManager : MonoBehaviour
     private void OnDestroy()
     {
         Time.timeScale = 1f;
+
+        // Désabonne tous les handlers pour éviter les MissingReferenceException
+        foreach (var (handler, type) in _handlers)
+        {
+            switch (type)
+            {
+                case TutorialTriggerType.OnGameStart:             OnGameStartStatic             -= handler; break;
+                case TutorialTriggerType.OnFirstDifficultyChosen: OnFirstDifficultyChosenStatic -= handler; break;
+                case TutorialTriggerType.OnFirstPaperSent:        OnFirstPaperSentStatic        -= handler; break;
+                case TutorialTriggerType.OnFirstOverload:         OnFirstOverloadStatic         -= handler; break;
+                case TutorialTriggerType.OnAllPapersSpawned:      OnAllPapersSpawnedStatic      -= handler; break;
+                case TutorialTriggerType.OnDayEnd:                OnDayEndStatic                -= handler; break;
+                case TutorialTriggerType.OnEmployeeFicheReached:  OnEmployeeFicheReachedStatic  -= handler; break;
+                case TutorialTriggerType.OnShopOpened:            OnShopOpenedStatic            -= handler; break;
+                case TutorialTriggerType.OnFirstFridayScore:      OnFirstFridayScoreStatic      -= handler; break;
+                case TutorialTriggerType.OnFirstFridayRanking:    OnFirstFridayRankingStatic    -= handler; break;
+                case TutorialTriggerType.OnFirstFridayShop:       OnFirstFridayShopStatic       -= handler; break;
+            }
+        }
+
+        _handlers.Clear();
     }
 
     /// <summary>Charge depuis PlayerPrefs les séquences déjà jouées lors d'une session précédente.</summary>
@@ -153,50 +177,62 @@ public class TutorialManager : MonoBehaviour
         foreach (TutorialStep seq in sequences)
         {
             TutorialStep captured = seq;
+
+            Action handler = () =>
+            {
+                if (this != null)
+                    StartCoroutine(PlayWithDelay(captured));
+            };
+
             switch (seq.triggerType)
             {
                 case TutorialTriggerType.OnGameStart:
-                    OnGameStartStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    OnGameStartStatic += handler;
                     break;
                 case TutorialTriggerType.OnFirstDifficultyChosen:
-                    OnFirstDifficultyChosenStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    OnFirstDifficultyChosenStatic += handler;
                     break;
                 case TutorialTriggerType.OnFirstPaperSent:
-                    OnFirstPaperSentStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    OnFirstPaperSentStatic += handler;
                     break;
                 case TutorialTriggerType.OnFirstPaperProcessed:
                     TutorialEnded += (completedSequence) =>
                     {
+                        if (this == null) return;
                         int thisIndex = sequences.IndexOf(captured);
                         if (thisIndex > 0 && completedSequence == sequences[thisIndex - 1])
                             StartCoroutine(PlayWithDelay(captured));
                     };
                     break;
                 case TutorialTriggerType.OnFirstOverload:
-                    OnFirstOverloadStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    OnFirstOverloadStatic += handler;
                     break;
                 case TutorialTriggerType.OnAllPapersSpawned:
-                    OnAllPapersSpawnedStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    OnAllPapersSpawnedStatic += handler;
                     break;
                 case TutorialTriggerType.OnDayEnd:
-                    OnDayEndStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    OnDayEndStatic += handler;
                     break;
                 case TutorialTriggerType.OnEmployeeFicheReached:
-                    OnEmployeeFicheReachedStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    OnEmployeeFicheReachedStatic += handler;
                     break;
                 case TutorialTriggerType.OnShopOpened:
-                    OnShopOpenedStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    OnShopOpenedStatic += handler;
                     break;
                 case TutorialTriggerType.OnFirstFridayScore:
-                    OnFirstFridayScoreStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    OnFirstFridayScoreStatic += handler;
                     break;
                 case TutorialTriggerType.OnFirstFridayRanking:
-                    OnFirstFridayRankingStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    OnFirstFridayRankingStatic += handler;
                     break;
                 case TutorialTriggerType.OnFirstFridayShop:
-                    OnFirstFridayShopStatic += () => StartCoroutine(PlayWithDelay(captured));
+                    OnFirstFridayShopStatic += handler;
                     break;
             }
+
+            // OnFirstPaperProcessed utilise TutorialEnded (non statique), pas besoin de le stocker
+            if (seq.triggerType != TutorialTriggerType.OnFirstPaperProcessed)
+                _handlers.Add((handler, seq.triggerType));
         }
     }
 
@@ -220,11 +256,11 @@ public class TutorialManager : MonoBehaviour
         if (_isPlaying) return;
         if (_playedSequences.Contains(sequence)) return;
 
-        _currentSequence = sequence;
-        _lastPlayedSteps = sequence.steps;
-        _currentSteps = sequence.steps;
-        _currentStepIndex = 0;
-        _isPlaying = true;
+        _currentSequence   = sequence;
+        _lastPlayedSteps   = sequence.steps;
+        _currentSteps      = sequence.steps;
+        _currentStepIndex  = 0;
+        _isPlaying         = true;
         ShowCurrentStep();
     }
 
@@ -267,9 +303,9 @@ public class TutorialManager : MonoBehaviour
     {
         if (_lastPlayedSteps == null || _lastPlayedSteps.Count == 0) return;
 
-        _currentSteps = _lastPlayedSteps;
+        _currentSteps     = _lastPlayedSteps;
         _currentStepIndex = 0;
-        _isPlaying = true;
+        _isPlaying        = true;
         ShowCurrentStep();
     }
 
@@ -345,14 +381,14 @@ public class TutorialManager : MonoBehaviour
     {
         popupPanel.SetActive(false);
         backButton.gameObject.SetActive(false);
-        nextButtonImage.sprite = _defaultButtonSprite;
-        nextButton.spriteState = _defaultSpriteState;
-        _nextButtonRect.sizeDelta = _defaultButtonSize;
+        nextButtonImage.sprite          = _defaultButtonSprite;
+        nextButton.spriteState          = _defaultSpriteState;
+        _nextButtonRect.sizeDelta       = _defaultButtonSize;
         _nextButtonRect.anchoredPosition = _defaultButtonPosition;
-        _popupPanelRect.sizeDelta = _defaultPanelSize;
+        _popupPanelRect.sizeDelta       = _defaultPanelSize;
         _popupPanelRect.anchoredPosition = _defaultPanelPosition;
         Time.timeScale = 1f;
-        _isPlaying = false;
+        _isPlaying     = false;
 
         TutorialStep justFinished = _currentSequence;
         if (justFinished != null)

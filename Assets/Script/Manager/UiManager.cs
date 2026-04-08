@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class UiManager : MonoBehaviour
     public float waitTimeBeforeCloseDifficulty = 1f;
     [SerializeField] GameObject DifficultyChoice;
 
+    [Header("Score Button")]
+    [SerializeField] Button scoreButton;
+    [SerializeField] float waitTimeBeforeButtonActive = 1f;
+
     public event Action DifficultyChosenAnim;
     public event Action DifficultyShownAnim;
     public event Action ScoreAnim;
@@ -38,27 +43,29 @@ public class UiManager : MonoBehaviour
 
     private void OnEnable()
     {
-        quotatManager.QuotatIsSet   += DisableDifficultyUI;
-        dayManager.DayBegin         += EnableDay;
-        dayScript.EndShowing        += DisableDay;
+        quotatManager.QuotatIsSet    += DisableDifficultyUI;
+        dayManager.DayBegin          += EnableDay;
+        dayScript.EndShowing         += DisableDay;
         scoreManager.LaunchScoreAnim += EnableScore;
-        dayManager.DayBegin         += DisableScoreDay;
+        dayManager.DayBegin          += DisableScoreDay;
     }
 
     private void OnDisable()
     {
-        quotatManager.QuotatIsSet   -= DisableDifficultyUI;
-        dayManager.DayBegin         -= EnableDay;
-        dayScript.EndShowing        -= DisableDay;
+        quotatManager.QuotatIsSet    -= DisableDifficultyUI;
+        dayManager.DayBegin          -= EnableDay;
+        dayScript.EndShowing         -= DisableDay;
         scoreManager.LaunchScoreAnim -= EnableScore;
-        dayManager.DayBegin         -= DisableScoreDay;
+        dayManager.DayBegin          -= DisableScoreDay;
     }
 
+    /// <summary>Déclenche la fermeture de l'UI de difficulté.</summary>
     public void DisableDifficultyUI()
     {
         StartCoroutine(CloseDifficultyUI());
     }
 
+    /// <summary>Joue l'animation puis masque le panel de difficulté.</summary>
     public IEnumerator CloseDifficultyUI()
     {
         DifficultyChosenAnim?.Invoke();
@@ -66,6 +73,7 @@ public class UiManager : MonoBehaviour
         DifficultyChoice.SetActive(false);
     }
 
+    /// <summary>Active le panel de jour et lance les animations associées.</summary>
     public void EnableDay()
     {
         Day.SetActive(true);
@@ -75,23 +83,31 @@ public class UiManager : MonoBehaviour
         StartCoroutine(waitToShowDifficulty());
     }
 
+    /// <summary>Attend avant d'afficher l'animation de difficulté.</summary>
     public IEnumerator waitToShowDifficulty()
     {
         yield return new WaitForSeconds(0.5f);
         DifficultyShownAnim?.Invoke();
     }
 
+    /// <summary>Masque le panel de jour.</summary>
     public void DisableDay()
     {
         Day.SetActive(false);
     }
 
+    /// <summary>Active le panel de score, désactive le bouton, et lance les animations associées.</summary>
     public void EnableScore()
     {
         Score.SetActive(true);
         DifficultyChoice.SetActive(true);
         Day.SetActive(true);
+
+        if (scoreButton != null)
+            scoreButton.interactable = false;
+
         StartCoroutine(AnimScore());
+        StartCoroutine(EnableScoreButton());
         ScoreAnim?.Invoke();
         dayResetOpacity?.Invoke();
 
@@ -99,6 +115,34 @@ public class UiManager : MonoBehaviour
             TutorialManager.NotifyFirstFridayScore();
     }
 
+    /// <summary>Attend le délai configuré puis rend le bouton interactable.</summary>
+    private const float DelayBeforeButtonOnClickActive = 1f;
+
+    /// <summary>
+    /// Attend le délai configuré puis rend le bouton interactable,
+    /// puis attend 1 seconde supplémentaire avant de réactiver ses événements onClick.
+    /// </summary>
+    public IEnumerator EnableScoreButton()
+    {
+        if (scoreButton != null)
+            scoreButton.onClick.RemoveAllListeners();
+
+        yield return new WaitForSeconds(waitTimeBeforeButtonActive);
+
+        if (scoreButton != null)
+            scoreButton.interactable = true;
+
+        yield return new WaitForSeconds(DelayBeforeButtonOnClickActive);
+
+        if (scoreButton != null)
+        {
+            scoreButton.onClick.AddListener(DisableScore);
+            scoreButton.onClick.AddListener(EnableShop);
+        }
+    }
+
+
+    /// <summary>Anime l'entrée du panel de score.</summary>
     public IEnumerator AnimScore()
     {
         Debug.LogWarning("je lance");
@@ -118,40 +162,49 @@ public class UiManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>Masque immédiatement le score au début d'une nouvelle journée.</summary>
     public void DisableScoreDay()
     {
         ScoreReset?.Invoke();
         Score.SetActive(false);
     }
+
+    /// <summary>Lance la coroutine de fermeture du score depuis un bouton UI.</summary>
     public void DisableScore()
     {
-        if (uiscore.hasFinish == true)
-        {
-            ScoreReset?.Invoke();
-            Score.SetActive(false);
-        }
-            
-       
+        StartCoroutine(WaitAndDisableScore());
     }
 
-    
+    /// <summary>Attend que l'animation du score soit terminée, puis masque le panel de score.</summary>
+    public IEnumerator WaitAndDisableScore()
+    {
+        yield return new WaitUntil(() => uiscore.hasFinish == true);
+        ScoreReset?.Invoke();
+        Score.SetActive(false);
+    }
+
+    /// <summary>Lance la coroutine d'ouverture du shop depuis un bouton UI.</summary>
     public void EnableShop()
     {
-        if (uiscore.hasFinish == true)
-        {
-            shop.SetActive(true);
-            StartCoroutine(AnimShop());
-
-            if (_shopOpenedNotified) return;
-            _shopOpenedNotified = true;
-            TutorialManager.NotifyShopOpened();
-
-            if (dayManager.currentDay == 5 && dayManager.currentWeek == 1)
-                TutorialManager.NotifyFirstFridayShop();
-        }
+        StartCoroutine(WaitAndEnableShop());
     }
 
+    /// <summary>Attend que l'animation du score soit terminée, puis affiche le shop et notifie le tutoriel.</summary>
+    public IEnumerator WaitAndEnableShop()
+    {
+        yield return new WaitUntil(() => uiscore.hasFinish == true);
+        shop.SetActive(true);
+        StartCoroutine(AnimShop());
+
+        if (_shopOpenedNotified) yield break;
+        _shopOpenedNotified = true;
+        TutorialManager.NotifyShopOpened();
+
+        if (dayManager.currentDay == 5 && dayManager.currentWeek == 1)
+            TutorialManager.NotifyFirstFridayShop();
+    }
+
+    /// <summary>Anime l'entrée du panel de shop.</summary>
     public IEnumerator AnimShop()
     {
         Debug.LogWarning("je lance");

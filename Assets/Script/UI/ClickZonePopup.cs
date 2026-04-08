@@ -21,14 +21,9 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     {
         LoadScene,
         OpenPanel,
-        /// <summary>
-        /// Colle le tampon sur la carte. Il reste affiché jusqu'à ce qu'une autre zone
-        /// ToggleStamp soit activée, ou se cache automatiquement si autoHideDelay > 0.
-        /// </summary>
         ToggleStamp
     }
 
-    // Zone actuellement stampée — partagée entre toutes les instances.
     private static ClickZonePopup _activeToggleZone;
 
     [Header("Action")]
@@ -72,11 +67,12 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     [Tooltip("Même string sur les boutons MVP et Virer du même employé. Ex: 'Employe_01'")]
     [SerializeField] private string _stampGroup = "";
 
-    
-// Remplace l'ancien _activeToggleZone static par un dictionnaire par groupe
+    [Header("Audio")]
+    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
+
     private static System.Collections.Generic.Dictionary<string, ClickZonePopup> _activeByGroup
         = new System.Collections.Generic.Dictionary<string, ClickZonePopup>();
-    
+
     private Canvas _canvas;
     private Coroutine _actionCoroutine;
     private Coroutine _autoHideCoroutine;
@@ -85,7 +81,6 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private Vector2 _pressScreenPosition;
     private bool _isBlocked = false;
 
-    [SerializeField] private AudioEventDispatcher audioEventDispatcher;
     private void Awake()
     {
         _canvas = GetComponentInParent<Canvas>();
@@ -108,37 +103,35 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
                 popup.gameObject.SetActive(false);
         }
     }
+
     /// <summary>Bloque l'affichage du tampon jusqu'au prochain Unblock.</summary>
-    public void Block()   => _isBlocked = true;
+    public void Block() => _isBlocked = true;
 
     /// <summary>Réautorise l'affichage du tampon.</summary>
     public void Unblock() => _isBlocked = false;
 
     public void OnPointerUp(PointerEventData eventData)
     {
-            if (_isBlocked)
-            {
-                audioEventDispatcher?.PlayAudio(AudioType.Wrong);
-                return;
-            }
-            // ... reste inchangé
+        if (_isBlocked)
+        {
+            audioEventDispatcher?.PlayAudio(AudioType.Wrong);
+            return;
+        }
 
         if (actionMode == ActionMode.ToggleStamp)
         {
-            // Vérifie si une zone du même groupe est déjà active
             if (!string.IsNullOrEmpty(_stampGroup)
                 && _activeByGroup.TryGetValue(_stampGroup, out ClickZonePopup existing)
                 && existing != null
                 && existing != this)
             {
-                // Déjà tamponnée par l'autre bouton → son de refus, on sort
                 audioEventDispatcher?.PlayAudio(AudioType.Wrong);
                 return;
             }
         }
 
-        // Comportement normal
-        audioEventDispatcher.PlayAudio(AudioType.Tampon);
+        audioEventDispatcher?.PlayAudio(AudioType.Tampon);
+
         float holdDuration = Time.realtimeSinceStartup - _holdStartTime;
         ApplyStamp(SelectStamp(holdDuration));
 
@@ -192,7 +185,6 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     /// </summary>
     private void ExecuteToggleStamp()
     {
-        // Retire l'ancienne zone active du même groupe
         if (!string.IsNullOrEmpty(_stampGroup)
             && _activeByGroup.TryGetValue(_stampGroup, out ClickZonePopup previous)
             && previous != null && previous != this)
@@ -205,7 +197,6 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
             previous.popup.gameObject.SetActive(false);
         }
 
-        // Annule l'auto-hide précédent sur cette zone
         if (_autoHideCoroutine != null)
         {
             StopCoroutine(_autoHideCoroutine);
@@ -217,16 +208,12 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         if (!string.IsNullOrEmpty(_stampGroup))
             _activeByGroup[_stampGroup] = this;
         else
-            _activeToggleZone = this; // fallback si pas de groupe
+            _activeToggleZone = this;
 
         if (autoHideDelay > 0f)
             _autoHideCoroutine = StartCoroutine(AutoHideStamp());
     }
 
-    /// <summary>
-    /// Cache automatiquement le tampon après autoHideDelay secondes.
-    /// Utilisé pour les actions comme virer un employé.
-    /// </summary>
     private IEnumerator AutoHideStamp()
     {
         yield return new WaitForSecondsRealtime(autoHideDelay);
@@ -238,6 +225,8 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
         _autoHideCoroutine = null;
     }
+
+    /// <summary>Cache le tampon MVP avec un court délai (usage MVPButton uniquement).</summary>
     public void HideMVP()
     {
         if (_autoHideCoroutine1 != null)
@@ -253,10 +242,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     {
         yield return new WaitForSecondsRealtime(0.25f);
         if (popup != null)
-        {
             popup.gameObject.SetActive(false);
-            Debug.Log("HIDE");
-        }
 
         if (!string.IsNullOrEmpty(_stampGroup)
             && _activeByGroup.TryGetValue(_stampGroup, out var current) && current == this)
@@ -264,7 +250,27 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
         _autoHideCoroutine = null;
     }
-    /// <summary>Attend le délai en temps réel puis exécute l'action configurée.</summary>
+
+    /// <summary>Cache le tampon immédiatement sans animation ni délai.</summary>
+    public void HideStamp()
+    {
+        if (_autoHideCoroutine != null)
+        {
+            StopCoroutine(_autoHideCoroutine);
+            _autoHideCoroutine = null;
+        }
+
+        if (popup != null)
+            popup.gameObject.SetActive(false);
+
+        if (!string.IsNullOrEmpty(_stampGroup)
+            && _activeByGroup.TryGetValue(_stampGroup, out var current) && current == this)
+            _activeByGroup.Remove(_stampGroup);
+
+        if (_activeToggleZone == this)
+            _activeToggleZone = null;
+    }
+
     private IEnumerator ExecuteActionAfterDelay()
     {
         yield return new WaitForSecondsRealtime(delayBeforeAction);
@@ -290,7 +296,6 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         }
     }
 
-
     /// <summary>
     /// Toggle le panel cible. Si un parentPanel est assigné,
     /// désactive ses enfants avant d'ouvrir targetPanel.
@@ -314,7 +319,7 @@ public class ClickZonePopup : MonoBehaviour, IPointerDownHandler, IPointerUpHand
             if (parentPanel != null && parentPanel != targetPanel)
             {
                 //foreach (Transform child in parentPanel.transform)
-                //child.gameObject.SetActive(false);
+                //    child.gameObject.SetActive(false);
             }
 
             targetPanel.SetActive(true);

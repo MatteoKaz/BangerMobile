@@ -7,15 +7,23 @@ public class ButtonTimer : MonoBehaviour
     [SerializeField] private AudioEventDispatcher audioEventManager;
     [SerializeField] private TimeManager timeManager;
 
-    [Tooltip("D�lai en secondes avant de quitter le menu score apr�s le clic.")]
+    [Tooltip("Délai en secondes avant de quitter le menu score après le clic.")]
     [SerializeField] private float exitDelay = 1f;
 
     public AnimationCurve bounceCurve;
     public bool OnGoing = false;
 
-    /// <summary>Appel� par le bouton Terminer. Lance l'animation puis attend le d�lai avant de quitter.</summary>
+    private void OnDisable()
+    {
+        // Sécurité : si le panel est désactivé pendant l'animation, on remet OnGoing à false
+        OnGoing = false;
+    }
+
+    /// <summary>Appelé par le bouton Terminer. Lance l'animation puis attend le délai avant de quitter.</summary>
     public void OnClick()
     {
+        Debug.Log($"[ButtonTimer] OnClick — OnGoing={OnGoing}");
+
         if (OnGoing)
             return;
 
@@ -50,9 +58,9 @@ public class ButtonTimer : MonoBehaviour
 
         button.transform.localPosition = originalPos;
 
-        // D�lai avant de quitter le menu score
         yield return new WaitForSecondsRealtime(exitDelay);
 
+        Debug.Log("[ButtonTimer] EndDay déclenché");
         timeManager.EndDay();
         OnGoing = false;
     }
