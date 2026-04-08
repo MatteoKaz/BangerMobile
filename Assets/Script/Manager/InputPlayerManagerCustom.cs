@@ -175,8 +175,8 @@ public class InputPlayerManagerCustom : MonoBehaviour
             if (paperRef != null) return;
             startPosition = touch.screenPosition;
             swipeStartTime = Time.time;
-            debugText = "Touches: " + Touch.activeTouches.Count;
-            Debug.Log("Start");
+            
+            
 
             // RaycastHit2D hit = Physics2D.Raycast(touchPos2D, Vector2.zero);
             Collider2D hit = Physics2D.OverlapPoint(touchPos2D);
@@ -222,14 +222,13 @@ public class InputPlayerManagerCustom : MonoBehaviour
             hasRemove = false;
             paperRef = null;
 
-            debugText = "Touchesend: " + Touch.activeTouches.Count;
-            Debug.Log("end");
+            
             paperRef = null;
 
 
         }
 
-        Debug.Log(Touch.activeTouches.Count);
+        
 
 
 

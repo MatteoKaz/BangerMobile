@@ -133,11 +133,11 @@ public class UIScore : MonoBehaviour
                 t += Time.deltaTime;
                 displayBenefice = Mathf.RoundToInt(Mathf.Lerp(startBenefice, targetBenefice, Mathf.Clamp01(t / bonusCountDuration)));
                 if (beneficeLabel != null)
-                    beneficeLabel.text = $"Bénéfice : {displayBenefice}  (+{bonusPct}% {result.poleName})";
+                    beneficeLabel.text = $"Bénéfice : {displayBenefice}$  (+{bonusPct}% {result.poleName})";
                 yield return null;
             }
             displayBenefice = targetBenefice;
-            if (beneficeLabel != null) beneficeLabel.text = $"Bénéfice : {displayBenefice}";
+            if (beneficeLabel != null) beneficeLabel.text = $"Bénéfice : {displayBenefice}$";
         }
 
         yield return new WaitForSeconds(pauseBeforeTotal);
@@ -151,7 +151,7 @@ public class UIScore : MonoBehaviour
         {
             t += Time.deltaTime;
             int displayed = Mathf.RoundToInt(Mathf.Lerp(previousMoney, finalMoney, Mathf.Clamp01(t / totalCountDuration)));
-            if (totalMoneyLabel != null) totalMoneyLabel.text = $"Total : {displayed}";
+            if (totalMoneyLabel != null) totalMoneyLabel.text = $"Total : {displayed}$";
             yield return null;
         }
         if (totalMoneyLabel != null) totalMoneyLabel.text = $"Total : {finalMoney}$";

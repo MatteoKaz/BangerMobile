@@ -452,9 +452,10 @@ public class Employe : MonoBehaviour
             if (roll < successChance)
             {
                 mypole.WinMoney();
-                ScoreWinAnim?.Invoke();
+               
                 moneyMake += mypole.paperValue;
                 succeedPaper++;
+                StartCoroutine(AnimBonus());
             }
             else
             {
@@ -545,7 +546,12 @@ public class Employe : MonoBehaviour
         GetComponentInChildren<PileBackEmploye>()?.OnPoleChanged();
     }
 
+    public IEnumerator AnimBonus()
+    {
+        yield return new WaitForSeconds(0.15f);
+        ScoreWinAnim?.Invoke();
 
+    }
     public void Malus(TypeOfMalus malusType, float value)
     {
         if (isStunned == true)
