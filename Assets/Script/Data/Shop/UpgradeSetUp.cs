@@ -31,6 +31,7 @@ public class UpgradeSetUp : MonoBehaviour
     [SerializeField] Image PopUPiconPole;
     [SerializeField] Pole poleRef;
     [SerializeField] GameObject swat;
+    [SerializeField] BilletManager billetmanager;
     RefOfItem currentRefOfItem;
     public EmployeLink empLink;
     public PoleLink poleLink;
@@ -182,6 +183,9 @@ public class UpgradeSetUp : MonoBehaviour
                         
                         swatManager.OnBuyActivation();
                     break;
+                case TypeOfUpgrade.Billet:
+                        billetmanager.BilletAnim();
+                        break;
             }
 
             break;
