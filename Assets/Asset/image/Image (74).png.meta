@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c1a4cbfe25fc810479e49a460faa0647
+guid: 43b93e8c48078ec47a233c014d4b952f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5133456548301587887
-    second: PropreFinDeJournee_0
+      213: -584761935477126906
+    second: Image (74)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PropreFinDeJournee_0
+      name: Image (74)_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1080
-        height: 1920
+        width: 576
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 15ab490b77c42c8b0800000000000000
-      internalID: -5133456548301587887
+      spriteID: 60947bd2e1282e7f0800000000000000
+      internalID: -584761935477126906
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PropreFinDeJournee_0: -5133456548301587887
+      Image (74)_0: -584761935477126906
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -15,7 +15,7 @@ MonoBehaviour:
   triggerType: 10
   triggerDelay: 0
   steps:
-  - text: "D\xE9signez un MVP : il gagne un bonus de vitesse et produit plus de dossiers
+  - text: "D\xE9signez un MVE : il gagne un bonus de vitesse et produit plus de dossiers
       la semaine suivante.\r\n"
     stepType: 0
     pauseOnShow: 1

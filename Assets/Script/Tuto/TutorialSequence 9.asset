@@ -15,7 +15,7 @@ MonoBehaviour:
   triggerType: 9
   triggerDelay: 0
   steps:
-  - text: 'C''est vendredi ! En plus du score, vous devez choisir votre MVP de la
+  - text: 'C''est vendredi ! En plus du score, vous devez choisir votre MVE de la
       semaine.
 
 '
