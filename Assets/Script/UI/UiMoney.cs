@@ -1,16 +1,12 @@
+using TMPro;
 using UnityEngine;
 
 public class UiMoney : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+   [SerializeField] ScoreManager scoreManager;
+    [SerializeField] TextMeshProUGUI text;
+    private void Update()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        text.text = $"Argent: {scoreManager.playerMoney}$";
     }
 }

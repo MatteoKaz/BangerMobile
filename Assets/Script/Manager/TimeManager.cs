@@ -52,6 +52,7 @@ public class TimeManager : MonoBehaviour
     */
     public IEnumerator DayTimer()
     {
+        DayDurationToShow = DayDuration;
         yield return new WaitForSeconds(2f);
         DayDurationToShow = DayDuration;
         float T = 0;

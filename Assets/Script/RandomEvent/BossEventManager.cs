@@ -96,7 +96,7 @@ public class BossEventManager : MonoBehaviour
         _eventRunning = true;
         BossEventStarted?.Invoke(_targetPole);
         SetLight(_targetPole);
-
+        bossObject.SetActive(false);
         yield return StartCoroutine(BossEnter());
 
         // Applique le malus
