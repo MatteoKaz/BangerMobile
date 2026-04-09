@@ -433,7 +433,7 @@ public class Pole : MonoBehaviour
 
     public void BeginSurcharge()
     {
-        if (waitingPaper > 0 && employeList.Count > 0)
+        if (waitingPaper > 0 )
         {
             if (SurchargeRef == null)
                 SurchargeRef = StartCoroutine(Surcharge());
@@ -451,27 +451,35 @@ public class Pole : MonoBehaviour
         {
             if (waitingPaper > 0)
             {
-                float normalizedPaper = (float)waitingPaper + 0.005f;
-                float employeeCount = Mathf.Max(1, employeList.Count);
-
-                // seuil dur — en dessous de 3 papiers, charge réduite drastiquement
-                float paperFactor = waitingPaper <= 3
-                    ? Mathf.Pow(normalizedPaper, 1f) * 0.5f
-                    : Mathf.Pow(normalizedPaper, 1.35f);
-
-                float chargePerEmployee = paperFactor / Mathf.Pow(employeeCount, 0.87f);
-                surchargeValue += (surchargeStep * chargePerEmployee) / (1f + BoostTimeForSurcharge);
-                surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
-                Debug.LogWarning($"Surcharge {surchargeValue}");
-                surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
-                if (nextThresholdIndex < surchargeThresholds.Length && surchargeValue >= surchargeThresholds[nextThresholdIndex])
+                float employeeCount1 = employeList.Count;
+                if (employeeCount1 > 0)
                 {
-                    NotifyFirstOverloadOnce();
-                    ApplyMalus(nextThresholdIndex);
-                    nextThresholdIndex++;
+
+                    float normalizedPaper = (float)waitingPaper + 0.005f;
+                    float employeeCount = Mathf.Max(1, employeList.Count);
+
+                    // seuil dur — en dessous de 3 papiers, charge réduite drastiquement
+                    float paperFactor = waitingPaper <= 3
+                        ? Mathf.Pow(normalizedPaper, 1f) * 0.5f
+                        : Mathf.Pow(normalizedPaper, 1.25f);
+
+                    float chargePerEmployee = paperFactor / Mathf.Pow(employeeCount, 1.8f);
+                    surchargeValue += (surchargeStep * chargePerEmployee) / (1f + BoostTimeForSurcharge);
+                    surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
+                    Debug.LogWarning($"Surcharge {surchargeValue}");
+                    surchargeProgress.value = Mathf.Lerp(surchargeProgress.value, surchargeValue / maxSurcharge, 0.2f);
+                    if (nextThresholdIndex < surchargeThresholds.Length && surchargeValue >= surchargeThresholds[nextThresholdIndex])
+                    {
+                        NotifyFirstOverloadOnce();
+                        ApplyMalus(nextThresholdIndex);
+                        nextThresholdIndex++;
+                    }
+                    float delay = baseDelay / (1f + (waitingPaper / (Mathf.Max(1, totalPaper) * employeeCount)));
+                    yield return new WaitForSeconds(delay);
                 }
-                float delay = baseDelay / (1f + (waitingPaper / (Mathf.Max(1, totalPaper) * employeeCount)));
-                yield return new WaitForSeconds(delay);
+                else { yield return null; }
+                    
+                
             }
             else if (surchargeValue > 0)
             {

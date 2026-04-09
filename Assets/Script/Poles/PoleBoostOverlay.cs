@@ -30,7 +30,7 @@ public class PoleBoostOverlay : MonoBehaviour
     private Coroutine _floatCoroutine;
     private Color _baseColor;
     private Vector2 _boostTextBasePosition;
-
+    [SerializeField] private BossEventManager bossEventManager;
     private void Awake()
     {
         _pole = GetComponent<Pole>();
@@ -71,7 +71,8 @@ public class PoleBoostOverlay : MonoBehaviour
     private void OnBoostStarted(Pole pole)
     {
         if (pole != _pole) return;
-
+        if (bossEventManager != null && bossEventManager.IsEventActiveOn(_pole))
+            return;
         if (confettiParticles != null)
         {
             confettiParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);

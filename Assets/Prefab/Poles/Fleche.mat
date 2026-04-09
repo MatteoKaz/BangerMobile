@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ecran
-  m_Shader: {fileID: -6465566751694194690, guid: 4de788e11430f714abe9d1a0231c5f05, type: 3}
+  m_Name: Fleche
+  m_Shader: {fileID: -6465566751694194690, guid: 1cfbb734b0f6d22418d091050b694c17, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -18,18 +18,13 @@ Material:
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses:
-  - MOTIONVECTORS
+  disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _AlphaTex:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Image:
-        m_Texture: {fileID: 2800000, guid: 169917a2e533e984e998659099da0d0f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -44,8 +39,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_3cd4898f0ddd4a1ebd5221ede6ea11f4_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: ded2170379392084ba83511da6af0951, type: 3}
+    - _SampleTexture2D_b081938534664cc3ae3665cc123edca0_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: ef4cdd2ee4ea69742a3f4953335ada37, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -62,30 +57,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Blur_Offset: 0
     - _EnableExternalAlpha: 0
-    - _Height: 0.55
-    - _Opacity: 0.18
-    - _Opacity2: 0
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    - _Rot: 0
-    - _Scale: 34.5
-    - _Speed: -0.05
-    - _Speed2: 0
-    - _Width: 0.56
-    - _XRMotionVectorsPass: 1
     - _ZWrite: 0
-    - _radius: 0.15
-    - _sc: 0
-    - _size: 215.7
     m_Colors:
+    - White: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Direction: {r: 0, g: 0.2, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &6427019177188310156
+--- !u!114 &1332616040426628557
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
