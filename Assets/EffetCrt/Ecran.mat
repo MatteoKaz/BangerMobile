@@ -65,22 +65,23 @@ Material:
     - _Blur_Offset: 0
     - _EnableExternalAlpha: 0
     - _Height: 0.55
-    - _Opacity: 0.29
+    - _Opacity: 0.63
     - _Opacity2: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Rot: 0
-    - _Scale: 12.18
-    - _Speed: -0.05
-    - _Speed2: 0
+    - _Scale: -0.2
+    - _Speed: 9.44
+    - _Speed2: 12.29
     - _Width: 0.56
     - _XRMotionVectorsPass: 1
     - _ZWrite: 0
+    - _frequence: 468.7
     - _radius: 0.12
     - _sc: 0
-    - _size: 0.01
+    - _size: 12.5
     m_Colors:
-    - _Color: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 1}
+    - _Color: {r: 0.1792453, g: 0.16994482, b: 0.16994482, a: 1}
     - _Direction: {r: 0, g: 0.2, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
