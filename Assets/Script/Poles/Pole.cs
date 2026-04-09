@@ -461,9 +461,9 @@ public class Pole : MonoBehaviour
                     // seuil dur — en dessous de 3 papiers, charge réduite drastiquement
                     float paperFactor = waitingPaper <= 3
                         ? Mathf.Pow(normalizedPaper, 1f) * 0.5f
-                        : Mathf.Pow(normalizedPaper, 1.25f);
+                        : Mathf.Pow(normalizedPaper, 1.45f);
 
-                    float chargePerEmployee = paperFactor / Mathf.Pow(employeeCount, 1.8f);
+                    float chargePerEmployee = paperFactor / Mathf.Pow(employeeCount, 1.5f);
                     surchargeValue += (surchargeStep * chargePerEmployee) / (1f + BoostTimeForSurcharge);
                     surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                     Debug.LogWarning($"Surcharge {surchargeValue}");
