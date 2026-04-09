@@ -463,7 +463,7 @@ public class Pole : MonoBehaviour
                         ? Mathf.Pow(normalizedPaper, 1f) * 0.5f
                         : Mathf.Pow(normalizedPaper, 1.35f);
 
-                    float chargePerEmployee = paperFactor / Mathf.Pow(employeeCount, 1.5f);
+                    float chargePerEmployee = paperFactor / Mathf.Pow(employeeCount, 1.9f);
                     surchargeValue += (surchargeStep * chargePerEmployee) / (1f + BoostTimeForSurcharge);
                     surchargeValue = Mathf.Min(surchargeValue, maxSurcharge);
                     Debug.LogWarning($"Surcharge {surchargeValue}");
@@ -474,7 +474,7 @@ public class Pole : MonoBehaviour
                         ApplyMalus(nextThresholdIndex);
                         nextThresholdIndex++;
                     }
-                    float delay = baseDelay / (1f + (waitingPaper / (Mathf.Max(1, totalPaper) * employeeCount)));
+                    float delay = baseDelay / (1f + (waitingPaper / (Mathf.Max(1, waitingPaper) * employeeCount)));
                     yield return new WaitForSeconds(delay);
                 }
                 else { yield return null; }
@@ -483,7 +483,8 @@ public class Pole : MonoBehaviour
             }
             else if (surchargeValue > 0)
             {
-                surchargeValue -= decayRate * Time.deltaTime;
+                float effectiveDecay = decayRate * 3f;
+                surchargeValue -= effectiveDecay * Time.deltaTime;
                 surchargeValue = Mathf.Max(surchargeValue, 0f);
                 while (nextThresholdIndex > 0 && surchargeValue < surchargeThresholds[nextThresholdIndex - 1])
                 {
