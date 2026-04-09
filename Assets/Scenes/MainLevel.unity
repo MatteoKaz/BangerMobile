@@ -29122,7 +29122,7 @@ MonoBehaviour:
   lightFadeOutDuration: 0.4
   malus: 0.3
   eventDuration: 15
-  chancePerDay: 0.6
+  chancePerDay: 0.65
   minDelay: 5
   maxDelay: 15
 --- !u!1 &646736019
@@ -80645,7 +80645,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -16.914}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -594, y: -771}
+  m_AnchoredPosition: {x: -565, y: -806}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &2062747241
